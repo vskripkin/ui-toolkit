@@ -1,0 +1,1137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimal-ui" />
+
+	<link href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic&subset=latin,cyrillic" rel="stylesheet" type="text/css" />
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="vendor/prism/prism.css" />
+	<link rel="stylesheet" type="text/css" href="css/test.css" />
+
+	<title>Styleguide</title>
+
+	<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
+	<script type="text/javascript" src="vendor/prism/prism.js"></script>
+</head>
+
+<body>
+	<section id="sidebar" class="fixed">
+		<div class="logo">
+			<span>Material Ui</span>
+			<i class="material-icons">layers</i>
+		</div>
+		<div class="side-nav">
+			<a href="#buttons" class="active" data-wave="true">Buttons</a>
+			<a href="#typography" data-wave="true">Typography</a>
+			<a href="#controls" data-wave="true">Input Controls</a>
+			<a href="#forms" data-wave="true">Forms</a>
+			<a href="#alerts" data-wave="true">Alerts</a>
+			<a href="#grid" data-wave="true">Grid</a>
+		</div>
+	</section>
+
+	<section id="content">
+		<section id="buttons-block">
+			<div class="headline">
+				<div class="wrapper">
+					Buttons
+				</div>
+			</div>
+			<div class="content">
+				<div class="wrapper">
+					<div>
+						<button data-wave="true" class="btn1">Button</button>
+						<button data-wave="true" class="btn2">Button</button>
+						<button data-wave="true" class="btn3">Button</button>
+						<button data-wave="true" class="btn4">Button</button>
+						<button data-wave="true" class="btn5">Button</button>
+					</div>
+					<div>
+						<button data-wave="true" class="btn1 default">Button</button>
+						<button data-wave="true" class="btn2 default">Button</button>
+						<button data-wave="true" class="btn3 default">Button</button>
+						<button data-wave="true" class="btn4 default">Button</button>
+						<button data-wave="true" class="btn5 default">Button</button>
+					</div>
+					<div>
+						<button data-wave="true" class="btn1 dark">Button</button>
+						<button data-wave="true" class="btn2 dark">Button</button>
+						<button data-wave="true" class="btn3 dark">Button</button>
+						<button data-wave="true" class="btn4 dark">Button</button>
+						<button data-wave="true" class="btn5 dark">Button</button>
+					</div>
+					<div>
+						<button data-wave="true" class="btn1 darken">Button</button>
+						<button data-wave="true" class="btn2 darken">Button</button>
+						<button data-wave="true" class="btn3 darken">Button</button>
+						<button data-wave="true" class="btn4 darken">Button</button>
+						<button data-wave="true" class="btn5 darken">Button</button>
+					</div>
+					<div>
+						<button data-wave="true" class="btn1 light">Button</button>
+						<button data-wave="true" class="btn2 light">Button</button>
+						<button data-wave="true" class="btn3 light">Button</button>
+						<button data-wave="true" class="btn4 light">Button</button>
+						<button data-wave="true" class="btn5 light">Button</button>
+					</div>
+					<div>
+						<button data-wave="true" class="btn1 lighten">Button</button>
+						<button data-wave="true" class="btn2 lighten">Button</button>
+						<button data-wave="true" class="btn3 lighten">Button</button>
+						<button data-wave="true" class="btn4 lighten">Button</button>
+						<button data-wave="true" class="btn5 lighten">Button</button>
+					</div>
+					<div>
+						<button data-wave="true" class="btn1" disabled>Button</button>
+						<button data-wave="true" class="btn2" disabled>Button</button>
+						<button data-wave="true" class="btn3" disabled>Button</button>
+						<button data-wave="true" class="btn4" disabled>Button</button>
+						<button data-wave="true" class="btn5" disabled>Button</button>
+					</div>
+
+					<pre class="code"><code class="language-less">.btn
+{
+	#ui > .button(#FFF, #212121);
+}
+					</code></pre>
+				</div>
+			</div>
+		</section>
+
+		<section id="typography-block">
+			<div class="headline">
+				<div class="wrapper">
+					Typography
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="wrapper">
+					<div id="heading">
+						<div id="sans">
+							<h3 class="paragraph">Sans-serif</h3>
+
+							<h1>h1. Heading 1</h1>
+							<h2>h2. Heading 2</h2>
+							<h3>h3. Heading 3</h3>
+							<h4>h4. Heading 4</h4>
+							<h5>h5. Heading 5</h5>
+							<h6>h6. Heading 6</h6>
+						</div>
+
+						<div id="serif">
+							<h3 class="paragraph">Serif</h3>
+
+							<h1>h1. Heading 1</h1>
+							<h2>h2. Heading 2</h2>
+							<h3>h3. Heading 3</h3>
+							<h4>h4. Heading 4</h4>
+							<h5>h5. Heading 5</h5>
+							<h6>h6. Heading 6</h6>
+						</div>
+					</div>
+
+					<h1>Primary Heading</h1>
+					<h2 class="sub_heading">Sub-heading tagline</h2>
+
+					<h3 class="paragraph">Paragraph Headings ( h3 Helvetica Neue 20px #111 - All Caps)</h3>
+
+					<p>
+						Paragraphs (Verdana 14px and line-height is 20px)
+					</p>
+					<p>
+						Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.
+					</p>
+					<p>
+						Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla. <a href="javascript:void(0)">This is a link</a>.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section id="controls-block">
+			<div class="headline">
+				<div class="wrapper">
+					Input Controls
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="wrapper">
+					<h3 class="paragraph">Button States</h3>
+
+					<a href="javascript:void(0)" class="complete_circle_button"><span></span></a>
+					<a href="javascript:void(0)" class="alert_circle_button"><span></span></a>
+					<a href="javascript:void(0)" class="action_circle_button"><span></span></a>
+
+					<br /><br />
+
+					<img src="" height="100" width="100" data-wave="true" />
+
+					<table class="table">
+						<tr class="not_important">
+							<td class="standart"><a href="javascript:void(0)">Not Important</a></td>
+							<td class="complete"><a href="javascript:void(0)">Not Important</a></td>
+							<td class="alert"><a href="javascript:void(0)">Not Important</a></td>
+							<td class="action"><a href="javascript:void(0)">Not Important</a></td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr class="default">
+							<td class="standart"><a href="javascript:void(0)" data-wave="true">Standard Button</a></td>
+							<td class="complete"><a href="javascript:void(0)">Complete Button</a></td>
+							<td class="alert"><a href="javascript:void(0)">Alert Button</a></td>
+							<td class="action"><a href="javascript:void(0)">Action Button</a></td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr class="hover">
+							<td class="standart"><a href="javascript:void(0)">:hover Button</a></td>
+							<td class="complete"><a href="javascript:void(0)">:hover Complete</a></td>
+							<td class="alert"><a href="javascript:void(0)">:hover Alert</a></td>
+							<td class="action"><a href="javascript:void(0)">:hover Action</a></td>
+							<td>&nbsp;</td>
+						</td>
+						<tr class="active">
+							<td class="standart"><a href="javascript:void(0)">:active Button</a></td>
+							<td class="complete"><a href="javascript:void(0)">:active Complete</a></td>
+							<td class="alert"><a href="javascript:void(0)">:active Alert</a></td>
+							<td class="action"><a href="javascript:void(0)">:active Action</a></td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr class="disabled">
+							<td class="standart"><a href="javascript:void(0)" disabled>:disabled Button</a></td>
+							<td class="complete"><a href="javascript:void(0)" disabled>:disabled Complete</a></td>
+							<td class="alert"><a href="javascript:void(0)" disabled>:disabled Alert</a></td>
+							<td class="action"><a href="javascript:void(0)" disabled>:disabled Alert</a></td>
+							<td>&nbsp;</td>
+						</tr>
+					</table>
+
+					<div class="large_btn"><a href="javascript:void(0)">Large Button</a></div>
+					<div class="small_btn"><a href="javascript:void(0)">Small Button</a></div>
+					<div class="test_btn"><a href="javascript:void(0)">Test Button</a></div>
+
+					<h3 class="paragraph">Multibuttons</h3>
+
+					<div class="multibtns standart">
+						<a href="javascript:void(0)" class="btn"><span>Option One</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Two</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Three</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Four</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Five</span></a>
+					</div>
+
+					<div class="multibtns complete">
+						<a href="javascript:void(0)" class="btn"><span>Option One</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Two</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Three</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Four</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Five</span></a>
+					</div>
+
+					<div class="multibtns alert">
+						<a href="javascript:void(0)" class="btn"><span>Option One</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Two</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Three</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Four</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Five</span></a>
+					</div>
+
+					<div class="multibtns action">
+						<a href="javascript:void(0)" class="btn"><span>Option One</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Two</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Three</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Option Four</span></a>
+						<a href="javascript:void(0)" class="btn"><span>Five</span></a>
+					</div>
+
+					<div class="multibtns rainbow">
+						<div class="btns">
+							<a href="javascript:void(0)" class="btn standart toggle"><span>Option One</span></a>
+							<a href="javascript:void(0)" class="btn complete"><span>Option Two</span></a>
+							<a href="javascript:void(0)" class="btn alert"><span>Option Three</span></a>
+							<a href="javascript:void(0)" class="btn action"><span>Option Four</span></a>
+							<a href="javascript:void(0)" class="btn standart"><span>Five</span></a>
+						</div>
+					</div>
+
+					<h3 class="paragraph">Dropdowns</h3>
+
+					<table class="dropdowns">
+						<tr>
+							<td>
+								<div class="dropdown" id="dropdown">
+									<div class="btns">
+										<a href="javascript:void(0)" class="btn">Dropdown</a>
+										<a href="javascript:void(0)" class="btn toggle"></a>
+										<a href="javascript:void(0)" class="btn">Something else</a>
+									</div>
+
+									<ul>
+										<li><a href="javascript:void(0)">Action</a></li>
+										<li class="has_nested">
+											<a href="javascript:void(0)">Another Action</a>
+											<ul>
+												<li><a href="javascript:void(0)">Second Tier Action</a></li>
+												<li><a href="javascript:void(0)">Another Second Tier Action</a></li>
+												<li><a href="javascript:void(0)">Final Second Tier Action</a></li>
+											</ul>
+										</li>
+										<li class="has_nested">
+											<a href="javascript:void(0)">Something else here</a>
+											<ul>
+												<li><a href="javascript:void(0)">Second Tier Action</a></li>
+												<li class="has_nested">
+													<a href="javascript:void(0)">Another Second Tier Action</a>
+													<ul>
+														<li><a href="javascript:void(0)">Third Tier Action</a></li>
+														<li><a href="javascript:void(0)">Another Third Tier Action</a></li>
+														<li><a href="javascript:void(0)">Final Third Tier Action</a></li>
+													</ul>
+												</li>
+												<li><a href="javascript:void(0)">Final Second Tier Action</a></li>
+											</ul>
+										</li>
+										<li class="divider"></li>
+										<li><a href="javascript:void(0)">Separate Link</a></li>
+									</ul>
+								</div>
+							</td>
+							<td>
+								<div class="dropdown" id="dropdown1">
+									<div class="btns">
+										<a href="javascript:void(0)" class="btn toggle">Dropdown</a>
+									</div>
+
+									<ul>
+										<li><a href="javascript:void(0)">Action</a></li>
+										<li class="has_nested">
+											<a href="javascript:void(0)">Another Action</a>
+											<ul>
+												<li><a href="javascript:void(0)">Second Tier Action</a></li>
+												<li><a href="javascript:void(0)">Another Second Tier Action</a></li>
+												<li><a href="javascript:void(0)">Final Second Tier Action</a></li>
+											</ul>
+										</li>
+										<li class="has_nested">
+											<a href="javascript:void(0)">Something else here</a>
+											<ul>
+												<li><a href="javascript:void(0)">Second Tier Action</a></li>
+												<li class="has_nested">
+													<a href="javascript:void(0)">Another Second Tier Action</a>
+													<ul>
+														<li><a href="javascript:void(0)">Third Tier Action</a></li>
+														<li><a href="javascript:void(0)">Another Third Tier Action</a></li>
+														<li><a href="javascript:void(0)">Final Third Tier Action</a></li>
+													</ul>
+												</li>
+												<li><a href="javascript:void(0)">Final Second Tier Action</a></li>
+											</ul>
+										</li>
+										<li class="divider"></li>
+										<li><a href="javascript:void(0)">Separate Link</a></li>
+									</ul>
+								</div>
+							</td>
+							<td>
+								<div class="dropdown" id="dropdown2">
+									<div class="btns">
+										<a href="javascript:void(0)" class="btn">Dropdown</a>
+										<a href="javascript:void(0)" class="btn toggle"></a>
+									</div>
+
+									<ul>
+										<li><a href="javascript:void(0)">Action</a></li>
+										<li class="has_nested">
+											<a href="javascript:void(0)">Another Action</a>
+											<ul>
+												<li><a href="javascript:void(0)">Second Tier Action</a></li>
+												<li><a href="javascript:void(0)">Another Second Tier Action</a></li>
+												<li><a href="javascript:void(0)">Final Second Tier Action</a></li>
+											</ul>
+										</li>
+										<li class="has_nested">
+											<a href="javascript:void(0)">Something else here</a>
+											<ul>
+												<li><a href="javascript:void(0)">Second Tier Action</a></li>
+												<li class="has_nested">
+													<a href="javascript:void(0)">Another Second Tier Action</a>
+													<ul>
+														<li><a href="javascript:void(0)">Third Tier Action</a></li>
+														<li><a href="javascript:void(0)">Another Third Tier Action</a></li>
+														<li><a href="javascript:void(0)">Final Third Tier Action</a></li>
+													</ul>
+												</li>
+												<li><a href="javascript:void(0)">Final Second Tier Action</a></li>
+											</ul>
+										</li>
+										<li class="divider"></li>
+										<li><a href="javascript:void(0)">Separate Link</a></li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					</table>
+
+					<script type="text/javascript">
+						$(document).ready(function ()
+						{
+							initDropdown($('.dropdown .toggle, .rainbow .toggle'));
+						});
+					</script>
+				</div>
+			</div>
+		</section>
+
+		<section id="forms-block">
+			<div class="headline">
+				<div class="wrapper">
+					Forms
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="wrapper">
+					<h3 class="paragraph">Text Inputs</h3>
+
+					<table class="table">
+						<tr>
+							<td><input type="text" class="textfield" placeholder="This is placeholder" /></td>
+							<td><input type="text" class="textfield" value="This is real text" /></td>
+							<td><input type="text" class="textfield" disabled value="Disabled Input" /></td>
+						</tr>
+						<tr>
+							<td><input type="text" class="textfield focus large" value=":focused Input Field" /></td>
+							<td><input type="text" class="textfield valid" value=":valid Input Field" /></td>
+							<td><input type="text" class="textfield invalid small" value=":invalid Input Field" /></td>
+						</tr>
+						<tr>
+							<td>
+								<label class="textfield-label">
+									<input type="text" class="textfield addon-right w2 large" placeholder="Package weight" />
+									<span class="addon">lbs</span>
+								</label>
+							</td>
+							<td>
+								<label class="textfield-label">
+									<input type="text" class="textfield addon-left" placeholder="Сумма страхования" />
+									<span class="addon">$</span>
+								</label>
+							</td>
+							<td>
+								<label class="textfield-label">
+									<input type="text" class="textfield addon-left w1 small" placeholder="Email" />
+									<span class="addon">@</span>
+								</label>
+							</td>
+						</tr>
+					</table>
+
+					<h3 class="paragraph">Progress Bars</h3>
+
+					<div class="prbar">
+						<div class="progress" style="width: 0%" data-value="0%"></div>
+					</div>
+
+					<div class="prbar">
+						<div class="progress" style="width: 50%" data-value="50%"></div>
+					</div>
+
+					<div class="prbar">
+						<div class="progress complete" data-value="100%"></div>
+					</div>
+
+					<div class="prbar_small">
+						<div class="progress" style="width: 0%" data-value="0%"></div>
+					</div>
+
+					<div class="prbar_small">
+						<div class="progress" style="width: 50%" data-value="50%"></div>
+					</div>
+
+					<div class="prbar_small complete">
+						<div class="progress complete" data-value="100%"></div>
+					</div>
+
+					<br /><br /><br /><br />
+
+					<h3 class="paragraph">ATTACHMENTS</h3>
+
+					<div class="prbar">
+						<div class="progress" style="width: 0%" data-value="passport_scan2.jpg"></div>
+					</div>
+
+					<div class="prbar">
+						<div class="progress" style="width: 50%" data-value="passport_scan2.jpg"></div>
+					</div>
+
+					<div class="attachments">
+						<img src="{$THEME_URL}/framework/images/thumb.png">
+						<a href="#" class="file">passport_scan2.jpg</a>
+						<button>Delete</button>
+					</div>
+					
+					<div class="attachments approved">
+						<img src="{$THEME_URL}/framework/images/thumb.png">
+						<a href="#" class="file">passport_scan2.jpg</a>
+						<button>Delete</button>
+					</div>
+
+					<div class="attachments denied">
+						<img src="{$THEME_URL}/framework/images/thumb.png">
+						<a href="#" class="file">passport_scan2.jpg</a>
+						<button>Delete</button>
+					</div>
+
+					<br /><br /><br /><br />
+
+					<h3 class="paragraph">Option Selects</h3>
+
+					<div class="MB20">
+						<input type="checkbox" id="check1" class="checkbox" />
+						<label for="check1"></label>
+						<label for="check1">Base</label>
+
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+						<input type="checkbox" id="check4" class="checkbox hover" />
+						<label for="check4"></label>
+						<label for="check4">:hover</label>
+
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+						<input type="checkbox" id="check2" checked="checked" class="checkbox" />
+						<label for="check2"></label>
+						<label for="check2">Checked</label>
+
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+						<input type="checkbox" id="check3" class="button_checkbox" />
+						<label for="check3"><span class="icon_kp"></span></label>
+					</div>
+
+					<label id="spinner" class="MB20">
+						<input type="text" />
+					</label>
+
+					<script type="text/javascript">
+						$(document).ready(function ()
+						{
+							$('#spinner').spinner({
+								step: 2.1,
+								float: 5,
+								default: 4,
+								max: 10
+							});
+						});
+					</script>
+
+					<div class="radiobtns MB20">
+						<input type="radio" name="test" id="radio1" />
+						<label for="radio1" class="btn"><span>Add</span></label>
+						<input type="radio" name="test" id="radio2" checked="checked" />
+						<label for="radio2" class="btn"><span>Substract</span></label>
+						<input type="radio" name="test" id="radio3" />
+						<label for="radio3" class="btn"><span>Copy</span></label>
+						<input type="radio" name="test" id="radio4" />
+						<label for="radio4" class="btn"><span>Paste</span></label>
+					</div>
+
+					<h3 class="paragraph">Select Tag</h3>
+					<form id="qwe">
+					<table class="table nowrap pad">
+						<tr>
+							<td>
+								<p><b>Type: select-multiple</b></p>
+
+								<select id="test_select1" multiple size="10" placeholder="Choose something">
+									<optgroup label="In opt-group">
+										<option>First option</option>
+										<option>Verrrrrrrrry loooooooooooooong option</option>
+										<option>Third option</option>
+									</optgroup>
+									<option>Fourth option</option>
+									<option>Fifth option</option>
+									<option>Sixth option</option>
+								</select>
+							</td>
+							<td>
+								<p><b>Type: select-one</b></p>
+
+								<select id="test_select2" placeholder="Choose something" size="10" disabled>
+									<optgroup label="In opt-group">
+										<option>First option</option>
+										<option>Second option</option>
+										<option>Third option</option>
+									</optgroup>
+									<option>Fourth option</option>
+									<option>Fifth option</option>
+									<option>Sixth option</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					</form>
+					<table class="table nowrap">
+						<tr>
+							<td>
+								<select id="test_select3" size="5">
+									<option>10</option>
+									<option>15</option>
+									<option>20</option>
+									<option>25</option>
+									<option>30</option>
+								</select>
+							</td>
+							<td>
+								<select id="test_select4" placeholder="Price" size="5">
+									<option>100</option>
+									<option>200</option>
+									<option>300</option>
+									<option>400</option>
+									<option>500</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<select id="test_select5" placeholder="Выберите страну назначения">
+									<option data-value="RU">Россия</option>
+									<option data-value="UA">Украина</option>
+									<option data-value="BY">Беларусь</option>
+									<option data-value="AL">Албания</option>
+									<option data-value="DZ">Алжир</option>
+									<option data-value="AD">Андорра</option>
+									<option data-value="AO">Ангола</option>
+									<option data-value="AI">Ангилья</option>
+									<option data-value="AR">Аргентина</option>
+									<option data-value="AM">Армения</option>
+									<option data-value="AW">Аруба</option>
+									<option data-value="AU">Австралия</option>
+									<option data-value="AT">Австрия</option>
+									<option data-value="AZ">Азербайджан</option>
+									<option data-value="BS">Багамы</option>
+									<option data-value="BH">Бахрейн</option>
+									<option data-value="BD">Бангладеш</option>
+									<option data-value="BB">Барбадос</option>
+									<option data-value="BE">Бельгия</option>
+									<option data-value="BZ">Белиз</option>
+									<option data-value="BJ">Бенин</option>
+									<option data-value="BM">Бермудские о-ва</option>
+									<option data-value="BT">Бутан</option>
+									<option data-value="BW">Ботсвана</option>
+									<option data-value="BR">Бразилия</option>
+									<option data-value="BN">Бруней Даруссалам</option>
+									<option data-value="BG">Болгария</option>
+									<option data-value="BF">Буркина Фасо</option>
+									<option data-value="BI">Бурунди</option>
+									<option data-value="CM">Камерун</option>
+									<option data-value="CA">Канада</option>
+									<option data-value="CV">Острова Зеленого Мыса</option>
+									<option data-value="KY">Каймановы Острова</option>
+									<option data-value="CF">ЦАР</option>
+									<option data-value="TD">Чад</option>
+									<option data-value="CL">Чили</option>
+									<option data-value="CN">Китай</option>
+									<option data-value="CO">Колумбия</option>
+									<option data-value="CR">Коста-Рика</option>
+									<option data-value="HR">Хорватия</option>
+									<option data-value="CY">Кипр</option>
+									<option data-value="CZ">Чешская Республика</option>
+									<option data-value="DK">Дания</option>
+									<option data-value="DJ">Джибути</option>
+									<option data-value="DM">Остров Доминика</option>
+									<option data-value="DO">Доминиканская Республика</option>
+									<option data-value="EC">Эквадор</option>
+									<option data-value="EG">Египет</option>
+									<option data-value="SV">Сальвадор</option>
+									<option data-value="GQ">Экваториальная Гвинея</option>
+									<option data-value="ER">Эритрея</option>
+									<option data-value="EE">Эстония</option>
+									<option data-value="ET">Эфиопия</option>
+									<option data-value="FO">Фарерские о-ва</option>
+									<option data-value="FJ">Фиджи</option>
+									<option data-value="FI">Финляндия</option>
+									<option data-value="FR">Франция</option>
+									<option data-value="GF">Французская Гвиана</option>
+									<option data-value="PF">Французская Полинезия</option>
+									<option data-value="GA">Габон</option>
+									<option data-value="GE">Грузия</option>
+									<option data-value="DE">Германия</option>
+									<option data-value="GH">Гана</option>
+									<option data-value="GR">Греция</option>
+									<option data-value="GD">Гренада</option>
+									<option data-value="GP">Гваделупа</option>
+									<option data-value="GT">Гватемала</option>
+									<option data-value="GN">Гвинея</option>
+									<option data-value="GW">Гвинея-Биссау</option>
+									<option data-value="GY">Гайана</option>
+									<option data-value="HT">Гаити</option>
+									<option data-value="HN">Гондурас</option>
+									<option data-value="HK">Гонконг</option>
+									<option data-value="HU">Венгрия</option>
+									<option data-value="IS">Исландия</option>
+									<option data-value="IN">Индия</option>
+									<option data-value="ID">Индонезия</option>
+									<option data-value="IQ">Ирак</option>
+									<option data-value="IE">Ирландия</option>
+									<option data-value="IL">Израиль</option>
+									<option data-value="IT">Италия</option>
+									<option data-value="JM">Ямайка</option>
+									<option data-value="JP">Япония</option>
+									<option data-value="JO">Иордания</option>
+									<option data-value="KZ">Казахстан</option>
+									<option data-value="KE">Кения</option>
+									<option data-value="KW">Кувейт</option>
+									<option data-value="KG">Кыргызстан</option>
+									<option data-value="LV">Латвия</option>
+									<option data-value="LB">Ливан</option>
+									<option data-value="LS">Лесото</option>
+									<option data-value="LR">Либерия</option>
+									<option data-value="LI">Лихтенштейн</option>
+									<option data-value="LT">Литва</option>
+									<option data-value="LU">Люксембург</option>
+									<option data-value="MO">Макао</option>
+									<option data-value="MG">Мадагаскар</option>
+									<option data-value="MW">Малави</option>
+									<option data-value="MY">Малайзия</option>
+									<option data-value="MV">Мальдивские о-ва</option>
+									<option data-value="ML">Мали</option>
+									<option data-value="MT">Мальта</option>
+									<option data-value="MQ">Мартиника</option>
+									<option data-value="MR">Мавритания</option>
+									<option data-value="MU">Маврикий</option>
+									<option data-value="MX">Мексика</option>
+									<option data-value="MD">Молдова</option>
+									<option data-value="MN">Монголия</option>
+									<option data-value="MA">Марокко</option>
+									<option data-value="MZ">Мозамбик</option>
+									<option data-value="NA">Намибия</option>
+									<option data-value="NR">Науру</option>
+									<option data-value="NP">Непал</option>
+									<option data-value="NL">Нидерланды</option>
+									<option data-value="AN">Нидерландские Антильские о-ва</option>
+									<option data-value="NC">Новая Каледония</option>
+									<option data-value="NZ">Новая Зеландия</option>
+									<option data-value="NI">Никарагуа</option>
+									<option data-value="NE">Нигерия</option>
+									<option data-value="NG">Нигерия</option>
+									<option data-value="NO">Норвегия</option>
+									<option data-value="OM">Оман</option>
+									<option data-value="PK">Пакистан</option>
+									<option data-value="PA">Панама</option>
+									<option data-value="PG">Папуа – Новая Гвинея</option>
+									<option data-value="PY">Парагвай</option>
+									<option data-value="PE">Перу</option>
+									<option data-value="PH">Филиппины</option>
+									<option data-value="PL">Польша</option>
+									<option data-value="PT">Португалия</option>
+									<option data-value="QA">Катар</option>
+									<option data-value="RO">Румыния</option>
+									<option data-value="RW">Руанда</option>
+									<option data-value="LC">Сент-Люсия</option>
+									<option data-value="VC">Сент-Винсент и Гренадины</option>
+									<option data-value="SM">Сан-Марино</option>
+									<option data-value="SA">Саудовская Аравия</option>
+									<option data-value="SN">Сенегал</option>
+									<option data-value="RS">Сербия</option>
+									<option data-value="SC">Сейшельские о-ва</option>
+									<option data-value="SL">Сьерра-Леоне</option>
+									<option data-value="SG">Сингапур</option>
+									<option data-value="SK">Словакия</option>
+									<option data-value="SI">Словения</option>
+									<option data-value="SB">Соломонские острова</option>
+									<option data-value="ZA">ЮАР</option>
+									<option data-value="ES">Испания</option>
+									<option data-value="LK">Шри-Ланка</option>
+									<option data-value="SD">Судан</option>
+									<option data-value="SZ">Свазиленд</option>
+									<option data-value="SE">Швеция</option>
+									<option data-value="CH">Швейцария</option>
+									<option data-value="TJ">Таджикистан</option>
+									<option data-value="TH">Тайланд</option>
+									<option data-value="TG">Того</option>
+									<option data-value="TT">Тринидад и Тобаго</option>
+									<option data-value="TN">Тунис</option>
+									<option data-value="TR">Турция</option>
+									<option data-value="TM">Туркменистан</option>
+									<option data-value="TC">Острова Тёркс и Кайкос</option>
+									<option data-value="UG">Уганда</option>
+									<option data-value="AE">ОАЭ</option>
+									<option data-value="GB">Великобритания</option>
+									<option data-value="UY">Уругвай</option>
+									<option data-value="UZ">Узбекистан</option>
+									<option data-value="VU">Вануату</option>
+									<option data-value="VE">Венесуэла</option>
+									<option data-value="YE">Йемен</option>
+									<option data-value="ZM">Замбия</option>
+									<option data-value="ZW">Зимбабве</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+
+
+					<script type="text/javascript">
+						$(document).ready(function ()
+						{
+							$('#test_select1, #test_select2').selectbox({
+								classes: {
+									select: 'selectbox selll'
+								}
+							});
+							$('#test_select3').selectbox({
+								units: 'cm',
+								unitsAlign: 'right',
+								width: '8.5em'
+							});
+							$('#test_select4').selectbox({
+								units: '$',
+								unitsAlign: 'left',
+								width: '8.5em'
+							});
+							$('#test_select5').selectbox({
+								filter: true,
+								width: '300px'
+							});
+						});
+					</script>
+
+					<h3 class="paragraph">Badges</h3>
+
+					<table class="table nowrap badge">
+						<tr class="red">
+							<td class="flat large"><span>99+</span></td>
+							<td class="flat normal"><span>99+</span></td>
+							<td class="flat small"><span>99+</span></td>
+						</tr>
+						<tr class="green">
+							<td class="flat large"><span>99+</span></td>
+							<td class="flat normal"><span>99+</span></td>
+							<td class="flat small"><span>99+</span></td>
+						</tr>
+						<tr class="blue">
+							<td class="flat large"><span>99+</span></td>
+							<td class="flat normal"><span>99+</span></td>
+							<td class="flat small"><span>99+</span></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<section id="alerts-block">
+			<div class="headline">
+				<div class="wrapper">
+					Alerts
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="wrapper">
+					<table class="table tooltips">
+						<tr>
+							<td rowspan="2">
+								<form class="tooltip_preset">
+									<fieldset>
+										<input type="checkbox" id="animation" class="checkbox" checked>
+										<label for="animation"></label>
+										<label for="animation">Animation</label>
+
+										<br />
+
+										<input type="checkbox" id="visible" class="checkbox" checked>
+										<label for="visible"></label>
+										<label for="visible">Visible (if true, tooltip will be added in visible state)</label>
+
+										<br />
+
+										<input type="checkbox" id="destroy" class="checkbox">
+										<label for="destroy"></label>
+										<label for="destroy">Destroy (if true, tooltip will be deleted after it became hidden )</label>
+									</fieldset>
+									<fieldset>
+										<h6>TRIGGER</h6>
+
+										<input type="checkbox" id="click_trigger" class="checkbox" checked>
+										<label for="click_trigger"></label>
+										<label for="click_trigger">CLICK</label>
+
+										<br />
+
+										<input type="checkbox" id="hover_trigger" class="checkbox" checked>
+										<label for="hover_trigger"></label>
+										<label for="hover_trigger">HOVER</label>
+
+										<br />
+
+										<input type="checkbox" id="focus_trigger" class="checkbox" checked>
+										<label for="focus_trigger"></label>
+										<label for="focus_trigger">FOCUS</label>
+									</fieldset>
+
+									<fieldset class="textfields">
+										<label for="tooltip_offset">Offset</label>
+										<input id="tooltip_offset" type="text" value="0" />
+
+										<br />
+
+										<label for="close">Close</label>
+										<input type="text" value="0" id="close">
+										<p>(if number > 0, tooltip will become hidden automaticly in N seconds. value in seconds without 's', just number)</p>
+
+										<label for="delay">Delay</label>
+										<input type="text" value="0" id="delay">
+										<p>(delay before tooltip become visible or hidden, value in milliseconds without 'ms', just number)</p>
+									</fieldset>
+
+									<button id="add_tooltip">Add tooltip</button>
+									<button id="delete_tooltip">Delete tooltip</button>
+								</form>
+							</td>
+							<td>
+								<form class="tooltip_preset" id="tooltip_preset">
+									<fieldset>
+										<h6>TOOLTIP POSITION - ALIGN - TYPE</h6>
+
+										<div class="MB10">
+											<input type="checkbox" name="tooltip_inset" id="tooltip_inset" class="checkbox">
+											<label for="tooltip_inset"></label>
+											<label for="tooltip_inset">Inset (if true, tooltip will be placed inside the elemenet)</label>
+										</div>
+
+										<div class="radiobtns MB10">
+											<input id="p1" type="radio" name="tooltip_pos" value="top" checked>
+											<label for="p1" class="btn"><span>TOP</span></label>
+											<input id="p2" type="radio" name="tooltip_pos" value="bottom">
+											<label for="p2" class="btn"><span>BOTTOM</span></label>
+											<input id="p3" type="radio" name="tooltip_pos" value="left">
+											<label for="p3" class="btn"><span>LEFT</span></label>
+											<input id="p4" type="radio" name="tooltip_pos" value="right">
+											<label for="p4" class="btn"><span>RIGHT</span></label>
+											<input id="p5" type="radio" name="tooltip_pos" value="center">
+											<label for="p5" class="btn"><span>CENTER</span></label>
+										</div>
+
+										<div class="radiobtns MB10">
+											<input id="a1" type="radio" name="tooltip_align" value="start" checked>
+											<label for="a1" class="btn"><span>START</span></label>
+											<input id="a2" type="radio" name="tooltip_align" value="center">
+											<label for="a2" class="btn"><span>CENTER</span></label>
+											<input id="a3" type="radio" name="tooltip_align" value="end">
+											<label for="a3" class="btn"><span>END</span></label>
+										</div>
+
+										<div class="radiobtns MB10">
+											<input id="t1" type="radio" name="type" value="info" checked>
+											<label for="t1" class="btn"><span>INFO</span></label>
+											<input id="t2" type="radio" name="type" value="warning">
+											<label for="t2" class="btn"><span>WARNING</span></label>
+											<input id="t3" type="radio" name="type" value="error">
+											<label for="t3" class="btn"><span>ERROR</span></label>
+											<input id="t4" type="radio" name="type" value="success">
+											<label for="t4" class="btn"><span>SUCCESS</span></label>
+										</div>
+									</fieldset>
+
+									<fieldset class="textfields">
+										<textarea name="html" id="message"><b>Info!</b><span>Just to let you know...</span></textarea>
+									</fieldset>
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<td class="bottom">
+								<div id="test"></div>
+							</td>
+						</tr>
+					</table>
+
+					<script type="text/javascript">
+						$(document).ready(function ()
+						{
+							$('#add_tooltip').click(function (e)
+							{
+								var sTrigger = '';
+
+								if (document.getElementById('click_trigger').checked) sTrigger += 'click ';
+								if (document.getElementById('hover_trigger').checked) sTrigger += 'hover ';
+								if (document.getElementById('focus_trigger').checked) sTrigger += 'focus ';
+
+								e.preventDefault();
+								$('#test').tooltip({
+									animation: document.getElementById('animation').checked,
+									trigger: sTrigger,
+									message: document.getElementById('message').value,
+									delay: document.getElementById('delay').value,
+									type: getRadioCheckedValue('type'),
+									visible: document.getElementById('visible').checked,
+									close: document.getElementById('close').value,
+									destroy: document.getElementById('destroy').checked,
+
+									location: {
+										position: getRadioCheckedValue('tooltip_pos'),
+										align: getRadioCheckedValue('tooltip_align'),
+										side: document.getElementById('tooltip_inset').checked ? 'in' : 'out',
+										offset: document.getElementById('tooltip_offset').value
+									}
+								});
+
+							});
+
+
+							$('#delete_tooltip').click(function (e)
+							{
+								e.preventDefault();
+								$('#test').tooltip('destroy');
+							});
+						});
+
+						function getRadioCheckedValue(radio_name)
+						{
+							var oRadio = document.forms['tooltip_preset'].elements[radio_name];
+
+							for(var i = 0; i < oRadio.length; i++)
+							{
+								if(oRadio[i].checked)
+								{
+									return oRadio[i].value;
+								}
+							}
+
+							return '';
+						}
+					</script>
+				</div>
+			</div>
+		</section>
+
+		<section id="grid-block">
+			<div class="headline">
+				<div class="wrapper">
+					Grid
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="wrapper">
+					<div class="row">
+						<div class="small-2 large-4 col" data-wave="true">
+							<span class="hide-for-large">2</span>
+							<span class="show-for-large">4</span>
+						</div>
+						<div class="small-4 large-4 col" data-wave="true">
+							<div class="row">
+								<div class="small-4 col" data-wave="true">3/4</div>
+								<div class="small-4 col" data-wave="true">3/4</div>
+								<div class="small-4 col" data-wave="true">3/4</div>
+							</div>
+						</div>
+						<div class="small-6 large-4 col" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">4</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-3 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">3</span>
+						</div>
+						<div class="large-6 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">6</span>
+						</div>
+						<div class="large-3 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">3</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="small-6 large-2 col" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">2</span>
+						</div>
+						<div class="small-6 large-8 col" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">8</span>
+						</div>
+						<div class="small-12 large-2 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">2</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="small-3 col" data-wave="true">3</div>
+						<div class="small-9 col" data-wave="true">9</div>
+					</div>
+					<div class="row">
+						<div class="large-4 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">4</span>
+						</div>
+						<div class="large-8 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">8</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="small-6 large-5 col" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">5</span>
+						</div>
+						<div class="small-6 large-7 col" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">7</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-6 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">6</span>
+						</div>
+						<div class="large-6 col" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">6</span>
+						</div>
+					</div>
+					<div class="row mb0">
+						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
+						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
+						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
+						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
+						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+
+	<script type="text/javascript" src="js/ui.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function ()
+		{
+			var oActiveLink = $('#sidebar a.active'),
+				oActiveBlock = $(oActiveLink.attr('href') + '-block').show(),
+				jWindow = $(window).on('hashchange', function(e)
+				{
+					var sKey = window.location.hash;
+
+					oActiveLink.removeClass('active');
+					oActiveLink = $('[href="' + sKey + '"]').addClass('active');
+
+					oActiveBlock.hide();
+					oActiveBlock = $(sKey + '-block').show();
+				});
+
+			if (window.location.hash != '')
+			{
+				jWindow.trigger('hashchange');
+			}
+
+			Waves.init();
+		});
+	</script>
+</body>
+</html>

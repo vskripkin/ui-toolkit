@@ -1,0 +1,85 @@
+#toast-container
+{
+	display: block;
+	position: fixed;
+
+	@media @small-only
+	{
+		min-width: 100%;
+		bottom: 0%;
+	}
+	@media @medium-only
+	{
+		left: 5%;
+		bottom: 7%;
+		max-width: 90%;
+	}
+	@media @large-up
+	{
+		top: 10%;
+		right: 7%;
+		max-width: 86%;
+	}
+}
+
+.toast
+{
+	position: relative;
+	z-index: 1;
+	max-width: 100%;
+	width: auto;
+	height: auto;
+	clear: both;
+
+	@media @small-only
+	{
+		width: 100%;
+		border-radius: 0;
+	}
+	@media @medium-only
+	{
+		float: left;
+	}
+	@media @large-up
+	{
+		float: right;
+	}
+
+	padding: 10px 25px;
+	font-size: 1.5rem;
+	font-weight: 300;
+	line-height: 1.5;
+	word-break: break-all;
+	color: #FFF;
+	background-color: #323232;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	border-radius: 2px;
+	opacity: 0;
+	margin-top: 10px;
+	will-change: opacity, margin, transform;
+
+	&.is-visible
+	{
+		transition: opacity    0.3s cubic-bezier(0.4, 0, 0.2, 1),
+					margin     0.3s cubic-bezier(0.4, 0, 0.2, 1),
+					transform  0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+		opacity: 1;
+		margin-bottom: 0px !important;
+	}
+	&.is-hiding
+	{
+		z-index: 0;
+		opacity: 0;
+		pointer-events: none;
+	}
+	&.is-panning
+	{
+		transition: none;
+	}
+
+	&.rounded
+	{
+		border-radius: 1000px;
+	}
+}

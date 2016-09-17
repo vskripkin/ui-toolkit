@@ -1,0 +1,399 @@
+#ui
+{
+	.make-button(@default, @hover, @focus, @active, @disabled)
+	{
+		#ui > ._button > .template();
+
+		#all_states;
+
+		.default()  { @default();  }
+		.hover()    { @hover();    }
+		.focus()    { @focus();    }
+		.active()   { @active();   }
+		.disabled() { @disabled(); }
+
+		#ui > ._textfield > .construct();
+	}
+
+	.button(@bg-color, @color: #FFF, @rest...)
+	{
+		#ui > ._button > .template(@rest...);
+
+		&
+		{
+			background-color: @bg-color;
+			color: @color;
+		}
+
+		&:hover, &:focus
+		{
+			#ui > ._button > .default(@bg-color);
+		}
+		&.dark:hover, &.dark:focus
+		{
+			#ui > ._button > .dark(@bg-color);
+		}
+		&.darken:hover, &.darken:focus
+		{
+			#ui > ._button > .darken(@bg-color);
+		}
+		&.light:hover, &.light:focus
+		{
+			#ui > ._button > .light(@bg-color);
+		}
+		&.lighten:hover, &.lighten:focus
+		{
+			#ui > ._button > .lighten(@bg-color);
+		}
+
+		&:disabled
+		{
+			background-color: @bg-color !important;
+			color: @color !important;
+			opacity: 0.5 !important;
+		}
+	}
+	.button(@bg-color, ...) when (red(@bg-color) = 255) and (green(@bg-color) = 255) and (blue(@bg-color) = 255)
+	{
+		&:hover, &:focus
+		{
+			background-color: rgba(158,158,158,0.2);
+		}
+	}
+	.button(@bg-color, ...) when (red(@bg-color) = 0) and (green(@bg-color) = 0) and (blue(@bg-color) = 0)
+	{
+		&:hover, &:focus
+		{
+			background-color: #333;
+		}
+	}
+}
+
+/* Button template */
+/*--------------------------------------------*/
+
+#ui
+{
+	._button
+	{
+		.construct()
+		{
+			&          { .default(); }
+			&:hover    { .hover();   }
+			&:focus    { .focus();   }
+			&:active   { .active();  }
+			&:disabled { .disabled() !important; }
+		}
+
+		.template(@rest...)
+		{
+			.button_size(@rest...);
+		}
+
+		.template(...)
+		{
+			display: inline-block;
+			position: relative;
+			overflow: hidden;
+			vertical-align: middle;
+			align-items: center;
+			text-align: center;
+			line-height: normal;
+			text-decoration: none;
+			text-transform: uppercase;
+			cursor: pointer;
+			background-clip: border-box;
+			user-select: none;
+			border: none;
+			-webkit-appearance: none;
+			appearance: none;
+			will-change: color, background-color, box-shadow;
+			transition: color 0.4s cubic-bezier(0.25,0.8,0.25,1),
+						box-shadow 0.4s cubic-bezier(0.25,0.8,0.25,1),
+						background-color 0.4s cubic-bezier(0.25,0.8,0.25,1);
+
+			margin: @button_margin;
+			font-family: @button_font_family;
+			font-weight: @button_font_weight;
+			font-style: @button_font_style;
+			text-align: @button_text_align;
+			border-radius: @button_radius;
+
+			&.bordered
+			{
+				border: 1px solid currentColor;
+			}
+		}
+
+		/***********************************************/
+		.button_size(@fs: @button_font_size, @pv: @button_padding_ver, @ph: @button_padding_hor)
+		{
+			font-size: @fs;
+			padding: @pv @ph;
+
+			&.large
+			{
+				@_pv: @pv * 1.1;
+				@_ph: @ph * 2;
+				@_fs: @fs * 1.285;
+
+				font-size: @_fs;
+				padding: @_pv @_ph;
+			}
+			&.small
+			{
+				@_pv: @pv * 0.65;
+				@_ph: @ph * 0.9;
+				@_fs: @fs * 0.72;
+
+				font-size: @_fs;
+				padding: @_pv @_ph;
+			}
+		}
+
+		/***********************************************/
+		.default(@bg-color)
+		{
+			background-color: spin(saturate(@bg-color, 20%), 10);
+		}
+		.dark(@bg-color)
+		{
+			background-color: shade(@bg-color, 20%);
+		}
+		.darken(@bg-color)
+		{
+			background-color: darken(@bg-color, 15%);
+		}
+		.light(@bg-color)
+		{
+			background-color: tint(@bg-color, 20%);
+		}
+		.lighten(@bg-color)
+		{
+			background-color: lighten(@bg-color, 15%);
+		}
+	}
+}
+
+// CIRCLE BUTTONS
+// --------------------------------------------------
+
+#ui
+{
+	.complete_circle_button_states(@size: normal)
+	{
+		.default()
+		{
+			background-color: #FFF;
+			color: #4CBE4C;
+		}
+		.hover()
+		{
+			opacity: 0.65;
+		}
+		.focus()
+		{
+			opacity: 1;
+			color: #FFF;
+			background-color: #4CBE4C;
+		}
+		.active()
+		{
+			opacity: 1;
+			color: #FFF;
+			background-color: #4CBE4C;
+		}
+		.disabled()
+		{
+			color: #AAA;
+			opacity: 1;
+			background-color: #FFF;
+		}
+
+		#ui > .circle_button > .construct(@size);
+	}
+
+	.complete_circle_button(@icon: none, @size: normal)
+	{
+		#ui > .circle_button > .template(@icon, @size);
+		#ui > .complete_circle_button_states(@size);
+	}
+}
+
+#ui
+{
+	.alert_circle_button_states(@size: normal)
+	{
+		.default()
+		{
+			background-color: #FFF;
+			color: #FF5C55;
+		}
+		.hover()
+		{
+			opacity: 0.65;
+		}
+		.focus()
+		{
+			opacity: 1;
+			color: #FFF;
+			background-color: #FF5C55;
+		}
+		.active()
+		{
+			opacity: 1;
+			color: #FFF;
+			background-color: #FF5C55;
+		}
+		.disabled()
+		{
+			color: #AAA;
+			opacity: 1;
+			background-color: #FFF;
+		}
+
+		#ui > .circle_button > .construct(@size);
+	}
+
+	.alert_circle_button(@icon: none, @size: normal)
+	{
+		#ui > .circle_button > .template(@icon, @size);
+		#ui > .alert_circle_button_states(@size);
+	}
+}
+
+#ui
+{
+	.action_circle_button_states(@size: normal)
+	{
+		.default()
+		{
+			background-color: #FFF;
+			color: #0082CC;
+		}
+		.hover()
+		{
+			opacity: 0.65;
+		}
+		.focus()
+		{
+			opacity: 1;
+			color: #FFF;
+			background-color: #0082CC;
+		}
+		.active()
+		{
+			opacity: 1;
+			color: #FFF;
+			background-color: #0082CC;
+		}
+		.disabled()
+		{
+			color: #AAA;
+			opacity: 1;
+			background-color: #FFF;
+		}
+
+		#ui > .circle_button > .construct(@size);
+	}
+
+	.action_circle_button(@icon: none, @size: normal)
+	{
+		#ui > .circle_button > .template(@icon, @size);
+		#ui > .action_circle_button_states(@size);
+	}
+}
+
+#ui
+{
+	.circle_button
+	{
+		.construct(@size: normal)
+		{
+			& { .default(); }
+
+			&:hover { .hover(); }
+
+			&:focus { .focus(); }
+
+			&:active
+			{
+				.active();
+			}
+
+			&:disabled,
+			&:disabled:hover,
+			&:disabled:active
+			{
+				.disabled();
+			}
+		}
+
+		.default_disabled(@size: normal)
+		{
+			cursor: not-allowed;
+			text-shadow: none;
+			box-shadow: none;
+		}
+
+		.template(@icon: none, @size: normal)
+		{
+			#ui > .circle_button > .button_size(@icon, @size);
+
+			span { color: inherit; }
+
+			display: inline-block;
+			position: relative;
+			overflow: visible;
+			line-height: 1.14;
+			text-decoration: none !important;
+			cursor: pointer;
+			vertical-align: middle;
+			outline: 0;
+			background-clip: border-box;
+			-webkit-appearance: none;
+			user-select: none;
+
+			margin: @button_margin;
+			font-family: @button_font_family;
+			font-weight: normal;
+			font-style: normal;
+			text-align: center;
+			border: none;
+			border-radius: 50%;
+
+			&[disabled],
+			&[disabled]:hover,
+			&[disabled]:active
+			{
+				#ui > .circle_button > .default_disabled(@size);
+			}
+		}
+
+		/***********************************************/
+		.button_size(@_, large)
+		{
+			.fs(@button_font_size_large);
+			@pv: @button_circle_padding_ver;
+			@ph: @button_circle_padding_hor;
+
+			padding: @pv @ph;
+		}
+		.button_size(@_, small)
+		{
+			.fs(@button_font_size_small);
+			@pv: @button_circle_padding_ver;
+			@ph: @button_circle_padding_hor;
+
+			padding: @pv @ph;
+		}
+		.button_size(@_, normal)
+		{
+			.fs(@button_font_size);
+			@pv: @button_circle_padding_ver;
+			@ph: @button_circle_padding_hor;
+
+			padding: @pv @ph;
+		}
+	}
+}

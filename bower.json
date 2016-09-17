@@ -1,0 +1,21 @@
+{
+	"name": "UI-toolkit",
+	"version": "0.0.1",
+	"authors": {
+		"name": "Vladimir Skripkin",
+		"email": "vladimir-scripkin@ya.ru"
+	},
+	"license": "ISC",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"jquery": "*",
+		"underscore": "*",
+		"hammerjs": "*"
+	}
+}

@@ -1,0 +1,198 @@
+#ui
+{
+	.standart_button_set_states(@size: normal)
+	{
+		.default()
+		{
+			#ui > .standart_button_states > .default();
+			border-right-color: #CCC;
+		}
+		.hover()
+		{
+			#ui > .standart_button_states > .hover();
+		}
+		.focus()
+		{
+			#ui > .standart_button_states > .focus();
+		}
+		.active()
+		{
+			#ui > .standart_button_states > .active();
+			background-color: #D8D8D8;
+		}
+		.disabled()
+		{
+			#ui > .standart_button_states > .disabled();
+		}
+
+		#ui > ._button > .construct(@size);
+	}
+	.standart_button_set(@size: normal)
+	{
+		.btn { #ui > .standart_button_set_states(@size); }
+		#ui > .button_set > .template(@size);
+	}
+}
+
+#ui
+{
+	.complete_button_set_states(@size: normal)
+	{
+		.default()
+		{
+			#ui > .complete_button_states > .default();
+			border-right-color: #49AA49;
+		}
+		.hover()
+		{
+			#ui > .complete_button_states > .hover();
+		}
+		.focus()
+		{
+			#ui > .complete_button_states > .focus();
+		}
+		.active()
+		{
+			#ui > .complete_button_states > .active();
+			background-color: #3EB03E;
+		}
+		.disabled()
+		{
+			#ui > .complete_button_states > .disabled();
+		}
+
+		#ui > ._button > .construct(@size);
+	}
+	.complete_button_set(@size: normal)
+	{
+		.btn { #ui > .complete_button_set_states(@size); }
+		#ui > .button_set > .template(@size);
+	}
+}
+
+#ui
+{
+	.alert_button_set_states(@size: normal)
+	{
+		.default()
+		{
+			#ui > .alert_button_states > .default();
+			border-right-color: #AE443F;
+		}
+		.hover()
+		{
+			#ui > .alert_button_states > .hover();
+		}
+		.focus()
+		{
+			#ui > .alert_button_states > .focus();
+		}
+		.active()
+		{
+			#ui > .alert_button_states > .active();
+			background-color: #F14E47;
+		}
+		.disabled()
+		{
+			#ui > .alert_button_states > .disabled();
+		}
+
+		#ui > ._button > .construct(@size);
+	}
+	.alert_button_set(@size: normal)
+	{
+		.btn { #ui > .alert_button_set_states(@size); }
+		#ui > .button_set > .template(@size);
+	}
+}
+
+#ui
+{
+	.action_button_set_states(@size: normal)
+	{
+		.default()
+		{
+			#ui > .action_button_states > .default();
+			border-right-color: #0869A1;
+		}
+		.hover()
+		{
+			#ui > .action_button_states > .hover();
+		}
+		.focus()
+		{
+			#ui > .action_button_states > .focus();
+		}
+		.active()
+		{
+			#ui > .action_button_states > .active();
+			background-color: #0074BE;
+		}
+		.disabled()
+		{
+			#ui > .action_button_states > .disabled();
+		}
+
+		#ui > ._button > .construct(@size);
+	}
+	.action_button_set(@size: normal)
+	{
+		.btn { #ui > .action_button_set_states(@size); }
+		#ui > .button_set > .template(@size);
+	}
+}
+
+/* Button set template */
+/*--------------------------------------------*/
+
+#ui
+{
+	.button_set
+	{
+		.template(@size: normal)
+		{
+			display: table;
+			border: 0 !important;
+			border-collapse: separate;
+			overflow: visible;
+			text-decoration: none !important;
+			vertical-align: middle;
+			outline: 0;
+			margin: @button_margin;
+
+			.btn
+			{
+				#ui > ._button > .template(@size);
+
+				display: table-cell !important;
+				float: none !important;
+				vertical-align: middle !important;
+				padding: @button_padding_ver @button_padding_hor * 2;
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+				border-left: none !important;
+				border-right-width: 1px;
+
+				&:last-of-type
+				{
+					border-right: none !important;
+				}
+
+				&:first-of-type:not(:last-of-type)
+				{
+					border-bottom-right-radius: 0;
+					border-top-right-radius: 0;
+				}
+				&:last-of-type:not(:first-of-type)
+				{
+					border-bottom-left-radius: 0;
+					border-top-left-radius: 0;
+				}
+				&:not(:first-of-type):not(:last-of-type)
+				{
+					border-radius: 0;
+				}
+			}
+		}
+	}
+}

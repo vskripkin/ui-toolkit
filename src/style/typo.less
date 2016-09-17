@@ -1,0 +1,171 @@
+.fs(@size: @baseFontSize, @unit: rem) when (ispixel(@size))
+{
+	font-size: unit(@size, px);
+	font-size: unit(round(unit(@size) / unit(@baseFontSize) * 10000) / 10000, @unit);
+}
+.fs(@size, @unit: rem) when not (ispixel(@size))
+{
+	font-size: unit(round((@size * unit(@baseFontSize))), px);
+	font-size: unit(@size, @unit);
+}
+
+
+#ui
+{
+	.sub_heading() { color: @subHeadingColor; }
+	.paragraph_heading()
+	{
+		.fs(@paragraph_heading_font_size);
+		padding: @paragraph_padding;
+		color: @headingColor;
+		text-transform: uppercase;
+	}
+}
+
+.serif(@size: @baseFontSize, @lineHeight: @baseLineHeight, @weight: normal)
+{
+	font-family: @serifFontFamily;
+	font-size: @size;
+	font-weight: @weight;
+	line-height: @lineHeight;
+}
+.serif_heading(@weight: normal)
+{
+	h1, h2, h3, h4, h5, h6
+	{
+		font-family: @serifHeadingFontFamily;
+	}
+}
+
+.sans(@size: @baseFontSize, @lineHeight: @baseLineHeight, @weight: normal)
+{
+	font-family: @sansFontFamily;
+	font-size: @size;
+	font-weight: @weight;
+	line-height: @lineHeight;
+}
+.sans_heading(@weight: normal)
+{
+	h1, h2, h3, h4, h5, h6
+	{
+		font-family: @sansHeadingFontFamily;
+	}
+}
+
+.monospace(@size: @baseFontSize, @lineHeight: @baseLineHeigh, @weight: normalt)
+{
+	font-family: @monoFontFamily;
+	font-size: @size;
+	font-weight: @weight;
+	line-height: @lineHeight;
+}
+
+/*****************************************************/
+
+.zh, .ko, .ja
+{
+	* { font-style: normal !important; }
+	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { font-style: normal !important; }
+	input:-moz-placeholder, textarea:-moz-placeholder { font-style: normal !important; }
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder { font-style: normal !important; }
+}
+
+html
+{
+	.sans();
+	background-color: @baseBackgroundColor;
+	color: @baseColor;
+}
+
+.sans_heading();
+
+body
+{
+	position: relative;
+	background-color: inherit;
+}
+
+.wrapper
+{
+	#ui > .clearfix();
+	position: relative;
+	margin: 0 auto;
+	max-width: @wrapper-width;
+	width: 100%;
+	height: 100%;
+}
+
+#fileupload { display: none; }
+
+a, a:visited
+{
+	color: @link-color;
+	text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+textarea
+{
+	padding-top: (@textfield_padding_hor * 0.8);
+	padding-bottom: (@textfield_padding_hor * 0.8);
+}
+
+iframe.hidden
+{
+	position: absolute !important;
+	visibility: hidden !important;
+	height: 0 !important;
+	width: 0 !important;
+	overflow: hidden !important;
+	opacity: 0 !important;
+	border: none !important;
+}
+
+
+// HEADINGS
+// --------
+
+h1, h2, h3, h4, h5, h6
+{
+	color: @headingColor;
+}
+
+h1
+{
+	.fs(@h1);
+	line-height: 1.2;
+	font-weight: normal;
+}
+h2
+{
+	.fs(@h2);
+	letter-spacing: -1px;
+	word-spacing: 3px;
+	line-height: 1;
+	font-weight: normal;
+}
+h3
+{
+	.fs(@h3);
+	line-height: 1.25;
+	font-weight: normal;
+}
+h4
+{
+	.fs(@h4);
+	line-height: 1.35;
+	font-weight: normal;
+}
+h5
+{
+	.fs(@h5);
+	line-height: 1.5;
+	font-weight: normal;
+}
+h6
+{
+	.fs(@h6);
+	line-height: 1.7;
+	font-weight: bold;
+	text-transform: uppercase;
+}

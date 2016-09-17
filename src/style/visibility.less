@@ -1,0 +1,116 @@
+#ui
+{
+	.show-for(@size, @size-name)
+	{
+		& when not (@size-name = @small-class)
+		{
+			@s: '@{size}-lower';
+
+			@media @@s {
+				display: none !important;
+			}
+		}
+	}
+	.show-for-only(@size, @size-name)
+	{
+		@l: '@{size}-lower';
+		@h: '@{size}-higher';
+
+		& when not (@size-name = @small-class) and not (@size-name = @xxlarge-class)
+		{
+			@media @@l, @@h {
+				display: none !important;
+			}
+		}
+
+		& when (@size-name = @small-class)
+		{
+			@media @@h {
+				display: none !important;
+			}
+		}
+
+		& when (@size-name = @xxlarge-class)
+		{
+			@media @@l {
+				display: none !important;
+			}
+		}
+	}
+
+	.hide-for(@size, @size-name)
+	{
+		& when not (@size-name = @small-class)
+		{
+			@s: '@{size}-up';
+
+			@media @@s {
+				display: none !important;
+			}
+		}
+	}
+	.hide-for-only(@size, @size-name)
+	{
+		@s: '@{size}-only';
+
+		@media @@s {
+			display: none !important;
+		}
+	}
+
+	._visibility-classes-loop(@counter) when (@counter > 0)
+	{
+		#ui > ._visibility-classes-loop(@counter - 1);
+
+		@n1: @small-class;
+		@n2: @medium-class;
+		@n3: @large-class;
+		@n4: @xlarge-class;
+		@n5: @xxlarge-class;
+
+		@s1: small;
+		@s2: medium;
+		@s3: large;
+		@s4: xlarge;
+		@s5: xxlarge;
+
+		@s: 's@{counter}';
+		@n: 'n@{counter}';
+		@size: @@s;
+		@size-name: @@n;
+
+		.hide-for-@{size-name}
+		{
+			#ui > .hide-for(@size, @size-name);
+		}
+		.show-for-@{size-name}
+		{
+			#ui > .show-for(@size, @size-name);
+		}
+
+		.hide-for-@{size-name}-only
+		{
+			#ui > .hide-for-only(@size, @size-name);
+		}
+		.show-for-@{size-name}-only
+		{
+			#ui > .show-for-only(@size, @size-name);
+		}
+	}
+
+	.visibility-classes()
+	{
+		// Basic hiding classes
+		.hide
+		{
+			display: none !important;
+		}
+		.invisible
+		{
+			visibility: hidden;
+		}
+
+		// Responsive visibility classes
+		#ui > ._visibility-classes-loop(5);
+	}
+}

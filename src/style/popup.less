@@ -1,0 +1,167 @@
+.ui-popup
+{
+	position: fixed;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.75);
+
+	transition: opacity 0.15s cubic-bezier(0.4,0,0,1);
+	opacity: 0;
+	will-change: opacity;
+
+	&&--visible
+	{
+		opacity: 1;
+	}
+
+	&__wrapper
+	{
+		position: absolute;
+		overflow-x: hidden;
+		overflow-y: auto;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+
+		#ui > .nospaces-line(nowrap);
+		text-align: center;
+		transition: opacity 0.15s cubic-bezier(0.4,0,0,1);
+		opacity: 0;
+		will-change: opacity;
+
+		&&--visible
+		{
+			opacity: 1;
+		}
+
+		&:before
+		{
+			content: '';
+			display: inline-block;
+			vertical-align: middle;
+			width: 0;
+			height: 100%;
+		}
+	}
+
+	&__content
+	{
+		#ui > .nospaces-line-item(middle);
+		text-align: left;
+
+		transition: transform 0.15s cubic-bezier(0.4,0,0,1);
+		transform: scale(0.9);
+		will-change: transform;
+	}
+	&--visible &__content
+	{
+		transform: scale(1);
+	}
+
+	&__close
+	{
+		position: absolute;
+		width: 40px;
+		height: 40px;
+		top: 0px;
+		right: 0px;
+		padding: 10px;
+		cursor: pointer;
+		opacity: 0.7;
+		border: none;
+		background: transparent;
+
+		&:hover
+		{
+			opacity: 1;
+		}
+	}
+
+	/*.title
+	{
+		margin-bottom: 25px;
+		&.hidden { display: none; }
+
+		&, h1, h2, h3, h4, h5, h6, p, span
+		{
+			color: inherit;
+			font-family: inherit;
+			font-weight: bold;
+			font-style: normal;
+			.fs(@h4);
+		}
+	}
+	.content
+	{
+		color: inherit;
+		font-family: inherit;
+		font-size: inherit;
+	}
+
+	.buttons_row
+	{
+		padding-top: 25px;
+	}
+
+	.alert
+	{
+		.ok { #ui > .button(#00C853); }
+
+		.content
+		{
+			.fs(@f2);
+		}
+
+		.buttons_row
+		{
+			#ui > .clearfix();
+		}
+
+		.dialog_btn
+		{
+			min-width: 130px;
+			float: right
+		}
+	}
+	.confirm
+	{
+		.ok     { #ui > .button(#00C853); }
+		.cancel { #ui > .button(#FFF, #222); }
+
+		.content
+		{
+			.fs(@f2);
+		}
+
+		.buttons_row
+		{
+			#ui > .clearfix();
+		}
+
+		.dialog_btn
+		{
+			width: 49%;
+
+			&:first-child
+			{
+				float: left;
+				margin-left: 0;
+				margin-right: 1%;
+			}
+			&:last-child
+			{
+				float: right;
+				margin-left: 1%;
+				margin-right: 0;
+			}
+		}
+	}*/
+}

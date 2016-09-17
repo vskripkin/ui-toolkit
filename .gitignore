@@ -1,0 +1,6 @@
+*.sublime-project
+*.sublime-workspace
+node_modules/
+bower_components/
+*.css.map
+*.js.map

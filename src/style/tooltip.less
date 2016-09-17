@@ -1,0 +1,267 @@
+#ui
+{
+	.tooltip_info()
+	{
+		#ui > .tooltip > .construct();
+
+		.default
+		{
+			color: #247EB2;
+			background-color: #D1E5F0;
+			border-color: #D1E5F0;
+		}
+	}
+}
+#ui
+{
+	.tooltip_warning()
+	{
+		#ui > .tooltip > .construct();
+
+		.default
+		{
+			color: #B7883B;
+			background-color: #F9E5A0;
+			border-color: #F9E5A0;
+		}
+	}
+}
+#ui
+{
+	.tooltip_error()
+	{
+		#ui > .tooltip > .construct();
+
+		.default
+		{
+			color: #FF5C55;
+			background-color: #F8CFCE;
+			border-color: #F8CFCE;
+		}
+	}
+}
+#ui
+{
+	.tooltip_success()
+	{
+		#ui > .tooltip > .construct();
+
+		.default
+		{
+			color: #048C25;
+			background-color: #D8EFD4;
+			border-color: #D8EFD4;
+		}
+	}
+}
+
+#ui
+{
+	.tooltip
+	{
+		.construct()
+		{
+			#ui > .tooltip > .template();
+			#ui > .tooltip > .add_arrow();
+
+			& { .default; }
+		}
+
+		.template(...)
+		{
+			border-radius: @tooltip_border_radius;
+			position: absolute;
+			z-index: 1000000000;
+			display: block;
+			width: @tooltip_width;
+			max-width: @tooltip_max_width;
+			margin: 0;
+			padding: @tooltip_padding;
+			font-weight: @tooltip_font_weight;
+			.fs(@tooltip_font_size);
+			line-height: @tooltip_line_height;
+			border-width: 0;
+			border-style: solid;
+			cursor: pointer;
+
+			&.fixed
+			{
+				position: fixed !important;
+			}
+
+			&.animation
+			{
+				opacity: 0;
+				transition: opacity 0.15s linear;
+
+				&.no_arrow
+				{
+					transition: opacity 0.15s linear, transform 0.25s ease-out;
+
+					&.top
+					{
+						&.outset { transform: translateY(70px); }
+						&.inset { transform: translateY(-70px); }
+					}
+					&.bottom
+					{
+						&.outset { transform: translateY(-70px); }
+						&.inset { transform: translateY(70px); }
+					}
+				}
+			}
+			&.in
+			{
+				opacity: 1;
+
+				&.no_arrow
+				{
+					transform: translateY(0px) !important;
+				}
+			}
+			&.out
+			{
+				&.no_arrow
+				{
+					transform: translateY(0px) !important;
+				}
+			}
+
+			b
+			{
+				padding-right: 0.4em;
+				display: inline-block;
+			}
+
+			a, a:link, a:visited { color: inherit; }
+			a
+			{
+				text-decoration: underline;
+				&:hover { text-decoration: none; }
+			}
+
+			.close
+			{
+				position: relative;
+				top: 2px;
+				display: inline-block;
+				margin-left: 1.6em;
+				width: 1em;
+				height: 1em;
+				cursor: pointer;
+
+				&:before
+				{
+					//content: '\00D7';
+					content: '';
+					position: absolute;
+					z-index: 1;
+					top: -4px;
+					left: -4px;
+					right: -4px;
+					bottom: -4px;
+					background: #FFF;
+					border-radius: 50%;
+				}
+				&:after
+				{
+					content: '';
+					position: absolute;
+					z-index: 2;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background: url(@{img_dir}/framework/images/close.png) no-repeat center;
+				}
+			}
+
+			&.outset
+			{
+				&.top { margin-bottom: @tooltip_offset; }
+				&.bottom { margin-top: @tooltip_offset; }
+				&.left { margin-right: @tooltip_offset; }
+				&.right { margin-left: @tooltip_offset; }
+			}
+
+			&.inset
+			{
+				&.top { margin-top:       @tooltip_offset; }
+				&.bottom { margin-bottom: @tooltip_offset; }
+				&.left { margin-left:     @tooltip_offset; }
+				&.right { margin-right:   @tooltip_offset; }
+			}
+		}
+
+		.add_arrow()
+		{
+			&:before
+			{
+				content: '';
+				pointer-events: none;
+				text-shadow: none !important;
+				background: none !important;
+				width: 0 !important;
+				height: 0 !important;
+				border-width: @arrow_width;
+				border-style: solid !important;
+				border-color: transparent;
+				position: absolute;
+				display: block;
+				.fs(@tooltip_font_size);
+			}
+			&.no_arrow:before
+			{
+				content: none;
+				border-width: 0;
+			}
+
+			&.left:before
+			{
+				border-left-color: inherit !important;
+				left: 100%;
+			}
+			&.right:before
+			{
+				border-right-color: inherit !important;
+				right: 100%;
+			}
+			&.top:before
+			{
+				border-top-color: inherit !important;
+				top: 100%;
+			}
+			&.bottom:before
+			{
+				border-bottom-color: inherit !important;
+				bottom: 100%;
+			}
+
+			&.left.start_arrow:before,
+			&.right.start_arrow:before { top: @arrow_offset; }
+
+			&.left.end_arrow:before,
+			&.right.end_arrow:before { bottom: @arrow_offset; }
+
+			&.left.center_arrow:before,
+			&.right.center_arrow:before
+			{
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			&.top.start_arrow:before,
+			&.bottom.start_arrow:before { left: @arrow_offset; }
+
+			&.top.end_arrow:before,
+			&.bottom.end_arrow:before { right: @arrow_offset; }
+
+			&.top.center_arrow:before,
+			&.bottom.center_arrow:before
+			{
+				left: 50%;
+				transform: translateX(-50%);
+			}
+		}
+	}
+}

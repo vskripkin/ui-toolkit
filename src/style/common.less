@@ -1,0 +1,186 @@
+#all_states
+{
+	.default() {};
+	.transparent() {};
+	.hover() {};
+	.focus() {};
+	.active() {};
+	.invalid() {};
+	.valid() {};
+	.readonly() {};
+	.disabled() {};
+	.disabled_checked() {};
+	.checked() {};
+	.checked_hover() {};
+	.checked_focus() {};
+	.checked_active() {};
+	.placeholder() {};
+}
+
+#ui
+{
+	.table(@width: 100%) when (isnumber(@width)), (@width = auto)
+	{
+		float: none;
+		display: table;
+		width: @width;
+	}
+	.table(inline, @width: auto)
+	{
+		float: none;
+		display: inline-table;
+		width: @width;
+	}
+
+	.row()
+	{
+		float: none;
+		display: table-row;
+	}
+	.cell(@width: 50%)
+	{
+		float: none;
+		display: table-cell;
+		width: @width;
+		vertical-align: top;
+	}
+
+	.nospaces-line(...)
+	{
+		font-size: 0;
+		line-height: 0;
+		letter-spacing: -1px;
+	}
+	.nospaces-line(nowrap)
+	{
+		white-space: nowrap;
+	}
+	.nospaces-line-item(...)
+	{
+		font-size: @textFontSize;
+		line-height: @baseLineHeight;
+		letter-spacing: normal;
+		display: inline-block;
+		white-space: normal;
+	}
+	.nospaces-line-item(@valign: top)
+	{
+		vertical-align: @valign;
+	}
+
+	.text-overflow()
+	{
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.hide-text()
+	{
+		font-size: 0 !important;
+		line-height: 0 !important;
+		color: transparent !important;
+		text-shadow: none !important;
+	}
+
+	.clearfix(@clear : both)
+	{
+		&:after
+		{
+			content: '';
+			clear: @clear;
+			display: block;
+			visibility: hidden;
+			height: 0;
+			font-size: 0;
+			line-height: 0;
+		}
+	}
+
+	/*****************************************************/
+
+	.size-font-padding(@fs, @pv: 0, @ph: 0)
+	{
+		#ui > .size-custom(@fs, @pv, @ph);
+
+		@normal: {
+			.normal();
+
+			font-size: @font-size;
+			padding: @padding-ver @padding-hor;
+		};
+		@large: {
+			.large();
+
+			font-size: @font-size;
+			padding: @padding-ver @padding-hor;
+		};
+		@small: {
+			.small();
+
+			font-size: @font-size;
+			padding: @padding-ver @padding-hor;
+		};
+	}
+	.size-custom(@fs, @pv: 0, @ph: 0)
+	{
+		.normal()
+		{
+			@font-size: @fs;
+			@padding-ver: @pv;
+			@padding-hor: @ph;
+			@height: (@pv * 2 + @fs * @line-height-normal);
+		}
+		.large()
+		{
+			@font-size: @fs * 1.285;
+			@padding-ver: @pv * 1.1;
+			@padding-hor: @ph * 2;
+			@height: (@pv * 2 + @fs * @line-height-normal);
+		}
+		.small()
+		{
+			@font-size: @fs * 0.72;
+			@padding-ver: @pv * 0.65;
+			@padding-hor: @ph * 0.9;
+			@height: (@pv * 2 + @fs * @line-height-normal);
+		}
+	}
+
+	/*****************************************************/
+
+	.placeholder(@rules) 
+	{
+		&::-webkit-input-placeholder
+		{
+			@rules();
+		}
+		&::-moz-placeholder
+		{
+			@rules();
+		}
+		&:-ms-input-placeholder
+		{
+			@rules();
+		}
+	}
+
+	/*****************************************************/
+
+	.gradient(@direction: to bottom; @rest...)
+	{
+		background-image: svg-gradient(@direction, @rest);
+		background-image: linear-gradient(@direction, @rest);
+	}
+	.gradient-r(...)
+	{
+		background-image: svg-gradient(ellipse at center, @arguments);
+		background-image: radial-gradient(ellipse, @arguments);
+	}
+	.gradient-s(@color)
+	{
+		background-image: svg-gradient(to bottom right, @color 0%, @color 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, @color 50%, @color 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0) 100%);
+		background-image: linear-gradient(-45deg, @color 0%, @color 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, @color 50%, @color 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0) 100%);
+	}
+}

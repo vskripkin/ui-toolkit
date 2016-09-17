@@ -1,0 +1,22 @@
+{
+	"name": "UI-toolkit",
+	"version": "0.0.1",
+	"description": "",
+	"author": {
+		"name": "Vladimir Skripkin",
+		"email": "vladimir-scripkin@ya.ru"
+	},
+	"license": "ISC",
+	"devDependencies": {
+		"gulp": "^3.9.0",
+		"gulp-autoprefixer": "^3.1.0",
+		"gulp-cssnano": "^2.1.0",
+		"gulp-file-include": "*",
+		"gulp-reference": "^1.1.2",
+		"gulp-less": "^3.1.0",
+		"gulp-sourcemaps": "^1.6.0",
+		"gulp-uglify": "^1.5.1",
+		"gulp-watch": "^4.3.5",
+		"rimraf": "^2.5.1"
+	}
+}
