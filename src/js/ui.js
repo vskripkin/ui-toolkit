@@ -1,5 +1,3 @@
-// <reference path="../../bower_components/hammerjs/hammer.min.js" />
-
 // <reference path="helpers.js" />
 
 // <reference path="placer.js" />
