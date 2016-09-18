@@ -37,7 +37,7 @@
 		line-height: 1 !important;
 		color: #FFF;
 		font-weight: normal;
-		font-family: @sansFontFamily;
+		font-family: @font-family-sans;
 		text-align: center;
 
 		&:after
@@ -49,7 +49,7 @@
 
 	.badge(large, ...)
 	{
-		.fs(@f_2);
+		font-size: 1.2rem;
 		letter-spacing: -1px;
 		padding: 0.35em 0.55em;
 
@@ -57,14 +57,14 @@
 	}
 	.badge(normal, ...)
 	{
-		.fs(@f_3);
+		font-size: 1.1rem;
 		padding: 0.22em 0.5em 0.24em;
 
 		&:after { width: 2px; }
 	}
 	.badge(small, ...)
 	{
-		.fs(@f_4);
+		font-size: 1rem;
 		padding: 0.1em 0.5em 0.2em;
 
 		&:after { width: 1px; }
@@ -140,7 +140,7 @@
 				text-decoration: none;
 				text-transform: uppercase;
 				font-size: 1.4rem;
-				font-family: @sansFontFamily;
+				font-family: @font-family-sans;
 				line-height: 1;
 				color: inherit;
 				user-select: none;

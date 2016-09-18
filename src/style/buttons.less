@@ -112,21 +112,18 @@
 						box-shadow 0.4s cubic-bezier(0.25,0.8,0.25,1),
 						background-color 0.4s cubic-bezier(0.25,0.8,0.25,1);
 
-			margin: @button_margin;
-			font-family: @button_font_family;
-			font-weight: @button_font_weight;
-			font-style: @button_font_style;
-			text-align: @button_text_align;
-			border-radius: @button_radius;
+			margin: @button-margin;
+			border-radius: @button-radius;
+			text-align: center;
 
 			&.bordered
 			{
-				border: 1px solid currentColor;
+				border: @button-border-width @button-border-style currentColor;
 			}
 		}
 
 		/***********************************************/
-		.button_size(@fs: @button_font_size, @pv: @button_padding_ver, @ph: @button_padding_hor)
+		.button_size(@fs: @button-font-size, @pv: @button-padding-ver, @ph: @button-padding-hor)
 		{
 			font-size: @fs;
 			padding: @pv @ph;
@@ -354,7 +351,7 @@
 			-webkit-appearance: none;
 			user-select: none;
 
-			margin: @button_margin;
+			margin: @button-margin;
 			font-family: @button_font_family;
 			font-weight: normal;
 			font-style: normal;
@@ -373,25 +370,25 @@
 		/***********************************************/
 		.button_size(@_, large)
 		{
-			.fs(@button_font_size_large);
-			@pv: @button_circle_padding_ver;
-			@ph: @button_circle_padding_hor;
+			font-size: @button-font-size-large;
+			@pv: @button-circle-padding-ver;
+			@ph: @button-circle-padding-hor;
 
 			padding: @pv @ph;
 		}
 		.button_size(@_, small)
 		{
-			.fs(@button_font_size_small);
-			@pv: @button_circle_padding_ver;
-			@ph: @button_circle_padding_hor;
+			font-size: @button-font-size-small;
+			@pv: @button-circle-padding-ver;
+			@ph: @button-circle-padding-hor;
 
 			padding: @pv @ph;
 		}
 		.button_size(@_, normal)
 		{
-			.fs(@button_font_size);
-			@pv: @button_circle_padding_ver;
-			@ph: @button_circle_padding_hor;
+			font-size: @button-font-size;
+			@pv: @button-circle-padding-ver;
+			@ph: @button-circle-padding-hor;
 
 			padding: @pv @ph;
 		}

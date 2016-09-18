@@ -26,7 +26,7 @@
 
 		.btn.toggle:after
 		{
-			background-image: url(@{img_dir}/framework/images/arrow_white_down.png);
+			background-image: url(@{dir-img}/framework/images/arrow_white_down.png);
 		}
 
 		#ui > .dropdown > .construct();
@@ -46,7 +46,7 @@
 
 		.btn.toggle:after
 		{
-			background-image: url(@{img_dir}/framework/images/arrow_white_down.png);
+			background-image: url(@{dir-img}/framework/images/arrow_white_down.png);
 		}
 
 		#ui > .dropdown > .construct();
@@ -91,8 +91,8 @@
 
 			.btn.toggle
 			{
-				padding-left: @button_padding_hor;
-				padding-right: @button_padding_hor;
+				padding-left: @button-padding-hor;
+				padding-right: @button-padding-hor;
 			}
 			.toggle:after
 			{
@@ -101,7 +101,7 @@
 				padding: 0 !important;
 				width: 11px;
 				height: 8px;
-				background-image: url(@{img_dir}/framework/images/arrow_down.png);
+				background-image: url(@{dir-img}/framework/images/arrow_down.png);
 				background-position: center;
 				background-repeat: no-repeat;
 				margin: 0 0 0 12px;
@@ -138,16 +138,16 @@
 				{
 					margin-top: -2px;
 					border-width: 2px;
-					border-radius: @dd_radius;
+					border-radius: @button-radius;
 				}
 
 				&.under
 				{
-					box-shadow: 0.5em 0.2em 1em -0.5em @textfield_shadow_color, -0.5em 0.2em 1em -0.5em @textfield_shadow_color, 0 0.5em 1em -0.5em @textfield_shadow_color;
+					box-shadow: 0.5em 0.2em 1em -0.5em rgba(0,0,0,0.3), -0.5em 0.2em 1em -0.5em rgba(0,0,0,0.3), 0 0.5em 1em -0.5em rgba(0,0,0,0.3);
 				}
 				&.above
 				{
-					box-shadow: 0.5em 0 1em -0.5em @textfield_shadow_color, -0.5em 0 1em -0.5em @textfield_shadow_color, 0 -0.5em 1em -0.5em @textfield_shadow_color;
+					box-shadow: 0.5em 0 1em -0.5em rgba(0,0,0,0.3), -0.5em 0 1em -0.5em rgba(0,0,0,0.3), 0 -0.5em 1em -0.5em rgba(0,0,0,0.3);
 				}
 			}
 			&.above > ul

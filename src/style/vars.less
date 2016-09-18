@@ -1,162 +1,66 @@
-// TYPO
-// --------------------------------------------------
-
-@serifFontFamily: Georgia, Times, "Times New Roman", serif;
-@sansFontFamily:  Roboto, Helvetica, Arial, Geneva, Helmet, Freesans, sans-serif;
-
-@serifHeadingFontFamily: @serifFontFamily;
-@sansHeadingFontFamily: "Helvetica Neue", Helvetica, Arial, Verdana, Geneva, sans-serif;
-
-@monoFontFamily: monospace;
-
-@baseFontSize:   10px;
-@textFontSize:   1.4rem;
-@baseFontFamily: @sansFontFamily;
-@baseLineHeight: 1.2;
-@line-height-normal: 1.2;
-
-
-@paragraph_padding: 0;
-@paragraph_heading_font_size: 20 / unit(@baseFontSize);
-
-@icon_size: 30;
-
-@h1: 48 / unit(@baseFontSize);
-@h2: 36 / unit(@baseFontSize);
-@h3: 24 / unit(@baseFontSize);
-@h4: 18 / unit(@baseFontSize);
-@h5: 16 / unit(@baseFontSize);
-@h6: 14 / unit(@baseFontSize);
-
-
-@f6: 24 / unit(@baseFontSize);
-@f5: 20 / unit(@baseFontSize);
-@f4: 18 / unit(@baseFontSize);
-@f3: 17 / unit(@baseFontSize);
-@f2: 16 / unit(@baseFontSize);
-@f1: 15 / unit(@baseFontSize);
-
-@f0: 1;
-
-@f_1: 13 / unit(@baseFontSize);
-@f_2: 12 / unit(@baseFontSize);
-@f_3: 11 / unit(@baseFontSize);
-@f_4: 10 / unit(@baseFontSize);
-@f_5:  8 / unit(@baseFontSize);
-
-
 // COMMON
 // --------------------------------------------------
 
-@img_dir: '../images';
-@base-width: 1020px;
-@wrapper-width: @base-width;
+@dir-img: '../images';
+@width-base: 102rem;
+@width-wrapper: @width-base;
+
+
+// TYPO
+// --------------------------------------------------
+
+@font-family-serif: Georgia, Times, Times New Roman, serif;
+@font-family-sans:  Roboto, Open Sans, Helvetica Neue, Helvetica, Arial, Geneva, Helmet, Freesans, sans-serif;
+@font-family-mono:  monospace;
+
+@font-family-serif-heading: @font-family-serif;
+@font-family-sans-heading:  @font-family-sans;
+
+@font-size-root:   10px;
+@line-height-normal: 1.25;
+
+@font-size-base:   1.5rem;
+@font-family-base: @font-family-sans;
+@line-height-base: 1.25;
+
+@font-size-h1: 4.8rem;
+@font-size-h2: 3.6rem;
+@font-size-h3: 2.4rem;
+@font-size-h4: 1.9rem;
+@font-size-h5: 1.7rem;
+@font-size-h6: 1.5rem;
+
 
 // BUTTONS
 // --------------------------------------------------
 
+@button-padding-ver: 0.68em;
+@button-padding-hor: 1.15em;
+@button-margin: 0.8rem;
 
-@button_padding_ver: 0.68em;
-@button_padding_hor: 1.15em;
-@button_margin: 0.8rem;
+@button-circle-padding-ver: 0.37em;
+@button-circle-padding-hor: 0.74em;
 
-@button_circle_padding_ver: 0.37em;
-@button_circle_padding_hor: 0.74em;
+@button-border-width: 1px;
+@button-border-style: solid;
+@button-radius: 0.1429em;
 
-@button_border_width: 0;
-@button_border_style: solid;
-@button_radius: 0.1429em;
-
-@button_text_shadow: none;
-@button_text_align: center;
-
-@button_font_size: 1.4rem;
-@button_font_size_large: (@h4 * 1rem);
-@button_font_size_small: @f0;
-
-@button_font_family: inherit;
-@button_font_style: inherit;
-@button_font_weight: inherit;
-
-@buttonset_border_width: 1px;
-
-
-// DROPDOWN
-// --------------------------------------------------
-
-@dd_padding_ver: 0.35em;
-@dd_padding_hor: 0;
-
-@dd_has_nested_padding: 0.35em (@textfield_padding_hor * 2.5) 0.35em @textfield_padding_hor;
-@dd_li_padding: 0.35em @textfield_padding_hor;
-
-@dd_border_width: 1px;
-@dd_border_style: solid;
-@dd_radius: 0.3em;
-
-@dd_text_align: left;
-
-@dd_font_size: @f2;
-@dd_font_size_large: @f4;
-@dd_font_size_small: @f_4;
-
-@dd_font_family: inherit;
-@dd_font_style: inherit;
-@dd_font_weight: inherit;
-
-
-// FORMS
-// --------------------------------------------------
-
-@textfield_padding_ver: 0.63em;
-@textfield_padding_hor: 1em;
-@textfield_margin: 0;
-
-@textfield_border_width: 1px;
-@textfield_border_style: solid;
-@textfield_radius: 0.25em;
-
-@textfield_text_shadow: none;
-@textfield_shadow_params: 0 0 1em 0;
-@textfield_shadow: @textfield_shadow_params @textfield_shadow_color;
-@textfield_border_shadow_params: 0 0 0 1px;
-@textfield_border_shadow: @textfield_border_shadow_params @textfield_border_shadow_color;
-
-@textfield_font_size: @f2;
-@textfield_font_size_large: @f4;
-@textfield_font_size_small: @f_4;
-@textfield_placeholder_style: normal;
-@textfield_placeholder_opacity: 1;
+@button-font-size: @font-size-base;
+@button-font-size-large: 1.9rem;
+@button-font-size-small: 1rem;
 
 
 // TOOLTIP
 // --------------------------------------------------
 
-@tooltip_width: auto;
-@tooltip_max_width: none;
-@tooltip_padding: 0.7em 1em 0.8em;
-@tooltip_offset: 0.75em;
-@tooltip_border_radius: 0.25rem;
-
-@tooltip_font_size: @f_2;
-@tooltip_font_weight: normal;
-@tooltip_line_height: 1.2;
-
-@arrow_width: 0.55em;
-@arrow_offset: 0.75em;
-
-
-// PROGRESS BAR
-// --------------------------------------------------
-
-@prbar_font_size: @f_2;
-@prbar_padding: 0.4em;
+@arrow-width: 0.55em;
+@arrow-offset: 0.75em;
 
 
 // GRID
 // --------------------------------------------------
 
-@row-width: 1020px;
+@width-row: @width-base;
 @total-columns: 12;
 @opposite-direction: right;
 @default-direction: left;
