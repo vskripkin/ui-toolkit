@@ -647,6 +647,31 @@
 		})();
 	})();
 
+	/* resize iframe on window.resize */
+	(function ()
+	{
+		_.iframeHeight = function (_nIframe)
+		{
+			if (_nIframe.offsetWidth !== 0)
+			{
+				if (_.isUndefined(_nIframe._heightRatio))
+				{
+					_nIframe._heightRatio = _nIframe.height / _nIframe.width;
+					_nIframe.style.width = '100%';
+				}
+
+				_nIframe.height = _nIframe.offsetWidth * _nIframe._heightRatio;
+			}
+		};
+		_.iframeHeightFix = function ()
+		{
+			document.querySelectorAll('iframe:not(.do-not-resize)').forEach(function (_nIframe)
+			{
+				_.iframeHeight(_nIframe);
+			});
+		};
+	})();
+
 	(function ()
 	{
 		var oActiveDropdown = false;
