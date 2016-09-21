@@ -236,7 +236,7 @@
 			this.timeout && clearTimeout(this.timeout);
 			this.closeTimeout && clearTimeout(this.closeTimeout);
 
-			this.eventTargets.forEach(function (_nTarget)
+			_.forEach(this.eventTargets, function (_nTarget)
 			{
 				_nTarget._jQ().off('.' + that.type);
 			});

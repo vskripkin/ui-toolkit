@@ -194,7 +194,7 @@
 
 				this.$.filtered = [];
 				var aFiltered = this.$.filtered;
-				this.$.options.forEach(function (nElem, i)
+				_.forEach(this.$.options, function (nElem, i)
 				{
 					nElem.index = i;
 					aFiltered[i] = true;
@@ -294,7 +294,7 @@
 				iFilteredLength = this.$.filteredLength,
 				iLastSelected = this.getLastSelected();
 
-			anOptions.forEach(function (nOption, i)
+			_.forEach(anOptions, function (nOption, i)
 			{
 				if (nOption['textContent' || 'innerText'].toLowerCase().indexOf(sText) === -1)
 				{
@@ -337,7 +337,7 @@
 			var anOptions = this.$.options,
 				aFiltered = this.$.filtered;
 
-			anOptions.forEach(function (nOption, i)
+			_.forEach(anOptions, function (nOption, i)
 			{
 				anOptions[i].style.display = 'block';
 				aFiltered[i] = true;

@@ -271,18 +271,27 @@
 
 		isChanged: function ()
 		{
-			if (this.dropdown.getLastSelected() === -1) return false;
+			if (this.dropdown.getLastSelected() === -1)
+			{
+				return false;
+			}
 
 			var bIsChanged = false,
 				aWasSelected = this.$.wasSelected,
 				anSelectedOptions = _getSelected.call(this);
 
-			if (aWasSelected.length !== anSelectedOptions.length) bIsChanged = true;
+			if (aWasSelected.length !== anSelectedOptions.length)
+			{
+				bIsChanged = true;
+			}
 			else
 			{
-				anSelectedOptions.forEach(function (nIndex)
+				_.forEach(anSelectedOptions, function (_nOption)
 				{
-					if (aWasSelected.indexOf(nIndex) === -1) bIsChanged = true;
+					if (aWasSelected.indexOf(_nOption) === -1)
+					{
+						bIsChanged = true;
+					}
 				});
 			}
 
@@ -359,9 +368,12 @@
 	{
 		return this.each(function ()
 		{
-			this.querySelectorAll('select').forEach(function (nSelect)
+			_.forEach(this.querySelectorAll('select'), function (_nSelect)
 			{
-				if (nSelect[TYPE]) nSelect[TYPE].destroy();
+				if (_nSelect[TYPE])
+				{
+					_nSelect[TYPE].destroy();
+				}
 			});
 		});
 	};
@@ -844,9 +856,9 @@
 
 			if (this.select.multiple)
 			{
-				_.forEach(this.select.options, function (nElem)
+				_.forEach(this.select.options, function (_nElem)
 				{
-					if (nElem.selected) aSelected.push(nElem.index);
+					if (_nElem.selected) aSelected.push(_nElem.index);
 				});
 			}
 			else

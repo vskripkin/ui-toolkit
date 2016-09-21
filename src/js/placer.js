@@ -247,7 +247,7 @@
 				});
 			}
 
-			options.location.forEach(function (_oLoc, i)
+			_.forEach(options.location, function (_oLoc, i)
 			{
 				options.location[i] = _oLoc = $.extend(true, {}, Placer.DEFAULTS.common, _oLoc);
 
@@ -349,7 +349,7 @@
 			var oPlacedStyle = this.placed.style,
 				oStyleDefault = this.styleDefault;
 
-			_aWantedStyles.forEach(function (_sProp)
+			_.forEach(_aWantedStyles, function (_sProp)
 			{
 				oStyleDefault[_sProp] = {};
 				oStyleDefault[_sProp].value = oPlacedStyle.getPropertyValue(_sProp);

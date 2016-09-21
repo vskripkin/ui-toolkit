@@ -665,7 +665,7 @@
 		};
 		_.iframeHeightFix = function ()
 		{
-			document.querySelectorAll('iframe:not(.do-not-resize)').forEach(function (_nIframe)
+			_.forEach(document.querySelectorAll('iframe:not(.do-not-resize)'), function (_nIframe)
 			{
 				_.iframeHeight(_nIframe);
 			});
