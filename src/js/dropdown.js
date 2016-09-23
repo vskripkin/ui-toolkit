@@ -52,7 +52,7 @@
 
 		classes: {
 			list: '',
-			list_common: 'options for_selectbox'
+			list_common: 'dropdown-options'
 		}
 	};
 

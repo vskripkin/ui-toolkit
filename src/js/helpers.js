@@ -588,10 +588,10 @@
 					}
 
 					oDate.setHours(oDate.getHours() + iOffset);
-					return oDate.getTime();
+					return oDate;
 				};
 
-			if (noOffset(sTestISO) === 1322118027000)
+			if (noOffset(sTestISO).getTime() === 1322118027000)
 			{
 				return noOffset;
 			}
