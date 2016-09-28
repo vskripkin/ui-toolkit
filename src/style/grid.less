@@ -70,6 +70,10 @@
 			{
 				&-collapse
 				{
+					margin-left: 0;
+					margin-right: 0;
+					max-width: none;
+
 					& > .@{child}
 					{
 						padding-left:  0;
@@ -85,6 +89,10 @@
 
 				&-uncollapse
 				{
+					margin-left: 0;
+					margin-right: 0;
+					max-width: @width-grid;
+
 					& > .@{child}
 					{
 						padding-left:  (@gutter / 2);
@@ -310,11 +318,11 @@
 		.@{item}
 		{
 			flex: 1 1 0px;
-			align-self: stretch;
-			position: relative;
-			overflow: hidden;
 			min-width: initial;
 			width: auto !important;
+			position: relative;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			&.@{item}--tight
 			{
