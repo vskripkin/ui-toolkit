@@ -16,6 +16,12 @@
 			max-width: @result;
 			width: @result;
 		}
+		.@{size}-px-@{counter}@{counter-postfix}
+		{
+			flex-basis: (@width-grid * (@counter / @totalColumns));
+			max-width: (@width-grid * (@counter / @totalColumns));
+			width: (@width-grid * (@counter / @totalColumns));
+		}
 
 		@counter-1: (@counter - 1);
 
@@ -292,7 +298,7 @@
 
 			position: relative;
 			margin: 0 auto;
-			max-width: @width-row;
+			max-width: @width-grid;
 			width: 100%;
 
 			.@{grid}, &.@{grid}--full
@@ -306,6 +312,7 @@
 			flex: 1 1 0px;
 			align-self: stretch;
 			position: relative;
+			overflow: hidden;
 			min-width: initial;
 			width: auto !important;
 
@@ -323,7 +330,7 @@
 			display: block;
 			position: relative;
 			margin: 0 auto;
-			max-width: @width-row;
+			max-width: @width-grid;
 			width: 100%;
 
 			.@{row}, &.@{row}--full
