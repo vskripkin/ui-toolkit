@@ -434,4 +434,4 @@
 			return this;
 		};
 
-}(jQuery));
+})(jQuery);

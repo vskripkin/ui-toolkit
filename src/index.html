@@ -14,13 +14,14 @@
 
 	<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
+	<script type="text/javascript" src="../bower_components/hammerjs/hammer.min.js"></script>
 	<script type="text/javascript" src="vendor/prism/prism.js"></script>
 </head>
 
 <body>
 	<section id="sidebar" class="fixed">
 		<div class="logo">
-			<span>Material Ui</span>
+			<span>Ui Toolkit</span>
 			<i class="material-icons">layers</i>
 		</div>
 		<div class="side-nav">
@@ -30,6 +31,7 @@
 			<a href="#forms" data-wave="true">Forms</a>
 			<a href="#alerts" data-wave="true">Alerts</a>
 			<a href="#grid" data-wave="true">Grid</a>
+			<a href="#flex-grid" data-wave="true">Flex Grid</a>
 		</div>
 	</section>
 
@@ -1102,6 +1104,110 @@
 						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
 						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
 						<div class="small-2-of-ten col" data-wave="true">2 of 10</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="flex-grid-block">
+			<div class="headline">
+				<div class="wrapper">
+					Flex Grid
+				</div>
+			</div>
+
+			<div class="content">
+				<div class="wrapper">
+					<div class="grid">
+						<div class="item small-3 small-offset-3" data-wave="true">CELL</div>
+						<div class="item small-3 medium-shrink large-6" data-wave="true">CELL</div>
+					</div>
+
+					<div class="grid">
+						<div class="small-2 large-4 item" data-wave="true">
+							<span class="hide-for-large">2</span>
+							<span class="show-for-large">4</span>
+						</div>
+						<div class="small-4 large-4 item" data-wave="true">
+							<div class="grid">
+								<div class="small-4 item" data-wave="true">3/4</div>
+								<div class="small-4 item" data-wave="true">3/4</div>
+								<div class="small-4 item" data-wave="true">3/4</div>
+							</div>
+						</div>
+						<div class="small-6 large-4 item" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">4</span>
+						</div>
+					</div>
+					<div class="grid">
+						<div class="large-3 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">3</span>
+						</div>
+						<div class="large-6 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">6</span>
+						</div>
+						<div class="large-3 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">3</span>
+						</div>
+					</div>
+					<div class="grid">
+						<div class="small-6 large-2 item" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">2</span>
+						</div>
+						<div class="small-6 large-8 item" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">8</span>
+						</div>
+						<div class="small-12 large-2 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">2</span>
+						</div>
+					</div>
+					<div class="grid">
+						<div class="small-3 item" data-wave="true">3</div>
+						<div class="small-9 item" data-wave="true">9</div>
+					</div>
+					<div class="grid">
+						<div class="large-4 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">4</span>
+						</div>
+						<div class="large-8 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">8</span>
+						</div>
+					</div>
+					<div class="grid">
+						<div class="small-6 large-5 item" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">5</span>
+						</div>
+						<div class="small-6 large-7 item" data-wave="true">
+							<span class="hide-for-large">6</span>
+							<span class="show-for-large">7</span>
+						</div>
+					</div>
+					<div class="grid">
+						<div class="small-12 large-6 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">6</span>
+						</div>
+						<div class="small-12 large-6 item" data-wave="true">
+							<span class="hide-for-large">full</span>
+							<span class="show-for-large">6</span>
+						</div>
+					</div>
+					<div class="grid mb0">
+						<div class="item" data-wave="true">1 of 5</div>
+						<div class="item" data-wave="true">1 of 5</div>
+						<div class="item small-6 medium-shrink large-6" data-wave="true">1 of 5</div>
+						<div class="item" data-wave="true">1 of 5</div>
+						<div class="item" data-wave="true">1 of 5</div>
 					</div>
 				</div>
 			</div>

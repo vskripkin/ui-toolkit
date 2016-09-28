@@ -2,10 +2,11 @@
 
 @sidebar_width: 250px;
 
-/*#ui > .grid();
-#ui > .grid-size();
-#ui > .grid-size(10, -of-ten);
-#ui > .visibility-classes();*/
+#ui > .grid();
+#ui > .grid-columns();
+#ui > .grid-columns(10, -of-ten);
+
+#ui > .visibility-classes();
 
 .textfield
 {
@@ -294,13 +295,13 @@
 	}
 }
 
-#grid-block
+#grid-block, #flex-grid-block
 {
-	.row
+	.row, .grid
 	{
 		background: #E8EAF6;
 
-		.col
+		.col, .item
 		{
 			margin-bottom: 2rem;
 			font-size: 2rem;
@@ -309,7 +310,8 @@
 			background: #C5CAE9;
 			box-shadow: inset 0 0 0 2px rgba(0,0,0,0.2);
 		}
-		&.mb0 .col, .row .col
+		&.mb0 .col,  .row  .col,
+		&.mb0 .item, .grid .item
 		{
 			margin-bottom: 0;
 		}

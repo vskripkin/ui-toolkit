@@ -1,17 +1,19 @@
 #ui
 {
-	._grid-calc(@colNumber, @totalColumns)
+	._width-calc(@colNumber, @totalColumns)
 	{
 		@result: percentage((@colNumber / @totalColumns));
 	}
 
-	._grid-size-loop(@size, @counter-postfix, @totalColumns, @counter) when (@counter > 0)
+	._grid-columns-loop(@size, @counter-postfix, @totalColumns, @counter) when (@counter > 0)
 	{
-		#ui > ._grid-size-loop(@size, @counter-postfix, @totalColumns, (@counter - 1));
+		#ui > ._grid-columns-loop(@size, @counter-postfix, @totalColumns, (@counter - 1));
 
 		.@{size}-@{counter}@{counter-postfix}
 		{
-			#ui > ._grid-calc(@counter, @totalColumns);
+			#ui > ._width-calc(@counter, @totalColumns);
+			flex-basis: @result;
+			max-width: @result;
 			width: @result;
 		}
 
@@ -19,66 +21,101 @@
 
 		.@{size}-push-@{counter-1}@{counter-postfix}
 		{
-			#ui > ._grid-calc(@counter-1, @totalColumns);
+			#ui > ._width-calc(@counter-1, @totalColumns);
 			@{default-direction}: @result;
 			@{opposite-direction}: auto;
 		}
 		.@{size}-pull-@{counter-1}@{counter-postfix}
 		{
-			#ui > ._grid-calc(@counter-1, @totalColumns);
+			#ui > ._width-calc(@counter-1, @totalColumns);
 			@{opposite-direction}: @result;
 			@{default-direction}: auto;
 		}
 		.@{size}-offset-@{counter-1}@{counter-postfix}
 		{
-			#ui > ._grid-calc(@counter-1, @totalColumns);
+			#ui > ._width-calc(@counter-1, @totalColumns);
 			margin-@{default-direction}: @result !important;
 		}
 	}
-
-	._grid-classes(@row, @col, @size, @size-name)
+	._grid-columns-loop(@size, @counter-postfix, @totalColumns, @counter) when (@counter = 0)
 	{
-		@_gutter: '@{size}-column-gutter';
+		.@{size}-tight@{counter-postfix}
+		{
+			flex: 0 0 auto;
+			max-width: 100%;
+			width: auto;
+		}
+	}
+
+	._grid-computed-classes(@parent, @child, @size-name, @size)
+	{
+		@_gutter: '@{size-name}-column-gutter';
 		@gutter: @@_gutter;
 
-		.@{row}
+		.@{parent}
 		{
-			.@{row}
+			.@{parent}
 			{
 				margin-left:  (-1 * @gutter / 2);
 				margin-right: (-1 * @gutter / 2);
 			}
 
-			&.@{size-name}-collapse
+			&.@{size}
 			{
-				& > .@{col}
+				&-collapse
 				{
-					padding-left:  0;
-					padding-right: 0;
+					& > .@{child}
+					{
+						padding-left:  0;
+						padding-right: 0;
+					}
+
+					& > .@{child} > .@{parent}
+					{
+						margin-left:  0;
+						margin-right: 0;
+					}
 				}
 
-				& > .@{col} > .@{row}
+				&-uncollapse
 				{
-					margin-left:  0;
-					margin-right: 0;
+					& > .@{child}
+					{
+						padding-left:  (@gutter / 2);
+						padding-right: (@gutter / 2);
+					}
+
+					& > .@{child} > .@{parent}
+					{
+						margin-left:  (-1 * @gutter / 2);
+						margin-right: (-1 * @gutter / 2);
+					}
 				}
 			}
-			&.@{size-name}-uncollapse
-			{
-				& > .@{col}
-				{
-					padding-left:  (@gutter / 2);
-					padding-right: (@gutter / 2);
-				}
 
-				& > .@{col} > .@{row}
+			&.@{size}
+			{
+				&-column > .@{child}, &-column-reverse > .@{child}
 				{
-					margin-left:  (-1 * @gutter / 2);
-					margin-right: (-1 * @gutter / 2);
+					flex-basis: auto;
 				}
 			}
+		}
 
-			&.@{size-name}-inline
+		.@{child}
+		{
+			padding-left:  (@gutter / 2);
+			padding-right: (@gutter / 2);
+		}
+	}
+	._grid-row-classes(@row, @col, @size-name, @size)
+	{
+		@_gutter: '@{size-name}-column-gutter';
+		@gutter: @@_gutter;
+
+		.@{row}
+		{
+			&.@{size}-inline
 			{
 				#ui > .nospaces-line(nowrap);
 
@@ -89,7 +126,7 @@
 				}
 			}
 
-			&.@{size-name}-table
+			&.@{size}-table
 			{
 				display: table;
 
@@ -105,61 +142,29 @@
 				}
 			}
 
-			&.@{size-name}-direct > .@{col}:last-child
-			{
-				display: table-cell;
-			}
-			&.@{size-name}-inverse > .@{col}:last-child
-			{
-				display: table-caption;
-			}
+			&.@{size}-direct  > .@{col}:last-child { display: table-cell; }
+			&.@{size}-reverse > .@{col}:last-child { display: table-caption; }
 
-			&.@{size-name}-top > .@{col}
-			{
-				vertical-align: top;
-			}
-			&.@{size-name}-middle > .@{col}
-			{
-				vertical-align: middle;
-			}
-			&.@{size-name}-bottom > .@{col}
-			{
-				vertical-align: bottom;
-			}
+			&.@{size}-valign-top    > .@{col} { vertical-align: top; }
+			&.@{size}-valign-middle > .@{col} { vertical-align: middle; }
+			&.@{size}-valign-bottom > .@{col} { vertical-align: bottom; }
 		}
 
 		.@{col}
 		{
-			padding-left:  (@gutter / 2);
-			padding-right: (@gutter / 2);
+			&.@{size}-opposite { float: @opposite-direction; }
 
-			&.@{size-name}-centered
+			&.@{size}-centered   { float: none; }
+			&.@{size}-uncentered { float: @default-direction; }
+
+			&.@{size}-valign
 			{
-				margin-left: auto;
-				margin-right: auto;
-				float: none;
-			}
-			&.@{size-name}-uncentered
-			{
-				margin-left: 0;
-				margin-right: 0;
-				float: @default-direction;
+				&-top    { vertical-align: top !important; }
+				&-middle { vertical-align: middle !important; }
+				&-bottom { vertical-align: bottom !important; }
 			}
 
-			&.@{size-name}-top
-			{
-				vertical-align: top !important;
-			}
-			&.@{size-name}-middle
-			{
-				vertical-align: middle !important;
-			}
-			&.@{size-name}-bottom
-			{
-				vertical-align: bottom !important;
-			}
-
-			&.@{size-name}-reset-order
+			&.@{size}-reset-order
 			{
 				float: @default-direction;
 				left: auto;
@@ -169,14 +174,148 @@
 			}
 		}
 	}
+	._grid-static-classes(@size)
+	{
+		//classes for grid
+		&.@{size}
+		{
+			&-row            { flex-direction: row; }
+			&-row-reverse    { flex-direction: row-reverse; }
+			&-column         { flex-direction: column; }
+			&-column-reverse { flex-direction: column-reverse; }
+
+			&-nowrap       { flex-wrap: nowrap; }
+			&-wrap         { flex-wrap: wrap; }
+			&-wrap-reverse { flex-wrap: wrap-reverse; }
+
+			&-justify
+			{
+				&-start         { justify-content: flex-start; }
+				&-end           { justify-content: flex-end; }
+				&-center        { justify-content: center; }
+				&-space-between { justify-content: space-between; }
+				&-space-around  { justify-content: space-around; }
+			}
+
+			&-items
+			{
+				&-start    { align-items: flex-start; }
+				&-end      { align-items: flex-end; }
+				&-center   { align-items: center; }
+				&-baseline { align-items: baseline; }
+				&-stretch  { align-items: stretch; }
+			}
+
+			&-content
+			{
+				&-start         { align-content: flex-start; }
+				&-end           { align-content: flex-end; }
+				&-center        { align-content: center; }
+				&-space-between { align-content: space-between; }
+				&-space-around  { align-content: space-around; }
+				&-stretch       { align-content: stretch; }
+			}
+		}
+
+		//classes for items
+		&.@{size}
+		{
+			&-centered
+			{
+				margin-left: auto;
+				margin-right: auto;
+			}
+			&-uncentered
+			{
+				margin-left: 0;
+				margin-right: 0;
+			}
+
+			&-first   { order: -1; }
+			&-last    { order: 1; }
+			&-initial { order: 0; }
+
+			&-self
+			{
+				&-start    { align-self: flex-start; }
+				&-end      { align-self: flex-end; }
+				&-center   { align-self: center; }
+				&-baseline { align-self: baseline; }
+				&-stretch  { align-self: stretch; }
+			}
+
+			&-grow
+			{
+				&-0  { flex-grow:  0; }
+				&-1  { flex-grow:  1; }
+				&-2  { flex-grow:  2; }
+				&-3  { flex-grow:  3; }
+				&-4  { flex-grow:  4; }
+				&-5  { flex-grow:  5; }
+				&-6  { flex-grow:  6; }
+				&-7  { flex-grow:  7; }
+				&-8  { flex-grow:  8; }
+				&-9  { flex-grow:  9; }
+				&-10 { flex-grow: 10; }
+			}
+			&-shrink
+			{
+				&-0  { flex-shrink:  0; }
+				&-1  { flex-shrink:  1; }
+				&-2  { flex-shrink:  2; }
+				&-3  { flex-shrink:  3; }
+				&-4  { flex-shrink:  4; }
+				&-5  { flex-shrink:  5; }
+				&-6  { flex-shrink:  6; }
+				&-7  { flex-shrink:  7; }
+				&-8  { flex-shrink:  8; }
+				&-9  { flex-shrink:  9; }
+				&-10 { flex-shrink: 10; }
+			}
+		}
+	}
 
 	.grid(
 		@row: row,
 		@col: col,
+		@grid: grid,
+		@item: item,
 		@small: @small-class,
 		@medium: @medium-class,
 		@large: @large-class)
 	{
+		.@{grid}
+		{
+			display: flex;
+			flex: 0 1 auto;
+			flex-flow: row nowrap;
+
+			position: relative;
+			margin: 0 auto;
+			max-width: @width-row;
+			width: 100%;
+
+			&, &.@{grid}--full
+			{
+				max-width: none;
+				width: auto;
+			}
+		}
+		.@{item}
+		{
+			flex: 1 1 0px;
+			align-self: stretch;
+			position: relative;
+			min-width: initial;
+			width: auto !important;
+
+			&.@{item}--tight
+			{
+				flex: 0 0 auto;
+				max-width: 100%;
+			}
+		}
+
 		.@{row}
 		{
 			#ui > .clearfix();
@@ -187,127 +326,44 @@
 			max-width: @width-row;
 			width: 100%;
 
-			.@{row}
+			&, &.@{row}--full
 			{
 				max-width: none;
 				width: auto;
-			}
-
-			&.full
-			{
-				max-width: none;
-			}
-
-			&.@{row}-inline
-			{
-				#ui > .nospaces-line(nowrap);
-
-				& > .@{col}
-				{
-					float: none !important;
-					#ui > .nospaces-line-item(middle);
-				}
-			}
-
-			&.@{row}-table
-			{
-				display: table;
-
-				&:before, &:after
-				{
-					content: none;
-				}
-
-				&.v-top > .@{col}
-				{
-					vertical-align: top;
-				}
-				&.v-middle > .@{col}
-				{
-					vertical-align: middle;
-				}
-				&.v-bottom > .@{col}
-				{
-					vertical-align: bottom;
-				}
-
-				& > .@{col}
-				{
-					float: none !important;
-					display: table-cell;
-				}
-
-				&.direct > .@{col}:last-child
-				{
-					display: table-cell;
-				}
-				&.inverse > .@{col}:last-child
-				{
-					display: table-caption;
-				}
-			}
-
-			&.collapse, & &.collapse
-			{
-				margin-left: 0;
-				margin-right: 0;
-				max-width: none;
-				width: auto;
-
-				& > .@{col}
-				{
-					padding-left:  0;
-					padding-right: 0;
-				}
-
-				& > .@{col} > .@{row}
-				{
-					margin-left:  0;
-					margin-right: 0;
-				}
 			}
 		}
-
 		.@{col}
 		{
 			position: relative;
 			width: 100%;
+			flex-basis: auto !important;
 			float: @default-direction;
-
-			&.opposite
-			{
-				float: @opposite-direction;
-			}
-
-			&.v-top
-			{
-				vertical-align: top !important;
-			}
-			&.v-middle
-			{
-				vertical-align: middle !important;
-			}
-			&.v-bottom
-			{
-				vertical-align: bottom !important;
-			}
 		}
 
 		@media @small-up
 		{
-			#ui > ._grid-classes(@row, @col, small, @small);
+			#ui > ._grid-computed-classes(@grid, @item, small, @small);
+			#ui > ._grid-computed-classes(@row, @col, small, @small);
+			#ui > ._grid-row-classes(@row, @col, small, @small);
+			#ui > ._grid-static-classes(@small);
 		}
 		@media @medium-up
 		{
-			#ui > ._grid-classes(@row, @col, medium, @medium);
+			#ui > ._grid-computed-classes(@grid, @item, medium, @medium);
+			#ui > ._grid-computed-classes(@row, @col, medium, @medium);
+			#ui > ._grid-row-classes(@row, @col, medium, @medium);
+			#ui > ._grid-static-classes(@medium);
 		}
 		@media @large-up
 		{
-			#ui > ._grid-classes(@row, @col, large, @large);
+			#ui > ._grid-computed-classes(@grid, @item, large, @large);
+			#ui > ._grid-computed-classes(@row, @col, large, @large);
+			#ui > ._grid-row-classes(@row, @col, large, @large);
+			#ui > ._grid-static-classes(@large);
 		}
 	}
 
-	.grid-size(
+	.grid-columns(
 		@totalColumns: @total-columns,
 		@counter-postfix: e(''),
 		@small: @small-class,
@@ -316,15 +372,15 @@
 	{
 		@media @small-up
 		{
-			#ui > ._grid-size-loop(@small, @counter-postfix, @totalColumns, @totalColumns);
+			#ui > ._grid-columns-loop(@small, @counter-postfix, @totalColumns, @totalColumns);
 		}
 		@media @medium-up
 		{
-			#ui > ._grid-size-loop(@medium, @counter-postfix, @totalColumns, @totalColumns);
+			#ui > ._grid-columns-loop(@medium, @counter-postfix, @totalColumns, @totalColumns);
 		}
 		@media @large-up
 		{
-			#ui > ._grid-size-loop(@large, @counter-postfix, @totalColumns, @totalColumns);
+			#ui > ._grid-columns-loop(@large, @counter-postfix, @totalColumns, @totalColumns);
 		}
 	}
 }
