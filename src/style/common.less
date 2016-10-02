@@ -31,7 +31,6 @@
 		display: inline-table;
 		width: @width;
 	}
-
 	.row()
 	{
 		float: none;
@@ -160,7 +159,19 @@
 		{
 			@rules();
 		}
+		&:-moz-placeholder
+		{
+			@rules();
+		}
+		&::-ms-input-placeholder
+		{
+			@rules();
+		}
 		&:-ms-input-placeholder
+		{
+			@rules();
+		}
+		&::placeholder
 		{
 			@rules();
 		}
@@ -182,5 +193,63 @@
 	{
 		background-image: svg-gradient(to bottom right, @color 0%, @color 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, @color 50%, @color 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0) 100%);
 		background-image: linear-gradient(-45deg, @color 0%, @color 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, @color 50%, @color 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0) 100%);
+	}
+
+	/*****************************************************/
+
+	.screen(@min, @max, @rules)
+	{
+		@condition: @screen e("and (min-width:") @min e(") and (max-width:") @max e(")");
+
+		@media @condition
+		{
+			@rules();
+		}
+	}
+	.max-screen(@max, @rules)
+	{
+		@condition: @screen e("and (max-width:") @max e(")");
+
+		@media @condition
+		{
+			@rules();
+		}
+	}
+	.min-screen(@min, @rules)
+	{
+		@condition: @screen e("and (min-width:") @min e(")");
+
+		@media @condition
+		{
+			@rules();
+		}
+	}
+
+	.screen-height(@min, @max, @rules)
+	{
+		@condition: @screen e("and (min-height:") @min e(") and (max-height:") @max e(")");
+
+		@media @condition
+		{
+			@rules();
+		}
+	}
+	.max-screen-height(@max, @rules)
+	{
+		@condition: @screen e("and (max-height:") @max e(")");
+
+		@media @condition
+		{
+			@rules();
+		}
+	}
+	.min-screen-height(@min, @rules)
+	{
+		@condition: @screen e("and (min-height:") @min e(")");
+
+		@media @condition
+		{
+			@rules();
+		}
 	}
 }
