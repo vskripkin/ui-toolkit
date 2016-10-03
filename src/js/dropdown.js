@@ -631,7 +631,7 @@
 			_oDropdown.hide();
 		});
 
-		_oDropdown.dropdown._jQ().on('click', '.option', function (e)
+		_oDropdown.dropdown._jQ().on('click', '.' + Class.option, function (e)
 		{
 			var nTarget = e.currentTarget,
 				iIndex = nTarget.index,
@@ -705,7 +705,7 @@
 			_oDropdown.hide();
 		});
 
-		_oDropdown.dropdown._jQ().on('click', '.option', function (e)
+		_oDropdown.dropdown._jQ().on('click', '.' + Class.option, function (e)
 		{
 			var nTarget = e.currentTarget,
 				iIndex = nTarget.index,
