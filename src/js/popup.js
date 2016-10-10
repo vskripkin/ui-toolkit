@@ -37,6 +37,7 @@
 	{
 		var TYPE = 'popup',
 			aQueue = [],
+			iAnimTimeout = 1000/60,
 
 			nContainer = (function ()
 			{
@@ -177,7 +178,7 @@
 				setTimeout(function ()
 				{
 					that.dom.wrapper.classList.add(Class.wrapper_visible);
-				}, 10);
+				}, iAnimTimeout);
 			},
 			_hidePopup = function ()
 			{
@@ -215,7 +216,7 @@
 					{
 						that.options.afterOpen.call(that);
 					}
-				}, 10);
+				}, iAnimTimeout);
 
 				return true;
 			},
