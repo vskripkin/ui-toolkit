@@ -1,46 +1,56 @@
-#ui
+#ui-column-helper
 {
-	._width-calc(@colNumber, @totalColumns)
+	._grid-columns-loop(@size, @counter-postfix, @totalColumns, @counter) when (@counter > 0)
 	{
-		@result: percentage((@colNumber / @totalColumns));
+		#ui-column-helper > ._grid-columns-loop(@size, @counter-postfix, @totalColumns, (@counter - 1));
 	}
 
 	._grid-columns-loop(@size, @counter-postfix, @totalColumns, @counter) when (@counter > 0)
 	{
-		#ui > ._grid-columns-loop(@size, @counter-postfix, @totalColumns, (@counter - 1));
+		.@{size}
+		{
+			&
+			{
+				@ratio: @counter / @totalColumns;
 
-		.@{size}-@{counter}@{counter-postfix}
-		{
-			#ui > ._width-calc(@counter, @totalColumns);
-			flex-basis: @result;
-			max-width: @result;
-			width: @result;
-		}
-		.@{size}-px-@{counter}@{counter-postfix}
-		{
-			flex-basis: (@width-grid * (@counter / @totalColumns));
-			max-width: (@width-grid * (@counter / @totalColumns));
-			width: (@width-grid * (@counter / @totalColumns));
-		}
+				&-@{counter}@{counter-postfix}
+				{
+					@rate: percentage(@ratio);
 
-		@counter-1: (@counter - 1);
+					flex-basis: @rate;
+					max-width: @rate;
+					width: @rate;
+				}
+				&-px-@{counter}@{counter-postfix}
+				{
+					@value: @width-grid * @ratio;
 
-		.@{size}-push-@{counter-1}@{counter-postfix}
-		{
-			#ui > ._width-calc(@counter-1, @totalColumns);
-			@{default-direction}: @result;
-			@{opposite-direction}: auto;
-		}
-		.@{size}-pull-@{counter-1}@{counter-postfix}
-		{
-			#ui > ._width-calc(@counter-1, @totalColumns);
-			@{opposite-direction}: @result;
-			@{default-direction}: auto;
-		}
-		.@{size}-offset-@{counter-1}@{counter-postfix}
-		{
-			#ui > ._width-calc(@counter-1, @totalColumns);
-			margin-@{default-direction}: @result !important;
+					flex-basis: @value;
+					max-width: @value;
+					width: @value;
+				}
+			}
+
+			&
+			{
+				@counter-1: (@counter - 1);
+				@rate: percentage((@counter-1 / @totalColumns));
+
+				&-push-@{counter-1}@{counter-postfix}
+				{
+					@{default-direction}: @rate;
+					@{opposite-direction}: auto;
+				}
+				&-pull-@{counter-1}@{counter-postfix}
+				{
+					@{opposite-direction}: @rate;
+					@{default-direction}: auto;
+				}
+				&-offset-@{counter-1}@{counter-postfix}
+				{
+					margin-@{default-direction}: @rate !important;
+				}
+			}
 		}
 	}
 	._grid-columns-loop(@size, @counter-postfix, @totalColumns, @counter) when (@counter = 0)
@@ -52,7 +62,9 @@
 			width: auto;
 		}
 	}
-
+}
+#ui-class-helper
+{
 	._grid-computed-classes(@parent, @child, @size-name, @size)
 	{
 		@_gutter: '@{size-name}-column-gutter';
@@ -288,7 +300,10 @@
 			}
 		}
 	}
+}
 
+#ui
+{
 	.grid(
 		@row: row,
 		@col: col,
@@ -357,24 +372,24 @@
 
 		@media @small-up
 		{
-			#ui > ._grid-computed-classes(@grid, @item, small, @small);
-			#ui > ._grid-computed-classes(@row, @col, small, @small);
-			#ui > ._grid-row-classes(@row, @col, small, @small);
-			#ui > ._grid-static-classes(@small);
+			#ui-class-helper > ._grid-computed-classes(@grid, @item, small, @small);
+			#ui-class-helper > ._grid-computed-classes(@row, @col, small, @small);
+			#ui-class-helper > ._grid-row-classes(@row, @col, small, @small);
+			#ui-class-helper > ._grid-static-classes(@small);
 		}
 		@media @medium-up
 		{
-			#ui > ._grid-computed-classes(@grid, @item, medium, @medium);
-			#ui > ._grid-computed-classes(@row, @col, medium, @medium);
-			#ui > ._grid-row-classes(@row, @col, medium, @medium);
-			#ui > ._grid-static-classes(@medium);
+			#ui-class-helper > ._grid-computed-classes(@grid, @item, medium, @medium);
+			#ui-class-helper > ._grid-computed-classes(@row, @col, medium, @medium);
+			#ui-class-helper > ._grid-row-classes(@row, @col, medium, @medium);
+			#ui-class-helper > ._grid-static-classes(@medium);
 		}
 		@media @large-up
 		{
-			#ui > ._grid-computed-classes(@grid, @item, large, @large);
-			#ui > ._grid-computed-classes(@row, @col, large, @large);
-			#ui > ._grid-row-classes(@row, @col, large, @large);
-			#ui > ._grid-static-classes(@large);
+			#ui-class-helper > ._grid-computed-classes(@grid, @item, large, @large);
+			#ui-class-helper > ._grid-computed-classes(@row, @col, large, @large);
+			#ui-class-helper > ._grid-row-classes(@row, @col, large, @large);
+			#ui-class-helper > ._grid-static-classes(@large);
 		}
 	}
 
@@ -387,15 +402,15 @@
 	{
 		@media @small-up
 		{
-			#ui > ._grid-columns-loop(@small, @counter-postfix, @totalColumns, @totalColumns);
+			#ui-column-helper > ._grid-columns-loop(@small, @counter-postfix, @totalColumns, @totalColumns);
 		}
 		@media @medium-up
 		{
-			#ui > ._grid-columns-loop(@medium, @counter-postfix, @totalColumns, @totalColumns);
+			#ui-column-helper > ._grid-columns-loop(@medium, @counter-postfix, @totalColumns, @totalColumns);
 		}
 		@media @large-up
 		{
-			#ui > ._grid-columns-loop(@large, @counter-postfix, @totalColumns, @totalColumns);
+			#ui-column-helper > ._grid-columns-loop(@large, @counter-postfix, @totalColumns, @totalColumns);
 		}
 	}
 }
