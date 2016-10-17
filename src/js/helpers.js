@@ -695,6 +695,38 @@
 		};
 	})();
 
+	/* cross-browser method to set scrollTop */
+	(function ()
+	{
+		if (!('pageYOffset' in window))
+		{
+			Object.defineProperty(window, 'pageYOffset', {
+				get: function()
+				{
+					return document.documentElement.scrollTop;
+				}
+			});
+		}
+
+		_.scrollTop = function (_iValue)
+		{
+			if (!_.isUndefined(_iValue))
+			{
+				if (document.scrollingElement)
+				{
+					document.scrollingElement.scrollTop = _iValue;
+				}
+				else
+				{
+					document.documentElement.scrollTop = _iValue;
+					document.body.scrollTop = _iValue;
+				}
+			}
+
+			return window.pageYOffset;
+		};
+	})();
+
 	(function ()
 	{
 		var oActiveDropdown = false;
