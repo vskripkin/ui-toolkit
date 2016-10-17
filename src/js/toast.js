@@ -41,7 +41,7 @@
 			this._onPanEnd  =
 			this._onTap     =
 			this._onWH      =
-			this._onWV      =  null;
+			this._onWV      = null;
 
 			return this.init(_sMessage, _options);
 		};

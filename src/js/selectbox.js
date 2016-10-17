@@ -54,7 +54,7 @@
 			select_common: 'selectbox',
 			list_common: 'selectbox-options'
 		}
-	}
+	};
 
 	Selectbox.prototype =
 	{
@@ -340,7 +340,7 @@
 			this.$.container.remove();
 			delete this.select[TYPE];
 		}
-	}
+	};
 
 
  /* SELECTBOX PLUGIN DEFINITION
