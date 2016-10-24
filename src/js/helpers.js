@@ -169,13 +169,17 @@
 		_.globalScrollbar = {
 			_hidden: false,
 			_prop: 'margin',
-			_side: 'Right',
+			_side: 'right',
 			_width: 0,
 			_prevOverflow: '',
 			_prevMargin: '',
 
+			_num: 0,
+
 			hide: function (_fCallback)
 			{
+				this._num++;
+
 				if (this._hidden)
 				{
 					return false;
@@ -186,19 +190,32 @@
 				var nHTML = document.documentElement;
 
 				this._prevOverflow = nHTML.style.overflow;
-				this._prevMargin = nHTML.style[this._prop + this._side];
+				this._prevMargin = nHTML.style[this._prop + '-' + this._side];
 
 				nHTML.style.overflow = 'hidden';
-				nHTML.style[this._prop + this._side] = this._width + 'px';
+				nHTML.style[this._prop + '-' + this._side] = this._width + 'px';
 
 				if (_.isFunction(_fCallback))
 				{
 					_fCallback(this._width, this._side, this._prop);
 				}
+				else
+				{
+					var anNeedOffset = document.querySelectorAll('.js-scrollbar-offset');
+
+					_.forEach(anNeedOffset, function (_nElem)
+					{
+						_nElem.style['border-' + this._side] = this._width + 'px solid transparent';
+						_nElem.style[this._side] = this._width + 'px';
+					},
+					this);
+				}
 			},
-			restore: function (_fCallback)
+			restore: function (_fCallback, _bRightNow)
 			{
-				if (!this._hidden)
+				this._num--;
+
+				if (!this._hidden || (this._num > 0 && !_bRightNow))
 				{
 					return false;
 				}
@@ -206,7 +223,7 @@
 				this._hidden = false;
 
 				document.documentElement.style.overflow = this._prevOverflow;
-				document.documentElement.style[this._prop + this._side] = this._prevMargin;
+				document.documentElement.style[this._prop + '-' + this._side] = this._prevMargin;
 
 				this._prevOverflow = '';
 				this._prevMargin = '';
@@ -214,6 +231,17 @@
 				if (_.isFunction(_fCallback))
 				{
 					_fCallback(this._width, this._side, this._prop);
+				}
+				else
+				{
+					var anNeedOffset = document.querySelectorAll('.js-scrollbar-offset');
+
+					_.forEach(anNeedOffset, function (_nElem)
+					{
+						_nElem.style['border-' + this._side] = '';
+						_nElem.style[this._side] = '';
+					},
+					this);
 				}
 			}
 		};
@@ -234,7 +262,7 @@
 			nDiv = document.getElementById(sId);
 
 			_.globalScrollbar._width = nDiv.offsetWidth - nDiv.clientWidth;
-			_.globalScrollbar._side = document.documentElement.getAttribute('dir') === 'rtl' ? 'Left' : 'Right';
+			_.globalScrollbar._side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
 
 			nDiv.parentNode.removeChild(nDiv);
 		})();

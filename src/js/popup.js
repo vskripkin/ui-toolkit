@@ -143,7 +143,7 @@
 
 			_showCont = function ()
 			{
-				_.globalScrollbar.hide(Popup.callbacks.globalScrollbarHide);
+				_.globalScrollbar.hide();
 				nContainer.style.display = 'block';
 
 				setTimeout(function ()
@@ -159,7 +159,7 @@
 					{
 						this.style.display = 'none';
 						this._jQ().off('transitionend');
-						_.globalScrollbar.restore(Popup.callbacks.globalScrollbarRestore);
+						_.globalScrollbar.restore();
 					}
 				});
 
@@ -285,27 +285,6 @@
 			afterClose: undefined,
 			beforeSetContent: undefined,
 			afterSetContent: undefined
-		};
-
-		Popup.callbacks = {
-			globalScrollbarHide: function (_iWidth, _sSide)
-			{
-				var nHeader = document.querySelector('header');
-				if (nHeader !== null)
-				{
-					nHeader.style['border' + _sSide] = _iWidth + 'px solid transparent';
-					nHeader.style[_sSide.toLowerCase()] = _iWidth + 'px';
-				}
-			},
-			globalScrollbarRestore: function (_iWidth, _sSide)
-			{
-				var nHeader = document.querySelector('header');
-				if (nHeader !== null)
-				{
-					nHeader.style['border' + _sSide] = '';
-					nHeader.style[_sSide.toLowerCase()] = '';
-				}
-			}
 		};
 
 		Popup.prototype = {
