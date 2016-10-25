@@ -10,13 +10,14 @@
 
 			if (document.readyState === 'loading' || document.readyState === 'uninitialized')
 			{
-				document.write('<div id="' + sContId + '"></div>');
+				document.write('<div id="' + sContId + '" class="js-scrollbar-offset"></div>');
 				return document.getElementById(sContId);
 			}
 			else
 			{
 				var nDiv = document.createElement('div');
 					nDiv.id = sContId;
+					nDiv.className = 'js-scrollbar-offset';
 
 				document.body.appendChild(nDiv);
 
