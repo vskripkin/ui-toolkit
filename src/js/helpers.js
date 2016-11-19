@@ -188,7 +188,7 @@
 
 				this._hidden = true;
 
-				var nHTML = document.documentElement;
+				var nHTML = document.documentElement,
 					sProp = this.prop ? (this.prop + '-') : '';
 
 				this._prevOverflow = nHTML.style.overflow;
@@ -207,8 +207,20 @@
 
 					_.forEach(anNeedOffset, function (_nElem)
 					{
-						_nElem.style['border-' + this.side] = this._width + 'px solid transparent';
-						_nElem.style[sProp + this.side] = this._width + 'px';
+						var sDataProp = _nElem.getAttribute('data-offset-prop');
+
+						if (sDataProp === 'true')
+						{
+							_nElem.style[this.side] = this._width + 'px';
+						}
+						else if (sDataProp)
+						{
+							_nElem.style[sDataProp + '-' + this.side] = this._width + 'px';
+						}
+						else
+						{
+							_nElem.style[sProp + this.side] = this._width + 'px';
+						}
 					},
 					this);
 				}
@@ -242,8 +254,20 @@
 
 					_.forEach(anNeedOffset, function (_nElem)
 					{
-						_nElem.style['border-' + this.side] = '';
-						_nElem.style[sProp + this.side] = '';
+						var sDataProp = _nElem.getAttribute('data-offset-prop');
+
+						if (sDataProp === 'true')
+						{
+							_nElem.style[this.side] = '';
+						}
+						else if (sDataProp)
+						{
+							_nElem.style[sDataProp + '-' + this.side] = '';
+						}
+						else
+						{
+							_nElem.style[sProp + this.side] = '';
+						}
 					},
 					this);
 				}
