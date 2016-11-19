@@ -167,9 +167,10 @@
 	(function ()
 	{
 		_.globalScrollbar = {
+			prop: 'margin',
+			side: 'right',
+
 			_hidden: false,
-			_prop: 'margin',
-			_side: 'right',
 			_width: 0,
 			_prevOverflow: '',
 			_prevMargin: '',
@@ -188,16 +189,17 @@
 				this._hidden = true;
 
 				var nHTML = document.documentElement;
+					sProp = this.prop ? (this.prop + '-') : '';
 
 				this._prevOverflow = nHTML.style.overflow;
-				this._prevMargin = nHTML.style[this._prop + '-' + this._side];
+				this._prevMargin = nHTML.style[sProp + this.side];
 
 				nHTML.style.overflow = 'hidden';
-				nHTML.style[this._prop + '-' + this._side] = this._width + 'px';
+				nHTML.style[sProp + this.side] = this._width + 'px';
 
 				if (_.isFunction(_fCallback))
 				{
-					_fCallback(this._width, this._side, this._prop);
+					_fCallback(this._width, this.side, this.prop);
 				}
 				else
 				{
@@ -205,8 +207,8 @@
 
 					_.forEach(anNeedOffset, function (_nElem)
 					{
-						_nElem.style['border-' + this._side] = this._width + 'px solid transparent';
-						_nElem.style[this._side] = this._width + 'px';
+						_nElem.style['border-' + this.side] = this._width + 'px solid transparent';
+						_nElem.style[sProp + this.side] = this._width + 'px';
 					},
 					this);
 				}
@@ -220,17 +222,19 @@
 					return false;
 				}
 
+				var sProp = this.prop ? (this.prop + '-') : '';
+
 				this._hidden = false;
 
 				document.documentElement.style.overflow = this._prevOverflow;
-				document.documentElement.style[this._prop + '-' + this._side] = this._prevMargin;
+				document.documentElement.style[sProp + this.side] = this._prevMargin;
 
 				this._prevOverflow = '';
 				this._prevMargin = '';
 
 				if (_.isFunction(_fCallback))
 				{
-					_fCallback(this._width, this._side, this._prop);
+					_fCallback(this._width, this.side, this.prop);
 				}
 				else
 				{
@@ -238,8 +242,8 @@
 
 					_.forEach(anNeedOffset, function (_nElem)
 					{
-						_nElem.style['border-' + this._side] = '';
-						_nElem.style[this._side] = '';
+						_nElem.style['border-' + this.side] = '';
+						_nElem.style[sProp + this.side] = '';
 					},
 					this);
 				}
@@ -248,8 +252,8 @@
 
 		(function ()
 		{
-			var sId = _.randomStr(),
-				sStyle = 'position: absolute;' + 
+			var ID = _.randomStr(),
+				STYLE = 'position: absolute;' + 
 						'top: -100px;'  + 
 						'left: -100px;' + 
 						'width: 100px;' + 
@@ -257,12 +261,12 @@
 						'overflow: scroll;',
 				nDiv;
 
-			document.write('<div id="' + sId +'" style="' + sStyle +'"></div>');
+			document.write('<div id="' + ID +'" style="' + STYLE +'"></div>');
 
-			nDiv = document.getElementById(sId);
+			nDiv = document.getElementById(ID);
 
 			_.globalScrollbar._width = nDiv.offsetWidth - nDiv.clientWidth;
-			_.globalScrollbar._side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
+			_.globalScrollbar.side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
 
 			nDiv.parentNode.removeChild(nDiv);
 		})();
