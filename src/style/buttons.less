@@ -19,7 +19,7 @@
 	{
 		#ui > ._button > .template(@rest...);
 
-		&
+		&, &:visited
 		{
 			background-color: @bg-color;
 			color: @color;
@@ -114,6 +114,11 @@
 			margin: @button-margin;
 			border-radius: @button-radius;
 			text-align: center;
+
+			&:hover
+			{
+				text-decoration: none;
+			}
 
 			&.bordered
 			{
