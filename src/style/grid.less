@@ -77,12 +77,25 @@
 			margin-right: (-1 * @gutter / 2);
 		}
 
-		&.@{size}
+		&.@{size}, .@{parent}.@{size}
 		{
 			&-collapse
 			{
 				margin-left: 0;
 				margin-right: 0;
+			}
+
+			&-uncollapse
+			{
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+
+		&.@{size}
+		{
+			&-collapse
+			{
 				max-width: none;
 
 				& > .@{child}
@@ -100,8 +113,6 @@
 
 			&-uncollapse
 			{
-				margin-left: 0;
-				margin-right: 0;
 				max-width: @width-grid;
 
 				& > .@{child}
