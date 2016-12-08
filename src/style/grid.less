@@ -56,9 +56,13 @@
 		{
 			&-tight@{counter-postfix}
 			{
-				flex: 0 0 auto;
+				flex: 0 1 auto;
 				max-width: 100%;
-				width: auto;
+			}
+			&-untight@{counter-postfix}
+			{
+				flex: 1 1 0px;
+				max-width: 100%;
 			}
 		}
 	}
@@ -345,11 +349,17 @@
 			position: relative;
 			flex: 1 1 0px;
 			min-width: initial;
+			max-width: 100%;
 			width: auto !important;
 
 			&.@{item}--tight
 			{
-				flex: 0 0 auto;
+				flex: 0 1 auto;
+				max-width: 100%;
+			}
+			&.@{item}--untight
+			{
+				flex: 1 1 0px;
 				max-width: 100%;
 			}
 		}
