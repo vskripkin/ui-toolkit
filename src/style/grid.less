@@ -388,13 +388,11 @@
 			float: @default-direction;
 		}
 
-		@media @small-up
-		{
-			._grid-computed-classes(@grid, @item, small, @small);
-			._grid-computed-classes(@row, @col, small, @small);
-			._grid-row-classes(@row, @col, small, @small);
-			._grid-static-classes(@small);
-		}
+		._grid-computed-classes(@grid, @item, small, @small);
+		._grid-computed-classes(@row, @col, small, @small);
+		._grid-row-classes(@row, @col, small, @small);
+		._grid-static-classes(@small);
+
 		@media @medium-up
 		{
 			._grid-computed-classes(@grid, @item, medium, @medium);
@@ -418,10 +416,8 @@
 		@medium: @medium-class,
 		@large: @large-class)
 	{
-		@media @small-up
-		{
-			._grid-columns-loop(@small, @counter-postfix, @totalColumns, @totalColumns);
-		}
+		._grid-columns-loop(@small, @counter-postfix, @totalColumns, @totalColumns);
+
 		@media @medium-up
 		{
 			._grid-columns-loop(@medium, @counter-postfix, @totalColumns, @totalColumns);
