@@ -490,12 +490,12 @@
 							},
 							whenTRUE: function (_oParams)
 							{
-								this.placed.addOneClass(Class.above);
+								this.placed.classList.add(Class.above);
 								that.$.container.addClass(Class.above);
 							},
 							whenFALSE: function ()
 							{
-								this.placed.removeClass(Class.above);
+								this.placed.classList.remove(Class.above);
 								that.$.container.removeClass(Class.above);
 							},
 							includeMargin: false,
