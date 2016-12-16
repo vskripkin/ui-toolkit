@@ -178,7 +178,7 @@
 			{
 				if (!this.currHTML)
 				{
-					this.currHTML = _parseHTMLColl.call(this, Array.isArray(options.items) ? options.items : options.items.childNodes);
+					this.currHTML = _parseHTMLColl.call(this, _.isArray(options.items) ? options.items : options.items.childNodes);
 					if (!ID) options.id = ID = '_' + (Math.random() * 1e7).toFixed(0);
 
 					CASH[ID] = {
@@ -450,7 +450,7 @@
 		{
 			if (typeof this.currHTML === 'undefined')
 			{
-				if (Number.isInteger(_xSelected))
+				if (_.isInteger(_xSelected))
 				{
 					this.$.selected = {};
 					this.$.selectedLength = 0;
@@ -461,7 +461,7 @@
 						this.$.selectedLength = 1;
 					}
 				}
-				else if (Array.isArray(_xSelected))
+				else if (_.isArray(_xSelected))
 				{
 					var iLength = _xSelected.length, i;
 
@@ -569,7 +569,7 @@
 						iNewSelected = _oDropdown.selectNext(sDir),
 						sNewValue;
 
-					if (Number.isInteger(iNewSelected) && iLastSelected !== iNewSelected)
+					if (_.isInteger(iNewSelected) && iLastSelected !== iNewSelected)
 					{
 						_oDropdown.unselect(iLastSelected);
 						sNewValue = _oDropdown.getValue(iNewSelected);
@@ -670,7 +670,7 @@
 						iNewSelected = _oDropdown.selectNext(sDir),
 						sNewValue;
 
-					if (Number.isInteger(iNewSelected) && iLastSelected !== iNewSelected)
+					if (_.isInteger(iNewSelected) && iLastSelected !== iNewSelected)
 					{
 						_oDropdown.unselect(iLastSelected);
 						sNewValue = _oDropdown.getValue(iNewSelected);
@@ -840,11 +840,11 @@
 
 		_selectOptions = function (_xSelected, _sDir)
 		{
-			if (Number.isInteger(_xSelected))
+			if (_.isInteger(_xSelected))
 			{
 				return _selectOption.call(this, _xSelected, _sDir);
 			}
-			else if (Array.isArray(_xSelected))
+			else if (_.isArray(_xSelected))
 			{
 				var aIndexes = [],
 					iNum = _xSelected.length,
@@ -885,11 +885,11 @@
 
 		_unselectOptions = function (_xSelected)
 		{
-			if (Number.isInteger(_xSelected))
+			if (_.isInteger(_xSelected))
 			{
 				return _unselectOption.call(this, _xSelected);
 			}
-			else if (Array.isArray(_xSelected))
+			else if (_.isArray(_xSelected))
 			{
 				var abWasSelected = [],
 					iNum = _xSelected.length,
@@ -916,8 +916,8 @@
 
 		_toggleOptions = function (_xSelected)
 		{
-			if (Number.isInteger(_xSelected)) return _toggleOption.call(this, _xSelected);
-			else if (Array.isArray(_xSelected))
+			if (_.isInteger(_xSelected)) return _toggleOption.call(this, _xSelected);
+			else if (_.isArray(_xSelected))
 			{
 				var aResult = [],
 					iNum = _xSelected.length,

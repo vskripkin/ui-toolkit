@@ -700,7 +700,7 @@
 							iStart = this.$.shift.start,
 							iEnd = this.$.shift.end;
 
-						if (!Number.isInteger(xResult))
+						if (!_.isInteger(xResult))
 						{
 							if (!this.dropdown.isSelected(iStart))
 							{
