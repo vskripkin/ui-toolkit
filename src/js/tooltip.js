@@ -135,9 +135,9 @@
 				}
 			}
 
-			if (this.template.querySelector('.close') !== null)
+			if (this.template.querySelector('.js-close') !== null)
 			{
-				this.template._jQ().on('click.' + this.type, '.close', this.hide.bind(this));
+				this.template._jQ().on('click.' + this.type, '.js-close', this.hide.bind(this));
 			}
 
 			if (options.visible)
@@ -325,7 +325,7 @@
 		{
 			var xTrigger = this.options.trigger;
 
-			return this.options.closeBtn || this.options.self && (_.isString(xTrigger) ? (xTrigger.indexOf('click') > -1) : (xTrigger.hide && xTrigger.hide.indexOf('click') > -1)) ? '<span class="close"></span>' : '';
+			return this.options.closeBtn || this.options.self && (_.isString(xTrigger) ? (xTrigger.indexOf('click') > -1) : (xTrigger.hide && xTrigger.hide.indexOf('click') > -1)) ? '<span class="js-close close"></span>' : '';
 		},
 
 		_setHandlers = function (_nTarget, _aTriggers, _sAction)
