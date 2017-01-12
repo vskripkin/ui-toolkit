@@ -162,7 +162,7 @@
 				this.options.placeTo.update = false;
 			}
 
-			if (_.isWindowHidden && !this.isHidden)
+			if (!this.isHidden)
 			{
 				return false;
 			}
@@ -187,7 +187,7 @@
 
 		hide: function (e)
 		{
-			if (_.isWindowHidden && this.isHidden)
+			if (this.isHidden)
 			{
 				return false;
 			}
@@ -278,7 +278,7 @@
 
 	var _getOptions = function (_options)
 		{
-			var options = $.extend(true, {}, Tooltip.DEFAULTS, _options, this.element._jQ().data());
+			var options = $.extend(true, {}, Tooltip.DEFAULTS, _options, this.element._jQ().data(this.type) || {});
 
 			if (_.isObject(options.delay))
 			{
@@ -377,8 +377,8 @@
 			this.template.classList.remove('out');
 			this.template.classList.add('in');
 
-			this.element._jQ().trigger('show');
-			this.template._jQ().trigger('show');
+			this.element._jQ().trigger( this.type + '-show');
+			this.template._jQ().trigger(this.type + '-show');
 
 			if (this.options.close > 0)
 			{

@@ -60,6 +60,7 @@
 		location: {},
 		 */
 
+		/* function to check if position should be updated */
 		checkPos: false,
 		checkInterval: 1000,
 		update: false
@@ -146,6 +147,7 @@
 				},
 				this.options.checkInterval);
 			}
+
 			this.set();
 		},
 
@@ -339,11 +341,6 @@
 
 		_saveDefaultStyle = function ()
 		{
-			if (!_aWantedStyles.length)
-			{
-				return false;
-			}
-
 			this.styleDefault = {};
 
 			var oPlacedStyle = this.placed.style,
@@ -359,95 +356,72 @@
 
 		_restoreDefaultStyle = function ()
 		{
-			if (typeof this.styleDefault !== 'undefined')
-			{
-				var oPlacedStyle = this.placed.style,
-					oStyleDefault = this.styleDefault,
-					i, L, sProp;
+			var oPlacedStyle = this.placed.style;
 
-				for (i = 0, L = _aWantedStyles.length; i < L; i++)
-				{
-					sProp = _aWantedStyles[i];
-					oPlacedStyle.setProperty(sProp, oStyleDefault[sProp].value, oStyleDefault[sProp].priority);
-				}
-			}
+			_.forEach(this.styleDefault, function (_oValue, _sProp)
+			{
+				oPlacedStyle.setProperty(_sProp, _oValue.value, _oValue.priority);
+			});
 		},
 
 		_getMainParams = function (_oLoc)
 		{
 			var oTargetBounds = this.target.getBoundingClientRect(),
-				iWinWidth     = window.innerWidth,
-				iWinHeight    = window.innerHeight,
-				iExtraV       = 0,
-				iExtraH       = 0,
+				oOffsetBounds,
 
-				oOffsetBounds = _oLoc.offsetParent.getBoundingClientRect(),
-				iOffsetBoundsTop  = Math.round(oOffsetBounds.top),
-				iOffsetBoundsLeft = Math.round(oOffsetBounds.left),
-				oOffsetCss = window.getComputedStyle(_oLoc.offsetParent),
-
-				sPos = _oLoc.position,
-				sAlign = _oLoc.align,
-				sVerProp = _oLoc.props.ver,
-				sHorProp = _oLoc.props.hor;
+				//clientWidth and clientHeight return a value of viewable part of documentElement
+				iWinWidth  = document.documentElement.clientWidth,
+				iWinHeight = document.documentElement.clientHeight,
+				iExtraV    = 0,
+				iExtraH    = 0,
+				sVerProp   = _oLoc.props.ver,
+				sHorProp   = _oLoc.props.hor;
 
 			if (_oLoc.includeMargin)
 			{
-				if (sPos === 'top' || sPos === 'bottom')
-				{
-					iExtraV -= _getMargin.call(this, _oOpposite[sVerProp]);
-					iExtraH -= _getMargin.call(this, _oOpposite[sHorProp]);
-				}
-				else
-				{
-					iExtraV -= _getMargin.call(this, _oOpposite[sVerProp]);
-					iExtraH -= _getMargin.call(this, _oOpposite[sHorProp]);
-				}
+				iExtraV -= _getMargin.call(this, _oOpposite[sVerProp]);
+				iExtraH -= _getMargin.call(this, _oOpposite[sHorProp]);
 			}
 
 			if (!_oLoc.fixed)
 			{
-				var sVer = _oLoc.props.ver,
-					sHor = _oLoc.props.hor;
+				var oOffsetCss = window.getComputedStyle(_oLoc.offsetParent);
 
-				iOffsetBoundsTop  += (sVer === 'top' ? 1 : -1 )  * parseInt(oOffsetCss['border-' + sVer + '-width']);
-				iOffsetBoundsLeft += (sHor === 'left' ? 1 : -1 ) * parseInt(oOffsetCss['border-' + sHor + '-width']);
+				oOffsetBounds = _.clone(_oLoc.offsetParent.getBoundingClientRect())
+				oOffsetBounds.top  += (sVerProp === 'top'  ? 1 : -1 ) * parseInt(oOffsetCss['border-' + sVerProp + '-width']);
+				oOffsetBounds.left += (sHorProp === 'left' ? 1 : -1 ) * parseInt(oOffsetCss['border-' + sHorProp + '-width']);
+
+				oOffsetBounds.top    = Math.round(oOffsetBounds.top);
+				oOffsetBounds.left   = Math.round(oOffsetBounds.left);
+				oOffsetBounds.right  = Math.round(oOffsetBounds.right);
+				oOffsetBounds.bottom = Math.round(oOffsetBounds.bottom);
 			}
 			else
 			{
-				iExtraV = - window.pageYOffset;
-				iExtraH = - window.pageXOffset;
-				iOffsetBoundsTop  -= parseInt(oOffsetCss['margin-top']);
-				iOffsetBoundsLeft -= parseInt(oOffsetCss['margin-left']);
+				oOffsetBounds = {
+					width: iWinWidth,
+					height: iWinHeight,
+					top: 0,
+					left: 0,
+					right: 0,
+					bottom: 0
+				};
 			}
 
 			return {
 				target: {
 					width:  oTargetBounds.width,
 					height: oTargetBounds.height,
-					right:  oTargetBounds.right,
-					bottom: oTargetBounds.bottom,
 					top:    Math.round(oTargetBounds.top),
-					left:   Math.round(oTargetBounds.left)
+					left:   Math.round(oTargetBounds.left),
+					right:  Math.round(oTargetBounds.right),
+					bottom: Math.round(oTargetBounds.bottom)
 				},
-				offsetParent: {
-					width:  oOffsetBounds.width,
-					height: oOffsetBounds.height,
-					right:  oOffsetBounds.right,
-					bottom: oOffsetBounds.bottom,
-					top:    iOffsetBoundsTop,
-					left:   iOffsetBoundsLeft
-				},
+				offsetParent: oOffsetBounds,
 				placed: {
 					width:  Math.round(this.placed.offsetWidth),
 					height: Math.round(this.placed.offsetHeight),
 				},
-				winWidth:   iWinWidth,
-				winHeight:  iWinHeight,
-				spaceAbove: Math.round(oTargetBounds.top),
-				spaceLeft:  Math.round(oTargetBounds.top),
-				spaceRight: iWinWidth  - Math.round(oTargetBounds.right),
-				spaceUnder: iWinHeight - Math.round(oTargetBounds.bottom),
 				extraV    : iExtraV,
 				extraH    : iExtraH
 			};
@@ -540,7 +514,9 @@
 			}
 
 			var oParams = _oParams || _getMainParams.call(this, _oLocation),
-				oSign = _oSign || _oPossibleLocations[_oLocation.align][_oLocation.side][_oLocation.position].call(this, _oLocation.props),
+				oSign = _oSign || _oPossibleLocations[_oLocation.align]
+													 [_oLocation.side]
+													 [_oLocation.position].call(this, oParams, _oLocation.props, _oLocation.fixed),
 				oPosition = {},
 				sProp;
 
@@ -561,7 +537,7 @@
 											+ oParams.extraH;
 
 			this.placed.style.setProperty('bottom', 'auto', 'important');
-			this.placed.style.setProperty('right', 'auto', 'important');
+			this.placed.style.setProperty('right',  'auto', 'important');
 
 			for (sProp in oPosition)
 			{
@@ -573,7 +549,7 @@
 			}
 
 			// check to see if placing in new offset caused the placed element to resize itself
-			if (!_oLocation.fixed && _oLocation.tries < 10)
+			if (_oLocation.tries < 10)
 			{
 				_oLocation.tries++;
 
@@ -623,7 +599,6 @@
 			left: 'right',
 			right: 'left'
 		},
-
 
 		_oPossibleLocations = {
 			start: {
@@ -1416,7 +1391,7 @@
 
 						return res;
 					},
-					left: function (_oProps)
+					left: function (_oParams, _oProps, _bFixed)
 					{
 						var res = {};
 

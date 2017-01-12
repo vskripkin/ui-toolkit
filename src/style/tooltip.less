@@ -88,39 +88,15 @@
 			&.animation
 			{
 				opacity: 0;
-				transition: opacity 0.15s linear;
-
-				&.no_arrow
-				{
-					transition: opacity 0.15s linear, transform 0.25s ease-out;
-
-					&.top
-					{
-						&.outset { transform: translateY(70px); }
-						&.inset { transform: translateY(-70px); }
-					}
-					&.bottom
-					{
-						&.outset { transform: translateY(-70px); }
-						&.inset { transform: translateY(70px); }
-					}
-				}
+				transition: opacity 0.15s cubic-bezier(0, 0, 0.2, 1);
 			}
 			&.in
 			{
 				opacity: 1;
-
-				&.no_arrow
-				{
-					transform: translateY(0px) !important;
-				}
 			}
 			&.out
 			{
-				&.no_arrow
-				{
-					transform: translateY(0px) !important;
-				}
+				opacity: 0;
 			}
 
 			b
@@ -129,7 +105,10 @@
 				display: inline-block;
 			}
 
-			a, a:link, a:visited { color: inherit; }
+			a, a:link, a:visited
+			{
+				color: inherit;
+			}
 			a
 			{
 				text-decoration: underline;
@@ -174,18 +153,18 @@
 
 			&.outset
 			{
-				&.top { margin-bottom: @tooltip-offset; }
-				&.bottom { margin-top: @tooltip-offset; }
-				&.left { margin-right: @tooltip-offset; }
-				&.right { margin-left: @tooltip-offset; }
+				&.top    { margin-bottom: @tooltip-offset; }
+				&.bottom { margin-top:    @tooltip-offset; }
+				&.left   { margin-right:  @tooltip-offset; }
+				&.right  { margin-left:   @tooltip-offset; }
 			}
 
 			&.inset
 			{
-				&.top { margin-top:       @tooltip-offset; }
+				&.top    { margin-top:    @tooltip-offset; }
 				&.bottom { margin-bottom: @tooltip-offset; }
-				&.left { margin-left:     @tooltip-offset; }
-				&.right { margin-right:   @tooltip-offset; }
+				&.left   { margin-left:   @tooltip-offset; }
+				&.right  { margin-right:  @tooltip-offset; }
 			}
 		}
 
@@ -233,10 +212,16 @@
 			}
 
 			&.left.start_arrow:before,
-			&.right.start_arrow:before { top: @arrow-offset; }
+			&.right.start_arrow:before
+			{
+				top: @arrow-offset;
+			}
 
 			&.left.end_arrow:before,
-			&.right.end_arrow:before { bottom: @arrow-offset; }
+			&.right.end_arrow:before
+			{
+				bottom: @arrow-offset;
+			}
 
 			&.left.center_arrow:before,
 			&.right.center_arrow:before
@@ -246,10 +231,16 @@
 			}
 
 			&.top.start_arrow:before,
-			&.bottom.start_arrow:before { left: @arrow-offset; }
+			&.bottom.start_arrow:before
+			{
+				left: @arrow-offset;
+			}
 
 			&.top.end_arrow:before,
-			&.bottom.end_arrow:before { right: @arrow-offset; }
+			&.bottom.end_arrow:before
+			{
+				right: @arrow-offset;
+			}
 
 			&.top.center_arrow:before,
 			&.bottom.center_arrow:before
