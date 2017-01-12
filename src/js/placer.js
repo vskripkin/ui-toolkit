@@ -516,7 +516,7 @@
 			var oParams = _oParams || _getMainParams.call(this, _oLocation),
 				oSign = _oSign || _oPossibleLocations[_oLocation.align]
 													 [_oLocation.side]
-													 [_oLocation.position].call(this, oParams, _oLocation.props, _oLocation.fixed),
+													 [_oLocation.position].call(this, _oLocation.props),
 				oPosition = {},
 				sProp;
 
@@ -1391,7 +1391,7 @@
 
 						return res;
 					},
-					left: function (_oParams, _oProps, _bFixed)
+					left: function (_oProps)
 					{
 						var res = {};
 
@@ -1970,7 +1970,7 @@
 						return res;
 					}
 				}
-			},
+			}
 		};
 
 }(jQuery));
