@@ -75,13 +75,13 @@
 
 	.@{parent}
 	{
-		.@{parent}
+		& > .@{child} > .@{parent}
 		{
 			margin-left:  (-1 * @gutter / 2);
 			margin-right: (-1 * @gutter / 2);
 		}
 
-		&.@{size}, .@{parent}.@{size}
+		&.@{size}, & > .@{child} > .@{parent}.@{size}
 		{
 			&-collapse
 			{
@@ -91,8 +91,8 @@
 
 			&-uncollapse
 			{
-				margin-left: 0;
-				margin-right: 0;
+				margin-left:  (-1 * @gutter / 2);
+				margin-right: (-1 * @gutter / 2);
 			}
 		}
 
@@ -100,8 +100,6 @@
 		{
 			&-collapse
 			{
-				max-width: none;
-
 				& > .@{child}
 				{
 					padding-left:  0;
@@ -117,8 +115,6 @@
 
 			&-uncollapse
 			{
-				max-width: @width-grid;
-
 				& > .@{child}
 				{
 					padding-left:  (@gutter / 2);

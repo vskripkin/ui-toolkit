@@ -422,6 +422,12 @@
 					width:  Math.round(this.placed.offsetWidth),
 					height: Math.round(this.placed.offsetHeight),
 				},
+				winWidth:   iWinWidth,
+				winHeight:  iWinHeight,
+				spaceAbove: Math.round(oTargetBounds.top),
+				spaceLeft:  Math.round(oTargetBounds.top),
+				spaceRight: iWinWidth  - Math.round(oTargetBounds.right),
+				spaceUnder: iWinHeight - Math.round(oTargetBounds.bottom),
 				extraV    : iExtraV,
 				extraH    : iExtraH
 			};
