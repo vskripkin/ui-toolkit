@@ -38,6 +38,7 @@
 		var TYPE = 'popup',
 			aQueue = [],
 			iAnimTimeout = 1000/60,
+			jWindow = $(window),
 
 			nContainer = (function ()
 			{
@@ -143,8 +144,10 @@
 
 			_showCont = function ()
 			{
-				_.globalScrollbar.hide();
+				jWindow.trigger(TYPE + ':show');
+
 				nContainer.style.display = 'block';
+				_.globalScrollbar.hide();
 
 				setTimeout(function ()
 				{
@@ -153,11 +156,17 @@
 			},
 			_hideCont = function ()
 			{
+				jWindow.trigger(TYPE + ':hide');
+
 				nContainer._jQ().on('transitionend', function (e)
 				{
 					if (e.target === this)
 					{
-						this.style.display = 'none';
+						if (aQueue.length === 0)
+						{
+							this.style.display = 'none';
+						}
+
 						this._jQ().off('transitionend');
 						_.globalScrollbar.restore();
 					}
