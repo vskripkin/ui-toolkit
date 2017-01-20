@@ -531,7 +531,7 @@
 
 				if (sTitleHTML)
 				{
-					oPopupDom.content.insertAdjacentHTML('afterbegin', sTitleHTML);
+					oPopupDom.content.insertAdjacentHTML('afterbegin', '<div>' + sTitleHTML + '</div>');
 					oPopupDom.title = oPopupDom.content.firstElementChild;
 
 					oPopupDom.title.classList.add(Class.title)
