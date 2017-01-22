@@ -152,15 +152,14 @@
 	/* to define device is mobile */
 	(function (_)
 	{
-		var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
-		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile/i.test(userAgent))
-		{
-			_.isMobile = true;
-		}
-		else
-		{
-			_.isMobile = false;
-		}
+		var sUserAgent = window.navigator.userAgent || window.navigator.vendor || window.opera,
+			isIOS = /iPhone|iPad|iPod/i.test(sUserAgent),
+			isAndroid = /Android/i.test(sUserAgent),
+			isMobile = /webOS|BlackBerry|IEMobile/i.test(sUserAgent);
+
+		_.isMobile = isIOS || isAndroid || isMobile;
+		_.isAndroid = isAndroid;
+		_.isIOS = isIOS;
 	})(_);
 
 	/* to define width of scrollbar */
