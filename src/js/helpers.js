@@ -318,7 +318,9 @@
 	{
 		var Console = window.console,
 			OriginalLog = Console.log,
-			OriginalTrace = 'trace' in Console ? Console.trace : OriginalLog;
+			OriginalTrace = 'trace' in Console ? Console.trace : OriginalLog,
+			OriginalGroupCollapsed = 'groupCollapsed' in Console ? Console.groupCollapsed : OriginalLog,
+			OriginalGroupEnd = 'groupEnd' in Console ? Console.groupEnd : function (){};
 
 		/**
 		 * Example input:
@@ -413,6 +415,16 @@
 				}
 
 				_aArguments.unshift(Console);
+
+				if (_bTrace)
+				{
+					return function ()
+					{
+						Function.prototype.bind.apply(OriginalGroupCollapsed, _aArguments)();
+						OriginalTrace.call(Console, 'stack');
+						OriginalGroupEnd.call(Console);
+					};
+				}
 
 				return Function.prototype.bind.apply(_bTrace ? OriginalTrace : OriginalLog, _aArguments);
 			},
