@@ -426,7 +426,7 @@
 					};
 				}
 
-				return Function.prototype.bind.apply(_bTrace ? OriginalTrace : OriginalLog, _aArguments);
+				return Function.prototype.bind.apply(OriginalLog, _aArguments);
 			},
 
 			debug: function (_bOn)
