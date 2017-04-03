@@ -317,7 +317,7 @@
 	(function ()
 	{
 		var Console = window.console,
-			OriginalLog = Console.log,
+			OriginalLog = 'log' in Console ? Console.log : function () {},
 			OriginalTrace = 'trace' in Console ? Console.trace : OriginalLog;
 
 		/**
