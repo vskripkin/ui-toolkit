@@ -316,9 +316,11 @@
 	/* colored console logging */
 	(function ()
 	{
-		var Console = window.console,
+		var Console = window.console || {},
 			OriginalLog = 'log' in Console ? Console.log : function () {},
-			OriginalTrace = 'trace' in Console ? Console.trace : OriginalLog;
+			OriginalTrace = 'trace' in Console ? Console.trace : OriginalLog,
+			OriginalGroupCollapsed = 'groupCollapsed' in Console ? Console.groupCollapsed : OriginalLog,
+			OriginalGroupEnd = 'groupEnd' in Console ? Console.groupEnd : function (){};
 
 		/**
 		 * Example input:
@@ -414,7 +416,17 @@
 
 				_aArguments.unshift(Console);
 
-				return Function.prototype.bind.apply(_bTrace ? OriginalTrace : OriginalLog, _aArguments);
+				if (_bTrace)
+				{
+					return function ()
+					{
+						Function.prototype.bind.apply(OriginalGroupCollapsed, _aArguments)();
+						OriginalTrace.call(Console, 'stack');
+						OriginalGroupEnd.call(Console);
+					};
+				}
+
+				return Function.prototype.bind.apply(OriginalLog, _aArguments);
 			},
 
 			debug: function (_bOn)
