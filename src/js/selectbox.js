@@ -71,7 +71,7 @@
 
 			var that = this, sEvents, jTemplate;
 
-			if (window._IS_MOBILE)
+			if (_.isMobile)
 			{
 				_select.style.setProperty('display', 'block', 'important');
 
