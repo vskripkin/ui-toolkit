@@ -300,7 +300,7 @@
 	{
 		var oStyles = window.getComputedStyle(document.createElement('div'), null),
 			sPref = (
-				Array.prototype.slice.call(oStyles).join('').match(/-(moz|ms|webkit)-/) ||
+				Object.keys(oStyles).join('').match(/(moz|ms|webkit)(?=[A-Z])/) ||
 				(oStyles.OLink === '' && ['', 'o'])
 			)[1],
 			sDom = ('WebKit|Moz|MS|O').match(new RegExp('(' + sPref + ')', 'i'))[1];
