@@ -298,7 +298,7 @@
 	/* to define browser prefix */
 	(function ()
 	{
-		var oStyles = window.getComputedStyle(document.documentElement, ''),
+		var oStyles = window.getComputedStyle(document.createElement('div'), null),
 			sPref = (
 				Array.prototype.slice.call(oStyles).join('').match(/-(moz|ms|webkit)-/) ||
 				(oStyles.OLink === '' && ['', 'o'])
