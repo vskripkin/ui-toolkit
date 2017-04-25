@@ -298,18 +298,21 @@
 	/* to define browser prefix */
 	(function ()
 	{
-		var oStyles = window.getComputedStyle(document.createElement('div'), null),
+		var oStyles = window.getComputedStyle(document.documentElement, ''),
 			sPref = (
-				Object.keys(oStyles).join('').match(/(moz|ms|webkit)(?=[A-Z])/) ||
-				(oStyles.OLink === '' && ['', 'o'])
+				(oStyles && Array.prototype.slice.call(oStyles).join('').match(/-(moz|ms|webkit)-/)) ||
+				(oStyles && (oStyles.OLink === '' && ['', 'o'])) ||
+				(window.getComputedStyle(document.createElement('div'), '').cssText || '').match(/-(moz|ms|webkit)-/) ||
+				Object.keys(window.getComputedStyle(document.createElement('div'), '')).join('').match(/(moz|ms|webkit)(?=[A-Z])/) ||
+				['', '']
 			)[1],
 			sDom = ('WebKit|Moz|MS|O').match(new RegExp('(' + sPref + ')', 'i'))[1];
 
 		_.prefix =  {
 			dom: sDom,
 			lowercase: sPref,
-			css: '-' + sPref + '-',
-			js: sPref[0].toUpperCase() + sPref.substr(1)
+			css: sPref ? '-' + sPref + '-' : sPref,
+			js: sPref ? sPref.charAt(0).toUpperCase() + sPref.substr(1) : sPref
 		};
 	})();
 
