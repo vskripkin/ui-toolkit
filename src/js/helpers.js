@@ -298,12 +298,34 @@
 	/* to define browser prefix */
 	(function ()
 	{
-		var oStyles = window.getComputedStyle(document.documentElement, ''),
+		var cssStyleDeclerationToArray = function (_oStyles)
+			{
+				var Arr;
+
+				try
+				{
+					Arr = Array.prototype.slice.call(_oStyles);
+				}
+				catch (e)
+				{
+					Arr = [];
+
+					for (var i = 0, L = _oStyles.length; i < L; i++)
+					{
+						Arr.push(_oStyles.item(i));
+					}
+				}
+
+				return Arr;
+			},
+
+			oStyles = window.getComputedStyle(document.documentElement, '') ||
+					  window.getComputedStyle(document.createElement('div'), ''),
 			sPref = (
-				(oStyles && Array.prototype.slice.call(oStyles).join('').match(/-(moz|ms|webkit)-/)) ||
-				(oStyles && (oStyles.OLink === '' && ['', 'o'])) ||
-				(window.getComputedStyle(document.createElement('div'), '').cssText || '').match(/-(moz|ms|webkit)-/) ||
-				Object.keys(window.getComputedStyle(document.createElement('div'), '')).join('').match(/(moz|ms|webkit)(?=[A-Z])/) ||
+				cssStyleDeclerationToArray(oStyles).join('').match(/-(moz|ms|webkit)-/) ||
+				(oStyles.OLink === '' && ['', 'o']) ||
+				(oStyles.cssText || '').match(/-(moz|ms|webkit)-/) ||
+				Object.keys(oStyles).join('').match(/(moz|ms|webkit)(?=[A-Z])/) ||
 				['', '']
 			)[1],
 			sDom = ('WebKit|Moz|MS|O').match(new RegExp('(' + sPref + ')', 'i'))[1];
