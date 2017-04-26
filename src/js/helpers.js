@@ -155,7 +155,7 @@
 		var sUserAgent = window.navigator.userAgent || window.navigator.vendor || window.opera,
 			isIOS = /iPhone|iPad|iPod/i.test(sUserAgent),
 			isAndroid = /Android/i.test(sUserAgent),
-			isMobile = /webOS|BlackBerry|IEMobile/i.test(sUserAgent);
+			isMobile = /webOS|BlackBerry|IEMobile|Opera Mini/i.test(sUserAgent);
 
 		_.isMobile = isIOS || isAndroid || isMobile;
 		_.isAndroid = isAndroid;
@@ -321,20 +321,20 @@
 
 			oStyles = window.getComputedStyle(document.documentElement, '') ||
 					  window.getComputedStyle(document.createElement('div'), ''),
-			sPref = (
+			sPre = (
 				cssStyleDeclerationToArray(oStyles).join('').match(/-(moz|ms|webkit)-/) ||
 				(oStyles.OLink === '' && ['', 'o']) ||
 				(oStyles.cssText || '').match(/-(moz|ms|webkit)-/) ||
-				Object.keys(oStyles).join('').match(/(moz|ms|webkit)(?=[A-Z])/) ||
+				Object.keys(oStyles).join(',').match(/,(moz|ms|webkit)(?=[A-Z])/) ||
 				['', '']
 			)[1],
-			sDom = ('WebKit|Moz|MS|O').match(new RegExp('(' + sPref + ')', 'i'))[1];
+			sDom = ('Webkit|Moz|ms|O').match(new RegExp('(' + sPre + ')', 'i'))[1];
 
 		_.prefix =  {
 			dom: sDom,
-			lowercase: sPref,
-			css: sPref ? '-' + sPref + '-' : sPref,
-			js: sPref ? sPref.charAt(0).toUpperCase() + sPref.substr(1) : sPref
+			css: sPre ? '-' + sPre + '-' : sPre,
+			js: sPre,
+			lowercase: sPre
 		};
 	})();
 
