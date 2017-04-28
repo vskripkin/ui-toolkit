@@ -850,7 +850,7 @@
 				else
 				{
 					document.documentElement.scrollTop = _iValue;
-					document.body.scrollTop = _iValue;
+					document.body && (document.body.scrollTop = _iValue);
 				}
 			}
 
