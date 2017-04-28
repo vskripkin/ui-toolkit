@@ -328,7 +328,7 @@
 					'<div style="' + STYLE_INR +'"></div>' + 
 				'</div>');
 			document.write(
-				'<img src="' + IMG_SRC +'" onload="setTimeout((function (that){ return function(){_.globalScrollbar.set(that, \'' + ID + '\')}; })(this), 0)" style="' + STYLE_IMG + '" />');
+				'<img src="' + IMG_SRC +'" onload="setTimeout((function(that){return function(){_.globalScrollbar.set(that, \'' + ID + '\')}})(this),0)" style="' + STYLE_IMG + '" />');
 		})();
 	})();
 
