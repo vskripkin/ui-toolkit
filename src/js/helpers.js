@@ -273,25 +273,37 @@
 			}
 		};
 
-		(function ()
+		_.globalScrollbar.set = function (_nFiredImg)
 		{
-			var ID = _.randomStr(),
-				STYLE = 'position: absolute;' + 
-						'top: -100px;'  + 
-						'left: -100px;' + 
-						'width: 100px;' + 
-						'height: 50px;' + 
-						'overflow: scroll;',
-				nDiv;
+			var nWrp = _nFiredImg.previousElementSibling,
+				nInr = nWrp.children.item(0);
 
-			document.write('<div id="' + ID +'" style="' + STYLE +'"></div>');
-
-			nDiv = document.getElementById(ID);
-
-			_.globalScrollbar._width = nDiv.offsetWidth - nDiv.clientWidth;
+			_.globalScrollbar._width = nWrp.offsetWidth - nInr.offsetWidth;
 			_.globalScrollbar.side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
 
-			nDiv.parentNode.removeChild(nDiv);
+			nWrp.parentNode.removeChild(nWrp);
+			_nFiredImg.parentNode.removeChild(_nFiredImg);
+		};
+
+		(function ()
+		{
+			var STYLE_WRP = 'position: absolute !important;' + 
+							'top: -100px !important;'  + 
+							'left: -100px !important;' + 
+							'width: 100px !important;' + 
+							'height: 50px !important;' + 
+							'overflow: scroll !important;',
+				STYLE_INR = 'display: block !important;' + 
+							'width: 100% !important;' + 
+							'height: 20px !important;',
+				IMG_SRC = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+
+			document.write(
+				'<div style="' + STYLE_WRP +'">' + 
+					'<div style="' + STYLE_INR +'"></div>' + 
+				'</div>' + 
+				'<img src="' + IMG_SRC +'" onload="_.globalScrollbar.set(this)" />'
+			);
 		})();
 	})();
 
