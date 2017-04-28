@@ -270,24 +270,46 @@
 					},
 					this);
 				}
+			},
+
+			set: function (_nFiredImg, _ID, _fCallback)
+			{
+				var nWrp = _nFiredImg.previousElementSibling ||
+							document.getElementById(_ID) ||
+							document.querySelector('#' + _ID) ||
+							window[_ID];
+
+				if (!nWrp)
+				{
+					this.__hide = this.hide;
+					this.hide = this.set.bind(this, _nFiredImg, _ID);
+					return;
+				}
+
+				var nInr =  nWrp.firstElementChild ||
+							nWrp.firstChild ||
+							nWrp.children.item(0);
+
+				this._width = nWrp.offsetWidth - nInr.offsetWidth;
+				this.side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
+
+				nWrp.parentNode.removeChild(nWrp);
+				_nFiredImg.parentNode.removeChild(_nFiredImg);
+
+				if (this.__hide)
+				{
+					this.hide = this.__hide;
+					this.__hide = null;
+
+					this.hide(_fCallback);
+				}
 			}
-		};
-
-		_.globalScrollbar.set = function (_nFiredImg)
-		{
-			var nWrp = _nFiredImg.previousElementSibling,
-				nInr = nWrp.children.item(0);
-
-			_.globalScrollbar._width = nWrp.offsetWidth - nInr.offsetWidth;
-			_.globalScrollbar.side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
-
-			nWrp.parentNode.removeChild(nWrp);
-			_nFiredImg.parentNode.removeChild(_nFiredImg);
 		};
 
 		(function ()
 		{
-			var STYLE_WRP = 'position: absolute !important;' + 
+			var ID = _.randomStr(),
+				STYLE_WRP = 'position: absolute !important;' + 
 							'top: -100px !important;'  + 
 							'left: -100px !important;' + 
 							'width: 100px !important;' + 
@@ -296,14 +318,17 @@
 				STYLE_INR = 'display: block !important;' + 
 							'width: 100% !important;' + 
 							'height: 20px !important;',
+				STYLE_IMG = 'position: absolute !important;' + 
+							'top: -1px;' + 
+							'left: -1px;',
 				IMG_SRC = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 			document.write(
-				'<div style="' + STYLE_WRP +'">' + 
+				'<div id="' + ID + '" style="' + STYLE_WRP +'">' + 
 					'<div style="' + STYLE_INR +'"></div>' + 
-				'</div>' + 
-				'<img src="' + IMG_SRC +'" onload="_.globalScrollbar.set(this)" />'
-			);
+				'</div>');
+			document.write(
+				'<img src="' + IMG_SRC +'" onload="_.globalScrollbar.set(this, ' + ID + ')" style="' + STYLE_IMG + '" />');
 		})();
 	})();
 
