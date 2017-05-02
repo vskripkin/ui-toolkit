@@ -28,6 +28,7 @@
 	};
 	_.unduplicate = function (text)
 	{
+		//     _.isString(text) && text.replace(/(\S+)(?=.*\1)/g, '');
 		return _.isString(text) && text.replace(/(\b\w+\b)(?=.*\b\1\b)/g, '');
 	};
 	_.cleanStr = function (text)
@@ -509,17 +510,23 @@
 	(function ()
 	{
 		var jWindow = $(window),
-			oElemEventIds = {},
+			oElemEventIDs = {},
 			oAllEvents = {},
 
 			eventHandler = function (e)
 			{
-				var nTarget = e.target,
-					sEventId = e.handleObj.namespace,
-					oEvent = oAllEvents[sEventId],
-					nElem = oEvent.elem;
+				var sEventID = e.handleObj.namespace;
 
-				if (nElem !== nTarget && !nElem.contains(nTarget))
+				if (!sEventID)
+				{
+					return false;
+				}
+
+				var nTarget = e.target,
+					oEvent = oAllEvents[sEventID],
+					nElem = oEvent && oEvent.elem;
+
+				if (nElem && nElem !== nTarget && !nElem.contains(nTarget))
 				{
 					_.offOthers(oEvent)
 
@@ -530,40 +537,40 @@
 				}
 			},
 
-			offOthersEvent = function (_oEvent, _sElemId, _aElemEvents)
+			offOthersEvent = function (_oEvent, _sElemID, _aElemEvents)
 			{
-				var sEventId = _oEvent.id,
-					sElemId = _sElemId || _oEvent.elem.getAttribute('data-js-id'),
-					aElemEvents = _aElemEvents || oElemEventIds[sElemId],
-					index = aElemEvents.indexOf(sEventId);
+				var sEventID = _oEvent.id,
+					sElemID = _sElemID || _oEvent.elem.getAttribute('data-js-id'),
+					aElemEvents = _aElemEvents || oElemEventIDs[sElemID],
+					index = aElemEvents.indexOf(sEventID);
 
 				aElemEvents.splice(index, 1);
-				delete oAllEvents[sEventId];
+				delete oAllEvents[sEventID];
 
-				jWindow.off(_oEvent.name + '.' + sEventId);
+				jWindow.off(_oEvent.name + '.' + sEventID);
 
 				return true;
 			};
 
 		_.onOthers = function (_sEvents, _nElem, _fCallback)
 		{
-			if (!_.isElement(_nElem) || !_.isString(_sEvents) || !_.isFunction(_fCallback))
+			if (!_.isString(_sEvents) || !_.isElement(_nElem) || !_.isFunction(_fCallback))
 			{
 				return false;
 			}
 
-			var sElemId = _nElem.getAttribute('data-js-id'),
-				aElemEventIds = oElemEventIds[sElemId],
+			var sElemID = _nElem.getAttribute('data-js-id'),
+				aElemEventIDs = oElemEventIDs[sElemID],
 				oEventsMap = {};
 
-			if (!_.isUndefined(aElemEventIds))
+			if (!_.isUndefined(aElemEventIDs))
 			{
-				var sEventId, oEvent, i, L;
+				var sEventID, oEvent, i, L;
 
-				for (i = 0, L = aElemEventIds.length; i < L; i++)
+				for (i = 0, L = aElemEventIDs.length; i < L; i++)
 				{
-					sEventId = aElemEventIds[i];
-					oEvent = oAllEvents[sEventId];
+					sEventID = aElemEventIDs[i];
+					oEvent = oAllEvents[sEventID];
 
 					if (_sEvents.indexOf(oEvent.name) > -1 && oEvent.callback === _fCallback)
 					{
@@ -579,33 +586,31 @@
 				return false;
 			}
 
-			if (sElemId === null)
+			if (!sElemID)
 			{
-				sElemId = _.randomStr();
-				_nElem.setAttribute('data-js-id', sElemId);
+				sElemID = _.randomStr();
+				_nElem.setAttribute('data-js-id', sElemID);
 			}
 
-			aElemEventIds = oElemEventIds[sElemId];
-
-			if (_.isUndefined(aElemEventIds))
+			if (!(aElemEventIDs = oElemEventIDs[sElemID]))
 			{
-				aElemEventIds = oElemEventIds[sElemId] = [];
+				aElemEventIDs = oElemEventIDs[sElemID] = [];
 			}
 
 			_sEvents.split(' ').forEach(function (_sEvent)
 			{
-				var sEventId = _.randomStr();
+				var sEventID = _.randomStr();
 
-				aElemEventIds.push(sEventId);
+				aElemEventIDs.push(sEventID);
 
-				oAllEvents[sEventId] = {
-					id: sEventId,
+				oAllEvents[sEventID] = {
+					id: sEventID,
 					elem: _nElem,
 					name: _sEvent,
 					callback: _fCallback
 				};
 
-				oEventsMap[_sEvent + '.' + sEventId] = eventHandler;
+				oEventsMap[_sEvent + '.' + sEvetnID] = eventHandler;
 			});
 
 			//if it was inited on some event, the event should be fired on window first
@@ -619,62 +624,62 @@
 
 		_.offOthers = function (_xEvents, _nElem, _fCallback)
 		{
-			var sElemId = null;
+			var sElemID = null;
 
 			if (!_.isString(_xEvents))
 			{
-				sElemId = _xEvents.elem.getAttribute('data-js-id');
-				offOthersEvent(_xEvents, sElemId);
+				sElemID = _xEvents.elem.getAttribute('data-js-id');
+				offOthersEvent(_xEvents, sElemID);
 			}
 			else
 			{
-				sElemId = _nElem.getAttribute('data-js-id');
+				sElemID = _nElem.getAttribute('data-js-id');
 
-				if (sElemId === null)
+				if (sElemID === null)
 				{
 					return false;
 				}
 
 				var sEvents = _.cleanStr(_xEvents),
-					aElemEventIds = oElemEventIds[sElemId],
+					aElemEventIDs = oElemEventIDs[sElemID],
 					oEvent, i, L;
 
 				if (!_.isUndefined(_fCallback))
 				{
-					for (i = 0, L = aElemEventIds.length; i < L; i++)
+					for (i = 0, L = aElemEventIDs.length; i < L; i++)
 					{
-						oEvent = oAllEvents[aElemEventIds[i]];
+						oEvent = oAllEvents[aElemEventIDs[i]];
 
 						if (sEvents.indexOf(oEvent.name) > -1 && oEvent.callback === _fCallback)
 						{
-							offOthersEvent(oEvent, sElemId, aElemEventIds);
+							offOthersEvent(oEvent, sElemID, aElemEventIDs);
 							break;
 						}
 					}
 				}
 				else if (!_.isUndefined(sEvents))
 				{
-					aElemEventIds && aElemEventIds.filter(function (_sEventId)
+					aElemEventIDs && aElemEventIDs.filter(function (_sEventID)
 					{
-						return sEvents.indexOf(oAllEvents[_sEventId].name) > -1;
+						return sEvents.indexOf(oAllEvents[_sEventID].name) > -1;
 					})
-					.forEach(function (_sEventId)
+					.forEach(function (_sEventID)
 					{
-						offOthersEvent(oAllEvents[_sEventId], sElemId, aElemEventIds);
+						offOthersEvent(oAllEvents[_sEventID], sElemID, aElemEventIDs);
 					});
 				}
 				else
 				{
-					while (aElemEventIds.length)
+					while (aElemEventIDs.length)
 					{
-						offOthersEvent(oAllEvents[aElemEventIds[0]], sElemId, aElemEventIds);
+						offOthersEvent(oAllEvents[aElemEventIDs[0]], sElemID, aElemEventIDs);
 					}
 				}
 			}
 
-			if (oElemEventIds[sElemId] && oElemEventIds[sElemId].length === 0)
+			if (oElemEventIDs[sElemID] && oElemEventIDs[sElemID].length === 0)
 			{
-				delete oElemEventIds[sElemId];
+				delete oElemEventIDs[sElemID];
 			}
 
 			return true;
