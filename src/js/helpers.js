@@ -610,7 +610,7 @@
 					callback: _fCallback
 				};
 
-				oEventsMap[_sEvent + '.' + sEvetnID] = eventHandler;
+				oEventsMap[_sEvent + '.' + sEventID] = eventHandler;
 			});
 
 			//if it was inited on some event, the event should be fired on window first
