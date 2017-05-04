@@ -1,4 +1,4 @@
-(function ($)
+(function ($, _, undefined)
 {
 	'use strict';
 
@@ -42,39 +42,59 @@
 
 			nContainer = (function ()
 			{
-				var sContId = 'ui-popup-container',
-					nDiv;
+				var ID = 'ui-popup-container',
+					nDiv,
+
+					setup = function (_nDiv)
+					{
+						_nDiv.style.display = 'none';
+						_nDiv.className = Class.container;
+
+						$(_nDiv).on('click', function (e)
+						{
+							if (e.target === this)
+							{
+								_clickOnCont();
+							}
+						})
+						.on('click', '.' + Class.closeJS, function ()
+						{
+							if (aQueue.length)
+							{
+								aQueue[aQueue.length - 1].close();
+							}
+						});
+					};
 
 				if (document.readyState === 'loading' || document.readyState === 'uninitialized')
 				{
-					document.write('<div id="' + sContId + '"></div>');
-					nDiv = document.getElementById(sContId);
+					document.write('<div id="' + ID + '"></div>');
+					nDiv =  document.getElementById(ID) ||
+							document.querySelector('#' + ID) ||
+							window[ID];
 				}
 				else
 				{
 					nDiv = document.createElement('div');
-					nDiv.id = sContId;
+					nDiv.id = ID;
 
 					document.body.appendChild(nDiv);
 				}
 
-				nDiv.style.display = 'none';
-				nDiv.className = Class.container;
+				if (nDiv)
+				{
+					setup(nDiv);
+				}
+				else
+				{
+					$(document).ready(function ()
+					{
+						var nDiv = document.getElementById(ID);
+						nContainer = nDiv;
 
-				$(nDiv).click(function (e)
-				{
-					if (e.target === this)
-					{
-						_clickOnCont();
-					}
-				})
-				.on('click', '.' + Class.closeJS, function ()
-				{
-					if (aQueue.length)
-					{
-						aQueue[aQueue.length - 1].close();
-					}
-				});
+						setup(nDiv);
+					});
+				}
 
 				return nDiv;
 			})(),
@@ -697,4 +717,4 @@
 		};
 	})();
 
-})(jQuery);
+})(jQuery, _);

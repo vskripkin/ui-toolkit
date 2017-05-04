@@ -273,9 +273,19 @@
 				}
 			},
 
-			set: function (_nFiredImg, _ID, _fCallback)
+			_set: function (_nFiredImg, _ID)
 			{
-				var nWrp = _nFiredImg.previousElementSibling ||
+				var that = this;
+
+				setTimeout(function ()
+				{
+					that.set(_nFiredImg, _ID);
+				}, 0);
+			},
+			set: function (_nFiredImg, _ID, _sRun, _fCallback)
+			{
+				var nWrp =  _nFiredImg.parentElement ||
+							_nFiredImg.parentNode ||
 							document.getElementById(_ID) ||
 							document.querySelector('#' + _ID) ||
 							window[_ID];
@@ -283,7 +293,7 @@
 				if (!nWrp)
 				{
 					this.__hide = this.hide;
-					this.hide = this.set.bind(this, _nFiredImg, _ID);
+					this.hide = this.set.bind(this, _nFiredImg, _ID, 'hide');
 					return;
 				}
 
@@ -302,7 +312,10 @@
 					this.hide = this.__hide;
 					this.__hide = null;
 
-					this.hide(_fCallback);
+					if (_sRun === 'hide')
+					{
+						this.hide(_fCallback);
+					}
 				}
 			}
 		};
@@ -327,9 +340,8 @@
 			document.write(
 				'<div id="' + ID + '" style="' + STYLE_WRP +'">' + 
 					'<div style="' + STYLE_INR +'"></div>' + 
+					'<img src="' + IMG_SRC +'" onload="_.globalScrollbar._set(this, \'' + ID + '\')" style="' + STYLE_IMG + '" />' + 
 				'</div>');
-			document.write(
-				'<img src="' + IMG_SRC +'" onload="setTimeout((function(that){return function(){_.globalScrollbar.set(that, \'' + ID + '\')}})(this),0)" style="' + STYLE_IMG + '" />');
 		})();
 	})();
 
