@@ -290,7 +290,7 @@
 							document.querySelector('#' + _ID) ||
 							window[_ID];
 
-				if (!nWrp)
+				if (!nWrp || (!nWrp.parentElement && !nWrp.parentNode))
 				{
 					this.__hide = this.hide;
 					this.hide = this.set.bind(this, _nFiredImg, _ID, 'hide');
@@ -304,9 +304,6 @@
 				this._width = nWrp.offsetWidth - nInr.offsetWidth;
 				this.side = document.documentElement.getAttribute('dir') === 'rtl' ? 'left' : 'right';
 
-				nWrp.parentNode.removeChild(nWrp);
-				_nFiredImg.parentNode.removeChild(_nFiredImg);
-
 				if (this.__hide)
 				{
 					this.hide = this.__hide;
@@ -317,6 +314,8 @@
 						this.hide(_fCallback);
 					}
 				}
+
+				(nWrp.parentElement || nWrp.parentNode).removeChild(nWrp);
 			}
 		};
 
