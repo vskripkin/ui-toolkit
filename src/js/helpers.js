@@ -288,9 +288,12 @@
 							_nFiredImg.parentNode ||
 							document.getElementById(_ID) ||
 							document.querySelector('#' + _ID) ||
-							window[_ID];
+							window[_ID],
+					nWrpParent = nWrp &&
+								(nWrp.parentElement ||
+								 nWrp.parentNode);
 
-				if (!nWrp || (!nWrp.parentElement && !nWrp.parentNode))
+				if (!nWrp || !nWrp.offsetWidth)
 				{
 					this.__hide = this.hide;
 					this.hide = this.set.bind(this, _nFiredImg, _ID, 'hide');
@@ -315,7 +318,16 @@
 					}
 				}
 
-				(nWrp.parentElement || nWrp.parentNode).removeChild(nWrp);
+				if (nWrpParent)
+				{
+					nWrpParent.removeChild(nWrp);
+				}
+				else
+				{
+					nWrp.outerHTML = '';
+				}
+
+				nWrp = nWrpParent = nInr = _nFiredImg = null;
 			}
 		};
 
