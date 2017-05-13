@@ -40,7 +40,7 @@
 			iAnimTimeout = 1000/60,
 			jWindow = $(window),
 
-			nContainer = (function ()
+			nContainer = (function createContainer ()
 			{
 				var ID = 'ui-popup-container',
 					nDiv,
@@ -73,7 +73,7 @@
 							document.querySelector('#' + ID) ||
 							window[ID];
 				}
-				else
+				else if (document.body)
 				{
 					nDiv = document.createElement('div');
 					nDiv.id = ID;
@@ -87,12 +87,21 @@
 				}
 				else
 				{
-					$(document).ready(function ()
+					$(function ()
 					{
-						var nDiv = document.getElementById(ID);
-						nContainer = nDiv;
+						var nDiv =  document.getElementById(ID) ||
+									document.querySelector('#' + ID) ||
+									window[ID];
 
-						setup(nDiv);
+						if (nDiv)
+						{
+							nContainer = nDiv;
+							setup(nDiv);
+						}
+						else
+						{
+							createContainer();
+						}
 					});
 				}
 
