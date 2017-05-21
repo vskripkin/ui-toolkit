@@ -397,8 +397,8 @@
 					iLeft < 0 && (iLeft = oBounds.left + _nElem.clientWidth  / 2);
 				}
 
-				var iX = (oBounds.width  - iLeft > iLeft ? oBounds.width  - iLeft : iLeft),
-					iY = (oBounds.height - iTop  > iTop  ? oBounds.height - iTop  : iTop),
+				var iX = ((oBounds.width  - iLeft) > iLeft) ? (oBounds.width  - iLeft) : iLeft,
+					iY = ((oBounds.height - iTop)  > iTop)  ? (oBounds.height - iTop)  : iTop,
 					iRadius = Math.sqrt(iX * iX + iY * iY),
 
 					oStyle = {
