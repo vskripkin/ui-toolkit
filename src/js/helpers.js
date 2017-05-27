@@ -391,6 +391,7 @@
 				catch (e)
 				{
 					Arr = [];
+					_oStyles || (_oStyles = {});
 
 					for (var i = 0, L = _oStyles.length; i < L; i++)
 					{
