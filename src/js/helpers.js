@@ -161,6 +161,7 @@
 		_.isMobile = isIOS || isAndroid || isMobile;
 		_.isAndroid = isAndroid;
 		_.isIOS = isIOS;
+		_.isTouchable = ('ontouchstart' in window) || (window.DocumentTouch && document instanceof DocumentTouch) || window.navigator.maxTouchPoints;
 	})(_);
 
 	/* to define width of scrollbar */
@@ -893,7 +894,11 @@
 		{
 			if (!_.isUndefined(_iValue))
 			{
-				if (document.scrollingElement)
+				if (window.scrollTo)
+				{
+					window.scrollTo(0, _iValue);
+				}
+				else if (document.scrollingElement)
 				{
 					document.scrollingElement.scrollTop = _iValue;
 				}
@@ -904,7 +909,7 @@
 				}
 			}
 
-			return window.pageYOffset;
+			return window.pageYOffset || (document.scrollingElement && document.scrollingElement.scrollTop) || document.documentElement.scrollTop || 0;
 		};
 	})();
 

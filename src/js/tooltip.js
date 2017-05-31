@@ -344,8 +344,18 @@
 				{
 					sEventIn  = sTrigger === 'hover' ? 'mouseenter' : 'focus';
 					sEventOut = sTrigger === 'hover' ? 'mouseleave' : 'blur';
-					_nTarget._jQ().on(sEventIn  + '.' + this.type, this.options.selector, this.show.bind(this));
-					_nTarget._jQ().on(sEventOut + '.' + this.type, this.options.selector, this.hide.bind(this));
+
+					if (_.isTouchable && sEventIn === 'mouseenter')
+					{
+						this.options.close || (this.options.close = 5);
+
+						_nTarget._jQ().on('touchstart.' + this.type, this.options.selector, this.show.bind(this));
+					}
+					else
+					{
+						_nTarget._jQ().on(sEventIn  + '.' + this.type, this.options.selector, this.show.bind(this));
+						_nTarget._jQ().on(sEventOut + '.' + this.type, this.options.selector, this.hide.bind(this));
+					}
 				}
 				else
 				{
