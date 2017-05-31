@@ -347,7 +347,7 @@
 
 					if (_.isTouchable && sEventIn === 'mouseenter')
 					{
-						this.options.close || (this.options.close = 2.5);
+						this.options.close || (this.options.close = 1);
 
 						_nTarget._jQ().on('touchstart.' + this.type, this.options.selector, this.show.bind(this));
 					}
