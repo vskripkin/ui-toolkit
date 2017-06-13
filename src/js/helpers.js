@@ -2,6 +2,8 @@
 {
 	'use strict';
 
+	_.isIE = !!(document.all && document.compatMode) || window.navigator.msPointerEnabled;
+
 	_.isNode = function (obj)
 	{
 		return obj && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string';
@@ -425,11 +427,15 @@
 	/* colored console logging */
 	(function ()
 	{
-		var Console = window.console || {},
-			OriginalLog = 'log' in Console ? Console.log : function () {},
-			OriginalTrace = 'trace' in Console ? Console.trace : OriginalLog,
-			OriginalGroupCollapsed = 'groupCollapsed' in Console ? Console.groupCollapsed : OriginalLog,
-			OriginalGroupEnd = 'groupEnd' in Console ? Console.groupEnd : function (){};
+		var isDebug = true,
+			Console = window.console || {},
+			ConsoleProto = Console.constructor && Console.constructor.prototype || Console,
+			OriginalLog = 'log' in ConsoleProto ? ConsoleProto.log : function (){},
+			OriginalWarn = 'warn' in ConsoleProto ? ConsoleProto.warn : function (){},
+			OriginalError = 'error' in ConsoleProto ? ConsoleProto.error : function (){},
+			OriginalTrace = 'trace' in ConsoleProto ? ConsoleProto.trace : function (){},
+			OriginalGroupCollapsed = 'groupCollapsed' in ConsoleProto ? ConsoleProto.groupCollapsed : OriginalLog,
+			OriginalGroupEnd = 'groupEnd' in ConsoleProto ? ConsoleProto.groupEnd : function (){};
 
 		/**
 		 * Example input:
@@ -437,48 +443,54 @@
 		 *		action: {
 		 *			css: ['color: #247EB2; background: #F1F1F1; font-weight: bold; text-transform: uppercase;',
 		 *				  'color: #247EB2; background: #F1F1F1;'],
-		 *			build: function (_aMessages)
+		 *			format: function (_aMessages)
 		 *			{
 		 *				return ['%c[%s]%c %s', this.css[0], _aMessages.shift(), this.css[1]].concat(_aMessages);
 		 *			}
 		 *		}
 		 *	}
 		 */
-		_.console = function (_oRequests, _options)
+		_.Console = function (_isDebug, _oRequests)
 		{
-			var that = this,
-				sName;
+			this.debug(_isDebug);
 
-			this.debug(_options.debug);
-
-			for (sName in _oRequests)
+			for (var sName in _oRequests)
 			{
-				(function (_sName, _oParam)
+				this[sName] = (function (_sName)
 				{
-					that[_sName] = function ()
+					return function ()
 					{
 						var aMessages = Array.prototype.slice.call(arguments),
-							aArguments = that[_sName].build(aMessages);
+							aFormattedMsg = _.isIE ? aMessages : this[_sName].format(aMessages);
 
-						return this.build(aArguments, that[_sName].trace);
+						return this.produceFunc(aFormattedMsg, this[_sName].trace);
 					};
+				})(sName);
 
-					that[_sName].build = _oParam.build;
-					that[_sName].css = _oParam.css;
-					that[_sName].trace = _oParam.trace;
-
-				})(sName, _oRequests[sName]);
+				this[sName].format = _oRequests[sName].format;
+				this[sName].css   = _oRequests[sName].css;
+				this[sName].trace = _oRequests[sName].trace;
 			}
 
 			return this;
 		};
+		_.Console.debug = function (_isDebug)
+		{
+			if (_.isUndefined(_isDebug))
+			{
+				return isDebug;
+			}
 
-		_.console.prototype = {
-			_debug: true,
+			return (isDebug = _isDebug);
+		};
+
+		_.Console.prototype = {
+			constructor: _.Console,
+			debug: _.Console.debug,
 
 			log: function ()
 			{
-				if (!this._debug)
+				if (!this.debug())
 				{
 					return function (){};
 				}
@@ -489,22 +501,9 @@
 
 				return Function.prototype.bind.apply(OriginalLog, aMessages);
 			},
-			error: function ()
-			{
-				if (!this._debug)
-				{
-					return function (){};
-				}
-
-				var aMessages = Array.prototype.slice.call(arguments);
-
-				aMessages.unshift(Console);
-
-				return Function.prototype.bind.apply(Console.error, aMessages);
-			},
 			warn: function ()
 			{
-				if (!this._debug)
+				if (!this.debug())
 				{
 					return function (){};
 				}
@@ -513,12 +512,25 @@
 
 				aMessages.unshift(Console);
 
-				return Function.prototype.bind.apply(Console.warn, aMessages);
+				return Function.prototype.bind.apply(OriginalWarn, aMessages);
+			},
+			error: function ()
+			{
+				if (!this.debug())
+				{
+					return function (){};
+				}
+
+				var aMessages = Array.prototype.slice.call(arguments);
+
+				aMessages.unshift(Console);
+
+				return Function.prototype.bind.apply(OriginalError, aMessages);
 			},
 
-			build: function (_aArguments, _bTrace)
+			produceFunc: function (_aArguments, _bTrace)
 			{
-				if (!this._debug)
+				if (!this.debug())
 				{
 					return function (){};
 				}
@@ -536,18 +548,6 @@
 				}
 
 				return Function.prototype.bind.apply(OriginalLog, _aArguments);
-			},
-
-			debug: function (_bOn)
-			{
-				if (_bOn)
-				{
-					this._debug = true;
-				}
-				else
-				{
-					this._debug = false;
-				}
 			}
 		};
 	})();

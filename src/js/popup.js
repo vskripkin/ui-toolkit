@@ -267,7 +267,7 @@
 					this.timeout = null;
 				}
 
-				if (this.options.beforeClose)
+				if (_.isFunction(this.options.beforeClose))
 				{
 					this.options.beforeClose.call(this);
 				}
