@@ -389,7 +389,11 @@
 
 						var oClassList = this.dom.close.classList;
 							oClassList.add(Class.closeJS);
-							oClassList.add.apply(oClassList, Class.closeCSS.split(' '));
+
+						_.forEach(Class.closeCSS.split(' '), function (_sClassName)
+						{
+							oClassList.add(_sClassName);
+						});
 					}
 
 					if (this.options.closeBtnInside)
@@ -598,7 +602,10 @@
 
 						if (oButton.className)
 						{
-							oClassList.add.apply(oClassList, oButton.className.split(' '));
+							_.forEach(oButton.className.split(' '), function (_sClassName)
+							{
+								oClassList.add(_sClassName);
+							});
 						}
 						if (oButton.closeOnClick)
 						{
