@@ -340,7 +340,6 @@
 		.@{grid}
 		{
 			display: flex;
-			flex: 0 1 auto;
 			flex-flow: row nowrap;
 
 			position: relative;
@@ -350,14 +349,23 @@
 
 			.@{grid}, &.@{grid}--full
 			{
+				min-width: 100%;
 				max-width: none;
+				width: auto;
+			}
+			&.@{grid}--inline
+			{
+				display: inline-flex;
+				min-width: 0;
+				max-width: 100%;
 				width: auto;
 			}
 		}
 		.@{item}
 		{
-			position: relative;
 			flex: 1 1 auto;
+
+			position: relative;
 			min-width: auto;
 			max-width: 100%;
 			width: auto !important;
