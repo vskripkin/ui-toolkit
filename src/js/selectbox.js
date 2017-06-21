@@ -78,7 +78,7 @@
 				jTemplate = $('<div class="' + this.classes.select + '" id="' + this.id + '">')
 							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
 								  '<span  class="' + Class.value + '"></span>' +
-								  '<span  class="' + Class.arrow +'"></span>')
+								  '<span  class="' + Class.arrow +'">' + this.options.arrow + '</span>')
 							.insertAfter(this.select)
 							.append(this.select);
 			}
