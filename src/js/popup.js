@@ -13,8 +13,11 @@
 			inner: 'ui-popup__content-inner',
 			title: 'ui-popup__content-title',
 			actions: 'ui-popup__content-actions',
-			closeCSS: 'ui-popup__close',
-			closeJS: 'js-close'
+			close: 'ui-popup__close js-close',
+
+			js_ok: '.js-ok',
+			js_cancel: '.js-cancel',
+			js_close: '.js-close'
 		},
 
 		_getTitleHTML = function (_xContent)
@@ -37,7 +40,7 @@
 				case _.isString(_xContent):          return _xContent;            break;
 				case _.isFunction(_xContent):        return _xContent('content'); break;
 				case _.isArray(_xContent):           return _xContent.join(' ');  break;
-				case _xContent && _xContent.message: return _xContent.message;    break;
+				case _xContent && _xContent.content: return _xContent.content;    break;
 				case !_.isNaN(_xContent):            return _xContent;            break;
 			}
 
@@ -69,7 +72,7 @@
 								_clickOnCont();
 							}
 						})
-						.on('click', '.' + Class.closeJS, function ()
+						.on('click', Class.js_close, function ()
 						{
 							if (aQueue.length)
 							{
@@ -420,9 +423,8 @@
 						this.dom.close = this.dom.wrapper.lastElementChild;
 
 						var oClassList = this.dom.close.classList;
-							oClassList.add(Class.closeJS);
 
-						_.forEach(Class.closeCSS.split(' '), function (_sClassName)
+						_.forEach(Class.close.split(' '), function (_sClassName)
 						{
 							oClassList.add(_sClassName);
 						});
@@ -617,9 +619,13 @@
 								oClassList.add(_sClassName);
 							});
 						}
+						if (oButton.class_js)
+						{
+							oClassList.add(oButton.class_js);
+						}
 						if (oButton.closeOnClick)
 						{
-							oClassList.add(Class.closeJS);
+							oClassList.add(Class.js_close.slice(1));
 						}
 						if (oButton.callback)
 						{
@@ -664,8 +670,10 @@
 		$.dialog.DEFAULTS = Dialog.DEFAULTS;
 		$.dialog.Constructor = Dialog;
 
-		window._alert = function (_xContent, _fCallback, _sOk)
+		window._alert = function (_xContent, _options)
 		{
+			_options || (_options = {});
+
 			if (_.isMobile)
 			{
 				var sTitleHTML = _getTitleHTML(_xContent),
@@ -676,28 +684,34 @@
 						sConnect +
 						(sContentHTML && (sContentHTML.outerHTML || sContentHTML) || ''));
 
-				if (_fCallback)
+				if (_options.callback)
 				{
-					_fCallback();
+					_options.callback();
 				}
 
 				return null;
 			}
 
-			$.dialog(_xContent, {
-				buttons: {
-					text: _sOk || Dialog.DEFAULTS.OK,
-					className: 'js-ok btn btn-primary',
-					focus: true,
-				},
-				popup: {
-					className: TYPE + '--alert',
-					beforeClose: _fCallback
-				}
-			});
+			var options = {
+					buttons: {
+						text: Dialog.DEFAULTS.OK,
+						class_js: Class.js_ok.slice(1),
+						className: 'btn btn-primary',
+						focus: true
+					},
+					popup: {
+						className: TYPE + '--alert'
+					}
+				};
+
+			$.extend(true, options, _options);
+
+			$.dialog(_xContent, options);
 		};
-		window._confirm = function (_xContent, _fConfirmed, _fRejected, _sOk, _sCancel)
+		window._confirm = function (_xContent, _options)
 		{
+			_options || (_options = {});
+
 			if (_.isMobile)
 			{
 				var sTitleHTML = _getTitleHTML(_xContent),
@@ -709,37 +723,41 @@
 
 				if (bConfirmed)
 				{
-					_fConfirmed();
+					_options.confirmed && _options.confirmed();
 				}
 				else
 				{
-					_fRejected();
+					_options.rejected && _options.rejected();
 				}
 
 				return null;
 			}
 
-			$.dialog(_xContent, {
-				buttons: [
-					{
-						text: _sOk || Dialog.DEFAULTS.OK,
-						className: 'js-ok btn btn-primary',
-						focus: true,
-						callback: _fConfirmed
-					},
-					{
-						text: _sCancel || Dialog.DEFAULTS.Cancel,
-						className: 'js-cancel btn btn-default',
-						callback: _fRejected
+			var options = {
+					buttons: [
+						{
+							text: Dialog.DEFAULTS.OK,
+							class_js: Class.js_ok.slice(1),
+							className: 'btn btn-primary',
+							focus: true
+						},
+						{
+							text: Dialog.DEFAULTS.Cancel,
+							class_js: Class.js_cancel.slice(1),
+							className: 'btn btn-default'
+						}
+					],
+					popup: {
+						className: TYPE + '--confirm',
+						closeOnBgClick: false,
+						enableEscapeKey: false,
+						showCloseBtn: false
 					}
-				],
-				popup: {
-					className: TYPE + '--confirm',
-					closeOnBgClick: false,
-					enableEscapeKey: false,
-					showCloseBtn: false,
-				}
-			});
+				};
+
+			$.extend(true, options, _options);
+
+			$.dialog(_xContent, options);
 		};
 	})();
 
