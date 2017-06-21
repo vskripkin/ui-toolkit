@@ -17,6 +17,18 @@
 			closeJS: 'js-close'
 		},
 
+		_getTitleHTML = function (_xContent)
+		{
+			switch (true)
+			{
+				case _.isArray(_xContent):         return _xContent.shift();  break;
+				case _.isFunction(_xContent):      return _xContent('title'); break;
+				case _xContent && _xContent.title: return _xContent.title;    break;
+			}
+
+			return false;
+		},
+
 		_getContent = function (_xContent)
 		{
 			switch (true)
@@ -360,16 +372,36 @@
 
 			setContent: function (_xContent)
 			{
+				this.dom.content._jQ().html('');
+
 				if (this.options.beforeSetContent)
 				{
 					this.options.beforeSetContent.call(this);
 				}
 
-				this.dom.content._jQ().html('');
 				this.dom.content.insertAdjacentHTML('afterbegin', '<div class="' + Class.inner + '"></div>');
 				this.dom.inner = this.dom.content.firstElementChild;
 
-				var xContent = _getContent(_xContent);
+				var xTitle = _getTitleHTML(_xContent) || this.options.title,
+					xContent = _getContent(_xContent);
+
+				if (xTitle)
+				{
+					var nDiv = document.createElement('div');
+
+					nDiv.className = Class.title;
+
+					if (_.isNode(xTitle))
+					{
+						nDiv.appendChild(xTitle);
+					}
+					else
+					{
+						nDiv.insertAdjacentHTML('afterbegin', xTitle);
+					}
+
+					this.dom.inner.appendChild(nDiv);
+				}
 
 				if (_.isNode(xContent))
 				{
@@ -377,7 +409,7 @@
 				}
 				else
 				{
-					this.dom.inner.insertAdjacentHTML('afterbegin', xContent);
+					this.dom.inner.insertAdjacentHTML('beforeend', xContent);
 				}
 
 				if (this.options.showCloseBtn)
@@ -506,18 +538,6 @@
 			return options;
 		},
 
-		_getTitleHTML = function (_xContent)
-		{
-			switch (true)
-			{
-				case _.isArray(_xContent):         return _xContent.shift();  break;
-				case _.isFunction(_xContent):      return _xContent('title'); break;
-				case _xContent && _xContent.title: return _xContent.title;    break;
-			}
-
-			return false;
-		},
-
 		Dialog = function (_xContent, _options)
 		{
 			this.buttons =
@@ -565,19 +585,9 @@
 
 			setContent: function (_xContent)
 			{
-				//get title first, because _xContent may be an array, where [0] is title
-				var sTitleHTML = _getTitleHTML(_xContent),
-					oPopupDom = this.popup.dom;
+				var oPopupDom = this.popup.dom;
 
 				this.popup.setContent(_xContent);
-
-				if (sTitleHTML)
-				{
-					oPopupDom.content.insertAdjacentHTML('afterbegin', '<div>' + sTitleHTML + '</div>');
-					oPopupDom.title = oPopupDom.content.firstElementChild;
-
-					oPopupDom.title.classList.add(Class.title)
-				}
 
 				if (this.options.buttons.length)
 				{
