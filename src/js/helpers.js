@@ -428,14 +428,13 @@
 	(function ()
 	{
 		var isDebug = true,
-			Console = window.console || {},
-			ConsoleProto = Console.constructor && Console.constructor.prototype || Console,
-			OriginalLog = 'log' in ConsoleProto ? ConsoleProto.log : function (){},
-			OriginalWarn = 'warn' in ConsoleProto ? ConsoleProto.warn : function (){},
-			OriginalError = 'error' in ConsoleProto ? ConsoleProto.error : function (){},
-			OriginalTrace = 'trace' in ConsoleProto ? ConsoleProto.trace : function (){},
-			OriginalGroupCollapsed = 'groupCollapsed' in ConsoleProto ? ConsoleProto.groupCollapsed : OriginalLog,
-			OriginalGroupEnd = 'groupEnd' in ConsoleProto ? ConsoleProto.groupEnd : function (){};
+			OrigConsole = window.console || {},
+			OriginalLog = 'log' in OrigConsole ? OrigConsole.log : _.noop,
+			OriginalWarn = 'warn' in OrigConsole ? OrigConsole.warn : _.noop,
+			OriginalError = 'error' in OrigConsole ? OrigConsole.error : _.noop,
+			OriginalTrace = 'trace' in OrigConsole ? OrigConsole.trace : _.noop,
+			OriginalGroupCollapsed = 'groupCollapsed' in OrigConsole ? OrigConsole.groupCollapsed : OriginalLog,
+			OriginalGroupEnd = 'groupEnd' in OrigConsole ? OrigConsole.groupEnd : _.noop;
 
 		/**
 		 * Example input:
@@ -468,7 +467,7 @@
 				})(sName);
 
 				this[sName].format = _oRequests[sName].format;
-				this[sName].css   = _oRequests[sName].css;
+				this[sName].css = _oRequests[sName].css;
 				this[sName].trace = _oRequests[sName].trace;
 			}
 
@@ -492,12 +491,12 @@
 			{
 				if (!this.debug())
 				{
-					return function (){};
+					return _.noop;
 				}
 
 				var aMessages = Array.prototype.slice.call(arguments);
 
-				aMessages.unshift(Console);
+				aMessages.unshift(OrigConsole);
 
 				return Function.prototype.bind.apply(OriginalLog, aMessages);
 			},
@@ -505,12 +504,12 @@
 			{
 				if (!this.debug())
 				{
-					return function (){};
+					return _.noop;
 				}
 
 				var aMessages = Array.prototype.slice.call(arguments);
 
-				aMessages.unshift(Console);
+				aMessages.unshift(OrigConsole);
 
 				return Function.prototype.bind.apply(OriginalWarn, aMessages);
 			},
@@ -518,36 +517,36 @@
 			{
 				if (!this.debug())
 				{
-					return function (){};
+					return _.noop;
 				}
 
 				var aMessages = Array.prototype.slice.call(arguments);
 
-				aMessages.unshift(Console);
+				aMessages.unshift(OrigConsole);
 
 				return Function.prototype.bind.apply(OriginalError, aMessages);
 			},
 
-			produceFunc: function (_aArguments, _bTrace)
+			produceFunc: function (_args, _bTrace)
 			{
 				if (!this.debug())
 				{
-					return function (){};
+					return _.noop;
 				}
 
-				_aArguments.unshift(Console);
+				_args.unshift(OrigConsole);
 
 				if (_bTrace)
 				{
 					return function ()
 					{
-						Function.prototype.bind.apply(OriginalGroupCollapsed, _aArguments)();
-						OriginalTrace.call(Console, 'stack');
-						OriginalGroupEnd.call(Console);
+						Function.prototype.bind.apply(OriginalGroupCollapsed, _args)();
+						OriginalTrace.call(OrigConsole, 'stack');
+						OriginalGroupEnd.call(OrigConsole);
 					};
 				}
 
-				return Function.prototype.bind.apply(OriginalLog, _aArguments);
+				return Function.prototype.bind.apply(OriginalLog, _args);
 			}
 		};
 	})();
