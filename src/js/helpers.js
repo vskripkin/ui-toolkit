@@ -541,6 +541,12 @@
 					return function ()
 					{
 						Function.prototype.bind.apply(OriginalGroupCollapsed, _args)();
+
+						if (arguments.length)
+						{
+							OriginalLog.apply(OrigConsole, arguments);
+						}
+
 						OriginalTrace.call(OrigConsole, 'stack');
 						OriginalGroupEnd.call(OrigConsole);
 					};
