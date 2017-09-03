@@ -159,7 +159,17 @@
 		{
 			#ui > .nospaces-line(nowrap);
 
-			& > .@{col}
+			&:before
+			{
+				content: '';
+				width: 0;
+			}
+			&:after
+			{
+				content: none;
+			}
+
+			& > .@{col}, &:before
 			{
 				float: none !important;
 				#ui > .nospaces-line-item(middle);
@@ -198,6 +208,10 @@
 		&.@{size}-valign-top    > .@{col} { vertical-align: top; }
 		&.@{size}-valign-middle > .@{col} { vertical-align: middle; }
 		&.@{size}-valign-bottom > .@{col} { vertical-align: bottom; }
+
+		&.@{size}-valign-top:before    { vertical-align: top; }
+		&.@{size}-valign-middle:before { vertical-align: middle; }
+		&.@{size}-valign-bottom:before { vertical-align: bottom; }
 	}
 
 	.@{col}
