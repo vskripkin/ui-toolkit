@@ -176,7 +176,7 @@
 			}
 		}
 
-		&.@{size}-table
+		&.@{size}-table, &.@{size}-table-inline
 		{
 			display: table;
 			width: 100%;
@@ -192,6 +192,11 @@
 				display: table-cell;
 				vertical-align: top;
 			}
+		}
+		&.@{size}-table-inline
+		{
+			display: inline-table;
+			width: auto;
 		}
 	}
 }
