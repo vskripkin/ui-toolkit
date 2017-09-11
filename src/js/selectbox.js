@@ -225,7 +225,7 @@
 
 		setFocus: function ()
 		{
-			this.$.input.focus();
+			_.isMobile ? this.select.focus() : this.$.input.focus();
 		},
 
 		show: function ()
