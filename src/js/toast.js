@@ -77,20 +77,22 @@
 			var nToast = this.toast,
 				oToastClassList = nToast.classList;
 
-			oToastClassList.add('no-transition');
+			oToastClassList.add('is-preparing');
 			nContainer.appendChild(nToast);
-			nToast.style.marginBottom = (-1 * (nToast.offsetHeight + 10)) + 'px';
+			nToast.style.marginBottom = (-1 * (nToast.scrollHeight + 10)) + 'px';
 
 			setTimeout(function ()
 			{
-				oToastClassList.remove('no-transition');
+				oToastClassList.remove('is-preparing');
 
 				setTimeout(function ()
 				{
 					oToastClassList.add('is-visible');
 					nToast.style.marginBottom = '0px';
-				}, 0);
-			}, 0);
+
+					oToastClassList = nToast = null;
+				}, 1000/60);
+			}, 1000/60);
 
 			if (_.isMobile)
 			{
@@ -276,12 +278,17 @@
 
 	var _createToast = function (_xMessage, _sClass)
 	{
-		var nToast = document.createElement('div');
-			nToast.className = 'toast' + (_sClass ? ' ' + _sClass: '');
+		var nToast = document.createElement('div'),
+			nToastInner = document.createElement('div');
+
+		nToast.className = 'toast' + (_sClass ? ' ' + _sClass: '');
+		nToastInner.className = 'toast-inner';
+
+		nToast.appendChild(nToastInner);
 
 		if (_.isString(_xMessage))
 		{
-			nToast.insertAdjacentHTML('beforeend', _xMessage);
+			nToastInner.insertAdjacentHTML('beforeend', _xMessage);
 		}
 		else
 		{
@@ -290,7 +297,7 @@
 				_xMessage = _xMessage.get(0);
 			}
 
-			nToast.appendChild(_xMessage);
+			nToastInner.appendChild(_xMessage);
 		}
 
 		return nToast;
