@@ -79,11 +79,13 @@
 
 			oToastClassList.add('is-preparing');
 			nContainer.appendChild(nToast);
-			nToast.style.marginBottom = (-1 * (nToast.scrollHeight + 10)) + 'px';
+			nToast.style.marginBottom = (-1 * nToast.scrollHeight) + 'px';
+			nToast.style.height = nToast.scrollHeight + 'px';
 
 			setTimeout(function ()
 			{
 				oToastClassList.remove('is-preparing');
+				nToast.style.height = 'auto';
 
 				setTimeout(function ()
 				{
