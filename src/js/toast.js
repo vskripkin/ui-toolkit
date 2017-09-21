@@ -74,7 +74,23 @@
 			this._onWH = { waiting: false };
 			this._onWV = { waiting: false };
 
-			nContainer.appendChild(this.toast);
+			var nToast = this.toast,
+				oToastClassList = nToast.classList;
+
+			oToastClassList.add('no-transition');
+			nContainer.appendChild(nToast);
+			nToast.style.marginBottom = (-1 * (nToast.offsetHeight + 10)) + 'px';
+
+			setTimeout(function ()
+			{
+				oToastClassList.remove('no-transition');
+
+				setTimeout(function ()
+				{
+					oToastClassList.add('is-visible');
+					nToast.style.marginBottom = '0px';
+				}, 0);
+			}, 0);
 
 			if (_.isMobile)
 			{
@@ -89,16 +105,8 @@
 			}
 			else
 			{
-				this.toast._jQ().on('click', '.js-close', this.hide.bind(this));
+				nToast._jQ().on('click', '.js-close', this.hide.bind(this));
 			}
-
-			this.toast.style.marginBottom = (-1 * (this.toast.offsetHeight + 10)) + 'px';
-
-			var that = this;
-			setTimeout(function ()
-			{
-				that.toast.classList.add('is-visible');
-			}, 0);
 
 			this.start();
 

@@ -57,26 +57,25 @@
 	border-radius: 2px;
 	opacity: 0;
 	margin-top: 10px;
+	transform: translateZ(0px);
 	will-change: opacity, margin, transform;
+	transition: opacity    0.3s cubic-bezier(0.4, 0, 0.2, 1),
+				margin     0.3s cubic-bezier(0.4, 0, 0.2, 1),
+				transform  0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+	&.no-transition, &.is-panning
+	{
+		transition: none;
+	}
 	&.is-visible
 	{
-		transition: opacity    0.3s cubic-bezier(0.4, 0, 0.2, 1),
-					margin     0.3s cubic-bezier(0.4, 0, 0.2, 1),
-					transform  0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
 		opacity: 1;
-		margin-bottom: 0px !important;
 	}
 	&.is-hiding
 	{
 		z-index: 0;
 		opacity: 0;
 		pointer-events: none;
-	}
-	&.is-panning
-	{
-		transition: none;
 	}
 
 	&.rounded
