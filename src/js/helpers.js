@@ -460,15 +460,11 @@
 					return function ()
 					{
 						var aMessages = Array.prototype.slice.call(arguments),
-							aFormattedMsg = _.isIE ? aMessages : this[_sName].format(aMessages);
+							aFormattedMsg = _.isIE ? aMessages : _oRequests[_sName].format(aMessages);
 
-						return this.produceFunc(aFormattedMsg, this[_sName].trace);
+						return this.produceFunc(aFormattedMsg, _oRequests[_sName].trace);
 					};
 				})(sName);
-
-				this[sName].format = _oRequests[sName].format;
-				this[sName].css = _oRequests[sName].css;
-				this[sName].trace = _oRequests[sName].trace;
 			}
 
 			return this;
