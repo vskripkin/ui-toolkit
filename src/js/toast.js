@@ -6,23 +6,40 @@
 
 		nContainer = (function ()
 		{
-			var sContId = 'toast-container';
+			var sContId = 'toast-container',
+				create_container = function ()
+				{
+					var nDiv = document.createElement('div');
+
+					nDiv.id = sContId;
+					nDiv.className = 'js-scrollbar-offset';
+					document.body.appendChild(nDiv);
+
+					return nDiv;
+				};
 
 			if (document.readyState === 'loading' || document.readyState === 'uninitialized')
 			{
 				document.write('<div id="' + sContId + '" class="js-scrollbar-offset"></div>');
-				return document.getElementById(sContId);
 			}
 			else
 			{
-				var nDiv = document.createElement('div');
-					nDiv.id = sContId;
-					nDiv.className = 'js-scrollbar-offset';
-
-				document.body.appendChild(nDiv);
-
-				return nDiv;
+				create_container();
 			}
+
+			return {
+				appendChild: function (_nToast)
+				{
+					nContainer = document.getElementById(sContId);
+
+					if (!nContainer)
+					{
+						nContainer = create_container();
+					}
+
+					nContainer.appendChild(_nToast);
+				}
+			};
 		})(),
 
 		iActivationDistance = 100,
