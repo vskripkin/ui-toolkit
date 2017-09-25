@@ -104,7 +104,8 @@
 
 @landscape: @screen e("and (orientation: landscape)");
 @portrait:  @screen e("and (orientation: portrait)");
-@retina: e("(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)");
+@retina-pxl: e("(-webkit-min-device-pixel-ratio: 2)");
+@retina-dpi: e("(min-resolution: 192dpi)");
 
 @small-up:   @screen;
 @small-only: @screen e("and (max-width:") @small-range-to e(")");

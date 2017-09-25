@@ -196,7 +196,7 @@
 
 	/*****************************************************/
 
-	.screen(@min, @max, @rules)
+	.screen-with(@min, @max, @rules)
 	{
 		@condition: @screen e("and (min-width:") @min e(") and (max-width:") @max e(")");
 
@@ -205,7 +205,7 @@
 			@rules();
 		}
 	}
-	.max-screen(@max, @rules)
+	.screen-max-width(@max, @rules)
 	{
 		@condition: @screen e("and (max-width:") @max e(")");
 
@@ -214,7 +214,7 @@
 			@rules();
 		}
 	}
-	.min-screen(@min, @rules)
+	.screen-min-width(@min, @rules)
 	{
 		@condition: @screen e("and (min-width:") @min e(")");
 
@@ -233,7 +233,7 @@
 			@rules();
 		}
 	}
-	.max-screen-height(@max, @rules)
+	.screen-max-height(@max, @rules)
 	{
 		@condition: @screen e("and (max-height:") @max e(")");
 
@@ -242,13 +242,87 @@
 			@rules();
 		}
 	}
-	.min-screen-height(@min, @rules)
+	.screen-min-height(@min, @rules)
 	{
 		@condition: @screen e("and (min-height:") @min e(")");
 
 		@media @condition
 		{
 			@rules();
+		}
+	}
+
+	.retina-width(@min, @max, @rules)
+	{
+		@condition: e("(min-width:") @min e(") and (max-width:") @max e(")");
+
+		@media @retina-pxl, @retina-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina-max-width(@max, @rules)
+	{
+		@condition: e("(max-width:") @max e(")");
+
+		@media @retina-pxl, @retina-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina-min-width(@min, @rules)
+	{
+		@condition: e("(min-width:") @min e(")");
+
+		@media @retina-pxl, @retina-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+
+	.retina-height(@min, @max, @rules)
+	{
+		@condition: e("(min-height:") @min e(") and (max-height:") @max e(")");
+
+		@media @retina-pxl, @retina-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina-max-height(@max, @rules)
+	{
+		@condition: e("(max-height:") @max e(")");
+
+		@media @retina-pxl, @retina-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina-min-height(@min, @rules)
+	{
+		@condition: e("(min-height:") @min e(")");
+
+		@media @retina-pxl, @retina-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
 		}
 	}
 }
