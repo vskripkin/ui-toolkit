@@ -464,7 +464,7 @@
 
 						return this.produceFunc(aFormattedMsg, _oRequest.trace);
 					};
-				})(_oRequests[_sName]);
+				})(_oRequests[sName]);
 			}
 
 			return this;
