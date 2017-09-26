@@ -455,16 +455,16 @@
 
 			for (var sName in _oRequests)
 			{
-				this[sName] = (function (_sName)
+				this[sName] = (function (_oRequest)
 				{
 					return function ()
 					{
 						var aMessages = Array.prototype.slice.call(arguments),
-							aFormattedMsg = _.isIE ? aMessages : _oRequests[_sName].format(aMessages);
+							aFormattedMsg = _.isIE ? aMessages : _oRequest.format(aMessages);
 
-						return this.produceFunc(aFormattedMsg, _oRequests[_sName].trace);
+						return this.produceFunc(aFormattedMsg, _oRequest.trace);
 					};
-				})(sName);
+				})(_oRequests[_sName]);
 			}
 
 			return this;
