@@ -119,11 +119,12 @@
 			this.dropdown._jQ().on('click', '.' + Class.option, _fHandler);
 		},
 
-		destroy : function ()
+		destroy: function ()
 		{
 			this.options.onDestroy();
-			if (typeof this.placer !== 'undefined') this.placer.destroy();
+
 			this.hide();
+			this.placer && this.placer.destroy();
 			this.dropdown._jQ().off().remove();
 		},
 
@@ -235,17 +236,24 @@
 
 		show: function (_xNewSelected)
 		{
-			this.$.open = true;
 			this.update(_xNewSelected);
 
 			if (this.$.filteredLength === 0 || !this.isActive()) return false;
+
+			this.$.open = true;
 
 			this.dropdown.style.display = 'block';
 			this.dropdown.style.visibility = 'hidden';
 			this.dropdown.classList.add(Class.opened);
 
-			if (typeof this.placer === 'undefined') this.placer = $.placer(this.options.placeTo);
-			else this.placer.start();
+			if (this.placer)
+			{
+				this.placer.start();
+			}
+			else
+			{
+				this.placer = $.placer(this.options.placeTo);
+			}
 
 			this.dropdown.scrollTop = this.scrollTop;
 			this.dropdown.style.visibility = 'visible';
@@ -260,7 +268,12 @@
 				this.$.open = false;
 				this.placer.stop();
 				this.scrollTop = this.dropdown.scrollTop;
-				if (this.dropdown.parentNode) this.dropdown.parentNode.removeChild(this.dropdown);
+
+				if (this.dropdown.parentNode)
+				{
+					this.dropdown.parentNode.removeChild(this.dropdown);
+				}
+
 				this.dropdown.classList.remove(Class.opened);
 				this.dropdown.style.display = 'none';
 				clearInterval(this.timer);
