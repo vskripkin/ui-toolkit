@@ -199,7 +199,10 @@
 
 				setTimeout(function()
 				{
-					_nWave.parentElement.removeChild(_nWave);
+					if (_nWave.parentElement)
+					{
+						_nWave.parentElement.removeChild(_nWave);
+					}
 				}, iLeftDuration);
 			}, iDelay);
 		},
