@@ -575,9 +575,9 @@
 
 				if (nElem && nElem !== nTarget && !nElem.contains(nTarget))
 				{
-					_.offOthers(oEvent)
+					_.offOthers(oEvent);
 
-					if (nElem.offsetParent !== null)
+					if (document.documentElement.contains(nElem))
 					{
 						oEvent.callback(e);
 					}
@@ -644,7 +644,7 @@
 				aElemEventIDs = oElemEventIDs[sElemID] = [];
 			}
 
-			_sEvents.split(' ').forEach(function (_sEvent)
+			_.forEach(_sEvents.split(' '), function (_sEvent)
 			{
 				var sEventID = _.randomStr();
 
