@@ -22,6 +22,11 @@ time, mark, audio, video
 
 	/* j.mp/webkit-tap-highlight-color */
 	-webkit-tap-highlight-color: @color-tap-highlight;
+
+	&:lang(zh), &:lang(ko), &:lang(ja), &:lang(ar)
+	{
+		font-style: normal !important;
+	}
 }
 
 
@@ -307,6 +312,16 @@ input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button
 {
 	appearance: none;
+}
+
+input, textarea
+{
+	&:lang(zh), &:lang(ko), &:lang(ja), &:lang(ar)
+	{
+		#ui > .placeholder({
+			font-style: normal !important;
+		});
+	}
 }
 
 textarea
