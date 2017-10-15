@@ -925,6 +925,7 @@
 			}
 		};
 
+		// TODO use window.matchMedia
 		_.media.small = function ()
 		{
 			return window.innerWidth <= this.SMALL;
