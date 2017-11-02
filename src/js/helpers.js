@@ -169,6 +169,8 @@
 	/* to define width of scrollbar */
 	(function ()
 	{
+		// TODO пересчитать ширину после изменения масштаба страницы
+
 		_.globalScrollbar = {
 			prop: 'margin',
 			side: 'right',
