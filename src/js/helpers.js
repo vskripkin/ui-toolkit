@@ -343,10 +343,10 @@
 
 				var ID = _.randomStr(),
 					STYLE_WRP = 'position: absolute !important;' + 
-								'top: -100px !important;'  + 
-								'left: -100px !important;' + 
+								'top: -150px !important;'  + 
+								'left: -150px !important;' + 
 								'width: 100px !important;' + 
-								'height: 50px !important;' + 
+								'height: 100px !important;' + 
 								'overflow: scroll !important;',
 					STYLE_INR = 'display: block !important;' + 
 								'width: 100% !important;' + 
