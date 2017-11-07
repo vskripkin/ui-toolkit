@@ -382,7 +382,7 @@
 		})();
 	})();
 
-	/* to define browser prefix */
+	/* define browser prefix */
 	(function ()
 	{
 		var cssStyleDeclerationToArray = function (_oStyles)
@@ -418,12 +418,32 @@
 			)[1],
 			sDom = ('Webkit|Moz|ms|O').match(new RegExp('(' + sPre + ')', 'i'))[1];
 
-		_.prefix =  {
+		_.prefix = {
 			dom: sDom,
 			css: sPre ? '-' + sPre + '-' : sPre,
 			js: sPre,
 			lowercase: sPre
 		};
+	})();
+
+	/* define supported features */
+	(function ()
+	{
+		_.support = {
+			transition: {},
+			animation: {}
+		};
+
+		if (_.prefix.lowercase === 'webkit')
+		{
+			_.support.transition.end = 'webkitTransitionEnd';
+			_.support.animation.end = 'webkitAnimationEnd';
+		}
+		else
+		{
+			_.support.transition.end = 'transitionend';
+			_.support.animation.end = 'animationend';
+		}
 	})();
 
 	/* colored console logging */

@@ -54,6 +54,7 @@
 			aQueue = [],
 			iAnimTimeout = 1000/60,
 			jWindow = $(window),
+			sTransitionEnd = _.support.transition.end,
 
 			nContainer = (function createContainer ()
 			{
@@ -195,6 +196,10 @@
 
 				setTimeout(function ()
 				{
+					// fix transitionend event for hidden tab
+					nContainer.offsetHeight;
+					nContainer.offsetWidth;
+
 					nContainer.classList.add(Class.container_visible);
 				}, 0);
 			},
@@ -202,51 +207,70 @@
 			{
 				jWindow.trigger(TYPE + ':hide');
 
-				nContainer._jQ().on('transitionend', function (e)
-				{
-					if (e.target === this)
-					{
-						if (aQueue.length === 0)
-						{
-							this.style.display = 'none';
-						}
-
-						this._jQ().off('transitionend');
-						_.globalScrollbar.restore();
-					}
-				});
+				nContainer.addEventListener(sTransitionEnd, __hideContOnTransitionend, {passive: true});
 
 				setTimeout(function ()
 				{
+					// fix transitionend event for hidden tab
+					nContainer.offsetHeight;
+					nContainer.offsetWidth;
+
 					nContainer.classList.remove(Class.container_visible);
+
+					setTimeout(function ()
+					{
+						if (parseFloat(getComputedStyle(nContainer).opacity) < 0.1)
+						{
+							__hideContOnTransitionend({target: nContainer});
+						}
+					}, 0);
 				}, 0);
 			},
+			__hideContOnTransitionend = (function (e)
+			{
+				if (e.target === this)
+				{
+					if (aQueue.length === 0)
+					{
+						this.style.display = 'none';
+					}
+
+					this.removeEventListener(sTransitionEnd, __hideContOnTransitionend, {passive: true});
+					_.globalScrollbar.restore();
+				}
+			}).bind(nContainer),
 
 			_showPopup = function ()
 			{
-				this.dom.wrapper.style.display = 'block';
-				this.dom.wrapper.style.pointerEvents = 'auto';
+				var nWrapper = this.dom.wrapper;
 
-				var that = this;
+				nWrapper.style.display = 'block';
+				nWrapper.style.pointerEvents = 'auto';
+
 				setTimeout(function ()
 				{
-					that.dom.wrapper.classList.add(Class.wrapper_visible);
+					nWrapper.classList.add(Class.wrapper_visible);
 				}, iAnimTimeout);
 			},
 			_hidePopup = function ()
 			{
-				var that = this;
-				this.dom.wrapper._jQ().on('transitionend', function (e)
+				var nWrapper = this.dom.wrapper;
+
+				nWrapper._jQ().on(sTransitionEnd, function (e)
 				{
 					if (e.target === this)
 					{
-						that.dom.wrapper.style.display = 'none';
-						that.dom.wrapper._jQ().off('transitionend');
+						this.style.display = 'none';
+						this._jQ().off(sTransitionEnd);
 					}
 				});
 
-				this.dom.wrapper.style.pointerEvents = 'none';
-				this.dom.wrapper.classList.remove(Class.wrapper_visible);
+				// fix transtionend event for hidden tab
+				nWrapper.offsetWidth;
+				nWrapper.offsetHeight;
+
+				nWrapper.style.pointerEvents = 'none';
+				nWrapper.classList.remove(Class.wrapper_visible);
 			},
 
 			_open = function ()
@@ -258,12 +282,16 @@
 					this.options.beforeOpen.call(this);
 				}
 
-				this.dom.wrapper.style.display = 'block';
+				var that = this,
+					nWrapper = this.dom.wrapper;
+
+				nWrapper.style.display = 'block';
 
 				var that = this;
+
 				setTimeout(function ()
 				{
-					that.dom.wrapper.classList.add(Class.wrapper_visible);
+					nWrapper.classList.add(Class.wrapper_visible);
 
 					if (that.options.afterOpen)
 					{
@@ -287,8 +315,10 @@
 					this.options.beforeClose.call(this);
 				}
 
-				var that = this;
-				this.dom.wrapper._jQ().on('transitionend', function (e)
+				var that = this,
+					nWrapper = this.dom.wrapper;
+
+				nWrapper._jQ().on(sTransitionEnd, function (e)
 				{
 					if (e.target === this)
 					{
@@ -299,12 +329,16 @@
 							that.options.afterClose.call(that);
 						}
 
-						that.dom.wrapper._jQ().off('transitionend').remove();
+						this._jQ().off(sTransitionEnd).remove();
 					}
 				});
 
-				this.dom.wrapper.style.pointerEvents = 'none';
-				this.dom.wrapper.classList.remove(Class.wrapper_visible);
+				// fix transtionend event for hidden tab
+				nWrapper.offsetWidth;
+				nWrapper.offsetHeight;
+
+				nWrapper.style.pointerEvents = 'none';
+				nWrapper.classList.remove(Class.wrapper_visible);
 
 				return true;
 			};
