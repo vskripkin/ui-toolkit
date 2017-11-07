@@ -391,7 +391,7 @@
 
 				try
 				{
-					Arr = Array.prototype.slice.call(_oStyles);
+					Arr = Array.apply(null, _oStyles);
 				}
 				catch (e)
 				{
@@ -461,7 +461,7 @@
 				{
 					return function ()
 					{
-						var aMessages = Array.prototype.slice.call(arguments),
+						var aMessages = Array.apply(null, arguments),
 							aFormattedMsg = _.isIE ? aMessages : _oRequest.format(aMessages);
 
 						return this.produceFunc(aFormattedMsg, _oRequest.trace);
@@ -492,7 +492,7 @@
 					return _.noop;
 				}
 
-				var aMessages = Array.prototype.slice.call(arguments);
+				var aMessages = Array.apply(null, arguments);
 
 				aMessages.unshift(OrigConsole);
 
@@ -505,7 +505,7 @@
 					return _.noop;
 				}
 
-				var aMessages = Array.prototype.slice.call(arguments);
+				var aMessages = Array.apply(null, arguments);
 
 				aMessages.unshift(OrigConsole);
 
@@ -518,7 +518,7 @@
 					return _.noop;
 				}
 
-				var aMessages = Array.prototype.slice.call(arguments);
+				var aMessages = Array.apply(null, arguments);
 
 				aMessages.unshift(OrigConsole);
 
