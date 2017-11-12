@@ -39,7 +39,7 @@
 
 			while (nTarget.parentElement)
 			{
-				if (nTarget.getAttribute('data-wave') && !(nTarget instanceof SVGElement))
+				if (nTarget.getAttribute('data-wave'))
 				{
 					nElem = nTarget;
 					break;
