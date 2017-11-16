@@ -857,16 +857,19 @@
 	{
 		_.iframeHeight = function (_nIframe)
 		{
-			if (_nIframe.offsetWidth !== 0)
-			{
-				if (_.isUndefined(_nIframe._heightRatio))
-				{
-					_nIframe._heightRatio = _nIframe.height / _nIframe.width;
-					_nIframe.style.width = '100%';
-				}
+			var iWidth = _nIframe.offsetWidth,
+				iHeight = _nIframe.offsetHeight,
+				iRatio = _nIframe._heightRatio;
 
-				_nIframe.height = _nIframe.offsetWidth * _nIframe._heightRatio;
+			if (!iWidth || !iHeight) return;
+
+			if (!iRatio)
+			{
+				_nIframe._heightRatio = iRatio = iHeight / iWidth;
+				_nIframe.style.maxWidth = '100%';
 			}
+
+			_nIframe.style.height = (iWidth * iRatio) + 'px';
 		};
 		_.iframeHeightFix = function ()
 		{
