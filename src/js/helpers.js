@@ -44,7 +44,7 @@
 	};
 
 	/* to define window is active */
-	(function(_)
+	(function (_)
 	{
 		_.isWindowHidden = false;
 
@@ -109,17 +109,16 @@
 		};
 
 		var hidden = 'hidden',
+			eMap = {
+				focus: false,
+				focusin: false,
+				pageshow: false,
+				blur: true,
+				focusout: true,
+				pagehide: true
+			},
 			onChange = function (e)
 			{
-				var eMap = {
-					focus: false,
-					focusin: false,
-					pageshow: false,
-					blur: true,
-					focusout: true,
-					pagehide: true
-				};
-
 				e = e || window.event;
 
 				if (e.type in eMap)
@@ -147,9 +146,33 @@
 		else if ((hidden = 'webkitHidden') in document) document.addEventListener('webkitvisibilitychange', onChange);
 		else if ((hidden = 'msHidden') in document) document.addEventListener('msvisibilitychange', onChange);
 		// IE 9 and lower:
-		else if ('onfocusin' in document) document.onfocusin = document.onfocusout = onChange;
+		else if ('onfocusin' in document)
+		{
+			if (document.addEventListener)
+			{
+				document.addEventListener('focusin', onChange);
+				document.addEventListener('focusout', onChange);
+			}
+			else if (document.attachEvent)
+			{
+				document.attachEvent('onfocusin', onChange);
+				document.attachEvent('onfocusout', onChange);
+			}
+		}
 		// All others:
-		else window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onChange;
+		else
+		{
+			if (window.addEventListener)
+			{
+				window.addEventListener('focus', onChange);
+				window.addEventListener('blur', onChange);
+			}
+			else if (window.attachEvent)
+			{
+				window.attachEvent('onfocus', onChange);
+				window.attachEvent('onblur', onChange);
+			}
+		}
 	})(_);
 
 	/* to define device is mobile */
