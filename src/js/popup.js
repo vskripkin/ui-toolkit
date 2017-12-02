@@ -718,10 +718,7 @@
 						sConnect +
 						(sContentHTML && (sContentHTML.outerHTML || sContentHTML) || ''));
 
-				if (_options.callback)
-				{
-					_options.callback();
-				}
+				_options.callback && _options.callback();
 
 				return null;
 			}
@@ -734,7 +731,8 @@
 						focus: true
 					},
 					popup: {
-						className: TYPE + '--alert'
+						className: TYPE + '--alert',
+						beforeClose: _options.callback
 					}
 				};
 
@@ -773,12 +771,14 @@
 							text: Dialog.DEFAULTS.OK,
 							class_js: Class.js_ok.slice(1),
 							className: 'btn btn-primary',
-							focus: true
+							focus: true,
+							callback: _options.confirmed
 						},
 						{
 							text: Dialog.DEFAULTS.Cancel,
 							class_js: Class.js_cancel.slice(1),
-							className: 'btn btn-default'
+							className: 'btn btn-default',
+							callback: _options.rejected
 						}
 					],
 					popup: {
