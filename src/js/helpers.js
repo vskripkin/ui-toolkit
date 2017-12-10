@@ -504,7 +504,7 @@
 				{
 					return function ()
 					{
-						var aMessages = Array.prototype.slice.call(null, arguments),
+						var aMessages = Array.prototype.slice.call(arguments),
 							aFormattedMsg = _.isIE ? aMessages : _oRequest.format(aMessages);
 
 						return this.produceFunc(aFormattedMsg, _oRequest.trace);
@@ -535,7 +535,7 @@
 					return _.noop;
 				}
 
-				var aMessages = Array.prototype.slice.call(null, arguments);
+				var aMessages = Array.prototype.slice.call(arguments);
 
 				aMessages.unshift(OrigConsole);
 
@@ -548,7 +548,7 @@
 					return _.noop;
 				}
 
-				var aMessages = Array.prototype.slice.call(null, arguments);
+				var aMessages = Array.prototype.slice.call(arguments);
 
 				aMessages.unshift(OrigConsole);
 
@@ -561,7 +561,7 @@
 					return _.noop;
 				}
 
-				var aMessages = Array.prototype.slice.call(null, arguments);
+				var aMessages = Array.prototype.slice.call(arguments);
 
 				aMessages.unshift(OrigConsole);
 
