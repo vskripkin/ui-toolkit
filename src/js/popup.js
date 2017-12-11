@@ -12,6 +12,7 @@
 			content: 'ui-popup__content',
 			inner: 'ui-popup__content-inner',
 			title: 'ui-popup__content-title',
+			text: 'ui-popup__content-text',
 			actions: 'ui-popup__content-actions',
 			close: 'ui-popup__close js-close',
 
@@ -420,12 +421,12 @@
 				this.dom.inner = this.dom.content.firstElementChild;
 
 				var xTitle = _getTitleHTML(_xContent) || this.options.title,
-					xContent = _getContent(_xContent);
+					xContent = _getContent(_xContent),
+					nDiv;
 
 				if (xTitle)
 				{
-					var nDiv = document.createElement('div');
-
+					nDiv = document.createElement('div');
 					nDiv.className = Class.title;
 
 					if (_.isNode(xTitle))
@@ -440,14 +441,19 @@
 					this.dom.inner.appendChild(nDiv);
 				}
 
+				nDiv = document.createElement('div');
+				nDiv.className = Class.text;
+
 				if (_.isNode(xContent))
 				{
-					this.dom.inner.appendChild(xContent);
+					nDiv.appendChild(xContent);
 				}
 				else
 				{
-					this.dom.inner.insertAdjacentHTML('beforeend', xContent);
+					nDiv.insertAdjacentHTML('afterbegin', xContent);
 				}
+
+				this.dom.inner.appendChild(nDiv);
 
 				if (this.options.showCloseBtn)
 				{
