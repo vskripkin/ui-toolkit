@@ -585,7 +585,7 @@
 
 						if (arguments.length)
 						{
-							OriginalLog.apply(OrigConsole, arguments);
+							OriginalLog.call(OrigConsole, arguments);
 						}
 
 						OriginalTrace.call(OrigConsole, 'stack');
@@ -593,7 +593,7 @@
 					};
 				}
 
-				return Function.prototype.bind.apply(OriginalLog, _args);
+				return Function.prototype.bind.call(OriginalLog, _args);
 			}
 		};
 	})();
