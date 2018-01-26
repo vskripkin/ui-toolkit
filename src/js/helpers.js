@@ -593,7 +593,7 @@
 					};
 				}
 
-				return Function.prototype.bind.call(OriginalLog, _args);
+				return Function.prototype.bind.apply(OriginalLog, _args);
 			}
 		};
 	})();
