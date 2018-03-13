@@ -1003,6 +1003,10 @@
 					background-color: currentColor;
 				}
 			}
+			&:disabled + @{selector}
+			{
+				cursor: auto !important;
+			}
 		}
 
 		/***********************************************/
@@ -1172,6 +1176,10 @@
 				position: relative;
 				vertical-align: middle;
 				cursor: pointer;
+			}
+			&:disabled ~ @{pseudo}, &:disabled ~ @{label}
+			{
+				cursor: auto !important;
 			}
 
 			& ~ @{pseudo}
