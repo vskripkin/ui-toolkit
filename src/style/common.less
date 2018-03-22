@@ -251,6 +251,14 @@
 		}
 	}
 
+	.retina(@rules)
+	{
+		@media @retina-pxl, @retina-dpi
+		{
+			@rules();
+		}
+	}
+
 	.retina-width(@min, @max, @rules)
 	{
 		@condition: e("(min-width:") @min e(") and (max-width:") @max e(")");
