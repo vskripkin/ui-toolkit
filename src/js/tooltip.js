@@ -410,8 +410,8 @@
 				{
 					that.template._jQ()[that.options.delete]();
 
-					that.element._jQ().trigger('hide');
-					that.template._jQ().trigger('hide');
+					that.element._jQ().trigger(that.type + '-hide');
+					that.template._jQ().trigger(that.type + '-hide');
 				};
 
 			if (this.isHidden)
