@@ -5,9 +5,16 @@
 	var TYPE = 'wave',
 
 		DEFAULTS = {
-			duration: 400,
 			delay: 100,
-			timingFunction: 'cubic-bezier(.15,.45,.45,.8)'
+
+			duration: {
+				opacity: 75,
+				transform: 225
+			},
+			timing: {
+				opacity: 'linear',
+				transform: 'cubic-bezier(0.4,0,0.2,1)'
+			}
 		},
 
 		_getElements = function (_xNodes)
@@ -187,9 +194,9 @@
 
 			iLeftDuration = iLeftDuration - iDelay;
 
-			if (iLeftDuration < 300)
+			if (iLeftDuration < 150)
 			{
-				iLeftDuration = 300;
+				iLeftDuration = 150;
 			}
 
 			setTimeout(function()
@@ -239,8 +246,8 @@
 				};
 
 			oStyle[_.prefix.css + 'transition-property'] = 'opacity';
-			oStyle[_.prefix.css + 'transition-duration'] = DEFAULTS.duration + 'ms';
-			oStyle[_.prefix.css + 'transition-timig-function'] = 'ease-in-out';
+			oStyle[_.prefix.css + 'transition-duration'] = DEFAULTS.duration.opacity + 'ms';
+			oStyle[_.prefix.css + 'transition-timing-function'] = DEFAULTS.timing.opacity;
 			oStyle[_.prefix.css + 'user-select'] = 'none';
 
 			_setStyle(nDiv, oStyle);
@@ -256,12 +263,13 @@
 					borderRadius: '50%',
 					color: 'inherit',
 					background: 'currentColor',
+					opacity: 0.16,
 					willChange: 'transform'
 				};
 
 			oStyle[_.prefix.css + 'transition-property'] = 'transform';
-			oStyle[_.prefix.css + 'transition-duration'] = DEFAULTS.duration + 'ms';
-			oStyle[_.prefix.css + 'transition-timig-function'] = DEFAULTS.timingFunction;
+			oStyle[_.prefix.css + 'transition-duration'] = DEFAULTS.duration.transform + 'ms';
+			oStyle[_.prefix.css + 'transition-timing-function'] = DEFAULTS.timing.transform;
 			oStyle[_.prefix.css + 'transform'] = 'scale(0)';
 
 			_setStyle(nDiv, oStyle);
@@ -275,18 +283,25 @@
 			{
 				_options || (_options = {});
 
-				if (typeof _options.duration !== 'undefined')
-				{
-					Effect.duration = _options.duration;
-				}
 				if (typeof _options.delay !== 'undefined')
 				{
 					Effect.delay = _options.delay;
 				}
-				if (typeof _options.timingFunction !== 'undefined')
+				if (typeof _options.duration !== 'undefined')
 				{
-					//nWaveSample.style[_.prefix.css + 'transition-timig-function'] = _options.timingFunction;
-					nWaveInnerSample.style[_.prefix.css + 'transition-timig-function'] = _options.timingFunction;
+					_options.duration.opacity && (Effect.duration.opacity = _options.duration.opacity);
+					_options.duration.transform && (Effect.duration.transform = _options.duration.transform);
+				}
+				if (typeof _options.timing !== 'undefined')
+				{
+					if (_options.timing.opacity)
+					{
+						nWaveSample.style[_.prefix.css + 'transition-timing-function'] = _options.timing.opacity;
+					}
+					if (_options.timing.transform)
+					{
+						nWaveInnerSample.style[_.prefix.css + 'transition-timing-function'] = _options.timing.transform;
+					}
 				}
 
 				if (_.isMobile)
@@ -363,8 +378,8 @@
 		},
 
 		Effect = {
-			duration: DEFAULTS.duration,
 			delay: DEFAULTS.delay,
+			duration: DEFAULTS.duration,
 
 			show: function(e, _nElem)
 			{
@@ -413,10 +428,12 @@
 
 					nWaveElem  = nWaveSample.cloneNode(),
 					nWaveInner = nWaveInnerSample.cloneNode(),
-					iDuration  = e.type === 'mousemove' ? 2500 : Effect.duration;
 
-				oStyle[_.prefix.css + 'transition-duration'] = iDuration + 'ms';
-				nWaveElem.style[_.prefix.css + 'transition-duration'] = iDuration + 'ms';
+					iOpDuration = e.type === 'mousemove' ? 2500 : Effect.duration.opacity,
+					iTrDuration = e.type === 'mousemove' ? 2500 : Effect.duration.transform;
+
+				nWaveElem.style[_.prefix.css + 'transition-duration'] = iOpDuration + 'ms';
+				oStyle[_.prefix.css + 'transition-duration'] = iTrDuration + 'ms';
 
 				_setStyle(nWaveInner, oStyle);
 
@@ -424,11 +441,11 @@
 				_placeWave(nWaveElem, _nElem);
 
 				nWaveElem[TYPE + '_start'] = Date.now();
-				nWaveElem[TYPE + '_duration'] = iDuration;
+				nWaveElem[TYPE + '_duration'] = iOpDuration;
 
 				setTimeout(function ()
 				{
-					nWaveElem.style.opacity = 0.33;
+					nWaveElem.style.opacity = 1;
 					nWaveInner.style[_.prefix.css + 'transform'] = 'scale(1)';
 				}, 0);
 			},
