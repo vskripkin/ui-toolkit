@@ -1,4 +1,4 @@
-(function ($, undefined)
+(function ($, _, undefined)
 {
 	'use strict';
 
@@ -444,4 +444,4 @@
 			return this;
 		};
 
-})(jQuery);
+})(jQuery, _);

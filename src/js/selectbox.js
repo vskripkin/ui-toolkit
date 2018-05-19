@@ -1,4 +1,4 @@
-(function ($, undefined)
+(function ($, _, undefined)
 {
 	'use strict';
 
@@ -882,4 +882,4 @@
 		_closeOtherSelects(e.target.id);
 	});
 
-}(jQuery));
+}(jQuery, _));
