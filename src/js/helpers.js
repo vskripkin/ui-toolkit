@@ -2,6 +2,81 @@
 {
 	'use strict';
 
+	var toString = Object.prototype.toString;
+
+	_ || (_ = window._ = {
+		noop: function () {},
+		isArray: $.isArray,
+		isObject: $.isPlainObject,
+
+		isUndefined: function (a)
+		{
+			return typeof a === 'undefined';
+		},
+		isString: function (a)
+		{
+			return toString.call(a) === '[object String]';
+		},
+		isNumber: function (a)
+		{
+			return toString.call(a) === '[object Number]';
+		},
+		isBoolean: function (a)
+		{
+			return a === true || a === false || toString.call(a) === '[object Boolean]';
+		},
+		isFinite: function (a)
+		{
+			return isFinite(a) && !isNaN(parseFloat(a));
+		},
+		isFunction: function (a)
+		{
+			return typeof a === 'function';
+		},
+		isElement: function (a)
+		{
+			return !!(a && a.nodeType === 1);
+		},
+		isNaN: function (a)
+		{
+			return _.isNumber(a) && a !== +a;
+		},
+		isArrayLike: function (obj)
+		{
+			if (_.isFunction(obj) || obj && obj === obj.window)
+			{
+				return false;
+			}
+
+			var L = !!obj && 'length' in obj && obj.length;
+
+			return $.isArray(obj) || L === 0 || typeof L === 'number' && L > 0 && (L - 1) in obj;
+		},
+		forEach: function (obj, iteratee, context)
+		{
+			var i, L;
+
+			if (_.isArrayLike(obj))
+			{
+				for (i = 0, L = obj.length; i < L; i++)
+				{
+					iteratee.call(context, obj[i], i, obj);
+				}
+			}
+			else
+			{
+				var keys = Object.keys(obj);
+
+				for (i = 0, L = keys.length; i < L; i++)
+				{
+					iteratee.call(context, obj[keys[i]], keys[i], obj);
+				}
+			}
+
+			return obj;
+		}
+	});
+
 	_.isIE = !!(document.all && document.compatMode) || window.navigator.msPointerEnabled;
 
 	_.isNode = function (obj)

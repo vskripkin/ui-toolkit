@@ -387,7 +387,7 @@
 			{
 				var oOffsetCss = window.getComputedStyle(_oLoc.offsetParent);
 
-				oOffsetBounds = _.clone(_oLoc.offsetParent.getBoundingClientRect());
+				oOffsetBounds = $.extend({}, _oLoc.offsetParent.getBoundingClientRect());
 				oOffsetBounds.top  += (sVerProp === 'top'  ? 1 : -1 ) * parseInt(oOffsetCss['border-' + sVerProp + '-width']);
 				oOffsetBounds.left += (sHorProp === 'left' ? 1 : -1 ) * parseInt(oOffsetCss['border-' + sHorProp + '-width']);
 
