@@ -45,8 +45,8 @@
 				nDiv.className = Class.container;
 
 				$(nDiv)
-					.on('click', this.onClick)
-					.on('click', Class.js_close, this.onClickClose);
+					.on('click', this._onClick)
+					.on('click', Class.js_close, this._onClickClose);
 
 				document.body.appendChild(nDiv);
 
@@ -66,7 +66,7 @@
 					}, 100);
 
 					// 27 = кнопка Escape
-					if (e.which !== 27 || !__queue.length) return;
+					if (e.which !== 27) return;
 
 					var nActive = document.activeElement,
 						sTagName = nActive && nActive.tagName.toLowerCase();
@@ -77,7 +77,7 @@
 						return;
 					}
 
-					__queue.last().close('esc');
+					__cont._onEscape(e);
 				}, true);
 
 				return true;
@@ -128,79 +128,194 @@
 
 				if (e.target === nCont)
 				{
-					if (__queue.length === 0)
-					{
-						nCont.style.display = 'none';
-					}
-
+					nCont.style.display = 'none';
 					nCont.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
 					_.globalScrollbar.restore();
 				}
 			},
 
-			onClick: function (e)
+			_onEscape: function (e)
 			{
-				if (e.target === this && __queue.length)
+				__cont.onEscape(e);
+			},
+			_onClick: function (e)
+			{
+				if (e.target === this)
 				{
-					__queue.last().close('bg');
+					__cont.onClick(e);
 				}
 			},
-			onClickClose: function (e)
+			_onClickClose: function (e)
 			{
-				if (__queue.length)
-				{
-					__queue.last().close('btn');
-				}
-			}
-		},
-		__queue = (function (A)
-		{
-			A = [];
+				__cont.onClickClose(e);
+			},
 
-			A.add = function (_oPopup)
+			onEscape: _.noop,
+			onClick: _.noop,
+			onClickClose: _.noop
+		},
+		__queue = (function (Q)
+		{
+			Q = [];
+
+			Q.onAdd =
+			Q.onRemove = _.noop;
+
+			Q.add = function (_oPopup)
 			{
-				if (A.length)
+				if (Q.length)
 				{
-					A.last().hide();
+					Q.last().hide();
+				}
+
+				Q.push(_oPopup);
+				Q.onAdd();
+			};
+			Q.remove = function (_oPopup)
+			{
+				var index = Q.indexOf(_oPopup);
+
+				if (index === -1) return;
+
+				Q.splice(index, 1);
+
+				if (Q.length)
+				{
+					Q.last().show();
+				}
+
+				Q.onRemove();
+			};
+			Q.last = function ()
+			{
+				return Q[Q.length - 1];
+			};
+
+			return Q;
+		})(),
+		__history = (function ()
+		{
+			var H = {},
+				HH = {},
+				iLength = 0,
+				bFromEvent = false,
+				bFromJS = false;
+
+			HH.on =
+			HH.off =
+			HH.clear =
+			HH.push =
+			HH.pop =
+			HH.onPopstate = _.noop;
+
+			if (!('pushState' in window.history))
+			{
+				return HH;
+			}
+
+			H.onPopstate = _.noop;
+
+			H.on = HH.on = function ()
+			{
+				__history = H;
+			};
+			H.off = HH.off = function ()
+			{
+				__history = HH;
+			};
+
+			H.clear = function ()
+			{
+				bFromEvent = bFromJS = false;
+				window.history.pushState('', document.title, window.location.href);
+			};
+			H.push = function ()
+			{
+				iLength++;
+				window.history.pushState('', document.title, window.location.href);
+			};
+			H.pop = function ()
+			{
+				iLength--;
+
+				if (!bFromEvent)
+				{
+					bFromJS = true;
+					window.history.back();
 				}
 				else
+				{
+					bFromEvent = false;
+
+					if (!iLength)
+					{
+						H.clear();
+					}
+				}
+			};
+
+			window.addEventListener('popstate', function ()
+			{
+				if (!bFromJS)
+				{
+					if (!iLength) return;
+
+					bFromEvent = true;
+					__history.onPopstate();
+				}
+				else
+				{
+					bFromJS = false;
+
+					if (!iLength)
+					{
+						H.clear();
+					}
+				}
+			});
+
+			return H;
+		})(),
+
+		__ctrl = (function (__cont, __queue, __history)
+		{
+			__cont.onEscape = function ()
+			{
+				__queue.length && __queue.last().close('esc');
+			};
+			__cont.onClick = function (e)
+			{
+				__queue.length && __queue.last().close('bg');
+			};
+			__cont.onClickClose = function (e)
+			{
+				__queue.length && __queue.last().close('btn');
+			};
+
+			__history.onPopstate = function ()
+			{
+				__queue.length && __queue.last().close('history');
+			};
+
+			__queue.onAdd = function ()
+			{
+				if (__queue.length === 1)
 				{
 					__cont.show();
 				}
 
-				A.push(_oPopup);
+				__history.push();
 			};
-			A.remove = function (_oPopup)
+			__queue.onRemove = function ()
 			{
-				if (A.last() === _oPopup)
-				{
-					A.pop();
-				}
-				else
-				{
-					var index = A.indexOf(_oPopup);
-
-					if (index === -1) return;
-
-					A.splice(index, 1);
-				}
-
-				if (A.length)
-				{
-					A.last().show();
-				}
-				else
+				if (!__queue.length)
 				{
 					__cont.hide();
 				}
-			};
-			A.last = function ()
-			{
-				return A[A.length - 1];
-			};
 
-			return A;
-		})(),
+				__history.pop();
+			};
+		})(__cont, __queue, __history),
 
 		Popup;
 
@@ -238,6 +353,10 @@
 		}
 
 		return '&nbsp;';
+	};
+	Popup.history = function (_bON)
+	{
+		_bON ? __history.on() : __history.off();
 	};
 	Popup.open = function (_xContent, _options)
 	{
