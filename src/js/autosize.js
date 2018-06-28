@@ -117,7 +117,7 @@
 
 			Autosize.refit(this.mirror, nElem, options);
 
-			this.$el.on('input.' + TYPE, this.onInput.bind(this));
+			this.$el.on('input.' + TYPE + ' change.' + TYPE, this.onInput.bind(this));
 		},
 		onInput: function ()
 		{
