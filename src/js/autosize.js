@@ -4,6 +4,7 @@
 
 		aCopyStyle = [
 			'minWidth',
+			'maxWidth',
 			'minHeight',
 			'maxHeight',
 			'paddingTop',
@@ -66,7 +67,7 @@
 		},
 		getMirror: function (_nElem)
 		{
-			if (this.mirror && document.body.contains(this.mirror))
+			if (this.mirror && Autosize.getCont().contains(this.mirror))
 			{
 				return this.mirror;
 			}
@@ -113,6 +114,7 @@
 
 			this.bTextarea = nElem.tagName.toLowerCase() === 'textarea';
 			this.mirror = Autosize.createMirror(nElem, options);
+
 			Autosize.refit(this.mirror, nElem, options);
 
 			this.$el.on('input.' + TYPE, this.onInput.bind(this));
@@ -145,6 +147,37 @@
 		}
 	};
 
+	Autosize.getCont = function ()
+	{
+		if (Autosize.__cont)
+		{
+			return Autosize.__cont;
+		}
+
+		var nWrp = document.createElement('div'),
+			nCont = document.createElement('div');
+
+		nWrp.style.position = 'absolute';
+		nWrp.style.top = 0;
+		nWrp.style.left = 0;
+		nWrp.style.zIndex = -1000;
+		nWrp.style.visibility = 'hidden';
+		nWrp.style.opacity = 0;
+		nWrp.style.pointerEvents = 'none';
+		nWrp.style.overflow = 'hidden';
+		nWrp.style.width = '0px';
+		nWrp.style.height = '0px';
+
+		nCont.style.position = 'absolute';
+		nCont.style.top = 0;
+		nCont.style.left = 0;
+		nCont.style.width = '10000px';
+
+		nWrp.appendChild(nCont);
+		document.body.appendChild(nWrp);
+
+		return (Autosize.__cont = nCont);
+	};
 	Autosize.createMirror = function (_nElem, _options)
 	{
 		var nMirror = document.createElement('div'),
@@ -159,7 +192,6 @@
 		nMirror.style.position = 'absolute';
 		nMirror.style.top = 0;
 		nMirror.style.left = 0;
-		nMirror.style.maxWidth = '100%';
 		nMirror.style.zIndex = -1000;
 		nMirror.style.visibility = 'hidden';
 		nMirror.style.opacity = 0;
@@ -192,14 +224,7 @@
 		_options.minHeight && (nMirror.style.minHeight = _options.minHeight + (_options.minHeight > -1 ? 'px' : ''));
 		_options.maxHeight && (nMirror.style.maxHeight = _options.maxHeight + (_options.maxHeight > -1 ? 'px' : ''));
 
-		var nParent = _nElem.parentNode;
-
-		if (nParent !== _nElem.offsetParent)
-		{
-			nParent.style.position = 'relative';
-		}
-
-		nParent.appendChild(nMirror);
+		Autosize.getCont().appendChild(nMirror);
 
 		return nMirror;
 	};
@@ -236,16 +261,30 @@
 		Autosize.setMirrorContent(_nMirror, _nSource, _options);
 
 		var bTextarea = _nSource.tagName.toLowerCase() === 'textarea',
-			oMirrorSize = Autosize.getMirrorSize(_nMirror, _nSource, bTextarea);
+			oMirrorSize = Autosize.getMirrorSize(_nMirror, _nSource, bTextarea),
+			iParentWidth;
 
 		if (!bTextarea)
 		{
 			_nSource.style.width = oMirrorSize.width + 'px';
+
+			iParentWidth = _nSource.parentNode.offsetWidth;
+			if (_nSource.offsetWidth > iParentWidth)
+			{
+				_nSource.style.width = iParentWidth + 'px';
+			}
+
 			return;
 		}
 
 		_nSource.style.width = oMirrorSize.width + 'px';
 		_nSource.style.height = oMirrorSize.height + 'px';
+
+		iParentWidth = _nSource.parentNode.offsetWidth;
+		if (_nSource.offsetWidth > iParentWidth)
+		{
+			_nSource.style.width = iParentWidth + 'px';
+		}
 
 		if (oMirrorSize.overflow)
 		{
