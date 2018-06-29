@@ -127,7 +127,7 @@
 					iStart = nTxtArea.selectionStart,
 					iEnd = nTxtArea.selectionEnd;
 
-				nTxtArea.value = nTxtArea.value.replace(/[ \t\v\f\r]{2}/g, ' \xA0');
+				nTxtArea.value = nTxtArea.value.replace(/[ \t\v\f\r]{2}/g, ' \u00A0');
 				nTxtArea.selectionStart = iStart;
 				nTxtArea.selectionEnd = iEnd;
 			}
@@ -251,7 +251,7 @@
 			_nSource.style.overflowY = 'hidden';
 			_nSource.style.setProperty('overflow-x', 'hidden', 'important');
 
-			_nSource.value = _nSource.value.replace(/[ \t\v\f\r]{2}/g, ' \xA0');
+			_nSource.value = _nSource.value.replace(/[ \t\v\f\r]{2}/g, ' \u00A0');
 		}
 
 		Autosize.updateSize(_nMirror, _nSource, _options);
@@ -299,7 +299,7 @@
 	{
 		_nMirror.innerHTML = (_nSource.value ||
 			_options.placeholder ||
-			_nSource.getAttribute('placeholder') || ' \xA0') + '\x80';
+			_nSource.getAttribute('placeholder') || ' \u00A0') + '\u200b';
 	};
 	Autosize.getMirrorSize = function (_nMirror, _nSource, _bTextarea)
 	{
