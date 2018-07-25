@@ -2,12 +2,167 @@
 {
 	'use strict';
 
-	var toString = Object.prototype.toString;
+	var toString = Object.prototype.toString,
+		restArguments = function (_func, _iStartIndex)
+		{
+			_iStartIndex = _iStartIndex == null ? _func.length - 1 : parseInt(_iStartIndex);
+
+			return function ()
+			{
+				var args = arguments,
+					index = 0,
+					iLength = Math.max(args.length - _iStartIndex, 0),
+					aRest = Array(iLength);
+
+				for (; index < iLength; index++)
+				{
+					aRest[index] = args[index + _iStartIndex];
+				}
+
+				switch (_iStartIndex)
+				{
+					case 0: return _func.call(this, aRest);
+					case 1: return _func.call(this, args[0], aRest);
+					case 2: return _func.call(this, args[0], args[1], aRest);
+				}
+
+				var aArgs = Array(_iStartIndex + 1);
+
+				for (index = 0; index < _iStartIndex; index++)
+				{
+					aArgs[index] = args[index];
+				}
+
+				aArgs[_iStartIndex] = aRest;
+
+				return _func.apply(this, aArgs);
+			};
+		};
 
 	_ || (_ = window._ = {
 		noop: function () {},
 		isArray: $.isArray,
 		isObject: $.isPlainObject,
+		restArguments: restArguments,
+
+		throttle: function (_func, _iWait, options)
+		{
+			options || (options = {});
+
+			var iPrevious = 0,
+				iTimeout, xResult, context, args,
+
+				later = function ()
+				{
+					iPrevious = options.leading === false ? 0 : Date.now();
+					iTimeout = null;
+
+					xResult = _func.apply(context, args);
+
+					if (!iTimeout)
+					{
+						context = args = null;
+					}
+				},
+				throttled = function ()
+				{
+					var iNow = Date.now();
+
+					if (!iPrevious && options.leading === false)
+					{
+						iPrevious = iNow;
+					}
+
+					var iRemaining = _iWait - (iNow - iPrevious);
+
+					context = this;
+					args = arguments;
+
+					if (iRemaining <= 0 || iRemaining > _iWait)
+					{
+						if (iTimeout)
+						{
+							clearTimeout(iTimeout);
+							iTimeout = null;
+						}
+
+						iPrevious = iNow;
+						xResult = _func.apply(context, args);
+
+						if (!iTimeout)
+						{
+							context = args = null;
+						}
+					}
+					else if (!iTimeout && options.trailing !== false)
+					{
+						iTimeout = setTimeout(later, iRemaining);
+					}
+
+					return xResult;
+				};
+
+			throttled.cancel = function ()
+			{
+				clearTimeout(iTimeout);
+
+				iPrevious = 0;
+				iTimeout = context = args = null;
+			};
+
+			return throttled;
+		},
+		debounce: function (_func, _iWait, _bImmediate)
+		{
+			var iTimeout, xResult,
+
+				later = function(context, args)
+				{
+					iTimeout = null;
+
+					if (args)
+					{
+						xResult = _func.apply(context, args);
+					}
+				},
+				debounced = restArguments(function (args)
+				{
+					if (iTimeout)
+					{
+						clearTimeout(iTimeout);
+					}
+
+					if (_bImmediate)
+					{
+						var bCallNow = !iTimeout;
+
+						iTimeout = setTimeout(later, _iWait);
+
+						if (bCallNow)
+						{
+							xResult = _func.apply(this, args);
+						}
+					}
+					else
+					{
+						iTimeout = _.delay(later, _iWait, this, args);
+					}
+
+					return xResult;
+				});
+
+			debounced.cancel = function()
+			{
+				clearTimeout(iTimeout);
+				iTimeout = null;
+			};
+
+			return debounced;
+		},
+		delay: restArguments(function (_func, _iWait, args)
+		{
+			return setTimeout(Function.prototype.apply.bind(_func, null, args), _iWait);
+		}),
 
 		isUndefined: function (a)
 		{
