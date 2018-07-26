@@ -880,6 +880,39 @@
 	$(window).on('mousedown.closeOtherSelects', function (e)
 	{
 		_closeOtherSelects(e.target.id);
-	});
+	})
+	.on('reset', function (e)
+	{
+		var nForm = false,
+			nElems = false,
+			i;
 
+		if (e.target.tagName.toLowerCase() === 'form')
+		{
+			nForm = e.target;
+		}
+		else
+		{
+			nForm = e.target.form || e.target._form;
+		}
+
+		if (!nForm) return;
+
+		nElems = nForm.elements || nForm._elements;
+
+		if (!nElems) return;
+
+		setTimeout(function ()
+		{
+			for (i = nElems.length; i--;)
+			{
+				var el = nElems[i];
+
+				if (el.tagName.toLowerCase() === 'select' && !!el._selectbox)
+				{
+					el._selectbox.reset();
+				}
+			}
+		}, 10);
+	});
 }(jQuery, _));

@@ -1,5 +1,7 @@
 ;(function ($, undefined)
 {
+	'use strict';
+
 	var TYPE = 'autosize',
 
 		aCopyStyle = [
