@@ -95,4 +95,4 @@
 			return NaN;
 		};
 	})();
-})(jQuery, _);
+})(jQuery, window._);

@@ -50,4 +50,4 @@
 	{
 		return window.innerWidth > this.XLARGE;
 	};
-})(jQuery, _);
+})(jQuery, window._);

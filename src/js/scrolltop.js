@@ -36,4 +36,4 @@
 			(document.scrollingElement && document.scrollingElement.scrollTop) ||
 			document.documentElement.scrollTop || 0;
 	};
-})(jQuery, _);
+})(jQuery, window._);

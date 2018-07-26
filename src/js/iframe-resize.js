@@ -23,4 +23,4 @@
 	{
 		_.forEach(document.querySelectorAll('iframe:not(.do-not-resize)'), _.iframeHeight);
 	};
-})(jQuery, _);
+})(jQuery, window._);

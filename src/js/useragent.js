@@ -16,4 +16,4 @@
 		window.navigator.maxTouchPoints;
 
 	_.isIE = !!(document.all && document.compatMode) || window.navigator.msPointerEnabled;
-})(jQuery, _);
+})(jQuery, window._);

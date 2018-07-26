@@ -290,4 +290,4 @@
 	{
 		return this.__jQ || (this.__jQ = $(this));
 	};
-})(jQuery, _);
+})(jQuery, window._);

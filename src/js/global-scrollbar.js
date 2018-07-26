@@ -200,4 +200,4 @@
 			_.globalScrollbar.set(nDivInr, ID);
 		};
 	})();
-})(jQuery, _);
+})(jQuery, window._);

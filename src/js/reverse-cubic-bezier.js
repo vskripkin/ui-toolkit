@@ -21,4 +21,4 @@
 
 		return aRotatedCurve;
 	};
-})(jQuery, _);
+})(jQuery, window._);

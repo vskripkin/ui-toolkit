@@ -1,4 +1,4 @@
-(function ($, _)
+;(function ($, _)
 {
 	'use strict';
 
@@ -120,4 +120,4 @@
 
 	$.fn.spinner.Constructor = Spinner;
 
-}(jQuery, _));
+}(jQuery, window._));

@@ -1,4 +1,4 @@
-(function ($, _, undefined)
+;(function ($, _, undefined)
 {
 	'use strict';
 
@@ -519,4 +519,4 @@
 
 	window.Waves = Waves;
 
-}(jQuery, _));
+}(jQuery, window._));

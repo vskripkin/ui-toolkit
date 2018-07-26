@@ -130,4 +130,4 @@
 			window.attachEvent('onblur', onChange);
 		}
 	}
-})(jQuery, _);
+})(jQuery, window._);
