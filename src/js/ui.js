@@ -1,3 +1,6 @@
+// <reference path="localstorage-shim.js" />
+// <reference path="device-pixel-ratio.js" />
+
 // <reference path="helpers.js" />
 // <reference path="useragent.js" />
 // <reference path="bro-prefix.js" />
