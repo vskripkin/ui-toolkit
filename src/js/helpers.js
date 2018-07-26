@@ -1,4 +1,10 @@
-;(function ($, _, undefined)
+// <reference path="__f.js" />
+
+// <reference path="useragent.js" />
+// <reference path="bro-prefix.js" />
+// <reference path="support.js" />
+
+})((function ($, _, undefined)
 {
 	'use strict';
 
@@ -290,4 +296,4 @@
 	{
 		return this.__jQ || (this.__jQ = $(this));
 	};
-})(jQuery, window._);
+})(jQuery, window._));

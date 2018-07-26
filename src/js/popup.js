@@ -1,3 +1,5 @@
+// <reference path="global-scrollbar.js" />
+
 ;(function ($, _, undefined)
 {
 	'use strict';

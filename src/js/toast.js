@@ -1,3 +1,6 @@
+// <reference path="../../bower_components/hammerjs/hammer.js" />
+// <reference path="win-visibility.js" />
+
 ;(function ($, _)
 {
 	'use strict';
