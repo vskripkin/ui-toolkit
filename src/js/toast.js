@@ -1,4 +1,4 @@
-// <reference path="../../bower_components/hammerjs/hammer.js" />
+// <reference path="../../../hammerjs/hammer.js" />
 // <reference path="win-visibility.js" />
 
 ;(function ($, _)
