@@ -953,19 +953,22 @@
 				}
 				&:checked + @{selector},
 				&:checked + @{selector}:hover,
-				&:checked + @{selector}:active
+				&:checked + @{selector}:active,
+				label:hover &:checked + @{selector}
 				{
 					.checked();
 				}
 				&:disabled + @{selector},
 				&:disabled + @{selector}:hover,
-				&:disabled + @{selector}:active
+				&:disabled + @{selector}:active,
+				label:hover &:disabled + @{selector}
 				{
 					.disabled();
 				}
 				&:disabled:checked + @{selector},
 				&:disabled:checked + @{selector}:hover,
-				&:disabled:checked + @{selector}:active
+				&:disabled:checked + @{selector}:active,
+				label:hover &:disabled:checked + @{selector}
 				{
 					.disabled_checked();
 				}
