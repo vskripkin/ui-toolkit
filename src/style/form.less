@@ -1085,25 +1085,28 @@
 				{
 					.hover();
 				}
-				& ~ @{pseudo}:active
+				& ~ @{pseudo}:active, label:hover & ~ @{pseudo}:active
 				{
 					.active();
 				}
 				&:checked ~ @{pseudo},
 				&:checked ~ @{pseudo}:hover,
-				&:checked ~ @{pseudo}:active
+				&:checked ~ @{pseudo}:active,
+				label:hover &:checked ~ @{pseudo}
 				{
 					.checked();
 				}
 				&:disabled ~ @{pseudo},
 				&:disabled ~ @{pseudo}:hover,
-				&:disabled ~ @{pseudo}:active
+				&:disabled ~ @{pseudo}:active,
+				label:hover &:disabled ~ @{pseudo}
 				{
 					.disabled();
 				}
 				&:disabled:checked ~ @{pseudo},
 				&:disabled:checked ~ @{pseudo}:hover,
-				&:disabled:checked ~ @{pseudo}:active
+				&:disabled:checked ~ @{pseudo}:active,
+				label:hover &:disabled:checked ~ @{pseudo}
 				{
 					.disabled_checked();
 				}
@@ -1198,8 +1201,9 @@
 					z-index: 0;
 					top: 0;
 					left: 0;
-					border-radius: inherit;
-					background-color: currentColor;
+					border-radius: 0;
+					background: transparent;
+					transform: scale(0) rotate(-45deg);
 				}
 			}
 			&:checked ~ @{pseudo}
@@ -1208,10 +1212,20 @@
 				{
 					// url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342.4 342.4"%3E%3Cpath fill="%23fff" d="M290,33.3L118.9 204.4 52.3 137.9 0 190.2 118.9 309.1 342.4 85.6 z"/%3E%3C/svg%3E')
 
-					background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26"%3E%3Cpath fill="%23fff" d="M22,3L10 15 4 9 0 13 10 23 26 7 z"/%3E%3C/svg%3E');
-					background-size: 70%;
-					background-position: center;
-					background-repeat: no-repeat;
+					// url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26"%3E%3Cpath fill="%23fff" d="M22,3L10 15 4 9 0 13 10 23 26 7 z"/%3E%3C/svg%3E')
+
+
+					width: 61%;
+					height: 37.89%;
+					top: 50%;
+					left: 50%;
+					margin-top: -26.39%;
+					margin-left: -29.57%;
+					transform: scale(1) rotate(-45deg);
+					transform-origin: center;
+					border-width: 0 0 0.14em 0.14em;
+					border-style: solid;
+					border-color: @color-checkbox-sign;
 				}
 			}
 		}
