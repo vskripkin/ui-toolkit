@@ -79,7 +79,7 @@
 							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
 								  '<span  class="' + Class.value + '"></span>' +
 								  '<span  class="' + Class.arrow +'">' + this.options.arrow + '</span>')
-							.insertAfter(this.select)
+							.insertBefore(this.select)
 							.append(this.select);
 			}
 			else
@@ -91,7 +91,7 @@
 							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
 								  '<span class="' + Class.value +'"></span>' +
 								  '<span class="' + Class.arrow + '">' + this.options.arrow + '</span>')
-							.insertAfter(this.select)
+							.insertBefore(this.select)
 							.on(sEvents, _selectboxHandler.bind(this));
 			}
 
