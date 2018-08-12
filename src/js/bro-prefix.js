@@ -42,4 +42,4 @@
 		js: sPre,
 		lowercase: sPre
 	};
-})(jQuery, window._);
+})(window.jQuery, window._);

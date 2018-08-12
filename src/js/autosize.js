@@ -359,4 +359,4 @@
 			}
 		});
 	};
-})(jQuery);
+})(window.jQuery);

@@ -129,4 +129,4 @@
 			return Function.prototype.bind.apply(OriginalLog, _args);
 		}
 	};
-})(jQuery, window._);
+})(window.jQuery, window._);

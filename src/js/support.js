@@ -18,4 +18,4 @@
 		_.support.transition.end = 'transitionend';
 		_.support.animation.end = 'animationend';
 	}
-})(jQuery, window._);
+})(window.jQuery, window._);

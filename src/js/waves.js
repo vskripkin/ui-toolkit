@@ -519,4 +519,4 @@
 
 	window.Waves = Waves;
 
-}(jQuery, window._));
+})(window.jQuery, window._);

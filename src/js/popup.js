@@ -918,4 +918,4 @@
 			Dialog.open(_xContent, $.extend(true, settings, _options));
 		};
 	})();
-})(jQuery, window._);
+})(window.jQuery, window._);
