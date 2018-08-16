@@ -104,8 +104,15 @@
 
 @landscape: @screen e("and (orientation: landscape)");
 @portrait:  @screen e("and (orientation: portrait)");
-@retina-pxl: e("(-webkit-min-device-pixel-ratio: 2)");
-@retina-dpi: e("(min-resolution: 192dpi)");
+
+@d-pxl: e("(-webkit-min-device-pixel-ratio: 2)");
+@d-dpi: e("(min-resolution: 192dpi)");
+
+@d2-pxl: @d-pxl;
+@d2-dpi: @d-dpi;
+
+@d3-pxl: e("(-webkit-min-device-pixel-ratio: 3)");
+@d3-dpi: e("(min-resolution: 288dpi)");
 
 @small-up:   @screen;
 @small-only: @screen e("and (max-width:") @small-range-to e(")");

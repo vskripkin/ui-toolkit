@@ -281,9 +281,10 @@
 		}
 	}
 
+
 	.retina(@rules)
 	{
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
 		{
 			@rules();
 		}
@@ -293,7 +294,7 @@
 	{
 		@condition: e("(min-width:") @min e(") and (max-width:") @max e(")");
 
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
 		{
 			@media @condition
 			{
@@ -305,7 +306,7 @@
 	{
 		@condition: e("(max-width:") @max e(")");
 
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
 		{
 			@media @condition
 			{
@@ -317,7 +318,7 @@
 	{
 		@condition: e("(min-width:") @min e(")");
 
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
 		{
 			@media @condition
 			{
@@ -325,12 +326,11 @@
 			}
 		}
 	}
-
 	.retina-height(@min, @max, @rules)
 	{
 		@condition: e("(min-height:") @min e(") and (max-height:") @max e(")");
 
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
 		{
 			@media @condition
 			{
@@ -342,7 +342,7 @@
 	{
 		@condition: e("(max-height:") @max e(")");
 
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
 		{
 			@media @condition
 			{
@@ -354,7 +354,89 @@
 	{
 		@condition: e("(min-height:") @min e(")");
 
-		@media @retina-pxl, @retina-dpi
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+
+
+	.retina3(@rules)
+	{
+		@media @retina3-pxl, @retina3-dpi
+		{
+			@rules();
+		}
+	}
+
+	.retina3-width(@min, @max, @rules)
+	{
+		@condition: e("(min-width:") @min e(") and (max-width:") @max e(")");
+
+		@media @retina3-pxl, @retina3-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina3-max-width(@max, @rules)
+	{
+		@condition: e("(max-width:") @max e(")");
+
+		@media @retina3-pxl, @retina3-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina3-min-width(@min, @rules)
+	{
+		@condition: e("(min-width:") @min e(")");
+
+		@media @retina3-pxl, @retina3-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina3-height(@min, @max, @rules)
+	{
+		@condition: e("(min-height:") @min e(") and (max-height:") @max e(")");
+
+		@media @retina3-pxl, @retina3-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina3-max-height(@max, @rules)
+	{
+		@condition: e("(max-height:") @max e(")");
+
+		@media @retina3-pxl, @retina3-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina3-min-height(@min, @rules)
+	{
+		@condition: e("(min-height:") @min e(")");
+
+		@media @retina3-pxl, @retina3-dpi
 		{
 			@media @condition
 			{
