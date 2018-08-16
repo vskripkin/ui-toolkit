@@ -364,6 +364,88 @@
 	}
 
 
+	.retina2(@rules)
+	{
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@rules();
+		}
+	}
+
+	.retina2-width(@min, @max, @rules)
+	{
+		@condition: e("(min-width:") @min e(") and (max-width:") @max e(")");
+
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina2-max-width(@max, @rules)
+	{
+		@condition: e("(max-width:") @max e(")");
+
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina2-min-width(@min, @rules)
+	{
+		@condition: e("(min-width:") @min e(")");
+
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina2-height(@min, @max, @rules)
+	{
+		@condition: e("(min-height:") @min e(") and (max-height:") @max e(")");
+
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina2-max-height(@max, @rules)
+	{
+		@condition: e("(max-height:") @max e(")");
+
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+	.retina2-min-height(@min, @rules)
+	{
+		@condition: e("(min-height:") @min e(")");
+
+		@media @retina2-pxl, @retina2-dpi
+		{
+			@media @condition
+			{
+				@rules();
+			}
+		}
+	}
+
+
 	.retina3(@rules)
 	{
 		@media @retina3-pxl, @retina3-dpi
