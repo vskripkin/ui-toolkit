@@ -1,0 +1,155 @@
+#ui-grid
+{
+	._collect-cols(@postfix-search, @only) {}
+
+	._generate-cols(@postfix, @break-points, @cols-total, @col-number) when (@col-number > 0)
+	{
+		@_postfix: if(@postfix = false, ~'', ~'-@{postfix}');
+
+		@up-postfix: ~'@{col-number}@{_postfix}';
+		@only-postfix: ~'@{grid-only-suffix}-@{col-number}@{_postfix}';
+
+		each(@break-points, .(@point)
+		{
+			@name: @point[name];
+
+			.@{name}-@{up-postfix}
+			{
+				#ui-grid
+				{
+					._collect-cols(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					{
+						@params: {
+							name: @name;
+							postfix: @up-postfix;
+							number: @col-number;
+							total: @cols-total;
+						}
+					}
+				}
+			}
+
+			.@{name}-@{only-postfix}
+			{
+				#ui-grid
+				{
+					._collect-cols(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@params: {
+							name: @name;
+							postfix: @only-postfix;
+							number: @col-number;
+							total: @cols-total;
+						}
+					}
+				}
+			}
+		});
+
+		#ui-grid._generate-cols(@postfix, @break-points, @cols-total, @col-number - 1);
+	}
+
+	._generate-css(@break-point, @cols-collected, @only)
+	{
+		@search-name: @break-point[name];
+
+		each(@cols-collected, .(@data, @_, @index)
+		{
+			@name: @data[name];
+			@number: @data[number];
+
+			& when (@name = @search-name)
+			{
+				.check-uniq(@i) when (@i = 0)
+				{
+					@postfix: @data[postfix];
+
+					.@{name}-@{postfix}
+					{
+						@ratio: @number / @data[total];
+						@rate: round(percentage(@ratio), 4);
+
+						flex-basis: @rate;
+						max-width: @rate;
+						width: @rate;
+					}
+				}
+				.check-uniq(@i) when (@i > 0)
+				{
+					each(@cols-collected, .(@data-before, @_, @ii)
+					{
+						@name-before: @data-before[name];
+						@number-before: @data-before[number];
+
+						& when  (@ii = @i) and not (@name-before = @name),
+								(@ii = @i) and not (@number-before = @number)
+						{
+							.check-uniq(@i - 1);
+						}
+					});
+				}
+
+				.check-uniq(@index - 1);
+			}
+		});
+	}
+}
+
+
+#ui
+{
+	.grid-cols(
+		@postfix: false,
+		@break-points: @break-points,
+		@cols-count: @columns-count)
+	{
+		#ui-grid._generate-cols(@postfix, @break-points, @cols-count, @cols-count);
+	}
+
+	.grid-catch-cols(
+		@postfix: false,
+		@break-points: @break-points)
+	{
+		@cols-up: #ui-grid._collect-cols(@postfix, false);
+		@cols-only: #ui-grid._collect-cols(@postfix, true);
+
+		each(@break-points, .(@break-point, @key, @index)
+		{
+			@from: @break-point[from];
+			@to: @break-point[to];
+
+			& when (@from = 0)
+			{
+				#ui-grid._generate-css(@break-point, @cols-up, false);
+			}
+			& when (@from > 0)
+			{
+				@media screen and (min-width: @from)
+				{
+					#ui-grid._generate-css(@break-point, @cols-up, false);
+				}
+			}
+
+			& when (@to > 0)
+			{
+				& when (@from = 0)
+				{
+					@media screen and (max-width: @to)
+					{
+						#ui-grid._generate-css(@break-point, @cols-only, true);
+					}
+				}
+				& when (@from > 0)
+				{
+					@media screen and (min-width: @from) and (max-width: @to)
+					{
+						#ui-grid._generate-css(@break-point, @cols-only, true);
+					}
+				}
+			}
+		});
+	}
+}
+
+#ui.grid-cols();
+& { #ui.grid-catch-cols(); }
