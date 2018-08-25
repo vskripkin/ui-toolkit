@@ -1,3 +1,12 @@
+// COMMON
+// --------------------------------------------------
+
+@width-base: 102rem;
+@width-wrapper: @width-base;
+
+// GRID
+// --------------------------------------------------
+
 @break-points: {
 	@1: {
 		name: small;
@@ -16,7 +25,8 @@
 	}
 };
 
-@grid-only-suffix: only;
-
-
-@columns-count: 24;
+@grid-width: @width-base;
+@grid-columns: 24;
+@grid-default-dir: left;
+@grid-opposite-dir: right;
+@grid-only-key: only;

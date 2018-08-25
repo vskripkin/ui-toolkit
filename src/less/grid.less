@@ -1,88 +1,324 @@
-#ui-grid
+#ui-grid-columns
 {
-	._collect-cols(@postfix-search, @only) {}
+	._collect(@postfix-search, @only) {}
 
-	._generate-cols(@postfix, @break-points, @cols-total, @col-number) when (@col-number > 0)
+	._generate-mixins(@postfix, @break-points, @cols-total, @col-number) when (@col-number > -1)
 	{
-		@_postfix: if(@postfix = false, ~'', ~'-@{postfix}');
+		#ui-grid-columns._generate-mixins(@postfix, @break-points, @cols-total, @col-number - 1);
 
-		@up-postfix: ~'@{col-number}@{_postfix}';
-		@only-postfix: ~'@{grid-only-suffix}-@{col-number}@{_postfix}';
+		@_postfix: if(@postfix = false, ~'', ~'-@{postfix}');
+		@suffix: ~'@{col-number}@{_postfix}';
 
 		each(@break-points, .(@point)
 		{
-			@name: @point[name];
+			@size: @point[name];
 
-			.@{name}-@{up-postfix}
+			@prefix-up: ~'@{size}';
+			@prefix-only: ~'@{size}-@{grid-only-key}';
+
+			@params-up: {
+				size: @size;
+				prefix: @prefix-up;
+				suffix: @suffix;
+				number: @col-number;
+				total: @cols-total;
+			};
+			@params-only: {
+				size: @size;
+				prefix: @prefix-only;
+				suffix: @suffix;
+				number: @col-number;
+				total: @cols-total;
+			};
+
+			.@{prefix-up}-@{suffix}
 			{
-				#ui-grid
+				#ui-grid-columns
 				{
-					._collect-cols(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
 					{
-						@params: {
-							name: @name;
-							postfix: @up-postfix;
-							number: @col-number;
-							total: @cols-total;
-						}
+						@width: @params-up;
+					}
+				}
+			}
+			.@{prefix-only}-@{suffix}
+			{
+				#ui-grid-columns
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@width: @params-only;
 					}
 				}
 			}
 
-			.@{name}-@{only-postfix}
+			.@{prefix-up}-toright-@{suffix}
 			{
-				#ui-grid
+				#ui-grid-columns
 				{
-					._collect-cols(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
 					{
-						@params: {
-							name: @name;
-							postfix: @only-postfix;
-							number: @col-number;
-							total: @cols-total;
-						}
+						@toright: @params-up;
+					}
+				}
+			}
+			.@{prefix-up}-toleft-@{suffix}
+			{
+				#ui-grid-columns
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					{
+						@toleft: @params-up;
+					}
+				}
+			}
+			.@{prefix-up}-offset-@{suffix}
+			{
+				#ui-grid-columns
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					{
+						@offset: @params-up;
+					}
+				}
+			}
+
+			.@{prefix-only}-toright-@{suffix}
+			{
+				#ui-grid-columns
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@toright: @params-only;
+					}
+				}
+			}
+			.@{prefix-only}-toleft-@{suffix}
+			{
+				#ui-grid-columns
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@toleft: @params-only;
+					}
+				}
+			}
+			.@{prefix-only}-offset-@{suffix}
+			{
+				#ui-grid-columns
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@offset: @params-only;
 					}
 				}
 			}
 		});
-
-		#ui-grid._generate-cols(@postfix, @break-points, @cols-total, @col-number - 1);
 	}
 
 	._generate-css(@break-point, @cols-collected, @only)
 	{
-		@search-name: @break-point[name];
+		@search-size: @break-point[name];
 
-		each(@cols-collected, .(@data, @_, @index)
+		each(@cols-collected, .(@data, @type-var, @index)
 		{
-			@name: @data[name];
+			@size: @data[size];
+			@type: replace(@type-var, '@', '');
 			@number: @data[number];
 
-			& when (@name = @search-name)
+			& when (@size = @search-size)
 			{
 				.check-uniq(@i) when (@i = 0)
 				{
-					@postfix: @data[postfix];
+					@prefix: @data[prefix];
+					@stem: if(@type = width, ~'', ~'-@{type}');
+					@suffix: @data[suffix];
 
-					.@{name}-@{postfix}
+					.@{prefix}@{stem}-@{suffix}
 					{
 						@ratio: @number / @data[total];
 						@rate: round(percentage(@ratio), 4);
 
-						flex-basis: @rate;
-						max-width: @rate;
-						width: @rate;
+						& when (@type = width)
+						{
+							flex-basis: @rate;
+							max-width: @rate;
+							width: @rate;
+						}
+						& when (@type = toright)
+						{
+							@{grid-default-dir}: @rate;
+							@{grid-opposite-dir}: auto;
+						}
+						& when (@type = toleft)
+						{
+							@{grid-opposite-dir}: @rate;
+							@{grid-default-dir}: auto;
+						}
+						& when (@type = offset)
+						{
+							margin-@{grid-default-dir}: @rate !important;
+						}
 					}
 				}
 				.check-uniq(@i) when (@i > 0)
 				{
-					each(@cols-collected, .(@data-before, @_, @ii)
+					each(@cols-collected, .(@data-before, @type-var-before, @ii)
 					{
-						@name-before: @data-before[name];
+						@size-before: @data-before[size];
+						@type-before: replace(@type-var-before, '@', '');
 						@number-before: @data-before[number];
 
-						& when  (@ii = @i) and not (@name-before = @name),
+						& when  (@ii = @i) and not (@size-before = @size),
+								(@ii = @i) and not (@type-before = @type),
 								(@ii = @i) and not (@number-before = @number)
+						{
+							.check-uniq(@i - 1);
+						}
+					});
+				}
+
+				.check-uniq(@index - 1);
+			}
+		});
+	}
+}
+
+#ui-grid-helpers
+{
+	._collect(@postfix-search, @only) {}
+
+	._generate-mixins(@postfix, @break-points)
+	{
+		@_postfix: if(@postfix = false, ~'', ~'-@{postfix}');
+		@suffix: ~'@{_postfix}';
+
+		each(@break-points, .(@point)
+		{
+			@size: @point[name];
+
+			@prefix-up: ~'@{size}';
+			@prefix-only: ~'@{size}-@{grid-only-key}';
+
+			@params-up: {
+				size: @size;
+				prefix: @prefix-up;
+				suffix: @suffix;
+			};
+			@params-only: {
+				size: @size;
+				prefix: @prefix-only;
+				suffix: @suffix;
+			};
+
+			.@{prefix-up}-tight
+			{
+				#ui-grid-helpers
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					{
+						@tight: @params-up;
+					}
+				}
+			}
+			.@{prefix-up}-untight
+			{
+				#ui-grid-helpers
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					{
+						@untight: @params-up;
+					}
+				}
+			}
+			.@{prefix-up}-auto
+			{
+				#ui-grid-helpers
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and not (@only)
+					{
+						@auto: @params-up;
+					}
+				}
+			}
+
+			.@{prefix-only}-tight
+			{
+				#ui-grid-helpers
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@tight: @params-only;
+					}
+				}
+			}
+			.@{prefix-only}-untight
+			{
+				#ui-grid-helpers
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@untight: @params-only;
+					}
+				}
+			}
+			.@{prefix-only}-auto
+			{
+				#ui-grid-helpers
+				{
+					._collect(@postfix-search, @only) when (@postfix-search = @postfix) and (@only)
+					{
+						@auto: @params-only;
+					}
+				}
+			}
+		});
+	}
+
+	._generate-css(@break-point, @helpers-collected, @only)
+	{
+		@search-size: @break-point[name];
+
+		each(@helpers-collected, .(@data, @type-var, @index)
+		{
+			@size: @data[size];
+			@type: replace(@type-var, '@', '');
+
+			& when (@size = @search-size)
+			{
+				.check-uniq(@i) when (@i = 0)
+				{
+					@prefix: @data[prefix];
+					@stem: @type;
+
+					.@{prefix}-@{stem}
+					{
+						& when (@type = tight)
+						{
+							flex: 0 1 auto;
+							max-width: 100%;
+							width: auto;
+						}
+						& when (@type = untight)
+						{
+							flex: 1 1 auto;
+						}
+						& when (@type = auto)
+						{
+							flex-basis: auto;
+							width: auto;
+						}
+					}
+				}
+				.check-uniq(@i) when (@i > 0)
+				{
+					each(@helpers-collected, .(@data-before, @type-var-before, @ii)
+					{
+						@size-before: @data-before[size];
+						@type-before: replace(@type-var-before, '@', '');
+
+						& when  (@ii = @i) and not (@size-before = @size),
+								(@ii = @i) and not (@type-before = @type)
 						{
 							.check-uniq(@i - 1);
 						}
@@ -98,20 +334,30 @@
 
 #ui
 {
-	.grid-cols(
+	.grid-columns(
 		@postfix: false,
-		@break-points: @break-points,
-		@cols-count: @columns-count)
+		@cols-count: @grid-columns,
+		@break-points: @break-points)
 	{
-		#ui-grid._generate-cols(@postfix, @break-points, @cols-count, @cols-count);
+		#ui-grid-columns._generate-mixins(@postfix, @break-points, @cols-count, @cols-count);
 	}
 
-	.grid-catch-cols(
+	.grid-helpers(
 		@postfix: false,
 		@break-points: @break-points)
 	{
-		@cols-up: #ui-grid._collect-cols(@postfix, false);
-		@cols-only: #ui-grid._collect-cols(@postfix, true);
+		#ui-grid-helpers._generate-mixins(@postfix, @break-points);
+	}
+
+	.grid-collect(
+		@postfix: false,
+		@break-points: @break-points)
+	{
+		@cols-up: #ui-grid-columns._collect(@postfix, false);
+		@cols-only: #ui-grid-columns._collect(@postfix, true);
+
+		@hels-up: #ui-grid-helpers._collect(@postfix, false);
+		@hels-only: #ui-grid-helpers._collect(@postfix, true);
 
 		each(@break-points, .(@break-point, @key, @index)
 		{
@@ -120,13 +366,15 @@
 
 			& when (@from = 0)
 			{
-				#ui-grid._generate-css(@break-point, @cols-up, false);
+				#ui-grid-columns._generate-css(@break-point, @cols-up, false);
+				#ui-grid-helpers._generate-css(@break-point, @hels-up, false);
 			}
 			& when (@from > 0)
 			{
 				@media screen and (min-width: @from)
 				{
-					#ui-grid._generate-css(@break-point, @cols-up, false);
+					#ui-grid-columns._generate-css(@break-point, @cols-up, false);
+					#ui-grid-helpers._generate-css(@break-point, @hels-up, false);
 				}
 			}
 
@@ -136,14 +384,16 @@
 				{
 					@media screen and (max-width: @to)
 					{
-						#ui-grid._generate-css(@break-point, @cols-only, true);
+						#ui-grid-columns._generate-css(@break-point, @cols-only, true);
+						#ui-grid-helpers._generate-css(@break-point, @hels-only, true);
 					}
 				}
 				& when (@from > 0)
 				{
 					@media screen and (min-width: @from) and (max-width: @to)
 					{
-						#ui-grid._generate-css(@break-point, @cols-only, true);
+						#ui-grid-columns._generate-css(@break-point, @cols-only, true);
+						#ui-grid-helpers._generate-css(@break-point, @hels-only, true);
 					}
 				}
 			}
@@ -151,5 +401,7 @@
 	}
 }
 
-#ui.grid-cols();
-& { #ui.grid-catch-cols(); }
+#ui.grid-columns();
+#ui.grid-helpers();
+
+& { #ui.grid-collect(); }
