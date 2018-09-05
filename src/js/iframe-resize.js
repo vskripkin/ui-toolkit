@@ -3,6 +3,8 @@
 {
 	'use strict';
 
+	// TODO: padding-top: calc(100% / width * height)
+
 	_.iframeHeight = function (_nIframe)
 	{
 		var iWidth = _nIframe.offsetWidth,
