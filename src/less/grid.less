@@ -1,3 +1,51 @@
+#ui-grid-css
+{
+	.width(@width)
+	{
+		flex-basis: auto;
+		width: @width;
+		max-width: @width;
+	}
+	.toright(@range)
+	{
+		@{grid-default-dir}: @range;
+		@{grid-opposite-dir}: auto;
+	}
+	.toleft(@range)
+	{
+		@{grid-opposite-dir}: @range;
+		@{grid-default-dir}: auto;
+	}
+	.offset(@range)
+	{
+		margin-@{grid-default-dir}: @range !important;
+	}
+
+	.width-tight()
+	{
+		flex-grow: 0;
+		flex-basis: auto;
+
+		width: auto;
+		max-width: 100%;
+	}
+	.width-untight()
+	{
+		flex-grow: 1;
+		flex-basis: auto;
+
+		width: auto;
+		max-width: 100%;
+	}
+	.width-auto()
+	{
+		flex-basis: 0;
+
+		width: auto;
+		max-width: 100%;
+	}
+}
+
 #ui-grid-columns
 {
 	._collect(@postfix-search, @only) {}
@@ -141,23 +189,19 @@
 
 						& when (@type = width)
 						{
-							flex-basis: @rate;
-							max-width: @rate;
-							width: @rate;
+							#ui-grid-css.width(@rate);
 						}
 						& when (@type = toright)
 						{
-							@{grid-default-dir}: @rate;
-							@{grid-opposite-dir}: auto;
+							#ui-grid-css.toright(@rate);
 						}
 						& when (@type = toleft)
 						{
-							@{grid-opposite-dir}: @rate;
-							@{grid-default-dir}: auto;
+							#ui-grid-css.toleft(@rate);
 						}
 						& when (@type = offset)
 						{
-							margin-@{grid-default-dir}: @rate !important;
+							#ui-grid-css.offset(@rate);
 						}
 					}
 				}
@@ -295,18 +339,15 @@
 					{
 						& when (@type = tight)
 						{
-							flex: 0 1 auto;
-							max-width: 100%;
-							width: auto;
+							#ui-grid-css.width-tight();
 						}
 						& when (@type = untight)
 						{
-							flex: 1 1 auto;
+							#ui-grid-css.width-untight();
 						}
 						& when (@type = auto)
 						{
-							flex-basis: auto;
-							width: auto;
+							#ui-grid-css.width-auto();
 						}
 					}
 				}
