@@ -4,29 +4,60 @@
 @width-base: 102rem;
 @width-wrapper: @width-base;
 
+
 // GRID
 // --------------------------------------------------
 
-@break-points: {
-	@1: {
-		name: small;
-		from: 0;
-		to: 541px;
-	}
-	@2: {
-		name: medium;
-		from: 542px;
-		to: 992px
-	}
-	@3: {
-		name: large;
-		from: 993px;
-		to: 0;
-	}
-};
-
 @grid-width: @width-base;
-@grid-columns: 24;
+@grid-cols-count: 24;
 @grid-default-dir: left;
 @grid-opposite-dir: right;
 @grid-only-key: only;
+
+.grid-columns()
+{
+	@default: {
+		postfix: false;
+		columns: @grid-cols-count;
+	}
+}
+
+.grid-bps-params()
+{
+	@order: small, medium, large;
+
+	@small-class:  small;
+	@medium-class: medium;
+	@large-class:  large;
+
+	@small-from: 0;
+	@small-to:   541px;
+
+	@medium-from: 542px;
+	@medium-to:   992px;
+
+	@large-from: 993px;
+	@large-to:   0;
+}
+.grid-bps()
+{
+	@small: {
+		class: .grid-bps-params[@small-class];
+		from:  .grid-bps-params[@small-from];
+		to:    .grid-bps-params[@small-to];
+	}
+	@medium: {
+		class: .grid-bps-params[@medium-class];
+		from:  .grid-bps-params[@medium-from];
+		to:    .grid-bps-params[@medium-to];
+	}
+	@large: {
+		class: .grid-bps-params[@large-class];
+		from:  .grid-bps-params[@large-from];
+		to:    .grid-bps-params[@large-to];
+	}
+}
+
+@grid-bps: .grid-bps();
+@grid-bps-order: .grid-bps-params[@order];
+@grid-columns: .grid-columns();
