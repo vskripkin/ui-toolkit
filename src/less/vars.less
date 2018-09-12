@@ -1,8 +1,46 @@
 // COMMON
 // --------------------------------------------------
 
+@dir-img: '../images';
 @width-base: 102rem;
 @width-wrapper: @width-base;
+
+
+// MEDIA QUERY
+// --------------------------------------------------
+
+@screen: e("only screen");
+
+@landscape: e("(orientation: landscape)");
+@portrait:  e("(orientation: portrait)");
+
+@retina-pxl:  e("(-webkit-min-device-pixel-ratio: 2)");
+@retina-dpi:  e("(min-resolution: 192dpi)");
+
+@retina2-pxl: @retina-pxl;
+@retina2-dpi: @retina-dpi;
+@retina2:     @retina2-pxl, @retina2-dpi;
+
+@retina3-pxl: e("(-webkit-min-device-pixel-ratio: 3)");
+@retina3-dpi: e("(min-resolution: 288dpi)");
+@retina3:     @retina3-pxl, @retina3-dpi;
+
+
+@small-only:   @small-down;
+@medium-only:  e("(min-width:") @grid-medium-from  e(") and (max-width:") @grid-medium-to e(")");
+@large-only:   e("(min-width:") @grid-large-from   e(") and (max-width:") @grid-large-to  e(")");
+@xlarge-only:  e("(min-width:") @grid-xlarge-from  e(") and (max-width:") @grid-xlarge-to e(")");
+@xxlarge-only: @xxlarge-up;
+
+@medium-up:    e("(min-width:") @grid-medium-from  e(")");
+@large-up:     e("(min-width:") @grid-large-from   e(")");
+@xlarge-up:    e("(min-width:") @grid-xlarge-from  e(")");
+@xxlarge-up:   e("(min-width:") @grid-xxlarge-from e(")");
+
+@small-down:   e("(max-width:") @grid-small-to     e(")");
+@medium-down:  e("(max-width:") @grid-medium-to    e(")");
+@large-down:   e("(max-width:") @grid-large-to     e(")");
+@xlarge-down:  e("(max-width:") @grid-xlarge-to    e(")");
 
 
 // GRID
@@ -14,6 +52,43 @@
 @grid-opposite-dir: right;
 @grid-only-key: only;
 
+@grid-bps-order: small, medium, large, xlarge, xxlarge;
+@grid-bps: .grid-bps();
+@grid-columns: .grid-columns();
+
+@grid-small-class:   small;
+@grid-medium-class:  medium;
+@grid-large-class:   large;
+@grid-xlarge-class:  xlarge;
+@grid-xxlarge-class: xxlarge;
+
+@grid-small-gap:   1.6rem;
+@grid-medium-gap:  2.8rem;
+@grid-large-gap:   2.8rem;
+@grid-xlarge-gap:  4rem;
+@grid-xxlarge-gap: 4rem;
+
+@grid-small-bp:   540px;
+@grid-medium-bp:  992px;
+@grid-large-bp:   1399px;
+@grid-xlarge-bp:  2199px;
+
+@grid-small-from:    0;
+@grid-small-to:      @grid-small-bp;
+
+@grid-medium-from:  (@grid-small-bp + 1);
+@grid-medium-to:     @grid-medium-bp;
+
+@grid-large-from:   (@grid-medium-bp + 1);
+@grid-large-to:      @grid-large-bp;
+
+@grid-xlarge-from:  (@grid-large-bp + 1);
+@grid-xlarge-to:     @grid-xlarge-bp;
+
+@grid-xxlarge-from: (@grid-xlarge-bp + 1);
+@grid-xxlarge-to:    0;
+
+
 .grid-columns()
 {
 	@default: {
@@ -22,42 +97,56 @@
 	}
 }
 
-.grid-bps-params()
-{
-	@order: small, medium, large;
-
-	@small-class:  small;
-	@medium-class: medium;
-	@large-class:  large;
-
-	@small-from: 0;
-	@small-to:   541px;
-
-	@medium-from: 542px;
-	@medium-to:   992px;
-
-	@large-from: 993px;
-	@large-to:   0;
-}
 .grid-bps()
 {
 	@small: {
-		class: .grid-bps-params[@small-class];
-		from:  .grid-bps-params[@small-from];
-		to:    .grid-bps-params[@small-to];
+		class: @grid-small-class;
+		from:  @grid-small-from;
+		to:    @grid-small-to;
+		gap:   @grid-small-gap;
+
+		mq-only: @small-only;
+		mq-up:   start;
+		mq-down: false;
 	}
 	@medium: {
-		class: .grid-bps-params[@medium-class];
-		from:  .grid-bps-params[@medium-from];
-		to:    .grid-bps-params[@medium-to];
+		class: @grid-medium-class;
+		from:  @grid-medium-from;
+		to:    @grid-medium-to;
+		gap:   @grid-medium-gap;
+
+		mq-only: @medium-only;
+		mq-up:   @medium-up;
+		mq-down: @medium-down;
 	}
 	@large: {
-		class: .grid-bps-params[@large-class];
-		from:  .grid-bps-params[@large-from];
-		to:    .grid-bps-params[@large-to];
+		class: @grid-large-class;
+		from:  @grid-large-from;
+		to:    @grid-large-to;
+		gap:   @grid-large-gap;
+
+		mq-only: @large-only;
+		mq-up:   @large-up;
+		mq-down: @large-down;
+	}
+	@xlarge: {
+		class: @grid-xlarge-class;
+		from:  @grid-xlarge-from;
+		to:    @grid-xlarge-to;
+		gap:   @grid-xlarge-gap;
+
+		mq-only: @xlarge-only;
+		mq-up:   @xlarge-up;
+		mq-down: @xlarge-down;
+	}
+	@xxlarge: {
+		class: @grid-xxlarge-class;
+		from:  @grid-xxlarge-from;
+		to:    @grid-xxlarge-to;
+		gap:   @grid-xxlarge-gap;
+
+		mq-only: false;
+		mq-up:   @xxlarge-up;
+		mq-down: false;
 	}
 }
-
-@grid-bps: .grid-bps();
-@grid-bps-order: .grid-bps-params[@order];
-@grid-columns: .grid-columns();

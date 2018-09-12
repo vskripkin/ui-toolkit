@@ -1,3 +1,20 @@
+#ui
+{
+	.grid(
+		@row:  row,  @col:  col,
+		@grid: grid, @item: item)
+	{
+		.@{grid}
+		{
+			#ui-grid-css.grid();
+		}
+		.@{item}
+		{
+			#ui-grid-css.item();
+		}
+	}
+}
+
 #ui-grid-css
 {
 	.grid()
@@ -418,24 +435,9 @@
 	}
 }
 
-
-#ui
+#ui-grid
 {
-	.grid(
-		@row:  row,  @col:  col,
-		@grid: grid, @item: item)
-	{
-		.@{grid}
-		{
-			#ui-grid-css.grid();
-		}
-		.@{item}
-		{
-			#ui-grid-css.item();
-		}
-	}
-
-	.grid-mixins()
+	._mixins()
 	{
 		each(@grid-bps-order, .(@bp-name)
 		{
@@ -455,7 +457,7 @@
 		});
 	}
 
-	.grid-collect()
+	._collect()
 	{
 		each(@grid-bps-order, .(@bp-name)
 		{
@@ -463,7 +465,11 @@
 			@from:  @grid-bps[@@bp-name][from];
 			@to:    @grid-bps[@@bp-name][to];
 
-			& when (@from = 0)
+			@mq-only: @grid-bps[@@bp-name][mq-only];
+			@mq-up:   @grid-bps[@@bp-name][mq-up];
+			@mq-down: @grid-bps[@@bp-name][mq-down];
+
+			#ui-grid._apply-collected(up, @mq-up,
 			{
 				each(@grid-columns, .(@grid-cols)
 				{
@@ -475,62 +481,51 @@
 
 				@hels-up: #ui-grid-helpers._collect(@class, false);
 				#ui-grid-helpers._generate-css(@hels-up);
-			}
-			& when (@from > 0)
+			});
+
+			#ui-grid._apply-collected(only, @mq-only,
 			{
-				@media screen and (min-width: @from)
+				each(@grid-columns, .(@grid-cols)
 				{
-					each(@grid-columns, .(@grid-cols)
-					{
-						@postfix: @grid-cols[postfix];
+					@postfix: @grid-cols[postfix];
 
-						@cols-up: #ui-grid-columns._collect(@class, @postfix, false);
-						#ui-grid-columns._generate-css(@cols-up);
-					});
+					@cols-only: #ui-grid-columns._collect(@class, @postfix, true);
+					#ui-grid-columns._generate-css(@cols-only);
+				});
 
-					@hels-up: #ui-grid-helpers._collect(@class, false);
-					#ui-grid-helpers._generate-css(@hels-up);
-				}
-			}
-
-			& when (@to > 0)
-			{
-				& when (@from = 0)
-				{
-					@media screen and (max-width: @to)
-					{
-						each(@grid-columns, .(@grid-cols)
-						{
-							@postfix: @grid-cols[postfix];
-
-							@cols-only: #ui-grid-columns._collect(@class, @postfix, true);
-							#ui-grid-columns._generate-css(@cols-only);
-						});
-
-						@hels-only: #ui-grid-helpers._collect(@class, true);
-						#ui-grid-helpers._generate-css(@hels-only);
-					}
-				}
-				& when (@from > 0)
-				{
-					@media screen and (min-width: @from) and (max-width: @to)
-					{
-						each(@grid-columns, .(@grid-cols)
-						{
-							@postfix: @grid-cols[postfix];
-
-							@cols-only: #ui-grid-columns._collect(@class, @postfix, true);
-							#ui-grid-columns._generate-css(@cols-only);
-						});
-
-						@hels-only: #ui-grid-helpers._collect(@class, true);
-						#ui-grid-helpers._generate-css(@hels-only);
-					}
-				}
-			}
+				@hels-only: #ui-grid-helpers._collect(@class, true);
+				#ui-grid-helpers._generate-css(@hels-only);
+			});
 		});
+	}
+
+
+	._apply-collected(up, @mq-up, @css)
+	{
+		& when (@mq-up = start)
+		{
+			@css();
+		}
+		& when not (@mq-up = start)
+		{
+			@media @mq-up
+			{
+				@css();
+			}
+		}
+	}
+
+	._apply-collected(only, @mq-only, @css)
+	{
+		& when not (@mq-only = false)
+		{
+			@media @mq-only
+			{
+				@css();
+			}
+		}
 	}
 }
 
-#ui.grid-mixins();
-& { #ui.grid-collect(); }
+#ui-grid._mixins();
+& { #ui-grid._collect(); }
