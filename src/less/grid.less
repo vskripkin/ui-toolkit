@@ -469,7 +469,7 @@
 			@mq-up:   @grid-bps[@@bp-name][mq-up];
 			@mq-down: @grid-bps[@@bp-name][mq-down];
 
-			#ui-grid._apply-collected(up, @mq-up,
+			@css-up:
 			{
 				each(@grid-columns, .(@grid-cols)
 				{
@@ -481,9 +481,9 @@
 
 				@hels-up: #ui-grid-helpers._collect(@class, false);
 				#ui-grid-helpers._generate-css(@hels-up);
-			});
+			};
 
-			#ui-grid._apply-collected(only, @mq-only,
+			@css-only:
 			{
 				each(@grid-columns, .(@grid-cols)
 				{
@@ -495,31 +495,23 @@
 
 				@hels-only: #ui-grid-helpers._collect(@class, true);
 				#ui-grid-helpers._generate-css(@hels-only);
-			});
+			};
+
+			#ui-grid._apply-collected(@mq-up,   @css-up);
+			#ui-grid._apply-collected(@mq-only, @css-only);
 		});
 	}
 
 
-	._apply-collected(up, @mq-up, @css)
+	._apply-collected(@media-query, @css)
 	{
-		& when (@mq-up = start)
+		& when (@media-query = start)
 		{
 			@css();
 		}
-		& when not (@mq-up = start)
+		& when not (@media-query = start) and not (@mq-only = false)
 		{
-			@media @mq-up
-			{
-				@css();
-			}
-		}
-	}
-
-	._apply-collected(only, @mq-only, @css)
-	{
-		& when not (@mq-only = false)
-		{
-			@media @mq-only
+			@media @media-query
 			{
 				@css();
 			}
