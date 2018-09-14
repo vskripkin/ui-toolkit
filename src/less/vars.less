@@ -10,7 +10,7 @@
 // --------------------------------------------------
 
 @grid-width: @width-base;
-@grid-cols-count: 24;
+@grid-total: 24;
 @grid-default-dir: left;
 @grid-opposite-dir: right;
 
@@ -18,10 +18,10 @@
 @grid-down-key: down;
 @grid-only-key: only;
 
-@grid-grid-class: grid;
-@grid-item-class: item;
-@grid-row-class:  row;
-@grid-col-class:  col;
+@grid-grid-class:  grid;
+@grid-item-class:  item;
+@grid-table-class: table;
+@grid-cell-class:  cell;
 
 @grid-small-gap:   1.6rem;
 @grid-medium-gap:  2.8rem;
@@ -35,7 +35,7 @@
 {
 	@default: {
 		postfix: false;
-		columns: @grid-cols-count;
+		columns: @grid-total;
 	}
 }
 

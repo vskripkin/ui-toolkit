@@ -1,41 +1,145 @@
 #ui-grid-css
 {
+	@grid:  @grid-grid-class;
+	@item:  @grid-item-class;
+	@table: @grid-table-class;
+	@cell:  @grid-cell-class;
+
 	.grid()
 	{
-		position: relative;
-		margin: 0 auto;
-
-		display: flex;
-		flex-flow: row wrap;
-
-		width: 100%;
-		min-width: auto;
-		max-width: @grid-width;
-
-		& &, &&--full
+		.@{grid}
 		{
-			width: auto;
-			min-width: 100%;
-			max-width: none;
+			display: flex;
+			flex-flow: row wrap;
+
+			position: relative;
+			margin: 0 auto;
+			width: 100%;
+			min-width: auto;
+			max-width: @grid-width;
+
+			& &, &&--full
+			{
+				width: auto;
+				min-width: 100%;
+				max-width: none;
+			}
+			&&--inline
+			{
+				display: inline-flex;
+
+				width: auto;
+				min-width: auto;
+				max-width: 100%;
+			}
 		}
-		&&--inline
+	}
+	.item()
+	{
+		.@{item}
 		{
-			display: inline-flex;
+			flex: 1 1 0;
 
+			position: relative;
 			width: auto;
 			min-width: auto;
 			max-width: 100%;
 		}
 	}
-	.item()
+
+	.table()
 	{
-		position: relative;
+		.@{table}
+		{
+			display: table;
+			position: relative;
+			margin: 0 auto;
+			width: 100%;
+			max-width: @grid-width;
 
-		flex: 1 1 0;
+			&:before, &:after
+			{
+				content: none;
+			}
 
-		width: auto;
-		min-width: auto;
-		max-width: 100%;
+			& &, &&--full
+			{
+				width: auto;
+				max-width: none;
+			}
+
+			&&--inline
+			{
+				display: inline-table;
+				width: auto;
+			}
+		}
+	}
+	.cell()
+	{
+		.@{cell}
+		{
+			display: table-cell;
+			vertical-align: top;
+			width: 100%;
+			flex-basis: auto !important;
+		}
+	}
+
+	.gaps(@gap)
+	{
+		.@{grid} > .@{item}, .@{table} > .@{cell}
+		{
+			& > .@{grid}, & > .@{table}
+			{
+				margin-left:  (-1 * @gap / 2);
+				margin-right: (-1 * @gap / 2);
+			}
+		}
+
+		.@{item}, .@{cell}
+		{
+			padding-left:  (@gap / 2);
+			padding-right: (@gap / 2);
+		}
+	}
+
+	.collapse(@bp-name)
+	{
+		&,
+		& > .@{item} > .@{grid},  & > .@{cell} > .@{table},
+		& > .@{item} > .@{table}, & > .@{cell} > .@{grid}
+		{
+			margin-left: 0;
+			margin-right: 0;
+		}
+
+		& > .@{item}, & > .@{cell}
+		{
+			padding-left:  0;
+			padding-right: 0;
+		}
+	}
+	.uncollapse(@bp-name)
+	{
+		@gap: @break-points[@@bp-name][gap];
+
+		&,
+		& > .@{item} > .@{grid},  & > .@{cell} > .@{table},
+		& > .@{item} > .@{table}, & > .@{cell} > .@{grid}
+		{
+			margin-left:  (-1 * @gap / 2);
+			margin-right: (-1 * @gap / 2);
+			width: auto;
+			min-width: 100%;
+			max-width: none;
+		}
+
+		& > .@{item}, & > .@{cell}
+		{
+			padding-left:  (@gap / 2);
+			padding-right: (@gap / 2);
+		}
 	}
 
 
@@ -59,6 +163,33 @@
 	{
 		margin-@{grid-default-dir}: @range !important;
 	}
+
+
+	.width-tight()
+	{
+		flex-grow: 0;
+		flex-basis: auto;
+
+		width: auto;
+		max-width: 100%;
+	}
+	.width-untight()
+	{
+		flex-grow: 1;
+		flex-basis: auto;
+
+		width: auto;
+		max-width: 100%;
+	}
+	.width-auto()
+	{
+		flex-grow: 1;
+		flex-basis: 0;
+
+		width: auto;
+		max-width: 100%;
+	}
+
 
 
 	.flex-row()        { flex-direction: row; }
@@ -90,35 +221,9 @@
 	.flex-content-stretch() { align-content: stretch; }
 
 
-	.width-tight()
-	{
-		flex-grow: 0;
-		flex-basis: auto;
-
-		width: auto;
-		max-width: 100%;
-	}
-	.width-untight()
-	{
-		flex-grow: 1;
-		flex-basis: auto;
-
-		width: auto;
-		max-width: 100%;
-	}
-	.width-auto()
-	{
-		flex-grow: 1;
-		flex-basis: 0;
-
-		width: auto;
-		max-width: 100%;
-	}
-
-
-	.item-first   { order: -1; }
-	.item-last    { order:  1; }
-	.item-initial { order:  0; }
+	.item-first()   { order: -1; }
+	.item-last()    { order:  1; }
+	.item-initial() { order:  0; }
 
 	.item-self-start()    { align-self: flex-start; }
 	.item-self-end()      { align-self: flex-end; }
@@ -151,6 +256,32 @@
 	.shrink-10() { flex-shrink: 10; }
 
 
+	.table-direct()
+	{
+		& > .@{grid-cell-class}:last-child { display: table-cell; }
+	}
+	.table-reverse()
+	{
+		& > .@{grid-cell-class}:last-child { display: table-caption; }
+	}
+
+	.valign-top()
+	{
+		& > .@{grid-cell-class} { vertical-align: top; }
+		&.@{grid-cell-class}    { vertical-align: top !important; }
+	}
+	.valign-middle()
+	{
+		& > .@{grid-cell-class} { vertical-align: middle; }
+		&.@{grid-cell-class}    { vertical-align: middle !important; }
+	}
+	.valign-bottom()
+	{
+		& > .@{grid-cell-class} { vertical-align: bottom; }
+		&.@{grid-cell-class}    { vertical-align: bottom !important; }
+	}
+
+
 
 	.columns(@type, @val)
 	{
@@ -160,8 +291,11 @@
 		& when (@type = toleft)  { #ui-grid-css.toleft(@val); }
 		& when (@type = offset)  { #ui-grid-css.offset(@val); }
 	}
-	.helper(@type)
+	.helper(@type, @bp-name)
 	{
+		& when (@type = collapse)   { #ui-grid-css.collapse(@bp-name); }
+		& when (@type = uncollapse) { #ui-grid-css.uncollapse(@bp-name); }
+
 		& when (@type = row)        { #ui-grid-css.flex-row(); }
 		& when (@type = column)     { #ui-grid-css.flex-column(); }
 		& when (@type = row-rev)    { #ui-grid-css.flex-row-rev(); }
@@ -228,6 +362,13 @@
 		& when (@type = shrink-8)  { #ui-grid-css.shrink-8(); }
 		& when (@type = shrink-9)  { #ui-grid-css.shrink-9(); }
 		& when (@type = shrink-10) { #ui-grid-css.shrink-10(); }
+
+		& when (@type = direct)  { #ui-grid-css.table-direct(); }
+		& when (@type = reverse) { #ui-grid-css.table-reverse(); }
+
+		& when (@type = valign-top)    { #ui-grid-css.valign-top(); }
+		& when (@type = valign-middle) { #ui-grid-css.valign-middle(); }
+		& when (@type = valign-bottom) { #ui-grid-css.valign-bottom(); }
 	}
 }
 
@@ -252,23 +393,21 @@
 		}
 	}
 
-	._generate-css(@collected)
+	._generate-css(@collected, @bp: false)
 	{
-		& when (@collected[@grid])
+		& when (@collected[@grid]) and (@bp = false)
 		{
-			@grid: @grid-grid-class;
-			@item: @grid-item-class;
-			@row:  @grid-row-class;
-			@col:  @grid-col-class;
+			#ui-grid-css.grid();
+			#ui-grid-css.item();
 
-			.@{grid}
-			{
-				#ui-grid-css.grid();
-			}
-			.@{item}
-			{
-				#ui-grid-css.item();
-			}
+			#ui-grid-css.table();
+			#ui-grid-css.cell();
+		}
+		& when (@collected[@grid]) and not (@bp = false)
+		{
+			@gap: @break-points[@@bp][gap];
+
+			#ui-grid-css.gaps(@gap);
 		}
 	}
 }
@@ -415,6 +554,8 @@
 #ui-grid-helpers
 {
 	@props:
+	collapse, uncollapse,
+
 	row, row-rev, column, column-rev,
 	nowrap, wrap, wrap-rev,
 	items-start, items-end, items-center, items-baseline, items-stretch,
@@ -428,7 +569,11 @@
 	grow-1, grow-2, grow-3, grow-4, grow-5,
 	grow-6, grow-7, grow-8, grow-9, grow-10,
 	shrink-1, shrink-2, shrink-3, shrink-4, shrink-5,
-	shrink-6, shrink-7, shrink-8, shrink-9, shrink-10;
+	shrink-6, shrink-7, shrink-8, shrink-9, shrink-10,
+
+	direct, reverse,
+	valign-top, valign-middle, valign-bottom;
+
 
 	._collect(@bp-search, @only) {}
 
@@ -485,7 +630,7 @@
 		});
 	}
 
-	._generate-css(@collected)
+	._generate-css(@collected, @bp-name)
 	{
 		each(@collected, .(@data, @k, @index)
 		{
@@ -498,7 +643,7 @@
 
 				.@{prefix}-@{stem}
 				{
-					#ui-grid-css.helper(@prop);
+					#ui-grid-css.helper(@prop, @bp-name);
 				}
 			}
 
@@ -550,15 +695,16 @@
 		each(@break-points-order, .(@bp-name)
 		{
 			@class: @break-points[@@bp-name][class];
-			@from:  @break-points[@@bp-name][from];
-			@to:    @break-points[@@bp-name][to];
 
 			@mq-up:   @break-points[@@bp-name][mq-up];
 			@mq-down: @break-points[@@bp-name][mq-down];
 			@mq-only: @break-points[@@bp-name][mq-only];
 
+
 			@css-up:
 			{
+				#ui-grid-base._generate-css(@grid-base, @bp-name);
+
 				each(@grid-columns, .(@grid-cols)
 				{
 					@columns: @grid-cols[columns];
@@ -569,7 +715,7 @@
 				});
 
 				@hels-up: #ui-grid-helpers._collect(@class, up);
-				#ui-grid-helpers._generate-css(@hels-up);
+				#ui-grid-helpers._generate-css(@hels-up, @bp-name);
 			};
 
 			@css-down:
@@ -584,7 +730,7 @@
 				});
 
 				@hels-down: #ui-grid-helpers._collect(@class, down);
-				#ui-grid-helpers._generate-css(@hels-down);
+				#ui-grid-helpers._generate-css(@hels-down, @bp-name);
 			};
 
 			@css-only:
@@ -599,7 +745,7 @@
 				});
 
 				@hels-only: #ui-grid-helpers._collect(@class, only);
-				#ui-grid-helpers._generate-css(@hels-only);
+				#ui-grid-helpers._generate-css(@hels-only, @bp-name);
 			};
 
 			#ui-grid._apply-collected(@mq-up,   @css-up);
@@ -623,6 +769,7 @@
 		}
 	}
 }
+
 
 #ui-grid._mixins();
 
