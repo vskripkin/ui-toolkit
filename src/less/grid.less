@@ -1,20 +1,3 @@
-#ui
-{
-	.grid(
-		@row:  row,  @col:  col,
-		@grid: grid, @item: item)
-	{
-		.@{grid}
-		{
-			#ui-grid-css.grid();
-		}
-		.@{item}
-		{
-			#ui-grid-css.item();
-		}
-	}
-}
-
 #ui-grid-css
 {
 	.grid()
@@ -85,22 +68,64 @@
 	.width(@width)
 	{
 		flex-basis: auto;
-		width: @width;
-		max-width: @width;
+		width:      @width;
+		max-width:  @width;
 	}
 	.toright(@range)
 	{
-		@{grid-default-dir}: @range;
+		@{grid-default-dir}:  @range;
 		@{grid-opposite-dir}: auto;
 	}
 	.toleft(@range)
 	{
 		@{grid-opposite-dir}: @range;
-		@{grid-default-dir}: auto;
+		@{grid-default-dir}:  auto;
 	}
 	.offset(@range)
 	{
 		margin-@{grid-default-dir}: @range !important;
+	}
+}
+
+#ui-grid-base
+{
+	._collect()
+	{
+		@grid: false;
+	}
+
+	._generate-mixins()
+	{
+		.use-grid()
+		{
+			#ui-grid-base
+			{
+				._collect()
+				{
+					@grid: true;
+				}
+			}
+		}
+	}
+
+	._generate-css(@collected)
+	{
+		& when (@collected[@grid])
+		{
+			@grid: @grid-grid-class;
+			@item: @grid-item-class;
+			@row: @grid-row-class;
+			@col: @grid-col-class;
+
+			.@{grid}
+			{
+				#ui-grid-css.grid();
+			}
+			.@{item}
+			{
+				#ui-grid-css.item();
+			}
+		}
 	}
 }
 
@@ -111,39 +136,37 @@
 	._generate-mixins(
 		@bp-class,
 		@cols-total,
-		@postfix: false)
-	{
-		@postfix-norm: if(@postfix = false, ~'', ~'-@{postfix}');
-		@prefix-up: ~'@{bp-class}';
-		@prefix-only: ~'@{bp-class}-@{grid-only-key}';
-
-		#ui-grid-columns._make-mixins(@bp-class, @cols-total, @postfix, @postfix-norm, @prefix-up, @prefix-only);
-	}
-
-	._make-mixins(
-		@bp-class,
-		@cols-total,
-		@postfix,
-		@postfix-norm,
-		@prefix-up,
-		@prefix-only,
+		@postfix: false,
 		@col-number: 0) when (@col-number <= @cols-total)
 	{
+		@postfix-norm: if(@postfix = false, ~'', ~'-@{postfix}');
 		@suffix: ~'@{col-number}@{postfix-norm}';
+
+		@prefix-up:    if(@grid-up-key   = false, ~'@{bp-class}', ~'@{bp-class}-@{grid-up-key}');
+		@prefix-down:  if(@grid-down-key = false, ~'@{bp-class}', ~'@{bp-class}-@{grid-down-key}');
+		@prefix-only:  if(@grid-only-key = false, ~'@{bp-class}', ~'@{bp-class}-@{grid-only-key}');
+
 
 		@params-up: {
 			bp-class: @bp-class;
-			prefix: @prefix-up;
-			suffix: @suffix;
-			number: @col-number;
-			total: @cols-total;
+			prefix:   @prefix-up;
+			suffix:   @suffix;
+			number:   @col-number;
+			total:    @cols-total;
+		};
+		@params-down: {
+			bp-class: @bp-class;
+			prefix:   @prefix-down;
+			suffix:   @suffix;
+			number:   @col-number;
+			total:    @cols-total;
 		};
 		@params-only: {
 			bp-class: @bp-class;
-			prefix: @prefix-only;
-			suffix: @suffix;
-			number: @col-number;
-			total: @cols-total;
+			prefix:   @prefix-only;
+			suffix:   @suffix;
+			number:   @col-number;
+			total:    @cols-total;
 		};
 
 
@@ -151,10 +174,21 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and not (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = up)
 				{
 					@width: @params-up;
+				}
+			}
+		}
+		.@{prefix-down}-@{suffix}
+		{
+			#ui-grid-columns
+			{
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = down)
+				{
+					@width: @params-down;
 				}
 			}
 		}
@@ -162,8 +196,8 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = only)
 				{
 					@width: @params-only;
 				}
@@ -174,8 +208,8 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and not (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = up)
 				{
 					@toright: @params-up;
 				}
@@ -185,8 +219,8 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and not (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = up)
 				{
 					@toleft: @params-up;
 				}
@@ -196,10 +230,44 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and not (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = up)
 				{
 					@offset: @params-up;
+				}
+			}
+		}
+
+		.@{prefix-down}-toright-@{suffix}
+		{
+			#ui-grid-columns
+			{
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = down)
+				{
+					@toright: @params-down;
+				}
+			}
+		}
+		.@{prefix-down}-toleft-@{suffix}
+		{
+			#ui-grid-columns
+			{
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = down)
+				{
+					@toleft: @params-down;
+				}
+			}
+		}
+		.@{prefix-down}-offset-@{suffix}
+		{
+			#ui-grid-columns
+			{
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = down)
+				{
+					@offset: @params-down;
 				}
 			}
 		}
@@ -208,8 +276,8 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = only)
 				{
 					@toright: @params-only;
 				}
@@ -219,8 +287,8 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = only)
 				{
 					@toleft: @params-only;
 				}
@@ -230,8 +298,8 @@
 		{
 			#ui-grid-columns
 			{
-				._collect(@bp-search, @postfix-search, @only)
-					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@only)
+				._collect(@bp-search, @postfix-search, @mod)
+					when (@bp-search = @bp-class) and (@postfix-search = @postfix) and (@mod = only)
 				{
 					@offset: @params-only;
 				}
@@ -239,17 +307,12 @@
 		}
 
 
-		#ui-grid-columns._make-mixins(
+		#ui-grid-columns._generate-mixins(
 			@bp-class,
 			@cols-total,
 			@postfix,
-			@postfix-norm,
-			@prefix-up,
-			@prefix-only,
 			@col-number + 1);
 	}
-
-
 
 	._generate-css(@collected)
 	{
@@ -261,13 +324,13 @@
 			.check-uniq(@i) when (@i = 0)
 			{
 				@prefix: @data[prefix];
-				@stem: if(@type = width, ~'', ~'-@{type}');
+				@stem:   if(@type = width, ~'', ~'-@{type}');
 				@suffix: @data[suffix];
 
 				.@{prefix}@{stem}-@{suffix}
 				{
 					@ratio: @number / @data[total];
-					@rate: round(percentage(@ratio), 4);
+					@rate:  round(percentage(@ratio), 4);
 
 					& when (@type = width)
 					{
@@ -292,7 +355,7 @@
 			{
 				each(@collected, .(@data-before, @type-var-before, @ii)
 				{
-					@type-before: replace(@type-var-before, '@', '');
+					@type-before:   replace(@type-var-before, '@', '');
 					@number-before: @data-before[number];
 
 					& when  (@ii = @i) and not (@type-before = @type),
@@ -314,23 +377,29 @@
 
 	._generate-mixins(@bp-class)
 	{
-		@prefix-up: ~'@{bp-class}';
-		@prefix-only: ~'@{bp-class}-@{grid-only-key}';
+		@prefix-up:    if(@grid-up-key   = false, ~'@{bp-class}', ~'@{bp-class}-@{grid-up-key}');
+		@prefix-down:  if(@grid-down-key = false, ~'@{bp-class}', ~'@{bp-class}-@{grid-down-key}');
+		@prefix-only:  if(@grid-only-key = false, ~'@{bp-class}', ~'@{bp-class}-@{grid-only-key}');
+
 
 		@params-up: {
 			bp-class: @bp-class;
-			prefix: @prefix-up;
+			prefix:   @prefix-up;
+		};
+		@params-down: {
+			bp-class: @bp-class;
+			prefix:   @prefix-down;
 		};
 		@params-only: {
 			bp-class: @bp-class;
-			prefix: @prefix-only;
+			prefix:   @prefix-only;
 		};
 
 		.@{prefix-up}-tight
 		{
 			#ui-grid-helpers
 			{
-				._collect(@bp-search, @only) when (@bp-search = @bp-class) and not (@only)
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = up)
 				{
 					@tight: @params-up;
 				}
@@ -340,7 +409,7 @@
 		{
 			#ui-grid-helpers
 			{
-				._collect(@bp-search, @only) when (@bp-search = @bp-class) and not (@only)
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = up)
 				{
 					@untight: @params-up;
 				}
@@ -350,9 +419,40 @@
 		{
 			#ui-grid-helpers
 			{
-				._collect(@bp-search, @only) when (@bp-search = @bp-class) and not (@only)
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = up)
 				{
 					@auto: @params-up;
+				}
+			}
+		}
+
+		.@{prefix-down}-tight
+		{
+			#ui-grid-helpers
+			{
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = down)
+				{
+					@tight: @params-down;
+				}
+			}
+		}
+		.@{prefix-down}-untight
+		{
+			#ui-grid-helpers
+			{
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = down)
+				{
+					@untight: @params-down;
+				}
+			}
+		}
+		.@{prefix-down}-auto
+		{
+			#ui-grid-helpers
+			{
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = down)
+				{
+					@auto: @params-down;
 				}
 			}
 		}
@@ -361,7 +461,7 @@
 		{
 			#ui-grid-helpers
 			{
-				._collect(@bp-search, @only) when (@bp-search = @bp-class) and (@only)
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = only)
 				{
 					@tight: @params-only;
 				}
@@ -371,7 +471,7 @@
 		{
 			#ui-grid-helpers
 			{
-				._collect(@bp-search, @only) when (@bp-search = @bp-class) and (@only)
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = only)
 				{
 					@untight: @params-only;
 				}
@@ -381,7 +481,7 @@
 		{
 			#ui-grid-helpers
 			{
-				._collect(@bp-search, @only) when (@bp-search = @bp-class) and (@only)
+				._collect(@bp-search, @mod) when (@bp-search = @bp-class) and (@mod = only)
 				{
 					@auto: @params-only;
 				}
@@ -439,11 +539,13 @@
 {
 	._mixins()
 	{
-		each(@grid-bps-order, .(@bp-name)
+		#ui-grid-base._generate-mixins();
+
+		each(@break-points-order, .(@bp-name)
 		{
-			@class: @grid-bps[@@bp-name][class];
-			@from:  @grid-bps[@@bp-name][from];
-			@to:    @grid-bps[@@bp-name][to];
+			@class: @break-points[@@bp-name][class];
+			@from:  @break-points[@@bp-name][from];
+			@to:    @break-points[@@bp-name][to];
 
 			each(@grid-columns, .(@grid-cols)
 			{
@@ -459,15 +561,18 @@
 
 	._collect()
 	{
-		each(@grid-bps-order, .(@bp-name)
-		{
-			@class: @grid-bps[@@bp-name][class];
-			@from:  @grid-bps[@@bp-name][from];
-			@to:    @grid-bps[@@bp-name][to];
+		@grid-base: #ui-grid-base._collect();
+		#ui-grid-base._generate-css(@grid-base);
 
-			@mq-only: @grid-bps[@@bp-name][mq-only];
-			@mq-up:   @grid-bps[@@bp-name][mq-up];
-			@mq-down: @grid-bps[@@bp-name][mq-down];
+		each(@break-points-order, .(@bp-name)
+		{
+			@class: @break-points[@@bp-name][class];
+			@from:  @break-points[@@bp-name][from];
+			@to:    @break-points[@@bp-name][to];
+
+			@mq-up:   @break-points[@@bp-name][mq-up];
+			@mq-down: @break-points[@@bp-name][mq-down];
+			@mq-only: @break-points[@@bp-name][mq-only];
 
 			@css-up:
 			{
@@ -475,11 +580,25 @@
 				{
 					@postfix: @grid-cols[postfix];
 
-					@cols-up: #ui-grid-columns._collect(@class, @postfix, false);
+					@cols-up: #ui-grid-columns._collect(@class, @postfix, up);
 					#ui-grid-columns._generate-css(@cols-up);
 				});
 
-				@hels-up: #ui-grid-helpers._collect(@class, false);
+				@hels-up: #ui-grid-helpers._collect(@class, up);
+				#ui-grid-helpers._generate-css(@hels-up);
+			};
+
+			@css-down:
+			{
+				each(@grid-columns, .(@grid-cols)
+				{
+					@postfix: @grid-cols[postfix];
+
+					@cols-up: #ui-grid-columns._collect(@class, @postfix, down);
+					#ui-grid-columns._generate-css(@cols-up);
+				});
+
+				@hels-up: #ui-grid-helpers._collect(@class, down);
 				#ui-grid-helpers._generate-css(@hels-up);
 			};
 
@@ -489,19 +608,19 @@
 				{
 					@postfix: @grid-cols[postfix];
 
-					@cols-only: #ui-grid-columns._collect(@class, @postfix, true);
+					@cols-only: #ui-grid-columns._collect(@class, @postfix, only);
 					#ui-grid-columns._generate-css(@cols-only);
 				});
 
-				@hels-only: #ui-grid-helpers._collect(@class, true);
+				@hels-only: #ui-grid-helpers._collect(@class, only);
 				#ui-grid-helpers._generate-css(@hels-only);
 			};
 
 			#ui-grid._apply-collected(@mq-up,   @css-up);
+			#ui-grid._apply-collected(@mq-down, @css-down);
 			#ui-grid._apply-collected(@mq-only, @css-only);
 		});
 	}
-
 
 	._apply-collected(@media-query, @css)
 	{
@@ -509,7 +628,7 @@
 		{
 			@css();
 		}
-		& when not (@media-query = start) and not (@mq-only = false)
+		& when not (@media-query = start) and not (@media-query = false)
 		{
 			@media @media-query
 			{
@@ -520,4 +639,8 @@
 }
 
 #ui-grid._mixins();
-& { #ui-grid._collect(); }
+
+&
+{
+	#ui-grid._collect();
+}

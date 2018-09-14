@@ -6,6 +6,129 @@
 @width-wrapper: @width-base;
 
 
+// GRID
+// --------------------------------------------------
+
+@grid-width: @width-base;
+@grid-cols-count: 24;
+@grid-default-dir: left;
+@grid-opposite-dir: right;
+
+@grid-up-key:   false;
+@grid-down-key: down;
+@grid-only-key: only;
+
+@grid-grid-class: grid;
+@grid-item-class: item;
+@grid-row-class:  row;
+@grid-col-class:  col;
+
+@grid-small-gap:   1.6rem;
+@grid-medium-gap:  2.8rem;
+@grid-large-gap:   2.8rem;
+@grid-xlarge-gap:  4rem;
+@grid-xxlarge-gap: 4rem;
+
+@grid-columns: .grid-columns();
+
+.grid-columns()
+{
+	@default: {
+		postfix: false;
+		columns: @grid-cols-count;
+	}
+}
+
+
+// BREAK POINTS
+// --------------------------------------------------
+
+@break-points: .break-points();
+@break-points-order: small, medium, large, xlarge, xxlarge;
+
+
+@bp-small-class:   small;
+@bp-medium-class:  medium;
+@bp-large-class:   large;
+@bp-xlarge-class:  xlarge;
+@bp-xxlarge-class: xxlarge;
+
+@bp-small:  540px;
+@bp-medium: 992px;
+@bp-large:  1399px;
+@bp-xlarge: 2199px;
+
+@bp-small-from:    0;
+@bp-small-to:      @bp-small;
+
+@bp-medium-from:  (@bp-small + 1);
+@bp-medium-to:     @bp-medium;
+
+@bp-large-from:   (@bp-medium + 1);
+@bp-large-to:      @bp-large;
+
+@bp-xlarge-from:  (@bp-large + 1);
+@bp-xlarge-to:     @bp-xlarge;
+
+@bp-xxlarge-from: (@bp-xlarge + 1);
+@bp-xxlarge-to:    0;
+
+
+.break-points()
+{
+	@small: {
+		class: @bp-small-class;
+		from:  @bp-small-from;
+		to:    @bp-small-to;
+		gap:   @grid-small-gap;
+
+		mq-up:   start;
+		mq-down: false;
+		mq-only: @small-only;
+	}
+	@medium: {
+		class: @bp-medium-class;
+		from:  @bp-medium-from;
+		to:    @bp-medium-to;
+		gap:   @grid-medium-gap;
+
+		mq-up:   @medium-up;
+		mq-down: @medium-down;
+		mq-only: @medium-only;
+	}
+	@large: {
+		class: @bp-large-class;
+		from:  @bp-large-from;
+		to:    @bp-large-to;
+		gap:   @grid-large-gap;
+
+		mq-up:   @large-up;
+		mq-down: @large-down;
+		mq-only: @large-only;
+	}
+	@xlarge: {
+		class: @bp-xlarge-class;
+		from:  @bp-xlarge-from;
+		to:    @bp-xlarge-to;
+		gap:   @grid-xlarge-gap;
+
+		mq-up:   @xlarge-up;
+		mq-down: @xlarge-down;
+		mq-only: @xlarge-only;
+	}
+	@xxlarge: {
+		class: @bp-xxlarge-class;
+		from:  @bp-xxlarge-from;
+		to:    @bp-xxlarge-to;
+		gap:   @grid-xxlarge-gap;
+
+		mq-up:   @xxlarge-up;
+		mq-down: false;
+		mq-only: false;
+	}
+}
+
+
 // MEDIA QUERY
 // --------------------------------------------------
 
@@ -27,126 +150,17 @@
 
 
 @small-only:   @small-down;
-@medium-only:  e("(min-width:") @grid-medium-from  e(") and (max-width:") @grid-medium-to e(")");
-@large-only:   e("(min-width:") @grid-large-from   e(") and (max-width:") @grid-large-to  e(")");
-@xlarge-only:  e("(min-width:") @grid-xlarge-from  e(") and (max-width:") @grid-xlarge-to e(")");
+@medium-only:  e("(min-width:") @bp-medium-from  e(") and (max-width:") @bp-medium-to e(")");
+@large-only:   e("(min-width:") @bp-large-from   e(") and (max-width:") @bp-large-to  e(")");
+@xlarge-only:  e("(min-width:") @bp-xlarge-from  e(") and (max-width:") @bp-xlarge-to e(")");
 @xxlarge-only: @xxlarge-up;
 
-@medium-up:    e("(min-width:") @grid-medium-from  e(")");
-@large-up:     e("(min-width:") @grid-large-from   e(")");
-@xlarge-up:    e("(min-width:") @grid-xlarge-from  e(")");
-@xxlarge-up:   e("(min-width:") @grid-xxlarge-from e(")");
+@medium-up:    e("(min-width:") @bp-medium-from  e(")");
+@large-up:     e("(min-width:") @bp-large-from   e(")");
+@xlarge-up:    e("(min-width:") @bp-xlarge-from  e(")");
+@xxlarge-up:   e("(min-width:") @bp-xxlarge-from e(")");
 
-@small-down:   e("(max-width:") @grid-small-to     e(")");
-@medium-down:  e("(max-width:") @grid-medium-to    e(")");
-@large-down:   e("(max-width:") @grid-large-to     e(")");
-@xlarge-down:  e("(max-width:") @grid-xlarge-to    e(")");
-
-
-// GRID
-// --------------------------------------------------
-
-@grid-width: @width-base;
-@grid-cols-count: 24;
-@grid-default-dir: left;
-@grid-opposite-dir: right;
-@grid-only-key: only;
-
-@grid-bps-order: small, medium, large, xlarge, xxlarge;
-@grid-bps: .grid-bps();
-@grid-columns: .grid-columns();
-
-@grid-small-class:   small;
-@grid-medium-class:  medium;
-@grid-large-class:   large;
-@grid-xlarge-class:  xlarge;
-@grid-xxlarge-class: xxlarge;
-
-@grid-small-gap:   1.6rem;
-@grid-medium-gap:  2.8rem;
-@grid-large-gap:   2.8rem;
-@grid-xlarge-gap:  4rem;
-@grid-xxlarge-gap: 4rem;
-
-@grid-small-bp:   540px;
-@grid-medium-bp:  992px;
-@grid-large-bp:   1399px;
-@grid-xlarge-bp:  2199px;
-
-@grid-small-from:    0;
-@grid-small-to:      @grid-small-bp;
-
-@grid-medium-from:  (@grid-small-bp + 1);
-@grid-medium-to:     @grid-medium-bp;
-
-@grid-large-from:   (@grid-medium-bp + 1);
-@grid-large-to:      @grid-large-bp;
-
-@grid-xlarge-from:  (@grid-large-bp + 1);
-@grid-xlarge-to:     @grid-xlarge-bp;
-
-@grid-xxlarge-from: (@grid-xlarge-bp + 1);
-@grid-xxlarge-to:    0;
-
-
-.grid-columns()
-{
-	@default: {
-		postfix: false;
-		columns: @grid-cols-count;
-	}
-}
-
-.grid-bps()
-{
-	@small: {
-		class: @grid-small-class;
-		from:  @grid-small-from;
-		to:    @grid-small-to;
-		gap:   @grid-small-gap;
-
-		mq-only: @small-only;
-		mq-up:   start;
-		mq-down: false;
-	}
-	@medium: {
-		class: @grid-medium-class;
-		from:  @grid-medium-from;
-		to:    @grid-medium-to;
-		gap:   @grid-medium-gap;
-
-		mq-only: @medium-only;
-		mq-up:   @medium-up;
-		mq-down: @medium-down;
-	}
-	@large: {
-		class: @grid-large-class;
-		from:  @grid-large-from;
-		to:    @grid-large-to;
-		gap:   @grid-large-gap;
-
-		mq-only: @large-only;
-		mq-up:   @large-up;
-		mq-down: @large-down;
-	}
-	@xlarge: {
-		class: @grid-xlarge-class;
-		from:  @grid-xlarge-from;
-		to:    @grid-xlarge-to;
-		gap:   @grid-xlarge-gap;
-
-		mq-only: @xlarge-only;
-		mq-up:   @xlarge-up;
-		mq-down: @xlarge-down;
-	}
-	@xxlarge: {
-		class: @grid-xxlarge-class;
-		from:  @grid-xxlarge-from;
-		to:    @grid-xxlarge-to;
-		gap:   @grid-xxlarge-gap;
-
-		mq-only: false;
-		mq-up:   @xxlarge-up;
-		mq-down: false;
-	}
-}
+@small-down:   e("(max-width:") @bp-small-to     e(")");
+@medium-down:  e("(max-width:") @bp-medium-to    e(")");
+@large-down:   e("(max-width:") @bp-large-to     e(")");
+@xlarge-down:  e("(max-width:") @bp-xlarge-to    e(")");
