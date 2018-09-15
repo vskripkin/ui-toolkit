@@ -1,0 +1,115 @@
+@import 'base';
+@import 'columns';
+@import 'helpers';
+@import 'css';
+
+
+#ui-grid
+{
+	.mixins()
+	{
+		#ui-grid-base.generate-mixins();
+
+		each(@break-points-order, .(@bp-name)
+		{
+			@class: @break-points[@@bp-name][class];
+
+			each(@grid-columns, .(@grid-cols)
+			{
+				#ui-grid-columns.generate-mixins(@class, @grid-cols[postfix]);
+			});
+
+			#ui-grid-helpers.generate-mixins(@class);
+		});
+	}
+
+	.collect()
+	{
+		@grid-base: #ui-grid-base.collect();
+		#ui-grid-base.generate-css(@grid-base);
+
+		each(@break-points-order, .(@bp-name)
+		{
+			@class: @break-points[@@bp-name][class];
+
+			@mq-up:   @break-points[@@bp-name][mq-up];
+			@mq-down: @break-points[@@bp-name][mq-down];
+			@mq-only: @break-points[@@bp-name][mq-only];
+
+
+			@css-up:
+			{
+				#ui-grid-base.generate-css(@grid-base, @bp-name);
+
+				each(@grid-columns, .(@grid-cols)
+				{
+					@columns: @grid-cols[columns];
+					@postfix: @grid-cols[postfix];
+
+					@cols-up: #ui-grid-columns-collect(@class, @postfix, up);
+					#ui-grid-columns.generate-css(@cols-up, @columns);
+				});
+
+				@hels-up: #ui-grid-helpers-collect(@class, up);
+				#ui-grid-helpers.generate-css(@hels-up, @bp-name);
+			};
+
+			@css-down:
+			{
+				each(@grid-columns, .(@grid-cols)
+				{
+					@columns: @grid-cols[columns];
+					@postfix: @grid-cols[postfix];
+
+					@cols-down: #ui-grid-columns-collect(@class, @postfix, down);
+					#ui-grid-columns.generate-css(@cols-down, @columns);
+				});
+
+				@hels-down: #ui-grid-helpers-collect(@class, down);
+				#ui-grid-helpers.generate-css(@hels-down, @bp-name);
+			};
+
+			@css-only:
+			{
+				each(@grid-columns, .(@grid-cols)
+				{
+					@columns: @grid-cols[columns];
+					@postfix: @grid-cols[postfix];
+
+					@cols-only: #ui-grid-columns-collect(@class, @postfix, only);
+					#ui-grid-columns.generate-css(@cols-only, @columns);
+				});
+
+				@hels-only: #ui-grid-helpers-collect(@class, only);
+				#ui-grid-helpers.generate-css(@hels-only, @bp-name);
+			};
+
+			#ui-grid.apply-collected(@mq-up,   @css-up);
+			#ui-grid.apply-collected(@mq-down, @css-down);
+			#ui-grid.apply-collected(@mq-only, @css-only);
+		});
+	}
+
+	.apply-collected(@media-query, @css)
+	{
+		& when (@media-query = start)
+		{
+			@css();
+		}
+		& when not (@media-query = start) and not (@media-query = false)
+		{
+			@media @media-query
+			{
+				@css();
+			}
+		}
+	}
+}
+
+
+#ui-grid.mixins();
+
+&
+{
+	#ui-grid.collect();
+}

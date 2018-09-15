@@ -1,0 +1,86 @@
+#ui-grid-helpers-collect(@bp-search, @only) {}
+
+#ui-grid-helpers
+{
+	@props:
+		collapse, uncollapse,
+
+		row, row-rev, column, column-rev,
+		nowrap, wrap, wrap-rev,
+		items-start, items-end, items-center, items-baseline, items-stretch,
+		justify-start, justify-end, justify-center, justify-between, justify-around,
+		content-start, content-end, content-center,
+		content-between, content-around, content-stretch,
+
+		tight, untight, auto,
+		fisrt, last, initial,
+		self-start, self-end, self-center, self-baseline, self-stretch,
+		grow-0, shrink-0,
+		grow-1, grow-2, grow-3, grow-4, grow-5,
+		grow-6, grow-7, grow-8, grow-9, grow-10,
+		shrink-1, shrink-2, shrink-3, shrink-4, shrink-5,
+		shrink-6, shrink-7, shrink-8, shrink-9, shrink-10,
+
+		direct, reverse,
+		valign-top, valign-middle, valign-bottom;
+
+
+	.generate-mixins(@bp)
+	{
+		@prefix-up:    if(@grid-up-key   = false, ~'@{bp}', ~'@{bp}-@{grid-up-key}');
+		@prefix-down:  if(@grid-down-key = false, ~'@{bp}', ~'@{bp}-@{grid-down-key}');
+		@prefix-only:  if(@grid-only-key = false, ~'@{bp}', ~'@{bp}-@{grid-only-key}');
+
+
+		@props: #ui-grid-helpers[@props];
+
+		each(@props, .(@prop, @index)
+		{
+			.@{prefix-up}-@{prop}
+			{
+				#ui-grid-helpers-collect(@bp-search, up) when (@bp-search = @bp)
+				{
+					@{prop}: ~'@{prefix-up}-@{prop}';
+				}
+			}
+			.@{prefix-down}-@{prop}
+			{
+				#ui-grid-helpers-collect(@bp-search, down) when (@bp-search = @bp)
+				{
+					@{prop}: ~'@{prefix-down}-@{prop}';
+				}
+			}
+			.@{prefix-only}-@{prop}
+			{
+				#ui-grid-helpers-collect(@bp-search, only) when (@bp-search = @bp)
+				{
+					@{prop}: ~'@{prefix-only}-@{prop}';
+				}
+			}
+		});
+	}
+
+	.generate-css(@collected, @bp-name)
+	{
+		each(@collected, .(@class, @prop, @index)
+		{
+			.check-uniq(@i) when (@i = 0)
+			{
+				#ui-grid-css.helper(@prop, @class, @bp-name);
+			}
+
+			.check-uniq(@i) when (@i > 0)
+			{
+				each(@collected, .(@_, @prop-before, @ii)
+				{
+					& when (@ii = @i) and not (@prop-before = @prop)
+					{
+						.check-uniq(@i - 1);
+					}
+				});
+			}
+
+			.check-uniq(@index - 1);
+		});
+	}
+}

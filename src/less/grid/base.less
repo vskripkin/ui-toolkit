@@ -1,0 +1,39 @@
+#ui-grid-base
+{
+	.collect()
+	{
+		@grid: false;
+	}
+
+	.generate-mixins()
+	{
+		.use-grid()
+		{
+			#ui-grid-base
+			{
+				.collect()
+				{
+					@grid: true;
+				}
+			}
+		}
+	}
+
+	.generate-css(@collected, @bp: false)
+	{
+		& when (@collected[@grid]) and (@bp = false)
+		{
+			#ui-grid-css.grid();
+			#ui-grid-css.item();
+
+			#ui-grid-css.table();
+			#ui-grid-css.cell();
+		}
+		& when (@collected[@grid]) and not (@bp = false)
+		{
+			@gap: @break-points[@@bp][gap];
+
+			#ui-grid-css.gaps(@gap);
+		}
+	}
+}
