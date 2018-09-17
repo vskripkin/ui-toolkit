@@ -19,21 +19,19 @@
 		}
 	}
 
-	.generate-css(@collected, @bp: false)
+	.generate-css(@collected, @bp-name: false)
 	{
-		& when (@collected[@grid]) and (@bp = false)
+		& when (@collected[@grid]) and (@bp-name = false)
 		{
-			#ui-grid-css.grid();
-			#ui-grid-css.item();
-
-			#ui-grid-css.table();
-			#ui-grid-css.cell();
+			#ui-grid-base-css.grid();
+			#ui-grid-base-css.item();
 		}
-		& when (@collected[@grid]) and not (@bp = false)
+		& when (@collected[@grid]) and not (@bp-name = false)
 		{
-			@gap: @break-points[@@bp][gap];
+			@bp-class: @break-points[@@bp-name][class];
+			@gap: @break-points[@@bp-name][gap];
 
-			#ui-grid-css.gaps(@gap);
+			#ui-grid-base-css.gaps(@gap, @bp-class);
 		}
 	}
 }

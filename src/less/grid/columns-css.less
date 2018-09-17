@@ -1,0 +1,54 @@
+#ui-grid-columns
+{
+	.width(@width)
+	{
+		flex-basis: auto;
+		width:      @width;
+		max-width:  @width;
+	}
+	.toright(@range)
+	{
+		@{grid-default-dir}:  @range;
+		@{grid-opposite-dir}: auto;
+	}
+	.toleft(@range)
+	{
+		@{grid-opposite-dir}: @range;
+		@{grid-default-dir}:  auto;
+	}
+	.offset(@range)
+	{
+		margin-@{grid-default-dir}: @range !important;
+	}
+
+
+	.width-tight()
+	{
+		flex-grow: 0;
+		flex-basis: auto;
+
+		width: auto;
+		max-width: 100%;
+	}
+	.width-auto()
+	{
+		flex-grow: 1;
+		flex-basis: 0;
+
+		width: auto;
+		max-width: 100%;
+	}
+
+
+	.css(@type, @val)
+	{
+		& when (@type = width)   { #ui-grid-columns.width(@val); }
+		& when (@type = widthpx) { #ui-grid-columns.width(@val); }
+		& when (@type = toright) { #ui-grid-columns.toright(@val); }
+		& when (@type = toleft)  { #ui-grid-columns.toleft(@val); }
+		& when (@type = offset)  { #ui-grid-columns.offset(@val); }
+
+		& when (@type = tight)   { #ui-grid-columns.width-tight(); }
+		& when (@type = auto)    { #ui-grid-columns.width-auto(); }
+	}
+}

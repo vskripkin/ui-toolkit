@@ -1,0 +1,54 @@
+#ui-grid-base-css
+{
+	@grid:  @grid-grid-class;
+	@item:  @grid-item-class;
+
+	.grid()
+	{
+		.@{grid}
+		{
+			display: flex;
+			flex-flow: row nowrap;
+
+			position: relative;
+			margin: 0 auto;
+			width: auto;
+
+			min-width: auto;
+			max-width: @grid-width;
+
+			& &, &&--full
+			{
+				min-width: 100%;
+				max-width: none;
+			}
+		}
+	}
+	.item()
+	{
+		.@{item}
+		{
+			flex: 1 1 0%;
+
+			position: relative;
+			width: auto;
+			min-width: auto;
+			max-width: 100%;
+		}
+	}
+
+	.gaps(@gap, @bp-class)
+	{
+		.@{item} > .@{grid}
+		{
+			margin-left:  (-1 * @gap / 2);
+			margin-right: (-1 * @gap / 2);
+		}
+
+		.@{item}
+		{
+			padding-left:  (@gap / 2);
+			padding-right: (@gap / 2);
+		}
+	}
+}

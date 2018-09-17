@@ -98,12 +98,12 @@
 					& when (@prop = widthpx)
 					{
 						@rate: round(@grid-width * @ratio, 3);
-						#ui-grid-css.columns(@prop, @rate);
+						#ui-grid-columns.css(@prop, @rate);
 					}
 					& when not (@prop = widthpx)
 					{
 						@rate: round(percentage(@ratio), 4);
-						#ui-grid-css.columns(@prop, @rate);
+						#ui-grid-columns.css(@prop, @rate);
 					}
 				}
 			}

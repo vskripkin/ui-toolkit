@@ -3,7 +3,11 @@
 #ui-grid-helpers
 {
 	@props:
-		collapse, uncollapse,
+		inline, table, table-inline,
+		tight, auto, collapse,
+
+		direct, reverse,
+		valign-top, valign-middle, valign-bottom,
 
 		row, row-rev, column, column-rev,
 		nowrap, wrap, wrap-rev,
@@ -12,17 +16,15 @@
 		content-start, content-end, content-center,
 		content-between, content-around, content-stretch,
 
-		tight, untight, auto,
 		fisrt, last, initial,
+		overflow, visible,
 		self-start, self-end, self-center, self-baseline, self-stretch,
+
 		grow-0, shrink-0,
 		grow-1, grow-2, grow-3, grow-4, grow-5,
 		grow-6, grow-7, grow-8, grow-9, grow-10,
 		shrink-1, shrink-2, shrink-3, shrink-4, shrink-5,
-		shrink-6, shrink-7, shrink-8, shrink-9, shrink-10,
-
-		direct, reverse,
-		valign-top, valign-middle, valign-bottom;
+		shrink-6, shrink-7, shrink-8, shrink-9, shrink-10;
 
 
 	.generate-mixins(@bp)
@@ -66,7 +68,10 @@
 		{
 			.check-uniq(@i) when (@i = 0)
 			{
-				#ui-grid-css.helper(@prop, @class, @bp-name);
+				.@{class}
+				{
+					#ui-grid-helpers.css(@prop, @bp-name);
+				}
 			}
 
 			.check-uniq(@i) when (@i > 0)

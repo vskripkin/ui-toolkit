@@ -1,0 +1,230 @@
+#ui-grid-helpers
+{
+	@grid:  @grid-grid-class;
+	@item:  @grid-item-class;
+
+
+	.grid-inline()
+	{
+		display: inline-flex;
+	}
+	.grid-table()
+	{
+		display: table;
+		width: 100%;
+
+		._grid-table-item();
+	}
+	.grid-table-inline()
+	{
+		display: inline-table;
+		width: auto;
+
+		._grid-table-item();
+	}
+	._grid-table-item()
+	{
+		& > .@{item}
+		{
+			display: table-cell;
+			vertical-align: top;
+			flex: none !important;
+		}
+	}
+
+	.collapse()
+	{
+		&.@{grid}, .@{grid} > .@{item} > &, & > .@{item} > .@{grid}
+		{
+			margin-left:  0;
+			margin-right: 0;
+		}
+
+		& > .@{item}
+		{
+			padding-left:  0;
+			padding-right: 0;
+		}
+	}
+
+
+	.table-direct()
+	{
+		& > .@{item}:last-child { display: table-cell; }
+	}
+	.table-reverse()
+	{
+		& > .@{item}:last-child { display: table-caption; }
+	}
+
+	.valign-top()
+	{
+		& > .@{item} { vertical-align: top; }
+		&.@{item}    { vertical-align: top !important; }
+	}
+	.valign-middle()
+	{
+		& > .@{item} { vertical-align: middle; }
+		&.@{item}    { vertical-align: middle !important; }
+	}
+	.valign-bottom()
+	{
+		& > .@{item} { vertical-align: bottom; }
+		&.@{item}    { vertical-align: bottom !important; }
+	}
+
+
+	.flex-row()        { flex-direction: row; }
+	.flex-column()     { flex-direction: column; }
+	.flex-row-rev()    { flex-direction: row-reverse; }
+	.flex-column-rev() { flex-direction: column-reverse; }
+
+	.flex-nowrap()   { flex-wrap: nowrap; }
+	.flex-wrap()     { flex-wrap: wrap; }
+	.flex-wrap-rev() { flex-wrap: wrap-reverse; }
+
+	.flex-items-start()    { align-items: flex-start; }
+	.flex-items-end()      { align-items: flex-end; }
+	.flex-items-center()   { align-items: center; }
+	.flex-items-baseline() { align-items: baseline; }
+	.flex-items-stretch()  { align-items: stretch; }
+
+	.flex-justify-start()   { justify-content: flex-start; }
+	.flex-justify-end()     { justify-content: flex-end; }
+	.flex-justify-center()  { justify-content: center; }
+	.flex-justify-between() { justify-content: space-between; }
+	.flex-justify-around()  { justify-content: space-around; }
+
+	.flex-content-start()   { align-content: flex-start; }
+	.flex-content-end()     { align-content: flex-end; }
+	.flex-content-center()  { align-content: center; }
+	.flex-content-between() { align-content: space-between; }
+	.flex-content-around()  { align-content: space-around; }
+	.flex-content-stretch() { align-content: stretch; }
+
+
+	.item-first()   { order: -1; }
+	.item-last()    { order:  1; }
+	.item-initial() { order:  0; }
+
+	.item-overflow() { overflow: hidden; text-overflow: ellipsis; }
+	.item-visible()  { overflow: visible; }
+
+	.item-self-start()    { align-self: flex-start; }
+	.item-self-end()      { align-self: flex-end; }
+	.item-self-center()   { align-self: center; }
+	.item-self-baseline() { align-self: baseline; }
+	.item-self-stretch()  { align-self: stretch; }
+
+	.grow-0()  { flex-grow: 0; }
+	.grow-1()  { flex-grow: 1; }
+	.grow-2()  { flex-grow: 2; }
+	.grow-3()  { flex-grow: 3; }
+	.grow-4()  { flex-grow: 4; }
+	.grow-5()  { flex-grow: 5; }
+	.grow-6()  { flex-grow: 6; }
+	.grow-7()  { flex-grow: 7; }
+	.grow-8()  { flex-grow: 0; }
+	.grow-9()  { flex-grow: 9; }
+	.grow-10() { flex-grow: 10; }
+
+	.shrink-0()  { flex-shrink: 0; }
+	.shrink-1()  { flex-shrink: 1; }
+	.shrink-2()  { flex-shrink: 2; }
+	.shrink-3()  { flex-shrink: 3; }
+	.shrink-4()  { flex-shrink: 4; }
+	.shrink-5()  { flex-shrink: 5; }
+	.shrink-6()  { flex-shrink: 6; }
+	.shrink-7()  { flex-shrink: 7; }
+	.shrink-8()  { flex-shrink: 0; }
+	.shrink-9()  { flex-shrink: 9; }
+	.shrink-10() { flex-shrink: 10; }
+
+
+	.css(@type, @bp-name)
+	{
+		& when (@type = tight), (@type = auto) { #ui-grid-columns.css(@type, @bp-name); }
+
+
+		& when (@type = inline)       { #ui-grid-helpers.grid-inline(); }
+		& when (@type = table)        { #ui-grid-helpers.grid-table(); }
+		& when (@type = table-inline) { #ui-grid-helpers.grid-table-inline(); }
+
+
+		& when (@type = collapse)   { #ui-grid-helpers.collapse(); }
+
+		& when (@type = direct)  { #ui-grid-helpers.table-direct(); }
+		& when (@type = reverse) { #ui-grid-helpers.table-reverse(); }
+
+		& when (@type = valign-top)    { #ui-grid-helpers.valign-top(); }
+		& when (@type = valign-middle) { #ui-grid-helpers.valign-middle(); }
+		& when (@type = valign-bottom) { #ui-grid-helpers.valign-bottom(); }
+
+
+		& when (@type = row)        { #ui-grid-helpers.flex-row(); }
+		& when (@type = column)     { #ui-grid-helpers.flex-column(); }
+		& when (@type = row-rev)    { #ui-grid-helpers.flex-row-rev(); }
+		& when (@type = column-rev) { #ui-grid-helpers.flex-column-rev(); }
+
+		& when (@type = nowrap)   { #ui-grid-helpers.flex-nowrap(); }
+		& when (@type = wrap)     { #ui-grid-helpers.flex-wrap(); }
+		& when (@type = wrap-rev) { #ui-grid-helpers.flex-wrap-rev(); }
+
+		& when (@type = items-start)    { #ui-grid-helpers.flex-items-start(); }
+		& when (@type = items-end)      { #ui-grid-helpers.flex-items-end(); }
+		& when (@type = items-center)   { #ui-grid-helpers.flex-items-center(); }
+		& when (@type = items-baseline) { #ui-grid-helpers.flex-items-baseline(); }
+		& when (@type = items-stretch)  { #ui-grid-helpers.flex-items-stretch(); }
+
+		& when (@type = justify-start)   { #ui-grid-helpers.flex-justify-start(); }
+		& when (@type = justify-end)     { #ui-grid-helpers.flex-justify-end(); }
+		& when (@type = justify-center)  { #ui-grid-helpers.flex-justify-center(); }
+		& when (@type = justify-between) { #ui-grid-helpers.flex-justify-between(); }
+		& when (@type = justify-around)  { #ui-grid-helpers.flex-justify-around(); }
+
+		& when (@type = content-start)   { #ui-grid-helpers.flex-content-start(); }
+		& when (@type = content-end)     { #ui-grid-helpers.flex-content-end(); }
+		& when (@type = content-center)  { #ui-grid-helpers.flex-content-center(); }
+		& when (@type = content-between) { #ui-grid-helpers.flex-content-between(); }
+		& when (@type = content-around)  { #ui-grid-helpers.flex-content-around(); }
+		& when (@type = content-stretch) { #ui-grid-helpers.flex-content-stretch(); }
+
+
+		& when (@type = first)   { #ui-grid-helpers.item-first(); }
+		& when (@type = last)    { #ui-grid-helpers.item-last(); }
+		& when (@type = initial) { #ui-grid-helpers.item-initial(); }
+
+		& when (@type = overflow) { #ui-grid-helpers.item-overflow(); }
+		& when (@type = visible)  { #ui-grid-helpers.item-visible(); }
+
+		& when (@type = self-start)    { #ui-grid-helpers.item-self-start(); }
+		& when (@type = self-end)      { #ui-grid-helpers.item-self-end(); }
+		& when (@type = self-center)   { #ui-grid-helpers.item-self-center(); }
+		& when (@type = self-baseline) { #ui-grid-helpers.item-self-baseline(); }
+		& when (@type = self-stretch)  { #ui-grid-helpers.item-self-stretch(); }
+
+		& when (@type = grow-0)  { #ui-grid-helpers.grow-0(); }
+		& when (@type = grow-1)  { #ui-grid-helpers.grow-1(); }
+		& when (@type = grow-2)  { #ui-grid-helpers.grow-2(); }
+		& when (@type = grow-3)  { #ui-grid-helpers.grow-3(); }
+		& when (@type = grow-4)  { #ui-grid-helpers.grow-4(); }
+		& when (@type = grow-5)  { #ui-grid-helpers.grow-5(); }
+		& when (@type = grow-6)  { #ui-grid-helpers.grow-6(); }
+		& when (@type = grow-7)  { #ui-grid-helpers.grow-7(); }
+		& when (@type = grow-8)  { #ui-grid-helpers.grow-8(); }
+		& when (@type = grow-9)  { #ui-grid-helpers.grow-9(); }
+		& when (@type = grow-10) { #ui-grid-helpers.grow-10(); }
+
+		& when (@type = shrink-0)  { #ui-grid-helpers.shrink-0(); }
+		& when (@type = shrink-1)  { #ui-grid-helpers.shrink-1(); }
+		& when (@type = shrink-2)  { #ui-grid-helpers.shrink-2(); }
+		& when (@type = shrink-3)  { #ui-grid-helpers.shrink-3(); }
+		& when (@type = shrink-4)  { #ui-grid-helpers.shrink-4(); }
+		& when (@type = shrink-5)  { #ui-grid-helpers.shrink-5(); }
+		& when (@type = shrink-6)  { #ui-grid-helpers.shrink-6(); }
+		& when (@type = shrink-7)  { #ui-grid-helpers.shrink-7(); }
+		& when (@type = shrink-8)  { #ui-grid-helpers.shrink-8(); }
+		& when (@type = shrink-9)  { #ui-grid-helpers.shrink-9(); }
+		& when (@type = shrink-10) { #ui-grid-helpers.shrink-10(); }
+	}
+}
