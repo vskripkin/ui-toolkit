@@ -1,4 +1,4 @@
-#ui-grid-helpers-collect(@bp-search, @only) {}
+#ui-grid-helpers-collect(@bp-search, @mode) {}
 
 #ui-grid-helpers
 {
@@ -29,14 +29,14 @@
 
 	.generate-mixins(@bp)
 	{
-		@prefix-up:    if(@grid-up-key   = false, ~'@{bp}', ~'@{bp}-@{grid-up-key}');
-		@prefix-down:  if(@grid-down-key = false, ~'@{bp}', ~'@{bp}-@{grid-down-key}');
-		@prefix-only:  if(@grid-only-key = false, ~'@{bp}', ~'@{bp}-@{grid-only-key}');
+		@prefix-up:    if(@class-up-key   = false, ~'@{bp}', ~'@{bp}-@{class-up-key}');
+		@prefix-down:  if(@class-down-key = false, ~'@{bp}', ~'@{bp}-@{class-down-key}');
+		@prefix-only:  if(@class-only-key = false, ~'@{bp}', ~'@{bp}-@{class-only-key}');
 
 
 		@props: #ui-grid-helpers[@props];
 
-		each(@props, .(@prop, @index)
+		each(@props, .(@prop)
 		{
 			.@{prefix-up}-@{prop}
 			{

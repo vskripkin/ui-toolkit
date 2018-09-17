@@ -1,4 +1,4 @@
-#ui-grid-columns-collect(@bp-search, @postfix-search, @only) {}
+#ui-grid-columns-collect(@bp-search, @postfix-search, @mode) {}
 
 #ui-grid-columns
 {
@@ -6,9 +6,9 @@
 
 	.generate-mixins(@bp, @postfix-raw)
 	{
-		@prefix-up:    if(@grid-up-key   = false, ~'@{bp}', ~'@{bp}-@{grid-up-key}');
-		@prefix-down:  if(@grid-down-key = false, ~'@{bp}', ~'@{bp}-@{grid-down-key}');
-		@prefix-only:  if(@grid-only-key = false, ~'@{bp}', ~'@{bp}-@{grid-only-key}');
+		@prefix-up:    if(@class-up-key   = false, ~'@{bp}', ~'@{bp}-@{class-up-key}');
+		@prefix-down:  if(@class-down-key = false, ~'@{bp}', ~'@{bp}-@{class-down-key}');
+		@prefix-only:  if(@class-only-key = false, ~'@{bp}', ~'@{bp}-@{class-only-key}');
 		@postfix:      if(@postfix-raw = false, ~'', ~'-@{postfix-raw}');
 
 		@props: #ui-grid-columns[@props];

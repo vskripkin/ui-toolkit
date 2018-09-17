@@ -32,7 +32,7 @@
 
 		each(@break-points-order, .(@bp-name)
 		{
-			@class: @break-points[@@bp-name][class];
+			@bp-class: @break-points[@@bp-name][class];
 
 			@mq-up:   @break-points[@@bp-name][mq-up];
 			@mq-down: @break-points[@@bp-name][mq-down];
@@ -48,12 +48,12 @@
 					@columns: @grid-cols[columns];
 					@postfix: @grid-cols[postfix];
 
-					@cols-up: #ui-grid-columns-collect(@class, @postfix, up);
+					@cols-up: #ui-grid-columns-collect(@bp-class, @postfix, up);
 					#ui-grid-columns.generate-css(@cols-up, @columns);
 				});
 
-				@hels-up: #ui-grid-helpers-collect(@class, up);
-				#ui-grid-helpers.generate-css(@hels-up, @bp-name);
+				@hlps-up: #ui-grid-helpers-collect(@bp-class, up);
+				#ui-grid-helpers.generate-css(@hlps-up, @bp-name);
 			};
 
 			@css-down:
@@ -63,12 +63,12 @@
 					@columns: @grid-cols[columns];
 					@postfix: @grid-cols[postfix];
 
-					@cols-down: #ui-grid-columns-collect(@class, @postfix, down);
+					@cols-down: #ui-grid-columns-collect(@bp-class, @postfix, down);
 					#ui-grid-columns.generate-css(@cols-down, @columns);
 				});
 
-				@hels-down: #ui-grid-helpers-collect(@class, down);
-				#ui-grid-helpers.generate-css(@hels-down, @bp-name);
+				@hlps-down: #ui-grid-helpers-collect(@bp-class, down);
+				#ui-grid-helpers.generate-css(@hlps-down, @bp-name);
 			};
 
 			@css-only:
@@ -78,12 +78,12 @@
 					@columns: @grid-cols[columns];
 					@postfix: @grid-cols[postfix];
 
-					@cols-only: #ui-grid-columns-collect(@class, @postfix, only);
+					@cols-only: #ui-grid-columns-collect(@bp-class, @postfix, only);
 					#ui-grid-columns.generate-css(@cols-only, @columns);
 				});
 
-				@hels-only: #ui-grid-helpers-collect(@class, only);
-				#ui-grid-helpers.generate-css(@hels-only, @bp-name);
+				@hlps-only: #ui-grid-helpers-collect(@bp-class, only);
+				#ui-grid-helpers.generate-css(@hlps-only, @bp-name);
 			};
 
 			#ui-grid.apply-collected(@mq-up,   @css-up);

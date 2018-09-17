@@ -1,0 +1,340 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+input, button, textarea, select,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video
+{
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+	background: transparent;
+	outline: none !important;
+	font: inherit;
+
+	/* j.mp/webkit-tap-highlight-color */
+	-webkit-tap-highlight-color: @color-tap-highlight;
+}
+
+@-webkit-viewport
+{
+	width: device-width;
+	zoom: 1;
+	min-zoom: 1;
+	max-zoom: 1;
+	user-zoom: 1;
+}
+@-ms-viewport
+{
+	width: device-width;
+	zoom: 1;
+	min-zoom: 1;
+	max-zoom: 1;
+	user-zoom: 1;
+}
+@-o-viewport
+{
+	width: device-width;
+	zoom: 1;
+	min-zoom: 1;
+	max-zoom: 1;
+	user-zoom: 1;
+}
+@viewport
+{
+	width: device-width;
+	zoom: 1;
+	min-zoom: 1;
+	max-zoom: 1;
+	user-zoom: 1;
+}
+
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary
+{
+	display: block;
+}
+
+/* http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+:root
+{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+*, *:before, *:after
+{
+	-webkit-box-sizing: inherit;
+	-moz-box-sizing: inherit;
+	box-sizing: inherit;
+}
+img
+{
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+*:first-child
+{
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+}
+*:last-child
+{
+	border-bottom-left-radius: inherit;
+	border-bottom-right-radius: inherit;
+}
+
+html, body
+{
+	height: 100%;
+	height: 100vh;
+}
+
+/* force a vertical scrollbar to prevent a jumpy page */
+html
+{
+	border-radius: 0;
+	overflow-y: scroll;
+	-ms-overflow-style: scrollbar;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	text-rendering: optimizeLegibility;
+	text-rendering: geometricPrecision;
+	font-smooth: always;
+	font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+audio, canvas, video
+{
+	display: inline-block;
+}
+video
+{
+	max-width: 100%;
+	height: auto;
+}
+audio:not([controls])
+{
+	display: none;
+	height: 0;
+}
+
+::-moz-selection
+{
+	background: @color-selection;
+	color: #FFF;
+	text-shadow: none;
+}
+::selection
+{
+	background: @color-selection;
+	color: #FFF;
+	text-shadow: none;
+}
+mark
+{
+	background: @color-selection;
+	color: #FFF;
+	text-shadow: none;
+}
+
+[hidden]
+{
+	display: none !important;
+}
+[disabled]
+{
+	cursor: not-allowed;
+}
+
+abbr[title], dfn[title]
+{
+	border-bottom: 1px dotted #000;
+	cursor: help;
+}
+
+b, strong
+{
+	font-weight: bold;
+}
+
+del
+{
+	text-decoration: line-through;
+}
+
+dfn
+{
+	font-style: italic;
+}
+
+hr
+{
+	display: block;
+	height: 1px;
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	background: #CCC;
+}
+
+pre, code, kbd, samp
+{
+	font-family: monospace, serif;
+	font-size: 1em;
+}
+
+pre
+{
+	white-space: pre;
+	white-space: pre-wrap;
+	white-space: pre-line;
+	word-wrap: break-word;
+}
+
+blockquote, q
+{
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after
+{
+	content: '';
+	content: none;
+}
+
+small
+{
+	font-size: 75%;
+}
+
+sub, sup
+{
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+ul, ol
+{
+	list-style: none;
+	list-style-image: none;
+}
+
+p
+{
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}
+
+img, fieldset
+{
+	border: 0;
+	vertical-align: top;
+}
+img
+{
+	max-width: 100%;
+	-ms-interpolation-mode: bicubic;
+}
+
+svg:not(:root)
+{
+	overflow: hidden;
+}
+
+legend
+{
+	display: block;
+	width: 100%;
+	border: 0;
+	padding: 0;
+	white-space: normal;
+}
+
+a, button, input, label, select, textarea, video
+{
+	touch-action: manipulation;
+	-ms-touch-action: manipulation;
+}
+
+button::-moz-focus-inner   { border: 0; padding: 0; }
+input::-moz-focus-inner    { border: 0; padding: 0; }
+select::-moz-focus-inner   { border: 0; padding: 0; }
+textarea::-moz-focus-inner { border: 0; padding: 0; }
+
+button, input, select, textarea
+{
+	appearance: none;
+	line-height: @line-height-normal;
+	font: inherit;
+	border-radius: 0;
+}
+
+button *
+{
+	pointer-events: none;
+}
+
+button, label, input[type="button"], input[type="reset"], input[type="submit"], input[type="file"]
+{
+	cursor: pointer;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
+{
+	transition: background-color 0s linear 3600s, color 0s linear 3600s;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button
+{
+	appearance: none;
+}
+
+textarea
+{
+	overflow: auto;
+	vertical-align: top;
+}
+table
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	font: inherit;
+}
+th { font-weight: bold;   vertical-align: bottom; }
+td { font-weight: normal; vertical-align: top;  }
+
+iframe
+{
+	max-width: 100%;
+	border: none;
+}
+iframe.hidden
+{
+	position: absolute !important;
+	visibility: hidden !important;
+	height: 0 !important;
+	width: 0 !important;
+	overflow: hidden !important;
+	opacity: 0 !important;
+	border: none !important;
+}
