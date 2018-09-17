@@ -92,8 +92,7 @@
 
 				& when not (@class = false)
 				{
-					@css: { .@{class} { #ui-vis.css(); } };
-					#ui-vis.apply-collected(@mq-up, { .@{class} { #ui-vis.css(); } });
+					#ui-vis.apply-collected(@mq-up, @class);
 				}
 			}
 
@@ -103,8 +102,7 @@
 
 				& when not (@class = false)
 				{
-					@css: { .@{class} { #ui-vis.css(); } };
-					#ui-vis.apply-collected(@mq-down, @css);
+					#ui-vis.apply-collected(@mq-down, @class);
 				}
 			}
 
@@ -114,8 +112,7 @@
 
 				& when not (@class = false)
 				{
-					@css: { .@{class} { #ui-vis.css(); } };
-					#ui-vis.apply-collected(@mq-only, @css);
+					#ui-vis.apply-collected(@mq-only, @class);
 				}
 			}
 
@@ -126,8 +123,7 @@
 
 				& when not (@class = false)
 				{
-					@css: { .@{class} { #ui-vis.css(); } };
-					#ui-vis.apply-collected(@mq-lower, @css);
+					#ui-vis.apply-collected(@mq-lower, @class);
 				}
 			}
 
@@ -137,8 +133,7 @@
 
 				& when not (@class = false)
 				{
-					@css: { .@{class} { #ui-vis.css(); } };
-					#ui-vis.apply-collected(@mq-higher, @css);
+					#ui-vis.apply-collected(@mq-higher, @class);
 				}
 			}
 
@@ -148,24 +143,29 @@
 
 				& when not (@class = false)
 				{
-					@css: { .@{class} { #ui-vis.css(); } };
-					#ui-vis.apply-collected(@mq-except, @css);
+					#ui-vis.apply-collected(@mq-except, @class);
 				}
 			}
 		});
 	}
 
-	.apply-collected(@media-query, @css)
+	.apply-collected(@media-query, @class)
 	{
 		& when (@media-query = start)
 		{
-			@css();
+			.@{class}
+			{
+				#ui-vis.css();
+			}
 		}
 		& when not (@media-query = start) and not (@media-query = false)
 		{
 			@media @media-query
 			{
-				@css();
+				.@{class}
+				{
+					#ui-vis.css();
+				}
 			}
 		}
 	}
