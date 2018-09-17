@@ -1,20 +1,17 @@
+#ui-grid-base-collect()
+{
+	@grid: false;
+}
+
 #ui-grid-base
 {
-	.collect()
-	{
-		@grid: false;
-	}
-
 	.generate-mixins()
 	{
 		.use-grid()
 		{
-			#ui-grid-base
+			#ui-grid-base-collect()
 			{
-				.collect()
-				{
-					@grid: true;
-				}
+				@grid: true;
 			}
 		}
 	}
@@ -28,10 +25,7 @@
 		}
 		& when (@collected[@grid]) and not (@bp-name = false)
 		{
-			@bp-class: @break-points[@@bp-name][class];
-			@gap: @break-points[@@bp-name][gap];
-
-			#ui-grid-base-css.gaps(@gap, @bp-class);
+			#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
 		}
 	}
 }

@@ -93,18 +93,9 @@
 
 				.@{prefix}@{stem}@{postfix}
 				{
-					@ratio: @number / @columns-total;
+					@rate: round(percentage(@number / @columns-total), 4);
 
-					& when (@prop = widthpx)
-					{
-						@rate: round(@grid-width * @ratio, 3);
-						#ui-grid-columns.css(@prop, @rate);
-					}
-					& when not (@prop = widthpx)
-					{
-						@rate: round(percentage(@ratio), 4);
-						#ui-grid-columns.css(@prop, @rate);
-					}
+					#ui-grid-columns.css(@prop, @rate);
 				}
 			}
 

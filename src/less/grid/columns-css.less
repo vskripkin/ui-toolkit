@@ -6,6 +6,14 @@
 		width:      @width;
 		max-width:  @width;
 	}
+	.widthpx(@val)
+	{
+		@width: round(@grid-width * unit(@val / 100), 3);
+
+		flex-basis: auto;
+		width:      @width;
+		max-width:  @width;
+	}
 	.toright(@range)
 	{
 		@{grid-default-dir}:  @range;
@@ -43,7 +51,7 @@
 	.css(@type, @val)
 	{
 		& when (@type = width)   { #ui-grid-columns.width(@val); }
-		& when (@type = widthpx) { #ui-grid-columns.width(@val); }
+		& when (@type = widthpx) { #ui-grid-columns.widthpx(@val); }
 		& when (@type = toright) { #ui-grid-columns.toright(@val); }
 		& when (@type = toleft)  { #ui-grid-columns.toleft(@val); }
 		& when (@type = offset)  { #ui-grid-columns.offset(@val); }

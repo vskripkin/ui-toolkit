@@ -37,7 +37,37 @@
 		}
 	}
 
-	.gaps(@gap, @bp-class)
+	// helpers
+	.grid-inline()
+	{
+		display: inline-flex;
+	}
+	.grid-table()
+	{
+		display: table;
+		width: 100%;
+
+		._grid-table-item();
+	}
+	.grid-table-inline()
+	{
+		display: inline-table;
+		width: auto;
+
+		._grid-table-item();
+	}
+	._grid-table-item()
+	{
+		& > .@{item}
+		{
+			display: table-cell;
+			vertical-align: top;
+			flex: none !important;
+		}
+	}
+
+
+	.gaps(@gap)
 	{
 		.@{item} > .@{grid}
 		{
@@ -49,6 +79,22 @@
 		{
 			padding-left:  (@gap / 2);
 			padding-right: (@gap / 2);
+		}
+	}
+
+	// helper
+	.collapse()
+	{
+		&.@{grid}, .@{grid} > .@{item} > &, & > .@{item} > .@{grid}
+		{
+			margin-left:  0;
+			margin-right: 0;
+		}
+
+		& > .@{item}
+		{
+			padding-left:  0;
+			padding-right: 0;
 		}
 	}
 }

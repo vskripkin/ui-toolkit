@@ -4,50 +4,6 @@
 	@item:  @grid-item-class;
 
 
-	.grid-inline()
-	{
-		display: inline-flex;
-	}
-	.grid-table()
-	{
-		display: table;
-		width: 100%;
-
-		._grid-table-item();
-	}
-	.grid-table-inline()
-	{
-		display: inline-table;
-		width: auto;
-
-		._grid-table-item();
-	}
-	._grid-table-item()
-	{
-		& > .@{item}
-		{
-			display: table-cell;
-			vertical-align: top;
-			flex: none !important;
-		}
-	}
-
-	.collapse()
-	{
-		&.@{grid}, .@{grid} > .@{item} > &, & > .@{item} > .@{grid}
-		{
-			margin-left:  0;
-			margin-right: 0;
-		}
-
-		& > .@{item}
-		{
-			padding-left:  0;
-			padding-right: 0;
-		}
-	}
-
-
 	.table-direct()
 	{
 		& > .@{item}:last-child { display: table-cell; }
@@ -59,18 +15,18 @@
 
 	.valign-top()
 	{
-		& > .@{item} { vertical-align: top; }
-		&.@{item}    { vertical-align: top !important; }
+		&.@{grid} > .@{item} { vertical-align: top; }
+		&.@{item} { vertical-align: top !important; }
 	}
 	.valign-middle()
 	{
-		& > .@{item} { vertical-align: middle; }
-		&.@{item}    { vertical-align: middle !important; }
+		&.@{grid} > .@{item} { vertical-align: middle; }
+		&.@{item} { vertical-align: middle !important; }
 	}
 	.valign-bottom()
 	{
-		& > .@{item} { vertical-align: bottom; }
-		&.@{item}    { vertical-align: bottom !important; }
+		&.@{grid} > .@{item} { vertical-align: bottom; }
+		&.@{item} { vertical-align: bottom !important; }
 	}
 
 
@@ -143,15 +99,12 @@
 
 	.css(@type, @bp-name)
 	{
+		& when (@type = inline)       { #ui-grid-base-css.grid-inline(); }
+		& when (@type = table)        { #ui-grid-base-css.grid-table(); }
+		& when (@type = table-inline) { #ui-grid-base-css.grid-table-inline(); }
+		& when (@type = collapse)     { #ui-grid-base-css.collapse(); }
+
 		& when (@type = tight), (@type = auto) { #ui-grid-columns.css(@type, @bp-name); }
-
-
-		& when (@type = inline)       { #ui-grid-helpers.grid-inline(); }
-		& when (@type = table)        { #ui-grid-helpers.grid-table(); }
-		& when (@type = table-inline) { #ui-grid-helpers.grid-table-inline(); }
-
-
-		& when (@type = collapse)   { #ui-grid-helpers.collapse(); }
 
 		& when (@type = direct)  { #ui-grid-helpers.table-direct(); }
 		& when (@type = reverse) { #ui-grid-helpers.table-reverse(); }
