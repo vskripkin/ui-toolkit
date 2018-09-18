@@ -1,24 +1,27 @@
-#ui-grid-helpers-collect(@bp-search, @mode) {}
-
 #ui-grid-helpers
 {
 	@props:
 		inline, table, table-inline,
 		tight, auto, collapse,
 
-		direct, reverse,
+		first-cell, initial-cell,
 		valign-top, valign-middle, valign-bottom,
+
+		x-top,     y-top,
+		x-middle,  y-middle,
+		x-bottom,  y-bottom,
+		x-left,    y-left,
+		x-center,  y-center,
+		x-right,   y-right,
+
+		space-between, space-around,
+		start, center, end, stretch,
 
 		row, row-rev, column, column-rev,
 		nowrap, wrap, wrap-rev,
-		items-start, items-end, items-center, items-baseline, items-stretch,
-		justify-start, justify-end, justify-center, justify-between, justify-around,
-		content-start, content-end, content-center,
-		content-between, content-around, content-stretch,
 
 		fisrt, last, initial,
 		overflow, visible,
-		self-start, self-end, self-center, self-baseline, self-stretch,
 
 		grow-0, shrink-0,
 		grow-1, grow-2, grow-3, grow-4, grow-5,
@@ -29,63 +32,10 @@
 
 	.generate-mixins(@bp)
 	{
-		@prefix-up:    if(@class-up-key   = false, ~'@{bp}', ~'@{bp}-@{class-up-key}');
-		@prefix-down:  if(@class-down-key = false, ~'@{bp}', ~'@{bp}-@{class-down-key}');
-		@prefix-only:  if(@class-only-key = false, ~'@{bp}', ~'@{bp}-@{class-only-key}');
-
-
-		@props: #ui-grid-helpers[@props];
-
-		each(@props, .(@prop)
-		{
-			.@{prefix-up}-@{prop}
-			{
-				#ui-grid-helpers-collect(@bp-search, up) when (@bp-search = @bp)
-				{
-					@{prop}: ~'@{prefix-up}-@{prop}';
-				}
-			}
-			.@{prefix-down}-@{prop}
-			{
-				#ui-grid-helpers-collect(@bp-search, down) when (@bp-search = @bp)
-				{
-					@{prop}: ~'@{prefix-down}-@{prop}';
-				}
-			}
-			.@{prefix-only}-@{prop}
-			{
-				#ui-grid-helpers-collect(@bp-search, only) when (@bp-search = @bp)
-				{
-					@{prop}: ~'@{prefix-only}-@{prop}';
-				}
-			}
-		});
+		#ui-generator.mixins(helpers, #ui-grid-helpers[@props], @bp);
 	}
-
 	.generate-css(@collected, @bp-name)
 	{
-		each(@collected, .(@class, @prop, @index)
-		{
-			.check-uniq(@i) when (@i = 0)
-			{
-				.@{class}
-				{
-					#ui-grid-helpers.css(@prop, @bp-name);
-				}
-			}
-
-			.check-uniq(@i) when (@i > 0)
-			{
-				each(@collected, .(@_, @prop-before, @ii)
-				{
-					& when (@ii = @i) and not (@prop-before = @prop)
-					{
-						.check-uniq(@i - 1);
-					}
-				});
-			}
-
-			.check-uniq(@index - 1);
-		});
+		#ui-generator.css(helpers, @collected, @bp-name);
 	}
 }

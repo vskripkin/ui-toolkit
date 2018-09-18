@@ -3,9 +3,10 @@
 	@grid: false;
 }
 
+
 #ui-grid-base
 {
-	.generate-mixins()
+	.generate-base-mixins()
 	{
 		.use-grid()
 		{
@@ -16,7 +17,7 @@
 		}
 	}
 
-	.generate-css(@collected, @bp-name: false)
+	.generate-base-css(@collected, @bp-name: false)
 	{
 		& when (@collected[@grid]) and (@bp-name = false)
 		{
@@ -27,5 +28,17 @@
 		{
 			#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
 		}
+	}
+
+
+	@props: inline, table, table-inline;
+
+	.generate-mixins(@bp)
+	{
+		#ui-generator.mixins(base, #ui-grid-base[@props], @bp);
+	}
+	.generate-css(@collected, @bp-name)
+	{
+		#ui-generator.css(base, @collected, @bp-name);
 	}
 }

@@ -98,3 +98,14 @@
 		}
 	}
 }
+
+#ui-css
+{
+	.apply(base, @prop, @bp-name)
+	{
+		& when (@prop = inline)       { #ui-grid-base-css.grid-inline(); }
+		& when (@prop = table)        { #ui-grid-base-css.grid-table(); }
+		& when (@prop = table-inline) { #ui-grid-base-css.grid-table-inline(); }
+		& when (@prop = collapse)     { #ui-grid-base-css.collapse(); }
+	}
+}

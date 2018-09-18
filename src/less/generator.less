@@ -1,0 +1,68 @@
+#ui-collector(@type-search, @bp-search, @mode) {};
+
+#ui-generator
+{
+	.mixins(@type, @props, @bp, @class: media-prop)
+	{
+		@_class-up:   replace(@class, 'media', if(@class-up-key   = false, ~'@{bp}', ~'@{bp}-@{class-up-key}'));
+		@_class-down: replace(@class, 'media', if(@class-down-key = false, ~'@{bp}', ~'@{bp}-@{class-down-key}'));
+		@_class-only: replace(@class, 'media', if(@class-only-key = false, ~'@{bp}', ~'@{bp}-@{class-only-key}'));
+
+		each(@props, .(@prop)
+		{
+			@class-up:   replace(@_class-up,   'prop', @prop);
+			@class-down: replace(@_class-down, 'prop', @prop);
+			@class-only: replace(@_class-only, 'prop', @prop);
+
+			.@{class-up}
+			{
+				#ui-collector(@type-search, @bp-search, up) when (@type-search = @type) and (@bp-search = @bp)
+				{
+					@{prop}: @class-up;
+				}
+			}
+			.@{class-down}
+			{
+				#ui-collector(@type-search, @bp-search, down) when (@type-search = @type) and (@bp-search = @bp)
+				{
+					@{prop}: @class-down;
+				}
+			}
+			.@{class-only}
+			{
+				#ui-collector(@type-search, @bp-search, only) when (@type-search = @type) and (@bp-search = @bp)
+				{
+					@{prop}: @class-only;
+				}
+			}
+		});
+	}
+
+
+	.css(@type, @collected, @bp-name)
+	{
+		each(@collected, .(@class, @prop, @index)
+		{
+			.check-uniq(@i) when (@i = 0)
+			{
+				.@{class}
+				{
+					#ui-css.apply(@type, @prop, @bp-name);
+				}
+			}
+
+			.check-uniq(@i) when (@i > 0)
+			{
+				each(@collected, .(@_, @prop-before, @ii)
+				{
+					& when (@ii = @i) and not (@prop-before = @prop)
+					{
+						.check-uniq(@i - 1);
+					}
+				});
+			}
+
+			.check-uniq(@index - 1);
+		});
+	}
+}
