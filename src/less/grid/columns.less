@@ -1,16 +1,12 @@
-#ui-grid-columns-collect(@bp-search, @postfix-search, @mode) {}
+#ui-grid-columns-collect(@bp-search, @postfix-search) {}
 
 #ui-grid-columns
 {
 	@props: width, widthpx, toleft, toright, offset;
 
-	.generate-mixins(@bp, @postfix-raw)
+	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only, @postfix-raw)
 	{
-		@prefix-up:    if(@class-up-key   = false, ~'@{bp}', ~'@{bp}-@{class-up-key}');
-		@prefix-down:  if(@class-down-key = false, ~'@{bp}', ~'@{bp}-@{class-down-key}');
-		@prefix-only:  if(@class-only-key = false, ~'@{bp}', ~'@{bp}-@{class-only-key}');
-		@postfix:      if(@postfix-raw = false, ~'', ~'-@{postfix-raw}');
-
+		@postfix: if(@postfix-raw = false, ~'', ~'-@{postfix-raw}');
 		@props: #ui-grid-columns[@props];
 
 		each(@props, .(@prop)
@@ -18,57 +14,57 @@
 			@prop-stem: replace(@prop, 'width', '');
 			@stem: if(@prop = width, @prop-stem, ~'-@{prop-stem}');
 
-			.@{prefix-up}@{stem}@{postfix}
+			.@{bp-class-up}@{stem}@{postfix}
 			{
 				.-(@col-number)
 				{
-					#ui-grid-columns-collect(@bp-search, @postfix-search, up)
+					#ui-grid-columns-collect(@bp-search, @postfix-search)
 						when
-							(@bp-search = @bp) and
+							(@bp-search = @bp-class-up) and
 							(@postfix-search = @postfix-raw)
 					{
 						@data: {
 							prop:    @prop;
 							number:  @col-number;
-							prefix:  @prefix-up;
+							prefix:  @bp-class-up;
 							stem:    @stem;
 							postfix: ~'@{postfix}-@{col-number}';
 						}
 					}
 				}
 			}
-			.@{prefix-down}@{stem}@{postfix}
+			.@{bp-class-down}@{stem}@{postfix}
 			{
 				.-(@col-number)
 				{
-					#ui-grid-columns-collect(@bp-search, @postfix-search, down)
+					#ui-grid-columns-collect(@bp-search, @postfix-search)
 						when
-							(@bp-search = @bp) and
+							(@bp-search = @bp-class-down) and
 							(@postfix-search = @postfix-raw)
 					{
 						@data: {
 							prop:    @prop;
 							number:  @col-number;
-							prefix:  @prefix-down;
+							prefix:  @bp-class-down;
 							stem:    @stem;
 							postfix: ~'@{postfix}-@{col-number}';
 						}
 					}
 				}
 			}
-			.@{prefix-only}@{stem}@{postfix}
+			.@{bp-class-only}@{stem}@{postfix}
 			{
 				.-(@col-number)
 				{
-					#ui-grid-columns-collect(@bp-search, @postfix-search, only)
+					#ui-grid-columns-collect(@bp-search, @postfix-search)
 						when
-							(@bp-search = @bp) and
+							(@bp-search = @bp-class-only) and
 							(@postfix-search = @postfix-raw)
 					{
 						@data: {
 							prop:    @prop;
 							number:  @col-number;
-							prefix:  @prefix-only;
+							prefix:  @bp-class-only;
 							stem:    @stem;
 							postfix: ~'@{postfix}-@{col-number}';
 						}
@@ -80,45 +76,21 @@
 
 	.generate-css(@collected, @columns-total)
 	{
-		each(@collected, .(@data, @k, @index)
+		each(@collected, .(@data)
 		{
-			@prop:    @data[prop];
+			@prop:   @data[prop];
+			@number: @data[number];
+
+			@prefix:  @data[prefix];
+			@stem:    @data[stem];
 			@postfix: @data[postfix];
 
-			.check-uniq(@i)
+			.@{prefix}@{stem}@{postfix}
 			{
-				& when (@i = 0)
-				{
-					@prefix: @data[prefix];
-					@stem:   @data[stem];
-					@number: @data[number];
+				@rate: round(percentage(@number / @columns-total), 4);
 
-					.@{prefix}@{stem}@{postfix}
-					{
-						@rate: round(percentage(@number / @columns-total), 4);
-
-						#ui-grid-columns.css(@prop, @rate);
-					}
-				}
-				& when (@i > 0)
-				{
-					each(@collected, .(@data-before, @k, @ii)
-					{
-						& when (@ii = @i)
-						{
-							@prop-before:    @data-before[prop];
-							@postfix-before: @data-before[postfix];
-
-							& when not (@prop-before = @prop), not (@postfix-before = @postfix)
-							{
-								.check-uniq(@i - 1);
-							}
-						}
-					});
-				}
+				#ui-grid-columns-css.apply(@prop, @rate);
 			}
-
-			.check-uniq(@index - 1);
 		});
 	}
 }

@@ -1,4 +1,4 @@
-#ui-vis-collect(@bp-search, @prop-search, @mode)
+#ui-vis-collect(@bp-search, @prop-mode-search)
 {
 	@class: false;
 }
@@ -20,21 +20,21 @@
 
 		.hide-@{postfix-up}
 		{
-			#ui-vis-collect(@bp-search, hide, up) when (@bp-search = @bp)
+			#ui-vis-collect(@bp-search, hide-up) when (@bp-search = @bp)
 			{
 				@class: ~'hide-@{postfix-up}';
 			}
 		}
 		.hide-@{postfix-down}
 		{
-			#ui-vis-collect(@bp-search, hide, down) when (@bp-search = @bp)
+			#ui-vis-collect(@bp-search, hide-down) when (@bp-search = @bp)
 			{
 				@class: ~'hide-@{postfix-down}';
 			}
 		}
 		.hide-@{postfix-only}
 		{
-			#ui-vis-collect(@bp-search, hide, only) when (@bp-search = @bp)
+			#ui-vis-collect(@bp-search, hide-only) when (@bp-search = @bp)
 			{
 				@class: ~'hide-@{postfix-only}';
 			}
@@ -42,21 +42,21 @@
 
 		.show-@{postfix-up}
 		{
-			#ui-vis-collect(@bp-search, show, up) when (@bp-search = @bp)
+			#ui-vis-collect(@bp-search, show-up) when (@bp-search = @bp)
 			{
 				@class: ~'show-@{postfix-up}';
 			}
 		}
 		.show-@{postfix-down}
 		{
-			#ui-vis-collect(@bp-search, show, down) when (@bp-search = @bp)
+			#ui-vis-collect(@bp-search, show-down) when (@bp-search = @bp)
 			{
 				@class: ~'show-@{postfix-down}';
 			}
 		}
 		.show-@{postfix-only}
 		{
-			#ui-vis-collect(@bp-search, show, only) when (@bp-search = @bp)
+			#ui-vis-collect(@bp-search, show-only) when (@bp-search = @bp)
 			{
 				@class: ~'show-@{postfix-only}';
 			}
@@ -78,72 +78,65 @@
 		{
 			@bp-class: @break-points[@@bp-name][class];
 
-			@mq-up:     @break-points[@@bp-name][mq-up];
-			@mq-down:   @break-points[@@bp-name][mq-down];
-			@mq-only:   @break-points[@@bp-name][mq-only];
-			@mq-lower:  @break-points[@@bp-name][mq-lower];
-			@mq-higher: @break-points[@@bp-name][mq-higher];
-			@mq-except: @break-points[@@bp-name][mq-except];
-
 
 			&
 			{
-				@class: #ui-vis-collect(@bp-class, hide, up)[@class];
+				@class: #ui-vis-collect(@bp-class, hide-up)[@class];
 
 				& when not (@class = false)
 				{
-					#ui-vis.apply-collected(@mq-up, @class);
+					#ui-vis.apply-collected(@break-points[@@bp-name][mq-up], @class);
 				}
 			}
 
 			&
 			{
-				@class: #ui-vis-collect(@bp-class, hide, down)[@class];
+				@class: #ui-vis-collect(@bp-class, hide-down)[@class];
 
 				& when not (@class = false)
 				{
-					#ui-vis.apply-collected(@mq-down, @class);
+					#ui-vis.apply-collected(@break-points[@@bp-name][mq-down], @class);
 				}
 			}
 
 			&
 			{
-				@class: #ui-vis-collect(@bp-class, hide, only)[@class];
+				@class: #ui-vis-collect(@bp-class, hide-only)[@class];
 
 				& when not (@class = false)
 				{
-					#ui-vis.apply-collected(@mq-only, @class);
+					#ui-vis.apply-collected(@break-points[@@bp-name][mq-only], @class);
 				}
 			}
 
 
 			&
 			{
-				@class: #ui-vis-collect(@bp-class, show, up)[@class];
+				@class: #ui-vis-collect(@bp-class, show-up)[@class];
 
 				& when not (@class = false)
 				{
-					#ui-vis.apply-collected(@mq-lower, @class);
+					#ui-vis.apply-collected(@break-points[@@bp-name][mq-lower], @class);
 				}
 			}
 
 			&
 			{
-				@class: #ui-vis-collect(@bp-class, show, down)[@class];
+				@class: #ui-vis-collect(@bp-class, show-down)[@class];
 
 				& when not (@class = false)
 				{
-					#ui-vis.apply-collected(@mq-higher, @class);
+					#ui-vis.apply-collected(@break-points[@@bp-name][mq-higher], @class);
 				}
 			}
 
 			&
 			{
-				@class: #ui-vis-collect(@bp-class, show, only)[@class];
+				@class: #ui-vis-collect(@bp-class, show-only)[@class];
 
 				& when not (@class = false)
 				{
-					#ui-vis.apply-collected(@mq-except, @class);
+					#ui-vis.apply-collected(@break-points[@@bp-name][mq-except], @class);
 				}
 			}
 		});

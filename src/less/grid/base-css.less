@@ -86,8 +86,8 @@
 	{
 		&.@{grid}, .@{grid} > .@{item} > &, & > .@{item} > .@{grid}
 		{
-			margin-left:  0;
-			margin-right: 0;
+			margin-left:  auto;
+			margin-right: auto;
 		}
 
 		& > .@{item}
@@ -96,15 +96,13 @@
 			padding-right: 0;
 		}
 	}
-}
 
-#ui-css
-{
-	.apply(base, @prop, @bp-name)
+
+	.apply(@prop)
 	{
-		& when (@prop = inline)       { #ui-grid-base-css.grid-inline(); }
-		& when (@prop = table)        { #ui-grid-base-css.grid-table(); }
+		& when (@prop = inline)       { #ui-grid-base-css.grid-inline();       }
+		& when (@prop = table)        { #ui-grid-base-css.grid-table();        }
 		& when (@prop = table-inline) { #ui-grid-base-css.grid-table-inline(); }
-		& when (@prop = collapse)     { #ui-grid-base-css.collapse(); }
+		& when (@prop = collapse)     { #ui-grid-base-css.collapse();          }
 	}
 }

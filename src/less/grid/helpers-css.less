@@ -1,8 +1,47 @@
-#ui-grid-helpers
+#ui-grid-helpers-css
 {
+	.flex-row()        { flex-direction: row;            }
+	.flex-column()     { flex-direction: column;         }
+	.flex-row-rev()    { flex-direction: row-reverse;    }
+	.flex-column-rev() { flex-direction: column-reverse; }
+
+	.flex-nowrap()   { flex-wrap: nowrap; }
+	.flex-wrap()     { flex-wrap: wrap; }
+	.flex-wrap-rev() { flex-wrap: wrap-reverse; }
+
+
+	.x-top()    { align-items:     flex-start; }
+	.x-middle() { align-items:     center;     }
+	.x-bottom() { align-items:     flex-end;   }
+	.x-left()   { justify-content: flex-start; }
+	.x-center() { justify-content: center;     }
+	.x-right()  { justify-content: flex-end;   }
+
+	.y-top()    { justify-content: flex-start; }
+	.y-middle() { justify-content: center;     }
+	.y-bottom() { justify-content: flex-end;   }
+	.y-left()   { align-items:     flex-start; }
+	.y-center() { align-items:     center;     }
+	.y-right()  { align-items:     flex-end;   }
+
+	.space-between() { justify-content: space-between; }
+	.space-around()  { justify-content: space-around;  }
+
+	.item-stretch() { align-self: stretch; align-items: stretch; }
+	.item-start()   { align-self: flex-start; }
+	.item-center()  { align-self: center;     }
+	.item-end()     { align-self: flex-end;   }
+
+	.item-first()   { order: -1; }
+	.item-last()    { order:  1; }
+	.item-initial() { order:  0; }
+
+	.item-overflow-on()  { overflow: hidden; text-overflow: ellipsis; }
+	.item-overflow-off() { overflow: visible; }
+
+
 	@grid:  @grid-grid-class;
 	@item:  @grid-item-class;
-
 
 	.first-cell()
 	{
@@ -30,46 +69,6 @@
 	}
 
 
-	.x-top()    { align-items:     flex-start; }
-	.x-middle() { align-items:     center;     }
-	.x-bottom() { align-items:     flex-end;   }
-	.x-left()   { justify-content: flex-start; }
-	.x-center() { justify-content: center;     }
-	.x-right()  { justify-content: flex-end;   }
-
-	.y-top()    { justify-content: flex-start; }
-	.y-middle() { justify-content: center;     }
-	.y-bottom() { justify-content: flex-end;   }
-	.y-left()   { align-items:     flex-start; }
-	.y-center() { align-items:     center;     }
-	.y-right()  { align-items:     flex-end;   }
-
-	.space-between() { justify-content: space-between; }
-	.space-around()  { justify-content: space-around;  }
-
-	.start()   { align-self: flex-start; }
-	.center()  { align-self: center;     }
-	.end()     { align-self: flex-end;   }
-	.stretch() { align-self: stretch; align-items: stretch; }
-
-
-	.flex-row()        { flex-direction: row;            }
-	.flex-column()     { flex-direction: column;         }
-	.flex-row-rev()    { flex-direction: row-reverse;    }
-	.flex-column-rev() { flex-direction: column-reverse; }
-
-	.flex-nowrap()   { flex-wrap: nowrap; }
-	.flex-wrap()     { flex-wrap: wrap; }
-	.flex-wrap-rev() { flex-wrap: wrap-reverse; }
-
-
-	.item-first()   { order: -1; }
-	.item-last()    { order:  1; }
-	.item-initial() { order:  0; }
-
-	.item-overflow() { overflow: hidden; text-overflow: ellipsis; }
-	.item-visible()  { overflow: visible; }
-
 	.grow-0()  { flex-grow: 0; }
 	.grow-1()  { flex-grow: 1; }
 	.grow-2()  { flex-grow: 2; }
@@ -93,84 +92,83 @@
 	.shrink-8()  { flex-shrink: 0; }
 	.shrink-9()  { flex-shrink: 9; }
 	.shrink-10() { flex-shrink: 10; }
-}
 
 
-#ui-css
-{
-	.apply(helpers, @prop, @bp-name)
+	.apply(@prop)
 	{
-		& when (@prop = tight), (@prop = auto) { #ui-grid-columns.css(@prop, @bp-name); }
-
-		& when (@prop = first-cell)   { #ui-grid-helpers.first-cell();   }
-		& when (@prop = initial-cell) { #ui-grid-helpers.initial-cell(); }
-
-		& when (@prop = valign-top)    { #ui-grid-helpers.valign-top(); }
-		& when (@prop = valign-middle) { #ui-grid-helpers.valign-middle(); }
-		& when (@prop = valign-bottom) { #ui-grid-helpers.valign-bottom(); }
+		& when (@prop = tight), (@prop = auto) { #ui-grid-columns-css.apply(@prop, helpers); }
 
 
-		& when (@prop = x-top)    { #ui-grid-helpers.x-top();    }
-		& when (@prop = x-middle) { #ui-grid-helpers.x-middle(); }
-		& when (@prop = x-bottom) { #ui-grid-helpers.x-bottom(); }
-		& when (@prop = x-left)   { #ui-grid-helpers.x-left();   }
-		& when (@prop = x-center) { #ui-grid-helpers.x-center(); }
-		& when (@prop = x-right)  { #ui-grid-helpers.x-right();  }
+		& when (@prop = row)        { #ui-grid-helpers-css.flex-row();        }
+		& when (@prop = column)     { #ui-grid-helpers-css.flex-column();     }
+		& when (@prop = row-rev)    { #ui-grid-helpers-css.flex-row-rev();    }
+		& when (@prop = column-rev) { #ui-grid-helpers-css.flex-column-rev(); }
 
-		& when (@prop = y-top)    { #ui-grid-helpers.y-top();    }
-		& when (@prop = y-middle) { #ui-grid-helpers.y-middle(); }
-		& when (@prop = y-bottom) { #ui-grid-helpers.y-bottom(); }
-		& when (@prop = y-left)   { #ui-grid-helpers.y-left();   }
-		& when (@prop = y-center) { #ui-grid-helpers.y-center(); }
-		& when (@prop = y-right)  { #ui-grid-helpers.y-right();  }
-
-		& when (@prop = space-between) { #ui-grid-helpers.space-between(); }
-		& when (@prop = space-around)  { #ui-grid-helpers.space-around();  }
-
-		& when (@prop = start)   { #ui-grid-helpers.start();  }
-		& when (@prop = center)  { #ui-grid-helpers.center();  }
-		& when (@prop = end)     { #ui-grid-helpers.end();  }
-		& when (@prop = stretch) { #ui-grid-helpers.stretch();  }
+		& when (@prop = nowrap)   { #ui-grid-helpers-css.flex-nowrap();   }
+		& when (@prop = wrap)     { #ui-grid-helpers-css.flex-wrap();     }
+		& when (@prop = wrap-rev) { #ui-grid-helpers-css.flex-wrap-rev(); }
 
 
-		& when (@prop = row)        { #ui-grid-helpers.flex-row(); }
-		& when (@prop = column)     { #ui-grid-helpers.flex-column(); }
-		& when (@prop = row-rev)    { #ui-grid-helpers.flex-row-rev(); }
-		& when (@prop = column-rev) { #ui-grid-helpers.flex-column-rev(); }
+		& when (@prop = x-top)    { #ui-grid-helpers-css.x-top();    }
+		& when (@prop = x-middle) { #ui-grid-helpers-css.x-middle(); }
+		& when (@prop = x-bottom) { #ui-grid-helpers-css.x-bottom(); }
+		& when (@prop = x-left)   { #ui-grid-helpers-css.x-left();   }
+		& when (@prop = x-center) { #ui-grid-helpers-css.x-center(); }
+		& when (@prop = x-right)  { #ui-grid-helpers-css.x-right();  }
 
-		& when (@prop = nowrap)   { #ui-grid-helpers.flex-nowrap(); }
-		& when (@prop = wrap)     { #ui-grid-helpers.flex-wrap(); }
-		& when (@prop = wrap-rev) { #ui-grid-helpers.flex-wrap-rev(); }
+		& when (@prop = y-top)    { #ui-grid-helpers-css.y-top();    }
+		& when (@prop = y-middle) { #ui-grid-helpers-css.y-middle(); }
+		& when (@prop = y-bottom) { #ui-grid-helpers-css.y-bottom(); }
+		& when (@prop = y-left)   { #ui-grid-helpers-css.y-left();   }
+		& when (@prop = y-center) { #ui-grid-helpers-css.y-center(); }
+		& when (@prop = y-right)  { #ui-grid-helpers-css.y-right();  }
 
-		& when (@prop = first)   { #ui-grid-helpers.item-first(); }
-		& when (@prop = last)    { #ui-grid-helpers.item-last(); }
-		& when (@prop = initial) { #ui-grid-helpers.item-initial(); }
+		& when (@prop = space-between) { #ui-grid-helpers-css.space-between(); }
+		& when (@prop = space-around)  { #ui-grid-helpers-css.space-around();  }
 
-		& when (@prop = overflow) { #ui-grid-helpers.item-overflow(); }
-		& when (@prop = visible)  { #ui-grid-helpers.item-visible(); }
+		& when (@prop = stretch) { #ui-grid-helpers-css.item-stretch(); }
+		& when (@prop = start)   { #ui-grid-helpers-css.item-start();   }
+		& when (@prop = center)  { #ui-grid-helpers-css.item-center();  }
+		& when (@prop = end)     { #ui-grid-helpers-css.item-end();     }
 
-		& when (@prop = grow-0)  { #ui-grid-helpers.grow-0(); }
-		& when (@prop = grow-1)  { #ui-grid-helpers.grow-1(); }
-		& when (@prop = grow-2)  { #ui-grid-helpers.grow-2(); }
-		& when (@prop = grow-3)  { #ui-grid-helpers.grow-3(); }
-		& when (@prop = grow-4)  { #ui-grid-helpers.grow-4(); }
-		& when (@prop = grow-5)  { #ui-grid-helpers.grow-5(); }
-		& when (@prop = grow-6)  { #ui-grid-helpers.grow-6(); }
-		& when (@prop = grow-7)  { #ui-grid-helpers.grow-7(); }
-		& when (@prop = grow-8)  { #ui-grid-helpers.grow-8(); }
-		& when (@prop = grow-9)  { #ui-grid-helpers.grow-9(); }
-		& when (@prop = grow-10) { #ui-grid-helpers.grow-10(); }
+		& when (@prop = first)   { #ui-grid-helpers-css.item-first();   }
+		& when (@prop = last)    { #ui-grid-helpers-css.item-last();    }
+		& when (@prop = initial) { #ui-grid-helpers-css.item-initial(); }
 
-		& when (@prop = shrink-0)  { #ui-grid-helpers.shrink-0(); }
-		& when (@prop = shrink-1)  { #ui-grid-helpers.shrink-1(); }
-		& when (@prop = shrink-2)  { #ui-grid-helpers.shrink-2(); }
-		& when (@prop = shrink-3)  { #ui-grid-helpers.shrink-3(); }
-		& when (@prop = shrink-4)  { #ui-grid-helpers.shrink-4(); }
-		& when (@prop = shrink-5)  { #ui-grid-helpers.shrink-5(); }
-		& when (@prop = shrink-6)  { #ui-grid-helpers.shrink-6(); }
-		& when (@prop = shrink-7)  { #ui-grid-helpers.shrink-7(); }
-		& when (@prop = shrink-8)  { #ui-grid-helpers.shrink-8(); }
-		& when (@prop = shrink-9)  { #ui-grid-helpers.shrink-9(); }
-		& when (@prop = shrink-10) { #ui-grid-helpers.shrink-10(); }
+		& when (@prop = overflow-on)  { #ui-grid-helpers-css.item-overflow-on();  }
+		& when (@prop = overflow-off) { #ui-grid-helpers-css.item-overflow-off(); }
+
+
+		& when (@prop = first-cell)   { #ui-grid-helpers-css.first-cell();   }
+		& when (@prop = initial-cell) { #ui-grid-helpers-css.initial-cell(); }
+
+		& when (@prop = valign-top)    { #ui-grid-helpers-css.valign-top();    }
+		& when (@prop = valign-middle) { #ui-grid-helpers-css.valign-middle(); }
+		& when (@prop = valign-bottom) { #ui-grid-helpers-css.valign-bottom(); }
+
+
+		& when (@prop = grow-0)  { #ui-grid-helpers-css.grow-0();  }
+		& when (@prop = grow-1)  { #ui-grid-helpers-css.grow-1();  }
+		& when (@prop = grow-2)  { #ui-grid-helpers-css.grow-2();  }
+		& when (@prop = grow-3)  { #ui-grid-helpers-css.grow-3();  }
+		& when (@prop = grow-4)  { #ui-grid-helpers-css.grow-4();  }
+		& when (@prop = grow-5)  { #ui-grid-helpers-css.grow-5();  }
+		& when (@prop = grow-6)  { #ui-grid-helpers-css.grow-6();  }
+		& when (@prop = grow-7)  { #ui-grid-helpers-css.grow-7();  }
+		& when (@prop = grow-8)  { #ui-grid-helpers-css.grow-8();  }
+		& when (@prop = grow-9)  { #ui-grid-helpers-css.grow-9();  }
+		& when (@prop = grow-10) { #ui-grid-helpers-css.grow-10(); }
+
+		& when (@prop = shrink-0)  { #ui-grid-helpers-css.shrink-0();  }
+		& when (@prop = shrink-1)  { #ui-grid-helpers-css.shrink-1();  }
+		& when (@prop = shrink-2)  { #ui-grid-helpers-css.shrink-2();  }
+		& when (@prop = shrink-3)  { #ui-grid-helpers-css.shrink-3();  }
+		& when (@prop = shrink-4)  { #ui-grid-helpers-css.shrink-4();  }
+		& when (@prop = shrink-5)  { #ui-grid-helpers-css.shrink-5();  }
+		& when (@prop = shrink-6)  { #ui-grid-helpers-css.shrink-6();  }
+		& when (@prop = shrink-7)  { #ui-grid-helpers-css.shrink-7();  }
+		& when (@prop = shrink-8)  { #ui-grid-helpers-css.shrink-8();  }
+		& when (@prop = shrink-9)  { #ui-grid-helpers-css.shrink-9();  }
+		& when (@prop = shrink-10) { #ui-grid-helpers-css.shrink-10(); }
 	}
 }

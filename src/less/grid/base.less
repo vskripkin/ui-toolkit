@@ -1,24 +1,23 @@
-#ui-grid-base-collect()
+#ui-grid-used-collect()
 {
 	@grid: false;
 }
 
-
-#ui-grid-base
+.use-grid()
 {
-	.generate-base-mixins()
+	#ui-grid-used-collect()
 	{
-		.use-grid()
-		{
-			#ui-grid-base-collect()
-			{
-				@grid: true;
-			}
-		}
+		@grid: true;
 	}
-	.generate-base-css(@collected, @bp-name: false)
+}
+
+#ui-grid-used
+{
+	.css(@bp-name: false)
 	{
-		& when (@collected[@grid])
+		@used: #ui-grid-used-collect()[@grid];
+
+		& when (@used)
 		{
 			& when (@bp-name = false)
 			{
@@ -31,16 +30,59 @@
 			}
 		}
 	}
+}
 
 
+#ui-grid-base-collect(@bp-class) {};
+
+#ui-grid-base
+{
 	@props: inline, table, table-inline, collapse;
 
-	.generate-mixins(@bp)
+	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
 	{
-		#ui-generator.mixins(base, #ui-grid-base[@props], @bp);
+		@props: #ui-grid-base[@props];
+
+		each(@props, .(@prop)
+		{
+			@class-up:   ~'@{bp-class-up}-@{prop}';
+			@class-down: ~'@{bp-class-down}-@{prop}';
+			@class-only: ~'@{bp-class-only}-@{prop}';
+
+			.@{class-up}
+			{
+				#ui-collector(@bp-search) when (@bp-search = @bp-class-up)
+				{
+					@{prop}: @class-up;
+				}
+			}
+			.@{class-down}
+			{
+				#ui-collector(@bp-search) when (@bp-search = @bp-class-down)
+				{
+					@{prop}: @class-down;
+				}
+			}
+			.@{class-only}
+			{
+				#ui-collector(@bp-search) when (@bp-search = @bp-class-only)
+				{
+					@{prop}: @class-only;
+				}
+			}
+		});
 	}
-	.generate-css(@collected, @bp-name)
+
+	.generate-css(@bp-class)
 	{
-		#ui-generator.css(base, @collected, @bp-name);
+		@collected: #ui-grid-base-collect(@bp-class);
+
+		each(@collected, .(@class, @prop)
+		{
+			.@{class}
+			{
+				#ui-grid-base-css.apply(@prop);
+			}
+		});
 	}
 }

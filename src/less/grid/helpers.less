@@ -1,4 +1,4 @@
-#ui-grid-helpers-collect(@bp-search, @mode) {}
+#ui-grid-helpers-collect(@bp-class) {};
 
 #ui-grid-helpers
 {
@@ -8,9 +8,6 @@
 		row, row-rev, column, column-rev,
 		nowrap, wrap, wrap-rev,
 
-		first-cell, initial-cell,
-		valign-top, valign-middle, valign-bottom,
-
 		x-top,     y-top,
 		x-middle,  y-middle,
 		x-bottom,  y-bottom,
@@ -19,10 +16,13 @@
 		x-right,   y-right,
 
 		space-between, space-around,
-		start, center, end, stretch,
+		stretch, start, center, end,
 
 		fisrt, last, initial,
-		overflow, visible,
+		overflow-on, overflow-off,
+
+		first-cell, initial-cell,
+		valign-top, valign-middle, valign-bottom,
 
 		grow-0, shrink-0,
 		grow-1, grow-2, grow-3, grow-4, grow-5,
@@ -31,12 +31,50 @@
 		shrink-6, shrink-7, shrink-8, shrink-9, shrink-10;
 
 
-	.generate-mixins(@bp)
+	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
 	{
-		#ui-generator.mixins(helpers, #ui-grid-helpers[@props], @bp);
+		@props: #ui-grid-helpers[@props];
+
+		each(@props, .(@prop)
+		{
+			@class-up:   ~'@{bp-class-up}-@{prop}';
+			@class-down: ~'@{bp-class-down}-@{prop}';
+			@class-only: ~'@{bp-class-only}-@{prop}';
+
+			.@{class-up}
+			{
+				#ui-grid-helpers-collect(@bp-search) when (@bp-search = @bp-class-up)
+				{
+					@{prop}: @class-up;
+				}
+			}
+			.@{class-down}
+			{
+				#ui-grid-helpers-collect(@bp-search) when (@bp-search = @bp-class-down)
+				{
+					@{prop}: @class-down;
+				}
+			}
+			.@{class-only}
+			{
+				#ui-grid-helpers-collect(@bp-search) when (@bp-search = @bp-class-only)
+				{
+					@{prop}: @class-only;
+				}
+			}
+		});
 	}
-	.generate-css(@collected, @bp-name)
+
+	.generate-css(@bp-class)
 	{
-		#ui-generator.css(helpers, @collected, @bp-name);
+		@collected: #ui-grid-helpers-collect(@bp-class);
+
+		each(@collected, .(@class, @prop)
+		{
+			.@{class}
+			{
+				#ui-grid-helpers-css.apply(@prop);
+			}
+		});
 	}
 }
