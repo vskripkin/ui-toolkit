@@ -16,22 +16,24 @@
 			}
 		}
 	}
-
 	.generate-base-css(@collected, @bp-name: false)
 	{
-		& when (@collected[@grid]) and (@bp-name = false)
+		& when (@collected[@grid])
 		{
-			#ui-grid-base-css.grid();
-			#ui-grid-base-css.item();
-		}
-		& when (@collected[@grid]) and not (@bp-name = false)
-		{
-			#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
+			& when (@bp-name = false)
+			{
+				#ui-grid-base-css.grid();
+				#ui-grid-base-css.item();
+			}
+			& when not (@bp-name = false)
+			{
+				#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
+			}
 		}
 	}
 
 
-	@props: inline, table, table-inline;
+	@props: inline, table, table-inline, collapse;
 
 	.generate-mixins(@bp)
 	{

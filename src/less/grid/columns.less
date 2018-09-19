@@ -85,36 +85,39 @@
 			@prop:    @data[prop];
 			@postfix: @data[postfix];
 
-			.check-uniq(@i) when (@i = 0)
+			.check-uniq(@i)
 			{
-				@prefix: @data[prefix];
-				@stem:   @data[stem];
-				@number: @data[number];
-
-				.@{prefix}@{stem}@{postfix}
+				& when (@i = 0)
 				{
-					@rate: round(percentage(@number / @columns-total), 4);
+					@prefix: @data[prefix];
+					@stem:   @data[stem];
+					@number: @data[number];
 
-					#ui-grid-columns.css(@prop, @rate);
+					.@{prefix}@{stem}@{postfix}
+					{
+						@rate: round(percentage(@number / @columns-total), 4);
+
+						#ui-grid-columns.css(@prop, @rate);
+					}
+				}
+				& when (@i > 0)
+				{
+					each(@collected, .(@data-before, @k, @ii)
+					{
+						& when (@ii = @i)
+						{
+							@prop-before:    @data-before[prop];
+							@postfix-before: @data-before[postfix];
+
+							& when not (@prop-before = @prop), not (@postfix-before = @postfix)
+							{
+								.check-uniq(@i - 1);
+							}
+						}
+					});
 				}
 			}
 
-			.check-uniq(@i) when (@i > 0)
-			{
-				each(@collected, .(@data-before, @k, @ii)
-				{
-					& when (@ii = @i)
-					{
-						@prop-before:    @data-before[prop];
-						@postfix-before: @data-before[postfix];
-
-						& when not (@prop-before = @prop), not (@postfix-before = @postfix)
-						{
-							.check-uniq(@i - 1);
-						}
-					}
-				});
-			}
 			.check-uniq(@index - 1);
 		});
 	}

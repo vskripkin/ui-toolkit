@@ -44,6 +44,9 @@
 			{
 				#ui-grid-base.generate-base-css(@grid-base, @bp-name);
 
+				@base-up: #ui-collector(base, @bp-class, up);
+				#ui-grid-base.generate-css(@base-up, @bp-name);
+
 				each(@grid-columns, .(@grid-cols)
 				{
 					@columns: @grid-cols[columns];
@@ -53,16 +56,15 @@
 					#ui-grid-columns.generate-css(@cols-up, @columns);
 				});
 
-
-				@base-up: #ui-collector(base, @bp-class, up);
-				#ui-grid-base.generate-css(@base-up, @bp-name);
-
 				@hlps-up: #ui-collector(helpers, @bp-class, up);
 				#ui-grid-helpers.generate-css(@hlps-up, @bp-name);
 			};
 
 			@css-down:
 			{
+				@base-down: #ui-collector(base, @bp-class, down);
+				#ui-grid-base.generate-css(@base-down, @bp-name);
+
 				each(@grid-columns, .(@grid-cols)
 				{
 					@columns: @grid-cols[columns];
@@ -72,15 +74,15 @@
 					#ui-grid-columns.generate-css(@cols-down, @columns);
 				});
 
-				@base-down: #ui-collector(base, @bp-class, down);
-				#ui-grid-base.generate-css(@base-down, @bp-name);
-
 				@hlps-down: #ui-collector(helpers, @bp-class, down);
 				#ui-grid-helpers.generate-css(@hlps-down, @bp-name);
 			};
 
 			@css-only:
 			{
+				@base-only: #ui-collector(base, @bp-class, only);
+				#ui-grid-base.generate-css(@base-only, @bp-name);
+
 				each(@grid-columns, .(@grid-cols)
 				{
 					@columns: @grid-cols[columns];
@@ -89,9 +91,6 @@
 					@cols-only: #ui-grid-columns-collect(@bp-class, @postfix, only);
 					#ui-grid-columns.generate-css(@cols-only, @columns);
 				});
-
-				@base-only: #ui-collector(base, @bp-class, only);
-				#ui-grid-base.generate-css(@base-only, @bp-name);
 
 				@hlps-only: #ui-collector(helpers, @bp-class, only);
 				#ui-grid-helpers.generate-css(@hlps-only, @bp-name);
