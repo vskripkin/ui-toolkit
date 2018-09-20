@@ -10,16 +10,40 @@
 @class-only-key: only;
 
 
+// TYPO
+// --------------------------------------------------
+
+@font-family-serif: Georgia, Times, Times New Roman, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@font-family-sans:  Roboto, Open Sans, Helvetica, Arial, Geneva, Helmet, Freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@font-family-mono:  monospace;
+
+@font-size-root:     10px;
+@line-height-normal: 1.25;
+
+@font-size-base:   1.5rem;
+@font-family-base: @font-family-sans;
+@line-height-base: @line-height-normal;
+
+@font-size-h1: 4.8rem;
+@font-size-h2: 3.6rem;
+@font-size-h3: 2.4rem;
+@font-size-h4: 1.9rem;
+@font-size-h5: 1.7rem;
+@font-size-h6: 1.5rem;
+
+
 // GRID
 // --------------------------------------------------
 
+@use-grid:   false;
 @grid-width: @width-base;
 @grid-total: 24;
-@grid-default-dir: left;
+
+@grid-default-dir:  left;
 @grid-opposite-dir: right;
 
-@grid-grid-class:  grid;
-@grid-item-class:  item;
+@grid-grid-class: grid;
+@grid-item-class: item;
 
 @grid-small-gap:   1.6rem;
 @grid-medium-gap:  2.8rem;

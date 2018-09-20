@@ -8,7 +8,7 @@
 
 #ui-grid
 {
-	.mixins()
+	.mixins() when (@use-grid)
 	{
 		each(@break-points-order, .(@bp-name)
 		{
@@ -24,9 +24,9 @@
 		});
 	}
 
-	.collect()
+	.collect() when (@use-grid)
 	{
-		#ui-grid-used.css();
+		#ui-grid-used.used();
 
 		each(@break-points-order, .(@bp-name)
 		{
@@ -39,7 +39,7 @@
 
 			@css-up:
 			{
-				#ui-grid-used.css(@bp-name);
+				#ui-grid-used.used(@bp-name);
 
 				#ui-grid-base.generate-css(@bp-class-up);
 				#ui-grid-cols.generate-css(@bp-class-up);

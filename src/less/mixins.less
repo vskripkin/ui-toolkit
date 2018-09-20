@@ -1,0 +1,190 @@
+#all-states
+{
+	.default() {};
+	.transparent() {};
+	.hover() {};
+	.focus() {};
+	.active() {};
+	.invalid() {};
+	.valid() {};
+	.readonly() {};
+	.disabled() {};
+	.disabled_checked() {};
+	.checked() {};
+	.checked_hover() {};
+	.checked_focus() {};
+	.checked_active() {};
+	.placeholder() {};
+}
+
+#ui()
+{
+	.clearfix(@clear: both)
+	{
+		&:after
+		{
+			content: '';
+			clear: @clear;
+			display: block;
+			visibility: hidden;
+			height: 0;
+			font-size: 0;
+			line-height: 0;
+		}
+	}
+
+	.hide-text()
+	{
+		font-size: 0 !important;
+		line-height: 0 !important;
+		color: transparent !important;
+		text-shadow: none !important;
+	}
+
+	.spaces-no(...)
+	{
+		font-size: 0;
+		line-height: 0;
+		letter-spacing: -1px;
+	}
+	.spaces-no(nowrap)
+	{
+		white-space: nowrap;
+	}
+	.spaces-yes(...)
+	{
+		font-size: @font-size-base;
+		line-height: @line-height-normal;
+		letter-spacing: normal;
+		display: inline-block;
+	}
+	.spaces-yes(@valign: top, @white-space: normal)
+	{
+		vertical-align: @valign;
+		white-space: @white-space;
+	}
+
+	.table(@width: 100%)
+	{
+		float: none;
+		display: table;
+		width: @width;
+	}
+	.table-inline(@width: auto)
+	{
+		float: none;
+		display: inline-table;
+		width: @width;
+	}
+	.row()
+	{
+		float: none;
+		display: table-row;
+	}
+	.cell(@width: auto)
+	{
+		float: none;
+		display: table-cell;
+		width: @width;
+		vertical-align: top;
+	}
+
+
+	.disable-italic()
+	{
+		div, span,
+		h1, h2, h3, h4, h5, h6, p, blockquote,
+		a, abbr, acronym, address, big, cite,
+		del, dfn, em, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, dt, dd, li,
+		label, legend, th, td,
+		input, button, textarea, select,
+		menu, nav, output, section, summary,
+		time, mark
+		{
+			&:lang(zh), &:lang(ko), &:lang(ja), &:lang(ar)
+			{
+				font-style: normal !important;
+			}
+		}
+
+		input, textarea
+		{
+			&:lang(zh), &:lang(ko), &:lang(ja), &:lang(ar)
+			{
+				&::placeholder
+				{
+					font-style: normal !important;
+				}
+			}
+		}
+	}
+
+	/*****************************************************/
+
+	.size-font-padding(@fs, @pv: 0, @ph: 0)
+	{
+		#ui > .size-custom(@fs, @pv, @ph);
+
+		@normal: {
+			.normal();
+
+			font-size: @font-size;
+			padding: @padding-ver @padding-hor;
+		};
+		@large: {
+			.large();
+
+			font-size: @font-size;
+			padding: @padding-ver @padding-hor;
+		};
+		@small: {
+			.small();
+
+			font-size: @font-size;
+			padding: @padding-ver @padding-hor;
+		};
+	}
+	.size-custom(@fs, @pv: 0, @ph: 0)
+	{
+		.normal()
+		{
+			@font-size: @fs;
+			@padding-ver: @pv;
+			@padding-hor: @ph;
+			@height: (@pv * 2 + @fs * @line-height-normal);
+		}
+		.large()
+		{
+			@font-size: (@fs * 1.285);
+			@padding-ver: (@pv * 1.1);
+			@padding-hor: (@ph * 2);
+			@height: (@pv * 2 + @fs * @line-height-normal);
+		}
+		.small()
+		{
+			@font-size: (@fs * 0.72);
+			@padding-ver: (@pv * 0.65);
+			@padding-hor: (@ph * 0.9);
+			@height: (@pv * 2 + @fs * @line-height-normal);
+		}
+	}
+
+	/*****************************************************/
+
+	.gradient(@dir: to bottom; @rest...)
+	{
+		background-image: svg-gradient(@dir, @rest);
+		background-image: linear-gradient(@dir, @rest);
+	}
+	.gradient-s(@color1, @color2: rgba(255,255,255,0))
+	{
+		background-image: svg-gradient(to bottom right,
+			@color1  0%, @color1 25%, @color2 25%, @color2 50%,
+			@color1 50%, @color1 75%, @color2 75%, @color2 100%);
+		background-image: linear-gradient(-45deg,
+			@color1  0%, @color1 25%, @color2 25%, @color2 50%,
+			@color1 50%, @color1 75%, @color2 75%, @color2 100%);
+	}
+}

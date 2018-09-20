@@ -1,29 +1,18 @@
-#ui-grid-used-collect() { @grid: false; }
-
-.use-grid()
-{
-	#ui-grid-used-collect() { @grid: true; }
-}
-
-#ui-grid-used
-{
-	.css() when (#ui-grid-used-collect()[])
-	{
-		#ui-grid-base-css.grid();
-		#ui-grid-base-css.item();
-	}
-	.css(@bp-name) when (#ui-grid-used-collect()[])
-	{
-		#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
-	}
-}
-
-
 #ui-grid-base-collect(...) { @used: false; };
 
 #ui-grid-base
 {
 	@props: inline, table, table-inline, collapse;
+
+	.used()
+	{
+		#ui-grid-base-css.grid();
+		#ui-grid-base-css.item();
+	}
+	.used(@bp-name)
+	{
+		#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
+	}
 
 
 	.generate-css(@bp-class)

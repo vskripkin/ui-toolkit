@@ -82,28 +82,28 @@
 
 			& when (#ui-vis-collect(@bp-class, hide-up)[] = true)
 			{
-				#ui-vis.apply-collected(@break-points[@@bp-name][mq-up], ~'.hide-@{bp-class-up}');
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-up], ~'hide-@{bp-class-up}');
 			}
 			& when (#ui-vis-collect(@bp-class, hide-down)[] = true)
 			{
-				#ui-vis.apply-collected(@break-points[@@bp-name][mq-down], ~'.hide-@{bp-class-down}');
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-down], ~'hide-@{bp-class-down}');
 			}
 			& when (#ui-vis-collect(@bp-class, hide-only)[] = true)
 			{
-				#ui-vis.apply-collected(@break-points[@@bp-name][mq-only], ~'.hide-@{bp-class-only}');
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-only], ~'hide-@{bp-class-only}');
 			}
 
 			& when (#ui-vis-collect(@bp-class, show-up)[] = true)
 			{
-				#ui-vis.apply-collected(@break-points[@@bp-name][mq-lower], ~'.show-@{bp-class-up}');
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-lower], ~'show-@{bp-class-up}');
 			}
 			& when (#ui-vis-collect(@bp-class, show-down)[] = true)
 			{
-				#ui-vis.apply-collected(@break-points[@@bp-name][mq-higher], ~'.show-@{bp-class-down}');
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-higher], ~'show-@{bp-class-down}');
 			}
 			& when (#ui-vis-collect(@bp-class, show-only)[] = true)
 			{
-				#ui-vis.apply-collected(@break-points[@@bp-name][mq-except], ~'.show-@{bp-class-only}');
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-except], ~'show-@{bp-class-only}');
 			}
 		});
 	}
@@ -129,6 +129,7 @@
 		}
 	}
 }
+
 
 #ui-vis.mixins();
 
