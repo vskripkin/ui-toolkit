@@ -1,7 +1,4 @@
-#ui-vis-collect(@bp-search, @prop-mode-search)
-{
-	@class: false;
-}
+#ui-vis-collect(@bp, @prop-mode) { @used: false; }
 
 #ui-vis
 {
@@ -11,54 +8,54 @@
 	}
 
 
-	.generate-mixins(@bp)
+	.generate-mixins(@bp-class)
 	{
-		@postfix-up:    if(@class-up-key   = false, ~'@{bp}', ~'@{bp}-@{class-up-key}');
-		@postfix-down:  if(@class-down-key = false, ~'@{bp}', ~'@{bp}-@{class-down-key}');
-		@postfix-only:  if(@class-only-key = false, ~'@{bp}', ~'@{bp}-@{class-only-key}');
+		@bp-class-up:   if(@class-up-key   = false, ~'@{bp-class}', ~'@{bp-class}-@{class-up-key}');
+		@bp-class-down: if(@class-down-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-down-key}');
+		@bp-class-only: if(@class-only-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-only-key}');
 
 
-		.hide-@{postfix-up}
+		.hide-@{bp-class-up}
 		{
-			#ui-vis-collect(@bp-search, hide-up) when (@bp-search = @bp)
+			#ui-vis-collect(@bp, hide-up) when (@bp = @bp-class)
 			{
-				@class: ~'hide-@{postfix-up}';
+				@used: true;
 			}
 		}
-		.hide-@{postfix-down}
+		.hide-@{bp-class-down}
 		{
-			#ui-vis-collect(@bp-search, hide-down) when (@bp-search = @bp)
+			#ui-vis-collect(@bp, hide-down) when (@bp = @bp-class)
 			{
-				@class: ~'hide-@{postfix-down}';
+				@used: true;
 			}
 		}
-		.hide-@{postfix-only}
+		.hide-@{bp-class-only}
 		{
-			#ui-vis-collect(@bp-search, hide-only) when (@bp-search = @bp)
+			#ui-vis-collect(@bp, hide-only) when (@bp = @bp-class)
 			{
-				@class: ~'hide-@{postfix-only}';
+				@used: true;
 			}
 		}
 
-		.show-@{postfix-up}
+		.show-@{bp-class-up}
 		{
-			#ui-vis-collect(@bp-search, show-up) when (@bp-search = @bp)
+			#ui-vis-collect(@bp, show-up) when (@bp = @bp-class)
 			{
-				@class: ~'show-@{postfix-up}';
+				@used: true;
 			}
 		}
-		.show-@{postfix-down}
+		.show-@{bp-class-down}
 		{
-			#ui-vis-collect(@bp-search, show-down) when (@bp-search = @bp)
+			#ui-vis-collect(@bp, show-down) when (@bp = @bp-class)
 			{
-				@class: ~'show-@{postfix-down}';
+				@used: true;
 			}
 		}
-		.show-@{postfix-only}
+		.show-@{bp-class-only}
 		{
-			#ui-vis-collect(@bp-search, show-only) when (@bp-search = @bp)
+			#ui-vis-collect(@bp, show-only) when (@bp = @bp-class)
 			{
-				@class: ~'show-@{postfix-only}';
+				@used: true;
 			}
 		}
 	}
@@ -78,71 +75,40 @@
 		{
 			@bp-class: @break-points[@@bp-name][class];
 
+			@bp-class-up:   if(@class-up-key   = false, ~'@{bp-class}', ~'@{bp-class}-@{class-up-key}');
+			@bp-class-down: if(@class-down-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-down-key}');
+			@bp-class-only: if(@class-only-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-only-key}');
 
-			&
+
+			& when (#ui-vis-collect(@bp-class, hide-up)[] = true)
 			{
-				@class: #ui-vis-collect(@bp-class, hide-up)[@class];
-
-				& when not (@class = false)
-				{
-					#ui-vis.apply-collected(@break-points[@@bp-name][mq-up], @class);
-				}
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-up], ~'.hide-@{bp-class-up}');
+			}
+			& when (#ui-vis-collect(@bp-class, hide-down)[] = true)
+			{
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-down], ~'.hide-@{bp-class-down}');
+			}
+			& when (#ui-vis-collect(@bp-class, hide-only)[] = true)
+			{
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-only], ~'.hide-@{bp-class-only}');
 			}
 
-			&
+			& when (#ui-vis-collect(@bp-class, show-up)[] = true)
 			{
-				@class: #ui-vis-collect(@bp-class, hide-down)[@class];
-
-				& when not (@class = false)
-				{
-					#ui-vis.apply-collected(@break-points[@@bp-name][mq-down], @class);
-				}
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-lower], ~'.show-@{bp-class-up}');
 			}
-
-			&
+			& when (#ui-vis-collect(@bp-class, show-down)[] = true)
 			{
-				@class: #ui-vis-collect(@bp-class, hide-only)[@class];
-
-				& when not (@class = false)
-				{
-					#ui-vis.apply-collected(@break-points[@@bp-name][mq-only], @class);
-				}
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-higher], ~'.show-@{bp-class-down}');
 			}
-
-
-			&
+			& when (#ui-vis-collect(@bp-class, show-only)[] = true)
 			{
-				@class: #ui-vis-collect(@bp-class, show-up)[@class];
-
-				& when not (@class = false)
-				{
-					#ui-vis.apply-collected(@break-points[@@bp-name][mq-lower], @class);
-				}
-			}
-
-			&
-			{
-				@class: #ui-vis-collect(@bp-class, show-down)[@class];
-
-				& when not (@class = false)
-				{
-					#ui-vis.apply-collected(@break-points[@@bp-name][mq-higher], @class);
-				}
-			}
-
-			&
-			{
-				@class: #ui-vis-collect(@bp-class, show-only)[@class];
-
-				& when not (@class = false)
-				{
-					#ui-vis.apply-collected(@break-points[@@bp-name][mq-except], @class);
-				}
+				#ui-vis.apply-collected(@break-points[@@bp-name][mq-except], ~'.show-@{bp-class-only}');
 			}
 		});
 	}
 
-	.apply-collected(@media-query, @class)
+	.apply-collected(@media-query, @class) when not (@media-query = false)
 	{
 		& when (@media-query = start)
 		{
@@ -151,7 +117,7 @@
 				#ui-vis.css();
 			}
 		}
-		& when not (@media-query = start) and not (@media-query = false)
+		& when not (@media-query = start)
 		{
 			@media @media-query
 			{

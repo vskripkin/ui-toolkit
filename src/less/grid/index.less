@@ -18,13 +18,9 @@
 			@bp-class-down: if(@class-down-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-down-key}');
 			@bp-class-only: if(@class-only-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-only-key}');
 
-			each(@grid-columns, .(@grid-cols)
-			{
-				#ui-grid-columns.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only, @grid-cols[postfix]);
-			});
-
+			#ui-grid-cols.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only);
 			#ui-grid-base.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only);
-			#ui-grid-helpers.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only);
+			#ui-grid-hlps.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only);
 		});
 	}
 
@@ -36,10 +32,6 @@
 		{
 			@bp-class: @break-points[@@bp-name][class];
 
-			@mq-up:   @break-points[@@bp-name][mq-up];
-			@mq-down: @break-points[@@bp-name][mq-down];
-			@mq-only: @break-points[@@bp-name][mq-only];
-
 			@bp-class-up:   if(@class-up-key   = false, ~'@{bp-class}', ~'@{bp-class}-@{class-up-key}');
 			@bp-class-down: if(@class-down-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-down-key}');
 			@bp-class-only: if(@class-only-key = false, ~'@{bp-class}', ~'@{bp-class}-@{class-only-key}');
@@ -50,64 +42,38 @@
 				#ui-grid-used.css(@bp-name);
 
 				#ui-grid-base.generate-css(@bp-class-up);
-
-				each(@grid-columns, .(@grid-cols)
-				{
-					@columns: @grid-cols[columns];
-					@postfix: @grid-cols[postfix];
-
-					@cols-up: #ui-grid-columns-collect(@bp-class-up, @postfix);
-					#ui-grid-columns.generate-css(@cols-up, @columns);
-				});
-
-				#ui-grid-helpers.generate-css(@bp-class-up);
+				#ui-grid-cols.generate-css(@bp-class-up);
+				#ui-grid-hlps.generate-css(@bp-class-up);
 			};
 
 			@css-down:
 			{
 				#ui-grid-base.generate-css(@bp-class-down);
-
-				each(@grid-columns, .(@grid-cols)
-				{
-					@columns: @grid-cols[columns];
-					@postfix: @grid-cols[postfix];
-
-					@cols-down: #ui-grid-columns-collect(@bp-class-down, @postfix);
-					#ui-grid-columns.generate-css(@cols-down, @columns);
-				});
-
-				#ui-grid-helpers.generate-css(@bp-class-down);
+				#ui-grid-cols.generate-css(@bp-class-down);
+				#ui-grid-hlps.generate-css(@bp-class-down);
 			};
 
 			@css-only:
 			{
 				#ui-grid-base.generate-css(@bp-class-only);
-
-				each(@grid-columns, .(@grid-cols)
-				{
-					@columns: @grid-cols[columns];
-					@postfix: @grid-cols[postfix];
-
-					@cols-only: #ui-grid-columns-collect(@bp-class-only, @postfix);
-					#ui-grid-columns.generate-css(@cols-only, @columns);
-				});
-
-				#ui-grid-helpers.generate-css(@bp-class-only);
+				#ui-grid-cols.generate-css(@bp-class-only);
+				#ui-grid-hlps.generate-css(@bp-class-only);
 			};
 
-			#ui-grid.apply-collected(@mq-up,   @css-up);
-			#ui-grid.apply-collected(@mq-down, @css-down);
-			#ui-grid.apply-collected(@mq-only, @css-only);
+
+			#ui-grid.apply-collected(@break-points[@@bp-name][mq-up],   @css-up);
+			#ui-grid.apply-collected(@break-points[@@bp-name][mq-down], @css-down);
+			#ui-grid.apply-collected(@break-points[@@bp-name][mq-only], @css-only);
 		});
 	}
 
-	.apply-collected(@media-query, @css)
+	.apply-collected(@media-query, @css) when not (@media-query = false)
 	{
 		& when (@media-query = start)
 		{
 			@css();
 		}
-		& when not (@media-query = start) and not (@media-query = false)
+		& when not (@media-query = start)
 		{
 			@media @media-query
 			{

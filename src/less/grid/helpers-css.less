@@ -1,4 +1,4 @@
-#ui-grid-helpers-css
+#ui-grid-hlps-css
 {
 	.flex-row()        { flex-direction: row;            }
 	.flex-column()     { flex-direction: column;         }
@@ -96,79 +96,76 @@
 
 	.apply(@prop)
 	{
-		& when (@prop = tight), (@prop = auto) { #ui-grid-columns-css.apply(@prop, helpers); }
+		& when (@prop = row)        { #ui-grid-hlps-css.flex-row();        }
+		& when (@prop = column)     { #ui-grid-hlps-css.flex-column();     }
+		& when (@prop = row-rev)    { #ui-grid-hlps-css.flex-row-rev();    }
+		& when (@prop = column-rev) { #ui-grid-hlps-css.flex-column-rev(); }
+
+		& when (@prop = nowrap)   { #ui-grid-hlps-css.flex-nowrap();   }
+		& when (@prop = wrap)     { #ui-grid-hlps-css.flex-wrap();     }
+		& when (@prop = wrap-rev) { #ui-grid-hlps-css.flex-wrap-rev(); }
 
 
-		& when (@prop = row)        { #ui-grid-helpers-css.flex-row();        }
-		& when (@prop = column)     { #ui-grid-helpers-css.flex-column();     }
-		& when (@prop = row-rev)    { #ui-grid-helpers-css.flex-row-rev();    }
-		& when (@prop = column-rev) { #ui-grid-helpers-css.flex-column-rev(); }
+		& when (@prop = x-top)    { #ui-grid-hlps-css.x-top();    }
+		& when (@prop = x-middle) { #ui-grid-hlps-css.x-middle(); }
+		& when (@prop = x-bottom) { #ui-grid-hlps-css.x-bottom(); }
+		& when (@prop = x-left)   { #ui-grid-hlps-css.x-left();   }
+		& when (@prop = x-center) { #ui-grid-hlps-css.x-center(); }
+		& when (@prop = x-right)  { #ui-grid-hlps-css.x-right();  }
 
-		& when (@prop = nowrap)   { #ui-grid-helpers-css.flex-nowrap();   }
-		& when (@prop = wrap)     { #ui-grid-helpers-css.flex-wrap();     }
-		& when (@prop = wrap-rev) { #ui-grid-helpers-css.flex-wrap-rev(); }
+		& when (@prop = y-top)    { #ui-grid-hlps-css.y-top();    }
+		& when (@prop = y-middle) { #ui-grid-hlps-css.y-middle(); }
+		& when (@prop = y-bottom) { #ui-grid-hlps-css.y-bottom(); }
+		& when (@prop = y-left)   { #ui-grid-hlps-css.y-left();   }
+		& when (@prop = y-center) { #ui-grid-hlps-css.y-center(); }
+		& when (@prop = y-right)  { #ui-grid-hlps-css.y-right();  }
 
+		& when (@prop = space-between) { #ui-grid-hlps-css.space-between(); }
+		& when (@prop = space-around)  { #ui-grid-hlps-css.space-around();  }
 
-		& when (@prop = x-top)    { #ui-grid-helpers-css.x-top();    }
-		& when (@prop = x-middle) { #ui-grid-helpers-css.x-middle(); }
-		& when (@prop = x-bottom) { #ui-grid-helpers-css.x-bottom(); }
-		& when (@prop = x-left)   { #ui-grid-helpers-css.x-left();   }
-		& when (@prop = x-center) { #ui-grid-helpers-css.x-center(); }
-		& when (@prop = x-right)  { #ui-grid-helpers-css.x-right();  }
+		& when (@prop = stretch) { #ui-grid-hlps-css.item-stretch(); }
+		& when (@prop = start)   { #ui-grid-hlps-css.item-start();   }
+		& when (@prop = center)  { #ui-grid-hlps-css.item-center();  }
+		& when (@prop = end)     { #ui-grid-hlps-css.item-end();     }
 
-		& when (@prop = y-top)    { #ui-grid-helpers-css.y-top();    }
-		& when (@prop = y-middle) { #ui-grid-helpers-css.y-middle(); }
-		& when (@prop = y-bottom) { #ui-grid-helpers-css.y-bottom(); }
-		& when (@prop = y-left)   { #ui-grid-helpers-css.y-left();   }
-		& when (@prop = y-center) { #ui-grid-helpers-css.y-center(); }
-		& when (@prop = y-right)  { #ui-grid-helpers-css.y-right();  }
+		& when (@prop = first)   { #ui-grid-hlps-css.item-first();   }
+		& when (@prop = last)    { #ui-grid-hlps-css.item-last();    }
+		& when (@prop = initial) { #ui-grid-hlps-css.item-initial(); }
 
-		& when (@prop = space-between) { #ui-grid-helpers-css.space-between(); }
-		& when (@prop = space-around)  { #ui-grid-helpers-css.space-around();  }
-
-		& when (@prop = stretch) { #ui-grid-helpers-css.item-stretch(); }
-		& when (@prop = start)   { #ui-grid-helpers-css.item-start();   }
-		& when (@prop = center)  { #ui-grid-helpers-css.item-center();  }
-		& when (@prop = end)     { #ui-grid-helpers-css.item-end();     }
-
-		& when (@prop = first)   { #ui-grid-helpers-css.item-first();   }
-		& when (@prop = last)    { #ui-grid-helpers-css.item-last();    }
-		& when (@prop = initial) { #ui-grid-helpers-css.item-initial(); }
-
-		& when (@prop = overflow-on)  { #ui-grid-helpers-css.item-overflow-on();  }
-		& when (@prop = overflow-off) { #ui-grid-helpers-css.item-overflow-off(); }
+		& when (@prop = overflow-on)  { #ui-grid-hlps-css.item-overflow-on();  }
+		& when (@prop = overflow-off) { #ui-grid-hlps-css.item-overflow-off(); }
 
 
-		& when (@prop = first-cell)   { #ui-grid-helpers-css.first-cell();   }
-		& when (@prop = initial-cell) { #ui-grid-helpers-css.initial-cell(); }
+		& when (@prop = first-cell)   { #ui-grid-hlps-css.first-cell();   }
+		& when (@prop = initial-cell) { #ui-grid-hlps-css.initial-cell(); }
 
-		& when (@prop = valign-top)    { #ui-grid-helpers-css.valign-top();    }
-		& when (@prop = valign-middle) { #ui-grid-helpers-css.valign-middle(); }
-		& when (@prop = valign-bottom) { #ui-grid-helpers-css.valign-bottom(); }
+		& when (@prop = valign-top)    { #ui-grid-hlps-css.valign-top();    }
+		& when (@prop = valign-middle) { #ui-grid-hlps-css.valign-middle(); }
+		& when (@prop = valign-bottom) { #ui-grid-hlps-css.valign-bottom(); }
 
 
-		& when (@prop = grow-0)  { #ui-grid-helpers-css.grow-0();  }
-		& when (@prop = grow-1)  { #ui-grid-helpers-css.grow-1();  }
-		& when (@prop = grow-2)  { #ui-grid-helpers-css.grow-2();  }
-		& when (@prop = grow-3)  { #ui-grid-helpers-css.grow-3();  }
-		& when (@prop = grow-4)  { #ui-grid-helpers-css.grow-4();  }
-		& when (@prop = grow-5)  { #ui-grid-helpers-css.grow-5();  }
-		& when (@prop = grow-6)  { #ui-grid-helpers-css.grow-6();  }
-		& when (@prop = grow-7)  { #ui-grid-helpers-css.grow-7();  }
-		& when (@prop = grow-8)  { #ui-grid-helpers-css.grow-8();  }
-		& when (@prop = grow-9)  { #ui-grid-helpers-css.grow-9();  }
-		& when (@prop = grow-10) { #ui-grid-helpers-css.grow-10(); }
+		& when (@prop = grow-0)  { #ui-grid-hlps-css.grow-0();  }
+		& when (@prop = grow-1)  { #ui-grid-hlps-css.grow-1();  }
+		& when (@prop = grow-2)  { #ui-grid-hlps-css.grow-2();  }
+		& when (@prop = grow-3)  { #ui-grid-hlps-css.grow-3();  }
+		& when (@prop = grow-4)  { #ui-grid-hlps-css.grow-4();  }
+		& when (@prop = grow-5)  { #ui-grid-hlps-css.grow-5();  }
+		& when (@prop = grow-6)  { #ui-grid-hlps-css.grow-6();  }
+		& when (@prop = grow-7)  { #ui-grid-hlps-css.grow-7();  }
+		& when (@prop = grow-8)  { #ui-grid-hlps-css.grow-8();  }
+		& when (@prop = grow-9)  { #ui-grid-hlps-css.grow-9();  }
+		& when (@prop = grow-10) { #ui-grid-hlps-css.grow-10(); }
 
-		& when (@prop = shrink-0)  { #ui-grid-helpers-css.shrink-0();  }
-		& when (@prop = shrink-1)  { #ui-grid-helpers-css.shrink-1();  }
-		& when (@prop = shrink-2)  { #ui-grid-helpers-css.shrink-2();  }
-		& when (@prop = shrink-3)  { #ui-grid-helpers-css.shrink-3();  }
-		& when (@prop = shrink-4)  { #ui-grid-helpers-css.shrink-4();  }
-		& when (@prop = shrink-5)  { #ui-grid-helpers-css.shrink-5();  }
-		& when (@prop = shrink-6)  { #ui-grid-helpers-css.shrink-6();  }
-		& when (@prop = shrink-7)  { #ui-grid-helpers-css.shrink-7();  }
-		& when (@prop = shrink-8)  { #ui-grid-helpers-css.shrink-8();  }
-		& when (@prop = shrink-9)  { #ui-grid-helpers-css.shrink-9();  }
-		& when (@prop = shrink-10) { #ui-grid-helpers-css.shrink-10(); }
+		& when (@prop = shrink-0)  { #ui-grid-hlps-css.shrink-0();  }
+		& when (@prop = shrink-1)  { #ui-grid-hlps-css.shrink-1();  }
+		& when (@prop = shrink-2)  { #ui-grid-hlps-css.shrink-2();  }
+		& when (@prop = shrink-3)  { #ui-grid-hlps-css.shrink-3();  }
+		& when (@prop = shrink-4)  { #ui-grid-hlps-css.shrink-4();  }
+		& when (@prop = shrink-5)  { #ui-grid-hlps-css.shrink-5();  }
+		& when (@prop = shrink-6)  { #ui-grid-hlps-css.shrink-6();  }
+		& when (@prop = shrink-7)  { #ui-grid-hlps-css.shrink-7();  }
+		& when (@prop = shrink-8)  { #ui-grid-hlps-css.shrink-8();  }
+		& when (@prop = shrink-9)  { #ui-grid-hlps-css.shrink-9();  }
+		& when (@prop = shrink-10) { #ui-grid-hlps-css.shrink-10(); }
 	}
 }

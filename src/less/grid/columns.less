@@ -1,96 +1,366 @@
-#ui-grid-columns-collect(@bp-search, @postfix-search) {}
+#ui-grid-cols-collect(...) {}
+#ui-grid-cols-width(...)   { @used: false; }
+#ui-grid-cols-widthpx(...) { @used: false; }
+#ui-grid-cols-toleft(...)  { @used: false; }
+#ui-grid-cols-toright(...) { @used: false; }
+#ui-grid-cols-offset(...)  { @used: false; }
+#ui-grid-cols-tight(...)   { @used: false; }
+#ui-grid-cols-auto(...)    { @used: false; }
 
-#ui-grid-columns
+
+#ui-grid-cols
 {
 	@props: width, widthpx, toleft, toright, offset;
 
-	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only, @postfix-raw)
+
+	.generate-css(@bp-class)
 	{
-		@postfix: if(@postfix-raw = false, ~'', ~'-@{postfix-raw}');
-		@props: #ui-grid-columns[@props];
-
-		each(@props, .(@prop)
+		each(#ui-grid-cols-collect(@bp-class), .(@data)
 		{
-			@prop-stem: replace(@prop, 'width', '');
-			@stem: if(@prop = width, @prop-stem, ~'-@{prop-stem}');
+			@class: @data[class];
 
-			.@{bp-class-up}@{stem}@{postfix}
+			.@{class}
 			{
-				.-(@col-number)
-				{
-					#ui-grid-columns-collect(@bp-search, @postfix-search)
-						when
-							(@bp-search = @bp-class-up) and
-							(@postfix-search = @postfix-raw)
-					{
-						@data: {
-							prop:    @prop;
-							number:  @col-number;
-							prefix:  @bp-class-up;
-							stem:    @stem;
-							postfix: ~'@{postfix}-@{col-number}';
-						}
-					}
-				}
-			}
-			.@{bp-class-down}@{stem}@{postfix}
-			{
-				.-(@col-number)
-				{
-					#ui-grid-columns-collect(@bp-search, @postfix-search)
-						when
-							(@bp-search = @bp-class-down) and
-							(@postfix-search = @postfix-raw)
-					{
-						@data: {
-							prop:    @prop;
-							number:  @col-number;
-							prefix:  @bp-class-down;
-							stem:    @stem;
-							postfix: ~'@{postfix}-@{col-number}';
-						}
-					}
-				}
-			}
-			.@{bp-class-only}@{stem}@{postfix}
-			{
-				.-(@col-number)
-				{
-					#ui-grid-columns-collect(@bp-search, @postfix-search)
-						when
-							(@bp-search = @bp-class-only) and
-							(@postfix-search = @postfix-raw)
-					{
-						@data: {
-							prop:    @prop;
-							number:  @col-number;
-							prefix:  @bp-class-only;
-							stem:    @stem;
-							postfix: ~'@{postfix}-@{col-number}';
-						}
-					}
-				}
+				@rate: round(percentage(@data[number] / @grid-total), 4);
+				#ui-grid-cols-css.apply(@data[prop], @rate);
 			}
 		});
+
+		& when (#ui-grid-cols-tight(@bp-class)[] = true)
+		{
+			.@{bp-class}-tight
+			{
+				#ui-grid-cols-css.apply(tight, true);
+			}
+		}
+		& when (#ui-grid-cols-auto(@bp-class)[] = true)
+		{
+			.@{bp-class}-auto
+			{
+				#ui-grid-cols-css.apply(auto, true);
+			}
+		}
 	}
 
-	.generate-css(@collected, @columns-total)
+	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
 	{
-		each(@collected, .(@data)
+		.@{bp-class-up}
 		{
-			@prop:   @data[prop];
-			@number: @data[number];
-
-			@prefix:  @data[prefix];
-			@stem:    @data[stem];
-			@postfix: @data[postfix];
-
-			.@{prefix}@{stem}@{postfix}
+			.-(@number) when (#ui-grid-cols-width(@bp-class-up, @number)[] = false)
 			{
-				@rate: round(percentage(@number / @columns-total), 4);
-
-				#ui-grid-columns-css.apply(@prop, @rate);
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-up)
+				{
+					@data: {
+						prop:    width;
+						number:  @number;
+						class: ~'@{bp-class-up}-@{number}';
+					}
+				}
+				#ui-grid-cols-width(@bp, @num) when (@bp = @bp-class-up) and (@num = @number)
+				{
+					@used: true;
+				}
 			}
-		});
+		}
+		.@{bp-class-down}
+		{
+			.-(@number) when (#ui-grid-cols-width(@bp-class-down, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-down)
+				{
+					@data: {
+						prop:    width;
+						number:  @number;
+						class: ~'@{bp-class-down}-@{number}';
+					}
+				}
+				#ui-grid-cols-width(@bp, @num) when (@bp = @bp-class-down) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-only}
+		{
+			.-(@number) when (#ui-grid-cols-width(@bp-class-only, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-only)
+				{
+					@data: {
+						prop:    width;
+						number:  @number;
+						class: ~'@{bp-class-only}-@{number}';
+					}
+				}
+				#ui-grid-cols-width(@bp, @num) when (@bp = @bp-class-only) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+
+		.@{bp-class-up}-px
+		{
+			.-(@number) when (#ui-grid-cols-widthpx(@bp-class-up, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-up)
+				{
+					@data: {
+						prop:    widthpx;
+						number:  @number;
+						class: ~'@{bp-class-up}-px-@{number}';
+					}
+				}
+				#ui-grid-cols-widthpx(@bp, @num) when (@bp = @bp-class-up) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-down}-px
+		{
+			.-(@number) when (#ui-grid-cols-widthpx(@bp-class-down, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-down)
+				{
+					@data: {
+						prop:    widthpx;
+						number:  @number;
+						class: ~'@{bp-class-down}-px-@{number}';
+					}
+				}
+				#ui-grid-cols-widthpx(@bp, @num) when (@bp = @bp-class-down) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-only}-px
+		{
+			.-(@number) when (#ui-grid-cols-widthpx(@bp-class-only, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-only)
+				{
+					@data: {
+						prop:    widthpx;
+						number:  @number;
+						class: ~'@{bp-class-only}-px-@{number}';
+					}
+				}
+				#ui-grid-cols-widthpx(@bp, @num) when (@bp = @bp-class-only) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+
+		.@{bp-class-up}-toleft
+		{
+			.-(@number) when (#ui-grid-cols-toleft(@bp-class-up, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-up)
+				{
+					@data: {
+						prop:    toleft;
+						number:  @number;
+						class: ~'@{bp-class-up}-toleft-@{number}';
+					}
+				}
+				#ui-grid-cols-toleft(@bp, @num) when (@bp = @bp-class-up) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-down}-toleft
+		{
+			.-(@number) when (#ui-grid-cols-toleft(@bp-class-down, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-down)
+				{
+					@data: {
+						prop:    toleft;
+						number:  @number;
+						class: ~'@{bp-class-down}-toleft-@{number}';
+					}
+				}
+				#ui-grid-cols-toleft(@bp, @num) when (@bp = @bp-class-down) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-only}-toleft
+		{
+			.-(@number) when (#ui-grid-cols-toleft(@bp-class-only, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-only)
+				{
+					@data: {
+						prop:    toleft;
+						number:  @number;
+						class: ~'@{bp-class-only}-toleft-@{number}';
+					}
+				}
+				#ui-grid-cols-toleft(@bp, @num) when (@bp = @bp-class-only) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+
+		.@{bp-class-up}-toright
+		{
+			.-(@number) when (#ui-grid-cols-toright(@bp-class-up, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-up)
+				{
+					@data: {
+						prop:    toright;
+						number:  @number;
+						class: ~'@{bp-class-up}-toright-@{number}';
+					}
+				}
+				#ui-grid-cols-toright(@bp, @num) when (@bp = @bp-class-up) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-down}-toright
+		{
+			.-(@number) when (#ui-grid-cols-toright(@bp-class-down, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-down)
+				{
+					@data: {
+						prop:    toright;
+						number:  @number;
+						class: ~'@{bp-class-down}-toright-@{number}';
+					}
+				}
+				#ui-grid-cols-toright(@bp, @num) when (@bp = @bp-class-down) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-only}-toright
+		{
+			.-(@number) when (#ui-grid-cols-toright(@bp-class-only, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-only)
+				{
+					@data: {
+						prop:    toright;
+						number:  @number;
+						class: ~'@{bp-class-only}-toright-@{number}';
+					}
+				}
+				#ui-grid-cols-toright(@bp, @num) when (@bp = @bp-class-only) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+
+		.@{bp-class-up}-offset
+		{
+			.-(@number) when (#ui-grid-cols-offset(@bp-class-up, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-up)
+				{
+					@data: {
+						prop:    offset;
+						number:  @number;
+						class: ~'@{bp-class-up}-offset-@{number}';
+					}
+				}
+				#ui-grid-cols-offset(@bp, @num) when (@bp = @bp-class-up) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-down}-offset
+		{
+			.-(@number) when (#ui-grid-cols-offset(@bp-class-down, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-down)
+				{
+					@data: {
+						prop:    offset;
+						number:  @number;
+						class: ~'@{bp-class-down}-offset-@{number}';
+					}
+				}
+				#ui-grid-cols-offset(@bp, @num) when (@bp = @bp-class-down) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+		.@{bp-class-only}-offset
+		{
+			.-(@number) when (#ui-grid-cols-offset(@bp-class-only, @number)[] = false)
+			{
+				#ui-grid-cols-collect(@bp) when (@bp = @bp-class-only)
+				{
+					@data: {
+						prop:    offset;
+						number:  @number;
+						class: ~'@{bp-class-only}-offset-@{number}';
+					}
+				}
+				#ui-grid-cols-offset(@bp, @num) when (@bp = @bp-class-only) and (@num = @number)
+				{
+					@used: true;
+				}
+			}
+		}
+
+		.@{bp-class-up}-tight
+		{
+			#ui-grid-cols-tight(@bp) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-tight
+		{
+			#ui-grid-cols-tight(@bp) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-tight
+		{
+			#ui-grid-cols-tight(@bp) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-auto
+		{
+			#ui-grid-cols-auto(@bp) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-auto
+		{
+			#ui-grid-cols-auto(@bp) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-auto
+		{
+			#ui-grid-cols-auto(@bp) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
 	}
 }

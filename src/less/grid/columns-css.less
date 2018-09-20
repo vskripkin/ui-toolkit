@@ -1,4 +1,4 @@
-#ui-grid-columns-css
+#ui-grid-cols-css
 {
 	.width(@width)
 	{
@@ -50,13 +50,13 @@
 
 	.apply(@type, @val)
 	{
-		& when (@type = width)   { #ui-grid-columns-css.width(@val);   }
-		& when (@type = widthpx) { #ui-grid-columns-css.widthpx(@val); }
-		& when (@type = toright) { #ui-grid-columns-css.toright(@val); }
-		& when (@type = toleft)  { #ui-grid-columns-css.toleft(@val);  }
-		& when (@type = offset)  { #ui-grid-columns-css.offset(@val);  }
+		& when (@type = width)   { #ui-grid-cols-css.width(@val);   }
+		& when (@type = widthpx) { #ui-grid-cols-css.widthpx(@val); }
+		& when (@type = toright) { #ui-grid-cols-css.toright(@val); }
+		& when (@type = toleft)  { #ui-grid-cols-css.toleft(@val);  }
+		& when (@type = offset)  { #ui-grid-cols-css.offset(@val);  }
 
-		& when (@type = tight)   { #ui-grid-columns-css.width-tight(); }
-		& when (@type = auto)    { #ui-grid-columns-css.width-auto();  }
+		& when (@type = tight)   { #ui-grid-cols-css.width-tight(); }
+		& when (@type = auto)    { #ui-grid-cols-css.width-auto();  }
 	}
 }

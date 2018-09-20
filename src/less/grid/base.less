@@ -1,88 +1,135 @@
-#ui-grid-used-collect()
-{
-	@grid: false;
-}
+#ui-grid-used-collect() { @grid: false; }
 
 .use-grid()
 {
-	#ui-grid-used-collect()
-	{
-		@grid: true;
-	}
+	#ui-grid-used-collect() { @grid: true; }
 }
 
 #ui-grid-used
 {
-	.css(@bp-name: false)
+	.css() when (#ui-grid-used-collect()[])
 	{
-		@used: #ui-grid-used-collect()[@grid];
-
-		& when (@used)
-		{
-			& when (@bp-name = false)
-			{
-				#ui-grid-base-css.grid();
-				#ui-grid-base-css.item();
-			}
-			& when not (@bp-name = false)
-			{
-				#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
-			}
-		}
+		#ui-grid-base-css.grid();
+		#ui-grid-base-css.item();
+	}
+	.css(@bp-name) when (#ui-grid-used-collect()[])
+	{
+		#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
 	}
 }
 
 
-#ui-grid-base-collect(@bp-class) {};
+#ui-grid-base-collect(...) { @used: false; };
 
 #ui-grid-base
 {
 	@props: inline, table, table-inline, collapse;
 
-	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
+
+	.generate-css(@bp-class)
 	{
 		@props: #ui-grid-base[@props];
 
 		each(@props, .(@prop)
 		{
-			@class-up:   ~'@{bp-class-up}-@{prop}';
-			@class-down: ~'@{bp-class-down}-@{prop}';
-			@class-only: ~'@{bp-class-only}-@{prop}';
-
-			.@{class-up}
+			& when (#ui-grid-base-collect(@bp-class, @prop)[] = true)
 			{
-				#ui-collector(@bp-search) when (@bp-search = @bp-class-up)
+				.@{bp-class}-@{prop}
 				{
-					@{prop}: @class-up;
-				}
-			}
-			.@{class-down}
-			{
-				#ui-collector(@bp-search) when (@bp-search = @bp-class-down)
-				{
-					@{prop}: @class-down;
-				}
-			}
-			.@{class-only}
-			{
-				#ui-collector(@bp-search) when (@bp-search = @bp-class-only)
-				{
-					@{prop}: @class-only;
+					#ui-grid-base-css.apply(@prop);
 				}
 			}
 		});
 	}
 
-	.generate-css(@bp-class)
+	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
 	{
-		@collected: #ui-grid-base-collect(@bp-class);
-
-		each(@collected, .(@class, @prop)
+		.@{bp-class-up}-inline
 		{
-			.@{class}
+			#ui-grid-base-collect(@bp, inline) when (@bp = @bp-class-up)
 			{
-				#ui-grid-base-css.apply(@prop);
+				@used: true;
 			}
-		});
+		}
+		.@{bp-class-down}-inline
+		{
+			#ui-grid-base-collect(@bp, inline) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-inline
+		{
+			#ui-grid-base-collect(@bp, inline) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-table
+		{
+			#ui-grid-base-collect(@bp, table) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-table
+		{
+			#ui-grid-base-collect(@bp, table) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-table
+		{
+			#ui-grid-base-collect(@bp, table) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-table-inline
+		{
+			#ui-grid-base-collect(@bp, table-inline) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-table-inline
+		{
+			#ui-grid-base-collect(@bp, table-inline) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-table-inline
+		{
+			#ui-grid-base-collect(@bp, table-inline) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-collapse
+		{
+			#ui-grid-base-collect(@bp, collapse) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-collapse
+		{
+			#ui-grid-base-collect(@bp, collapse) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-collapse
+		{
+			#ui-grid-base-collect(@bp, collapse) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
 	}
 }

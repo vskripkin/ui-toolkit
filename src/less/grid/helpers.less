@@ -1,10 +1,9 @@
-#ui-grid-helpers-collect(@bp-class) {};
+#ui-grid-hlps-collect(...) { @used: false; };
 
-#ui-grid-helpers
+
+#ui-grid-hlps
 {
 	@props:
-		tight, auto,
-
 		row, row-rev, column, column-rev,
 		nowrap, wrap, wrap-rev,
 
@@ -31,50 +30,1276 @@
 		shrink-6, shrink-7, shrink-8, shrink-9, shrink-10;
 
 
-	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
+	.generate-css(@bp-class)
 	{
-		@props: #ui-grid-helpers[@props];
+		@props: #ui-grid-hlps[@props];
 
 		each(@props, .(@prop)
 		{
-			@class-up:   ~'@{bp-class-up}-@{prop}';
-			@class-down: ~'@{bp-class-down}-@{prop}';
-			@class-only: ~'@{bp-class-only}-@{prop}';
-
-			.@{class-up}
+			& when (#ui-grid-hlps-collect(@bp-class, @prop)[] = true)
 			{
-				#ui-grid-helpers-collect(@bp-search) when (@bp-search = @bp-class-up)
+				.@{bp-class}-@{prop}
 				{
-					@{prop}: @class-up;
-				}
-			}
-			.@{class-down}
-			{
-				#ui-grid-helpers-collect(@bp-search) when (@bp-search = @bp-class-down)
-				{
-					@{prop}: @class-down;
-				}
-			}
-			.@{class-only}
-			{
-				#ui-grid-helpers-collect(@bp-search) when (@bp-search = @bp-class-only)
-				{
-					@{prop}: @class-only;
+					#ui-grid-hlps-css.apply(@prop);
 				}
 			}
 		});
 	}
 
-	.generate-css(@bp-class)
+	.generate-mixins(@bp-class-up, @bp-class-down, @bp-class-only)
 	{
-		@collected: #ui-grid-helpers-collect(@bp-class);
-
-		each(@collected, .(@class, @prop)
+		.@{bp-class-up}-row
 		{
-			.@{class}
+			#ui-grid-hlps-collect(@bp, row) when (@bp = @bp-class-up)
 			{
-				#ui-grid-helpers-css.apply(@prop);
+				@used: true;
 			}
-		});
+		}
+		.@{bp-class-down}-row
+		{
+			#ui-grid-hlps-collect(@bp, row) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-row
+		{
+			#ui-grid-hlps-collect(@bp, row) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-row-rev
+		{
+			#ui-grid-hlps-collect(@bp, row-rev) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-row-rev
+		{
+			#ui-grid-hlps-collect(@bp, row-rev) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-row-rev
+		{
+			#ui-grid-hlps-collect(@bp, row-rev) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-column
+		{
+			#ui-grid-hlps-collect(@bp, column) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-column
+		{
+			#ui-grid-hlps-collect(@bp, column) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-column
+		{
+			#ui-grid-hlps-collect(@bp, column) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-column-rev
+		{
+			#ui-grid-hlps-collect(@bp, column-rev) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-column-rev
+		{
+			#ui-grid-hlps-collect(@bp, column-rev) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-column-rev
+		{
+			#ui-grid-hlps-collect(@bp, column-rev) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-nowrap
+		{
+			#ui-grid-hlps-collect(@bp, nowrap) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-nowrap
+		{
+			#ui-grid-hlps-collect(@bp, nowrap) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-nowrap
+		{
+			#ui-grid-hlps-collect(@bp, nowrap) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-wrap
+		{
+			#ui-grid-hlps-collect(@bp, wrap) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-wrap
+		{
+			#ui-grid-hlps-collect(@bp, wrap) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-wrap
+		{
+			#ui-grid-hlps-collect(@bp, wrap) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-wrap-rev
+		{
+			#ui-grid-hlps-collect(@bp, wrap-rev) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-wrap-rev
+		{
+			#ui-grid-hlps-collect(@bp, wrap-rev) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-wrap-rev
+		{
+			#ui-grid-hlps-collect(@bp, wrap-rev) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-x-top
+		{
+			#ui-grid-hlps-collect(@bp, x-top) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-x-top
+		{
+			#ui-grid-hlps-collect(@bp, x-top) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-x-top
+		{
+			#ui-grid-hlps-collect(@bp, x-top) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-x-middle
+		{
+			#ui-grid-hlps-collect(@bp, x-middle) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-x-middle
+		{
+			#ui-grid-hlps-collect(@bp, x-middle) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-x-middle
+		{
+			#ui-grid-hlps-collect(@bp, x-middle) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-x-bottom
+		{
+			#ui-grid-hlps-collect(@bp, x-bottom) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-x-bottom
+		{
+			#ui-grid-hlps-collect(@bp, x-bottom) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-x-bottom
+		{
+			#ui-grid-hlps-collect(@bp, x-bottom) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-x-left
+		{
+			#ui-grid-hlps-collect(@bp, x-left) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-x-left
+		{
+			#ui-grid-hlps-collect(@bp, x-left) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-x-left
+		{
+			#ui-grid-hlps-collect(@bp, x-left) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-x-center
+		{
+			#ui-grid-hlps-collect(@bp, x-center) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-x-center
+		{
+			#ui-grid-hlps-collect(@bp, x-center) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-x-center
+		{
+			#ui-grid-hlps-collect(@bp, x-center) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-x-right
+		{
+			#ui-grid-hlps-collect(@bp, x-right) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-x-right
+		{
+			#ui-grid-hlps-collect(@bp, x-right) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-x-right
+		{
+			#ui-grid-hlps-collect(@bp, x-right) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-y-top
+		{
+			#ui-grid-hlps-collect(@bp, x-top) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-y-top
+		{
+			#ui-grid-hlps-collect(@bp, x-top) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-y-top
+		{
+			#ui-grid-hlps-collect(@bp, x-top) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-y-middle
+		{
+			#ui-grid-hlps-collect(@bp, x-middle) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-y-middle
+		{
+			#ui-grid-hlps-collect(@bp, x-middle) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-y-middle
+		{
+			#ui-grid-hlps-collect(@bp, x-middle) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-y-bottom
+		{
+			#ui-grid-hlps-collect(@bp, x-bottom) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-y-bottom
+		{
+			#ui-grid-hlps-collect(@bp, x-bottom) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-y-bottom
+		{
+			#ui-grid-hlps-collect(@bp, x-bottom) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-y-left
+		{
+			#ui-grid-hlps-collect(@bp, x-left) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-y-left
+		{
+			#ui-grid-hlps-collect(@bp, x-left) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-y-left
+		{
+			#ui-grid-hlps-collect(@bp, x-left) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-y-center
+		{
+			#ui-grid-hlps-collect(@bp, x-center) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-y-center
+		{
+			#ui-grid-hlps-collect(@bp, x-center) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-y-center
+		{
+			#ui-grid-hlps-collect(@bp, x-center) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-y-right
+		{
+			#ui-grid-hlps-collect(@bp, x-right) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-y-right
+		{
+			#ui-grid-hlps-collect(@bp, x-right) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-y-right
+		{
+			#ui-grid-hlps-collect(@bp, x-right) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-space-between
+		{
+			#ui-grid-hlps-collect(@bp, space-between) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-space-between
+		{
+			#ui-grid-hlps-collect(@bp, space-between) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-space-between
+		{
+			#ui-grid-hlps-collect(@bp, space-between) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-space-around
+		{
+			#ui-grid-hlps-collect(@bp, space-around) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-space-around
+		{
+			#ui-grid-hlps-collect(@bp, space-around) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-space-around
+		{
+			#ui-grid-hlps-collect(@bp, space-around) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-stretch
+		{
+			#ui-grid-hlps-collect(@bp, stretch) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-stretch
+		{
+			#ui-grid-hlps-collect(@bp, stretch) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-stretch
+		{
+			#ui-grid-hlps-collect(@bp, stretch) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-start
+		{
+			#ui-grid-hlps-collect(@bp, start) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-start
+		{
+			#ui-grid-hlps-collect(@bp, start) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-start
+		{
+			#ui-grid-hlps-collect(@bp, start) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-center
+		{
+			#ui-grid-hlps-collect(@bp, center) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-center
+		{
+			#ui-grid-hlps-collect(@bp, center) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-center
+		{
+			#ui-grid-hlps-collect(@bp, center) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-end
+		{
+			#ui-grid-hlps-collect(@bp, end) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-end
+		{
+			#ui-grid-hlps-collect(@bp, end) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-end
+		{
+			#ui-grid-hlps-collect(@bp, end) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-fisrt
+		{
+			#ui-grid-hlps-collect(@bp, fisrt) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-fisrt
+		{
+			#ui-grid-hlps-collect(@bp, fisrt) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-fisrt
+		{
+			#ui-grid-hlps-collect(@bp, fisrt) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-last
+		{
+			#ui-grid-hlps-collect(@bp, last) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-last
+		{
+			#ui-grid-hlps-collect(@bp, last) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-last
+		{
+			#ui-grid-hlps-collect(@bp, last) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-initial
+		{
+			#ui-grid-hlps-collect(@bp, initial) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-initial
+		{
+			#ui-grid-hlps-collect(@bp, initial) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-initial
+		{
+			#ui-grid-hlps-collect(@bp, initial) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-overflow-on
+		{
+			#ui-grid-hlps-collect(@bp, overflow-on) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-overflow-on
+		{
+			#ui-grid-hlps-collect(@bp, overflow-on) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-overflow-on
+		{
+			#ui-grid-hlps-collect(@bp, overflow-on) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-overflow-off
+		{
+			#ui-grid-hlps-collect(@bp, overflow-off) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-overflow-off
+		{
+			#ui-grid-hlps-collect(@bp, overflow-off) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-overflow-off
+		{
+			#ui-grid-hlps-collect(@bp, overflow-off) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-first-cell
+		{
+			#ui-grid-hlps-collect(@bp, first-cell) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-first-cell
+		{
+			#ui-grid-hlps-collect(@bp, first-cell) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-first-cell
+		{
+			#ui-grid-hlps-collect(@bp, first-cell) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-initial-cell
+		{
+			#ui-grid-hlps-collect(@bp, initial-cell) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-initial-cell
+		{
+			#ui-grid-hlps-collect(@bp, initial-cell) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-initial-cell
+		{
+			#ui-grid-hlps-collect(@bp, initial-cell) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-valign-top
+		{
+			#ui-grid-hlps-collect(@bp, valign-top) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-valign-top
+		{
+			#ui-grid-hlps-collect(@bp, valign-top) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-valign-top
+		{
+			#ui-grid-hlps-collect(@bp, valign-top) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-valign-middle
+		{
+			#ui-grid-hlps-collect(@bp, valign-middle) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-valign-middle
+		{
+			#ui-grid-hlps-collect(@bp, valign-middle) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-valign-middle
+		{
+			#ui-grid-hlps-collect(@bp, valign-middle) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-valign-bottom
+		{
+			#ui-grid-hlps-collect(@bp, valign-bottom) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-valign-bottom
+		{
+			#ui-grid-hlps-collect(@bp, valign-bottom) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-valign-bottom
+		{
+			#ui-grid-hlps-collect(@bp, valign-bottom) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-0
+		{
+			#ui-grid-hlps-collect(@bp, grow-0) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-0
+		{
+			#ui-grid-hlps-collect(@bp, grow-0) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-0
+		{
+			#ui-grid-hlps-collect(@bp, grow-0) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-0
+		{
+			#ui-grid-hlps-collect(@bp, shrink-0) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-0
+		{
+			#ui-grid-hlps-collect(@bp, shrink-0) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-0
+		{
+			#ui-grid-hlps-collect(@bp, shrink-0) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-1
+		{
+			#ui-grid-hlps-collect(@bp, grow-1) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-1
+		{
+			#ui-grid-hlps-collect(@bp, grow-1) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-1
+		{
+			#ui-grid-hlps-collect(@bp, grow-1) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-1
+		{
+			#ui-grid-hlps-collect(@bp, shrink-1) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-1
+		{
+			#ui-grid-hlps-collect(@bp, shrink-1) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-1
+		{
+			#ui-grid-hlps-collect(@bp, shrink-1) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-2
+		{
+			#ui-grid-hlps-collect(@bp, grow-2) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-2
+		{
+			#ui-grid-hlps-collect(@bp, grow-2) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-2
+		{
+			#ui-grid-hlps-collect(@bp, grow-2) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-2
+		{
+			#ui-grid-hlps-collect(@bp, shrink-2) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-2
+		{
+			#ui-grid-hlps-collect(@bp, shrink-2) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-2
+		{
+			#ui-grid-hlps-collect(@bp, shrink-2) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-3
+		{
+			#ui-grid-hlps-collect(@bp, grow-3) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-3
+		{
+			#ui-grid-hlps-collect(@bp, grow-3) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-3
+		{
+			#ui-grid-hlps-collect(@bp, grow-3) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-3
+		{
+			#ui-grid-hlps-collect(@bp, shrink-3) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-3
+		{
+			#ui-grid-hlps-collect(@bp, shrink-3) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-3
+		{
+			#ui-grid-hlps-collect(@bp, shrink-3) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-4
+		{
+			#ui-grid-hlps-collect(@bp, grow-4) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-4
+		{
+			#ui-grid-hlps-collect(@bp, grow-4) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-4
+		{
+			#ui-grid-hlps-collect(@bp, grow-4) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-4
+		{
+			#ui-grid-hlps-collect(@bp, shrink-4) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-4
+		{
+			#ui-grid-hlps-collect(@bp, shrink-4) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-4
+		{
+			#ui-grid-hlps-collect(@bp, shrink-4) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-5
+		{
+			#ui-grid-hlps-collect(@bp, grow-5) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-5
+		{
+			#ui-grid-hlps-collect(@bp, grow-5) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-5
+		{
+			#ui-grid-hlps-collect(@bp, grow-5) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-5
+		{
+			#ui-grid-hlps-collect(@bp, shrink-5) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-5
+		{
+			#ui-grid-hlps-collect(@bp, shrink-5) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-5
+		{
+			#ui-grid-hlps-collect(@bp, shrink-5) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-6
+		{
+			#ui-grid-hlps-collect(@bp, grow-6) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-6
+		{
+			#ui-grid-hlps-collect(@bp, grow-6) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-6
+		{
+			#ui-grid-hlps-collect(@bp, grow-6) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-6
+		{
+			#ui-grid-hlps-collect(@bp, shrink-6) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-6
+		{
+			#ui-grid-hlps-collect(@bp, shrink-6) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-6
+		{
+			#ui-grid-hlps-collect(@bp, shrink-6) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-7
+		{
+			#ui-grid-hlps-collect(@bp, grow-7) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-7
+		{
+			#ui-grid-hlps-collect(@bp, grow-7) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-7
+		{
+			#ui-grid-hlps-collect(@bp, grow-7) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-7
+		{
+			#ui-grid-hlps-collect(@bp, shrink-7) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-7
+		{
+			#ui-grid-hlps-collect(@bp, shrink-7) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-7
+		{
+			#ui-grid-hlps-collect(@bp, shrink-7) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-8
+		{
+			#ui-grid-hlps-collect(@bp, grow-8) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-8
+		{
+			#ui-grid-hlps-collect(@bp, grow-8) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-8
+		{
+			#ui-grid-hlps-collect(@bp, grow-8) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-8
+		{
+			#ui-grid-hlps-collect(@bp, shrink-8) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-8
+		{
+			#ui-grid-hlps-collect(@bp, shrink-8) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-8
+		{
+			#ui-grid-hlps-collect(@bp, shrink-8) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-9
+		{
+			#ui-grid-hlps-collect(@bp, grow-9) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-9
+		{
+			#ui-grid-hlps-collect(@bp, grow-9) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-9
+		{
+			#ui-grid-hlps-collect(@bp, grow-9) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-9
+		{
+			#ui-grid-hlps-collect(@bp, shrink-9) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-9
+		{
+			#ui-grid-hlps-collect(@bp, shrink-9) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-9
+		{
+			#ui-grid-hlps-collect(@bp, shrink-9) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-grow-10
+		{
+			#ui-grid-hlps-collect(@bp, grow-10) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-grow-10
+		{
+			#ui-grid-hlps-collect(@bp, grow-10) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-grow-10
+		{
+			#ui-grid-hlps-collect(@bp, grow-10) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-shrink-10
+		{
+			#ui-grid-hlps-collect(@bp, shrink-10) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-shrink-10
+		{
+			#ui-grid-hlps-collect(@bp, shrink-10) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-shrink-10
+		{
+			#ui-grid-hlps-collect(@bp, shrink-10) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
 	}
 }
