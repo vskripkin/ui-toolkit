@@ -1,0 +1,162 @@
+#ui()
+{
+	.button(@bg-color, @color: #FFF, @hover: default, @fs: @button-font-size, @pv: @button-padding-ver, @ph: @button-padding-hor)
+	{
+		@hover-color: #ui-button.hover-bg(@hover, @bg-color)[result];
+
+		#ui-button.template(@fs, @pv, @ph);
+
+		&
+		{
+			background-color: @bg-color;
+			color: @color;
+		}
+		&:hover, &:focus
+		{
+			background-color: @hover-color;
+		}
+		&:disabled
+		{
+			background-color: @bg-color !important;
+			color:   @color !important;
+			opacity: @button-disabled-opacity !important;
+			cursor:  @button-disabled-cursor;
+		}
+
+		#ui-button.sizes(@fs);
+
+		.round()
+		{
+			&.rounded
+			{
+				border-radius: 150px;
+			}
+		}
+		.circular()
+		{
+			&.circular
+			{
+				border-radius: 150px;
+				padding-left:  @button-padding-ver;
+				padding-right: @button-padding-ver;
+				width:  calc(2 * @button-padding-ver + 1em * @line-height-normal);
+				height: calc(2 * @button-padding-ver + 1em * @line-height-normal);
+			}
+		}
+		.ghost()
+		{
+			&.ghost
+			{
+				color: @bg-color;
+				border-color: @bg-color;
+				background-color: transparent;
+
+				&:hover, &:focus
+				{
+					color: @color;
+					border-color: @hover-color;
+					background-color: @hover-color;
+				}
+			}
+		}
+	}
+}
+
+
+// Button template
+// --------------------------------------------------
+
+#ui-button()
+{
+	.template(@font-size, @padding-ver, @padding-hor)
+	{
+		padding: @padding-ver @padding-hor;
+		font-size: @font-size;
+	}
+
+	.template(...)
+	{
+		margin: @button-margin;
+		line-height: @line-height-normal;
+		border: @button-border-width @button-border-style transparent;
+		border-radius: @button-radius;
+
+		display: inline-block;
+		position: relative;
+		overflow: hidden;
+		vertical-align: middle;
+		text-align: center;
+		text-decoration: none;
+		text-transform: uppercase;
+		background-clip: border-box;
+		user-select: none;
+		appearance: none;
+		transition: color 0.1s linear,
+					background-color 0.3s cubic-bezier(0.25,0.8,0.25,1);
+
+		&:hover
+		{
+			text-decoration: none;
+		}
+	}
+
+	.sizes(@font-size)
+	{
+		#ui.fs-sizes(@font-size);
+
+		.size-nano()  { &.nano  { font-size: @size-nano;  }}
+		.size-mini()  { &.mini  { font-size: @size-mini;  }}
+		.size-tiny()  { &.tiny  { font-size: @size-tiny;  }}
+		.size-small() { &.small { font-size: @size-small; }}
+
+		.size-big()   { &.big   { font-size: @size-big;   }}
+		.size-large() { &.large { font-size: @size-large; }}
+		.size-huge()  { &.huge  { font-size: @size-huge;  }}
+		.size-great() { &.great { font-size: @size-great; }}
+	}
+
+
+	.hover-bg(@hover-color, @bg-color) when (iscolor(@hover-color))
+	{
+		result: @hover-color;
+	}
+	.hover-bg(@hover-color, @bg-color) when not (iscolor(@hover-color))
+	{
+		@is-transparent: if(@bg-color = transparent, true, false);
+		@is-white: if((red(@bg-color) = 255) and (green(@bg-color) = 255) and (blue(@bg-color) = 255), true, false);
+		@is-black: if((red(@bg-color) = 0) and (green(@bg-color) = 0) and (blue(@bg-color) = 0), true, false);
+
+		& when (@is-white), (@is-transparent)
+		{
+			result: rgba(158,158,158,0.2);
+		}
+		& when (@is-black) and not (@is-transparent)
+		{
+			result: #3A3A3A;
+		}
+
+		& when not (@is-white) and not (@is-black) and not (@is-transparent)
+		{
+			& when (@hover-color = default)
+			{
+				result: spin(saturate(@bg-color, 20%), 10);
+			}
+			& when (@hover-color = dark)
+			{
+				result: shade(@bg-color, 20%);
+			}
+			& when (@hover-color = darken)
+			{
+				result: darken(@bg-color, 15%);
+			}
+			& when (@hover-color = light)
+			{
+				result: tint(@bg-color, 20%);
+			}
+			& when (@hover-color = lighten)
+			{
+				result: lighten(@bg-color, 15%);
+			}
+		}
+	}
+}

@@ -13,15 +13,20 @@
 // TYPO
 // --------------------------------------------------
 
-@font-family-serif: Georgia, Times, Times New Roman, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-@font-family-sans:  Roboto, Open Sans, Helvetica, Arial, Geneva, Helmet, Freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-@font-family-mono:  monospace;
+@font-family-serif: Georgia;
+@font-family-sans:  Roboto;
+@font-family-smile: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
-@font-size-root:     10px;
-@line-height-normal: 1.25;
+@font-base:  @font-sans;
+@font-serif: @font-family-serif, Times, Times New Roman, serif, @font-family-smile;
+@font-sans:  @font-family-sans,  Open Sans, Helvetica, Arial, Geneva, Helmet, Freesans, sans-serif, @font-family-smile;
+@font-mono:  monospace;
 
-@font-size-base:   1.5rem;
-@font-family-base: @font-family-sans;
+
+@font-size-root: 10px;
+@font-size-base: 1.5rem;
+
+@line-height-normal: 1.286;
 @line-height-base: @line-height-normal;
 
 @font-size-h1: 4.8rem;
@@ -30,6 +35,26 @@
 @font-size-h4: 1.9rem;
 @font-size-h5: 1.7rem;
 @font-size-h6: 1.5rem;
+
+
+// BUTTONS
+// --------------------------------------------------
+
+@button-font-size: 1.4rem;
+
+@button-padding-ver: 0.572em;
+@button-padding-hor: 1.142em;
+@button-margin: 10px;
+
+@button-circle-padding-ver: 0.37em;
+@button-circle-padding-hor: 0.74em;
+
+@button-border-width: 1px;
+@button-border-style: solid;
+@button-radius: 0.2143em;
+
+@button-disabled-cursor: default;
+@button-disabled-opacity: 0.5;
 
 
 // GRID

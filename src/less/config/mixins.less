@@ -90,6 +90,22 @@
 	}
 
 
+	.gradient(@dir: to bottom; @rest...)
+	{
+		background-image: svg-gradient(@dir, @rest);
+		background-image: linear-gradient(@dir, @rest);
+	}
+	.gradient-s(@color1, @color2: rgba(255,255,255,0))
+	{
+		background-image: svg-gradient(to bottom right,
+			@color1  0%, @color1 25%, @color2 25%, @color2 50%,
+			@color1 50%, @color1 75%, @color2 75%, @color2 100%);
+		background-image: linear-gradient(-45deg,
+			@color1  0%, @color1 25%, @color2 25%, @color2 50%,
+			@color1 50%, @color1 75%, @color2 75%, @color2 100%);
+	}
+
+
 	.disable-italic()
 	{
 		div, span,
@@ -127,64 +143,40 @@
 	{
 		#ui > .size-custom(@fs, @pv, @ph);
 
-		@normal: {
+		@normal:
+		{
 			.normal();
-
 			font-size: @font-size;
 			padding: @padding-ver @padding-hor;
 		};
-		@large: {
+		@large:
+		{
 			.large();
-
 			font-size: @font-size;
 			padding: @padding-ver @padding-hor;
 		};
-		@small: {
+		@small:
+		{
 			.small();
-
 			font-size: @font-size;
 			padding: @padding-ver @padding-hor;
 		};
 	}
-	.size-custom(@fs, @pv: 0, @ph: 0)
-	{
-		.normal()
-		{
-			@font-size: @fs;
-			@padding-ver: @pv;
-			@padding-hor: @ph;
-			@height: (@pv * 2 + @fs * @line-height-normal);
-		}
-		.large()
-		{
-			@font-size: (@fs * 1.285);
-			@padding-ver: (@pv * 1.1);
-			@padding-hor: (@ph * 2);
-			@height: (@pv * 2 + @fs * @line-height-normal);
-		}
-		.small()
-		{
-			@font-size: (@fs * 0.72);
-			@padding-ver: (@pv * 0.65);
-			@padding-hor: (@ph * 0.9);
-			@height: (@pv * 2 + @fs * @line-height-normal);
-		}
-	}
 
-	/*****************************************************/
+	.fs-sizes(@fs)
+	{
+		@s-normal: @fs;
 
-	.gradient(@dir: to bottom; @rest...)
-	{
-		background-image: svg-gradient(@dir, @rest);
-		background-image: linear-gradient(@dir, @rest);
-	}
-	.gradient-s(@color1, @color2: rgba(255,255,255,0))
-	{
-		background-image: svg-gradient(to bottom right,
-			@color1  0%, @color1 25%, @color2 25%, @color2 50%,
-			@color1 50%, @color1 75%, @color2 75%, @color2 100%);
-		background-image: linear-gradient(-45deg,
-			@color1  0%, @color1 25%, @color2 25%, @color2 50%,
-			@color1 50%, @color1 75%, @color2 75%, @color2 100%);
+		@step: 0.0714286 * @fs;
+
+		@size-nano:  round(@fs - 4 * @step, 4);
+		@size-mini:  round(@fs - 3 * @step, 4);
+		@size-tiny:  round(@fs - 2 * @step, 4);
+		@size-small: round(@fs - 1 * @step, 4);
+
+		@size-big:   round(@fs +  2 * @step, 4);
+		@size-large: round(@fs +  4 * @step, 4);
+		@size-huge:  round(@fs +  6 * @step, 4);
+		@size-great: round(@fs + 10 * @step, 4);
 	}
 }
