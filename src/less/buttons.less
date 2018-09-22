@@ -1,10 +1,17 @@
 #ui()
 {
-	.button(@bg-color, @color: #FFF, @hover: default, @fs: @button-font-size, @pv: @button-padding-ver, @ph: @button-padding-hor)
+	.button(@bg-color,
+		@color: @button-color,
+		@hover: @button-hover-color-bg,
+		@font-size: @button-font-size,
+		@pad-v: @button-padding-ver,
+		@pad-h: @button-padding-hor,
+		@border-w: @button-border-width)
 	{
-		@hover-color: #ui-button.hover-bg(@hover, @bg-color)[result];
+		@hover-color:  #ui-button.hover-bg(@hover, @bg-color)[result];
+		@active-color: #ui-button.active-bg(@hover-color)[result];
 
-		#ui-button.template(@fs, @pv, @ph);
+		#ui-button.template(@font-size, @pad-v, @pad-h, @border-w);
 
 		&
 		{
@@ -15,6 +22,10 @@
 		{
 			background-color: @hover-color;
 		}
+		&:active
+		{
+			background-color: @active-color;
+		}
 		&:disabled
 		{
 			background-color: @bg-color !important;
@@ -23,29 +34,37 @@
 			cursor:  @button-disabled-cursor;
 		}
 
-		#ui-button.sizes(@fs);
 
-		.round()
+		#ui-button.sizes(@font-size);
+
+		.round(@prefix: @button-class-prefix)
 		{
-			&.rounded
+			&.@{prefix}round
 			{
 				border-radius: 150px;
 			}
 		}
-		.circular()
+		.thin(@prefix: @button-class-prefix)
 		{
-			&.circular
+			&.@{prefix}thin
 			{
-				border-radius: 150px;
-				padding-left:  @button-padding-ver;
-				padding-right: @button-padding-ver;
-				width:  calc(2 * @button-padding-ver + 1em * @line-height-normal);
-				height: calc(2 * @button-padding-ver + 1em * @line-height-normal);
+				padding-left:  @pad-v;
+				padding-right: @pad-v;
 			}
 		}
-		.ghost()
+		.circle(@prefix: @button-class-prefix)
 		{
-			&.ghost
+			&.@{prefix}circle
+			{
+				border-radius: 150px;
+				padding-left:  @pad-v;
+				padding-right: @pad-v;
+			}
+		}
+
+		.outline(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}outline
 			{
 				color: @bg-color;
 				border-color: @bg-color;
@@ -56,6 +75,85 @@
 					color: @color;
 					border-color: @hover-color;
 					background-color: @hover-color;
+				}
+				&:active
+				{
+					border-color: @active-color;
+					background-color: @active-color;
+				}
+			}
+		}
+		.fount(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}fount
+			{
+				border-color: fade(@color, alpha(@color) / 2 * 100);
+				background-color: transparent;
+
+				&:hover, &:focus
+				{
+					border-color: @hover-color;
+					background-color: @hover-color;
+				}
+				&:active
+				{
+					border-color: @active-color;
+					background-color: @active-color;
+				}
+			}
+		}
+		.ghost(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}ghost
+			{
+				border-color: fade(@color, alpha(@color) / 2 * 100);
+				background-color: transparent;
+
+				&:hover, &:focus
+				{
+					color: @hover-color;
+					border-color: @hover-color;
+				}
+				&:active
+				{
+					color: @active-color;
+					border-color: @active-color;
+				}
+			}
+		}
+
+		.loading(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}loading
+			{
+				-webkit-text-fill-color: transparent;
+
+				&::before, &::after
+				{
+					content: '';
+					position: absolute;
+					z-index: 10;
+					top: 50%;
+					left: 50%;
+					font-size: 1em * @button-line-height;
+					width:  1em;
+					height: 1em;
+					margin-top:  -0.5em;
+					margin-left: -0.5em;
+					border-radius: 150px;
+					border: 0.14285em solid currentColor;
+				}
+				&::before
+				{
+					z-index: 10;
+					opacity: 0.4;
+				}
+				&::after
+				{
+					z-index: 11;
+					border-color: currentColor transparent transparent;
+					animation: rotateRight 0.6s linear;
+					animation-iteration-count: infinite;
 				}
 			}
 		}
@@ -68,51 +166,72 @@
 
 #ui-button()
 {
-	.template(@font-size, @padding-ver, @padding-hor)
+	.template(@font-size, @padding-ver, @padding-hor, @border-width)
 	{
-		padding: @padding-ver @padding-hor;
-		font-size: @font-size;
+		min-width:  calc(2 * @padding-ver + 2 * @border-width + 1em * @button-line-height);
+		min-height: calc(2 * @padding-ver + 2 * @border-width + 1em * @button-line-height);
+		padding:      @padding-ver @padding-hor;
+		font-size:    @font-size;
+		border-width: @border-width;
 	}
-
 	.template(...)
 	{
-		margin: @button-margin;
-		line-height: @line-height-normal;
-		border: @button-border-width @button-border-style transparent;
-		border-radius: @button-radius;
+		margin:         @button-margin;
+		line-height:    @button-line-height;
+		text-transform: @button-text-transform;
+		border-radius:  @button-radius;
+		border-style:   @button-border-style;
 
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
 		vertical-align: middle;
+		font-style: normal;
 		text-align: center;
 		text-decoration: none;
-		text-transform: uppercase;
+		border-color: transparent;
 		background-clip: border-box;
+		cursor: pointer;
 		user-select: none;
 		appearance: none;
-		transition: color 0.1s linear,
-					background-color 0.3s cubic-bezier(0.25,0.8,0.25,1);
+		transition: color 0.1s cubic-bezier(0, 0, 0.2, 1),
+					border-color 0.1s cubic-bezier(0, 0, 0.2, 1),
+					background-color 0.2s cubic-bezier(0.25,0.8,0.25,1);
 
+		// remove text-decoration for links
 		&:hover
 		{
 			text-decoration: none;
 		}
 	}
 
+
 	.sizes(@font-size)
 	{
 		#ui.fs-sizes(@font-size);
 
-		.size-nano()  { &.nano  { font-size: @size-nano;  }}
-		.size-mini()  { &.mini  { font-size: @size-mini;  }}
-		.size-tiny()  { &.tiny  { font-size: @size-tiny;  }}
-		.size-small() { &.small { font-size: @size-small; }}
+		.size-nano( @prefix: @button-class-prefix) { &.@{prefix}nano  { font-size: @size-nano;  }}
+		.size-mini( @prefix: @button-class-prefix) { &.@{prefix}mini  { font-size: @size-mini;  }}
+		.size-tiny( @prefix: @button-class-prefix) { &.@{prefix}tiny  { font-size: @size-tiny;  }}
+		.size-small(@prefix: @button-class-prefix) { &.@{prefix}small { font-size: @size-small; }}
 
-		.size-big()   { &.big   { font-size: @size-big;   }}
-		.size-large() { &.large { font-size: @size-large; }}
-		.size-huge()  { &.huge  { font-size: @size-huge;  }}
-		.size-great() { &.great { font-size: @size-great; }}
+		.size-big(  @prefix: @button-class-prefix) { &.@{prefix}big   { font-size: @size-big;   }}
+		.size-large(@prefix: @button-class-prefix) { &.@{prefix}large { font-size: @size-large; }}
+		.size-huge( @prefix: @button-class-prefix) { &.@{prefix}huge  { font-size: @size-huge;  }}
+		.size-great(@prefix: @button-class-prefix) { &.@{prefix}great { font-size: @size-great; }}
+
+		.size-apply(@prefix: @button-class-prefix)
+		{
+			.size-nano( @prefix);
+			.size-mini( @prefix);
+			.size-tiny( @prefix);
+			.size-small(@prefix);
+
+			.size-big(  @prefix);
+			.size-large(@prefix);
+			.size-huge( @prefix);
+			.size-great(@prefix);
+		}
 	}
 
 
@@ -124,15 +243,15 @@
 	{
 		@is-transparent: if(@bg-color = transparent, true, false);
 		@is-white: if((red(@bg-color) = 255) and (green(@bg-color) = 255) and (blue(@bg-color) = 255), true, false);
-		@is-black: if((red(@bg-color) = 0) and (green(@bg-color) = 0) and (blue(@bg-color) = 0), true, false);
+		@is-black: if((red(@bg-color) = 0)   and (green(@bg-color) = 0)   and (blue(@bg-color) = 0),   true, false);
 
 		& when (@is-white), (@is-transparent)
 		{
-			result: rgba(158,158,158,0.2);
+			result: shade(@bg-color, 10%);
 		}
 		& when (@is-black) and not (@is-transparent)
 		{
-			result: #3A3A3A;
+			result: tint(@bg-color, 20%);
 		}
 
 		& when not (@is-white) and not (@is-black) and not (@is-transparent)
@@ -157,6 +276,25 @@
 			{
 				result: lighten(@bg-color, 15%);
 			}
+		}
+	}
+
+	.active-bg(@bg-color)
+	{
+		@rgb: red(@bg-color);
+		@is-gray: if(@rgb = green(@bg-color) and @rgb = blue(@bg-color), true, false);
+
+		& when (@is-gray) and (@rgb >= 128)
+		{
+			result: shade(@bg-color, 5%);
+		}
+		& when (@is-gray) and (@rgb < 128)
+		{
+			result: tint(@bg-color, 10%);
+		}
+		& when not (@is-gray)
+		{
+			result: spin(desaturate(@bg-color, 25%), 10);
 		}
 	}
 }

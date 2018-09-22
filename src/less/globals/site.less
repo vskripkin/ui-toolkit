@@ -1,3 +1,9 @@
+html, body
+{
+	height: 100%;
+	height: 100vh;
+}
+
 html
 {
 	font-size:   unit((100 * @font-size-root / 16), %);
@@ -7,6 +13,9 @@ html
 	line-height: @line-height-base;
 	color:       @color-base;
 	background:  @color-base-bg;
+
+	/* j.mp/webkit-tap-highlight-color */
+	-webkit-tap-highlight-color: @color-tap-highlight;
 }
 
 body
@@ -16,14 +25,33 @@ body
 	background: inherit;
 }
 
+::-moz-selection
+{
+	background: @color-selection-bg;
+	color: @color-selection;
+	text-shadow: none;
+}
+::selection
+{
+	background: @color-selection-bg;
+	color: @color-selection;
+	text-shadow: none;
+}
+mark
+{
+	background: @color-selection-bg;
+	color: @color-selection;
+	text-shadow: none;
+}
+
 a
 {
 	color: @color-link;
-	text-decoration: none;
+	text-decoration: @link-underline;
 }
 a:hover
 {
-	text-decoration: underline;
+	text-decoration: @link-hover-underline;
 }
 
 textarea
