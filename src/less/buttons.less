@@ -18,7 +18,7 @@
 			background-color: @bg-color;
 			color: @color;
 		}
-		&:hover, &:focus
+		&:hover
 		{
 			background-color: @hover-color;
 		}
@@ -70,7 +70,7 @@
 				border-color: @bg-color;
 				background-color: transparent;
 
-				&:hover, &:focus
+				&:hover
 				{
 					color: @color;
 					border-color: @hover-color;
@@ -90,7 +90,7 @@
 				border-color: fade(@color, alpha(@color) / 2 * 100);
 				background-color: transparent;
 
-				&:hover, &:focus
+				&:hover
 				{
 					border-color: @hover-color;
 					background-color: @hover-color;
@@ -109,7 +109,7 @@
 				border-color: fade(@color, alpha(@color) / 2 * 100);
 				background-color: transparent;
 
-				&:hover, &:focus
+				&:hover
 				{
 					color: @hover-color;
 					border-color: @hover-color;
@@ -128,32 +128,26 @@
 			{
 				-webkit-text-fill-color: transparent;
 
-				&::before, &::after
-				{
-					content: '';
-					position: absolute;
-					z-index: 10;
-					top: 50%;
-					left: 50%;
-					font-size: 1em * @button-line-height;
-					width:  1em;
-					height: 1em;
-					margin-top:  -0.5em;
-					margin-left: -0.5em;
-					border-radius: 150px;
-					border: 0.14285em solid currentColor;
-				}
-				&::before
-				{
-					z-index: 10;
-					opacity: 0.4;
-				}
 				&::after
 				{
-					z-index: 11;
-					border-color: currentColor transparent transparent;
-					animation: rotateRight 0.6s linear;
-					animation-iteration-count: infinite;
+					content: '';
+					// fix disproportions of width and height due to sub-pixel rounding bug
+					display: table;
+					position: absolute;
+					z-index: 10;
+					top:  50%;
+					left: 50%;
+					width:  auto;
+					height: auto;
+					width:  1.24em;
+					height: 1.24em;
+					margin-top:  -0.62em;
+					margin-left: -0.62em;
+					border-radius: 150px;
+					border-width: 0.1837em;
+					border-style: solid;
+					border-color: currentColor transparent transparent currentColor;
+					animation: rotateRight 1s infinite linear;
 				}
 			}
 		}
