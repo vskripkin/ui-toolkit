@@ -1,0 +1,149 @@
+#ui()
+{
+	.buttonset(@border-width: @button-border-width, @dir: hor)
+	{
+		#ui-buttonset.template(@border-width, @dir);
+
+		.hor(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}hor
+			{
+				#ui-buttonset.horizontal();
+
+				#ui-buttonset.for-child({
+					#ui-buttonset.horizonta-child();
+				});
+			}
+		}
+		.ver(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}ver
+			{
+				#ui-buttonset.vertical();
+
+				#ui-buttonset.for-child({
+					#ui-buttonset.vertical-child();
+				});
+			}
+		}
+	}
+}
+
+#ui-buttonset()
+{
+	.template(@border-width, @dir)
+	{
+		display: inline-flex;
+		flex-wrap: nowrap;
+
+		position: relative;
+		margin: 0 auto;
+		width: auto;
+		min-width: auto;
+		max-width: 100%;
+
+		#ui-buttonset.for-child({
+			flex: 1 1 0%;
+			position: relative;
+			z-index: 10;
+			width: auto;
+			min-width: auto;
+			max-width: 100%;
+
+			&:hover
+			{
+				z-index: 11;
+			}
+
+			& when (@dir = hor)
+			{
+				#ui-buttonset.horizontal-child();
+			}
+			& when (@dir = ver)
+			{
+				#ui-buttonset.vertical-child();
+			}
+		});
+
+		& > :not(:first-child):not(:last-child)
+		{
+			border-radius: 0;
+		}
+
+		& when (@dir = hor)
+		{
+			#ui-buttonset.horizontal();
+		}
+		& when (@dir = ver)
+		{
+			#ui-buttonset.vertical();
+		}
+	}
+
+	.horizontal()
+	{
+		flex-direction: row;
+
+		& > :first-child:not(:last-child)
+		{
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		& > :last-child:not(:first-child)
+		{
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		& > :not(:last-child)
+		{
+			margin-right: (-1 * @border-width);
+		}
+
+		#ui-buttonset.for-child({
+			
+		});
+	}
+	.horizontal-child()
+	{
+		margin-left:  auto;
+		margin-right: auto;
+	}
+	.vertical()
+	{
+		flex-direction: column;
+
+		& > :first-child:not(:last-child)
+		{
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		& > :last-child:not(:first-child)
+		{
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+		& > :not(:last-child)
+		{
+			margin-bottom: (-1 * @border-width);
+		}
+	}
+	.vertical-child()
+	{
+		margin-top:    auto;
+		margin-bottom: auto;
+	}
+
+
+	.for-child(@rules)
+	{
+		& > div,
+		& > span,
+		& > button,
+		& > input,
+		& > label,
+		& > a
+		{
+			@rules();
+		}
+	}
+}

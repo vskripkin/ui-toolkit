@@ -4,19 +4,24 @@
 		@color: @button-color,
 		@hover: @button-hover-color-bg,
 		@font-size: @button-font-size,
-		@pad-v: @button-padding-ver,
-		@pad-h: @button-padding-hor,
-		@border-w: @button-border-width)
+		@pad-ver: @button-padding-ver,
+		@pad-hor: @button-padding-hor,
+		@border-width: @button-border-width)
 	{
 		@hover-color:  #ui-button.hover-bg(@hover, @bg-color)[result];
 		@active-color: #ui-button.active-bg(@hover-color)[result];
 
-		#ui-button.template(@font-size, @pad-v, @pad-h, @border-w);
+		#ui-button.template(@font-size, @pad-ver, @pad-hor, @border-width);
 
 		&
 		{
 			background-color: @bg-color;
 			color: @color;
+
+			&, &::after
+			{
+				color: @color;
+			}
 		}
 		&:hover
 		{
@@ -29,9 +34,13 @@
 		&:disabled
 		{
 			background-color: @bg-color !important;
-			color:   @color !important;
 			opacity: @button-disabled-opacity !important;
 			cursor:  @button-disabled-cursor;
+
+			&, &::after
+			{
+				color: @color !important;
+			}
 		}
 
 
@@ -48,8 +57,8 @@
 		{
 			&.@{prefix}thin
 			{
-				padding-left:  @pad-v;
-				padding-right: @pad-v;
+				padding-left:  @pad-ver;
+				padding-right: @pad-ver;
 			}
 		}
 		.circle(@prefix: @button-class-prefix)
@@ -57,24 +66,60 @@
 			&.@{prefix}circle
 			{
 				border-radius: 150px;
-				padding-left:  @pad-v;
-				padding-right: @pad-v;
+				padding-left:  @pad-ver;
+				padding-right: @pad-ver;
 			}
 		}
 
-		.outline(@prefix: @button-class-prefix)
+		.text(@prefix: @button-class-prefix)
 		{
-			&.@{prefix}outline
+			&.@{prefix}text
 			{
-				color: @bg-color;
-				border-color: @bg-color;
 				background-color: transparent;
 
+				&, &::after
+				{
+					color: @bg-color;
+				}
 				&:hover
 				{
 					color: @color;
 					border-color: @hover-color;
 					background-color: @hover-color;
+
+					&, &::after
+					{
+						color: @color;
+					}
+				}
+				&:active
+				{
+					border-color: @active-color;
+					background-color: @active-color;
+				}
+			}
+		}
+		.outline(@prefix: @button-class-prefix)
+		{
+			&.@{prefix}outline
+			{
+				border-color: @bg-color;
+				background-color: transparent;
+
+				&, &::after
+				{
+					color: @bg-color;
+				}
+				&:hover
+				{
+					color: @color;
+					border-color: @hover-color;
+					background-color: @hover-color;
+
+					&, &::after
+					{
+						color: @color;
+					}
 				}
 				&:active
 				{
@@ -113,11 +158,21 @@
 				{
 					color: @hover-color;
 					border-color: @hover-color;
+
+					&, &::after
+					{
+						color: @hover-color;
+					}
 				}
 				&:active
 				{
 					color: @active-color;
 					border-color: @active-color;
+
+					&, &::after
+					{
+						color: @active-color;
+					}
 				}
 			}
 		}
@@ -126,7 +181,7 @@
 		{
 			&.@{prefix}loading
 			{
-				-webkit-text-fill-color: transparent;
+				color: transparent !important;
 
 				&::after
 				{
@@ -134,7 +189,7 @@
 					// fix disproportions of width and height due to sub-pixel rounding bug
 					display: table;
 					position: absolute;
-					z-index: 10;
+					z-index: 100;
 					top:  50%;
 					left: 50%;
 					width:  auto;
@@ -162,8 +217,11 @@
 {
 	.template(@font-size, @padding-ver, @padding-hor, @border-width)
 	{
-		min-width:  calc(2 * @padding-ver + 2 * @border-width + 1em * @button-line-height);
-		min-height: calc(2 * @padding-ver + 2 * @border-width + 1em * @button-line-height);
+		@em: 2 * @padding-ver + 1em * @button-line-height;
+		@px: 2 * @border-width;
+
+		min-width:  calc(@em + @px);
+		min-height: calc(@em + @px);
 		padding:      @padding-ver @padding-hor;
 		font-size:    @font-size;
 		border-width: @border-width;

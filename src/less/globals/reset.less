@@ -8,7 +8,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
+small, strong, sub, sup, tt, var,
 b, u, i,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
@@ -208,7 +208,18 @@ textarea
 	resize: vertical;
 }
 
-button > *, button::before, button::after
+button::before,
+button::after,
+button > span,
+button > img,
+button > small,
+button > big,
+button > strong,
+button > em,
+button > s,
+button > b,
+button > u,
+button > i
 {
 	pointer-events: none;
 }
