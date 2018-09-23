@@ -1,0 +1,76 @@
+html
+{
+	font-size: 62.5%;
+
+	@media  @screen and (min-aspect-ratio: 751/1000) and (max-aspect-ratio: 1000/751)
+	{
+		@media (max-height: 500px)
+		{
+			font-size: calc(~'37.5% + 0.5 * 100vh / 500');
+		}
+		@media (min-height: 500.1px) and (max-height: 700px)
+		{
+			font-size: calc(~'40.625% + 0.5 * (100vh - 500px) / (700 - 500)');
+		}
+		@media (min-height: 700.1px) and (max-height: 1080px)
+		{
+			font-size: calc(~'43.75% + 3 * (100vh - 700px) / (1080 - 700)');
+		}
+		@media (min-height: 1080.1px) and (max-height: 2000px)
+		{
+			font-size: calc(~'62.5% + 4 * (100vh - 1081px) / (2000 - 1081)');
+		}
+		@media (min-height: 2000.1px)
+		{
+			font-size: 87.5%;
+		}
+	}
+
+	@media @screen and (max-aspect-ratio: 75/100)
+	{
+		@media (max-height: 500px)
+		{
+			font-size: calc(~'37.5% + 1 * 100vh / 500');
+		}
+		@media (min-height: 500.1px) and (max-height: 700px)
+		{
+			font-size: calc(~'43.75% + 1 * (100vh - 500px) / (700 - 500)');
+		}
+		@media (min-height: 700.1px) and (max-height: 1080px)
+		{
+			font-size: calc(~'50% + 3 * (100vh - 700px) / (1080 - 700)');
+		}
+		@media (min-height: 1080.1px) and (max-height: 2000px)
+		{
+			font-size: calc(~'68.75% + 3 * (100vh - 1081px) / (2000 - 1081)');
+		}
+		@media (min-height: 2000.1px)
+		{
+			font-size: 87.5%;
+		}
+	}
+
+	@media @screen and (min-aspect-ratio: 100/75)
+	{
+		@media (max-height: 500px)
+		{
+			font-size: calc(~'34.375% + 0.5 * 100vh / 500');
+		}
+		@media (min-height: 500.1px) and (max-height: 700px)
+		{
+			font-size: calc(~'37.5% + 0.5 * (100vh - 500px) / (700 - 500)');
+		}
+		@media (min-height: 700.1px) and (max-height: 1080px)
+		{
+			font-size: calc(~'40.625% + 2.5 * (100vh - 700px) / (1080 - 700)');
+		}
+		@media (min-height: 1080.1px) and (max-height: 2000px)
+		{
+			font-size: calc(~'56.25% + 5 * (100vh - 1081px) / (2000 - 1081)');
+		}
+		@media (min-height: 2000.1px)
+		{
+			font-size: 87.5%;
+		}
+	}
+}

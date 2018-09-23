@@ -1,8 +1,8 @@
 #ui()
 {
-	.buttonset(@border-width: @button-border-width, @dir: hor)
+	.buttonset(@border-width: @button-border-width, @dir: hor, @prefix: @button-class-prefix)
 	{
-		#ui-buttonset.template(@border-width, @dir);
+		#ui-buttonset.template(@border-width, @dir, @prefix);
 
 		.hor(@prefix: @button-class-prefix)
 		{
@@ -31,7 +31,7 @@
 
 #ui-buttonset()
 {
-	.template(@border-width, @dir)
+	.template(@border-width, @dir, @prefix)
 	{
 		display: inline-flex;
 		flex-wrap: nowrap;
@@ -50,7 +50,7 @@
 			min-width: auto;
 			max-width: 100%;
 
-			&:hover
+			&:hover, &.@{prefix}active
 			{
 				z-index: 11;
 			}
@@ -98,16 +98,13 @@
 		{
 			margin-right: (-1 * @border-width);
 		}
-
-		#ui-buttonset.for-child({
-			
-		});
 	}
 	.horizontal-child()
 	{
 		margin-left:  auto;
 		margin-right: auto;
 	}
+
 	.vertical()
 	{
 		flex-direction: column;

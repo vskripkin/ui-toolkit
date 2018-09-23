@@ -1,0 +1,135 @@
+#ui
+{
+	.make-radio(@size, @selector: label)
+	{
+		.__radio-states()
+		{
+			.radio-states();
+			#ui > ._radio > ._states();
+		}
+
+		#ui > ._radio > .construct(@size, @selector);
+	}
+
+	._radio()
+	{
+		._states()
+		{
+			.default() {};
+			.hover() {};
+			.active() {};
+			.checked() {};
+			.disabled() {};
+			.disabled_checked() {};
+		}
+
+		.construct(@size, @_selector)
+		{
+			@selector: ~'@{_selector}';
+
+			#ui > ._radio > .template(@selector);
+
+			&
+			{
+				.__radio-states();
+
+				& + @{selector}
+				{
+					#ui > ._radio > .size(@size);
+					.default();
+				}
+				& + @{selector}:hover, label:hover & + @{selector}
+				{
+					.hover();
+				}
+				& + @{selector}:active
+				{
+					.active();
+				}
+				&:checked + @{selector},
+				&:checked + @{selector}:hover,
+				&:checked + @{selector}:active,
+				label:hover &:checked + @{selector}
+				{
+					.checked();
+				}
+				&:disabled + @{selector},
+				&:disabled + @{selector}:hover,
+				&:disabled + @{selector}:active,
+				label:hover &:disabled + @{selector}
+				{
+					.disabled();
+				}
+				&:disabled:checked + @{selector},
+				&:disabled:checked + @{selector}:hover,
+				&:disabled:checked + @{selector}:active,
+				label:hover &:disabled:checked + @{selector}
+				{
+					.disabled_checked();
+				}
+			}
+		}
+
+		.template(@selector)
+		{
+			&
+			{
+				position: absolute !important;
+				width: 1px !important;
+				height: 1px !important;
+				clip: rect(2px, 2px, 2px, 2px) !important;
+			}
+
+			& + @{selector}
+			{
+				display: inline-block;
+				position: relative;
+				vertical-align: middle;
+				cursor: pointer;
+				user-select: none;
+				line-height: 0 !important;
+				padding: 0 !important;
+
+				&:after
+				{
+					content: '';
+					position: absolute;
+					z-index: 0;
+					top: 0;
+					left: 0;
+					border-radius: inherit;
+					background-color: currentColor;
+				}
+			}
+			&:disabled + @{selector}
+			{
+				cursor: auto !important;
+			}
+		}
+
+		/***********************************************/
+
+		.size(@size)
+		{
+			#ui > .size-custom(@size);
+
+			&
+			{
+				.normal();
+				font-size: @font-size !important;
+				width: 1em;
+				height: 1em;
+			}
+			&.large
+			{
+				.large();
+				font-size: @font-size !important;
+			}
+			&.small
+			{
+				.small();
+				font-size: @font-size !important;
+			}
+		}
+	}
+}

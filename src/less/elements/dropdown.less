@@ -1,0 +1,49 @@
+#ui()
+{
+	.dropdown-list()
+	{
+		&, ul
+		{
+			display: none;
+			position: absolute;
+			z-index: 3;
+			overflow: visible;
+			line-height: @line-height-normal;
+			list-style: none;
+		}
+		&
+		{
+			min-width: 100%;
+			top: 100%;
+			left: 0;
+		}
+		ul
+		{
+			left: 100%;
+		}
+
+
+		&.__fixed
+		{
+			position: fixed;
+			top: auto;
+		}
+
+		&.__opened, li:hover > ul, ul:hover
+		{
+			display: block !important;
+		}
+
+		li
+		{
+			display: block;
+			position: relative;
+			cursor: pointer;
+
+			&.__ignore
+			{
+				cursor: default;
+			}
+		}
+	}
+}

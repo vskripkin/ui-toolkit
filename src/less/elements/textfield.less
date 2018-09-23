@@ -1,0 +1,250 @@
+#ui
+{
+	.make-textfield(@font-size: 0, @padding-ver: 0, @padding-hor: 0)
+	{
+		.__textfield-states()
+		{
+			.textfield-states();
+			#ui > ._textfield > ._states();
+		}
+		#ui > ._textfield > .construct(@font-size, @padding-ver, @padding-hor);
+	}
+
+	.make-textfield-label(@postfix, @font-size: 0, @padding-ver: 0, @padding-hor: 0)
+	{
+		.__addon-states()
+		{
+			.addon-states();
+			#ui > ._textfield-label > ._states();
+		}
+		#ui > ._textfield-label > .construct(@postfix, @font-size, @padding-ver, @padding-hor);
+	}
+
+	.textfield(@font-size: 0, @padding-ver: 0, @padding-hor: 0, @start: 0, @step: 0, @total: 5)
+	{
+		#ui > .make-textfield(@font-size, @padding-ver, @padding-hor);
+		#ui > .make-textfield-label(-label, @font-size, @padding-ver, @padding-hor);
+
+		#ui > ._textfield-label > .addon-width(@start, @step, @total);
+	}
+
+
+	._textfield()
+	{
+		._states()
+		{
+			.placeholder() {};
+			.default() {};
+			.focus() {};
+			.valid() {};
+			.invalid() {};
+			.disabled() {};
+			.readonly() {};
+		}
+
+		.construct(@font-size: 0, @padding-ver: 0, @padding-hor: 0)
+		{
+			#ui > ._textfield > .template();
+			#ui > ._textfield > .size(@font-size, @padding-ver, @padding-hor);
+
+			.__textfield-states();
+
+			&
+			{
+				.default();
+				#ui > .placeholder({ .placeholder(); });
+			}
+			&:focus, &.focus
+			{
+				.focus();
+			}
+			&.valid, &.valid:focus
+			{
+				.valid();
+			}
+			&.invalid, &.invalid:focus
+			{
+				.invalid();
+			}
+			&:disabled
+			{
+				.disabled();
+			}
+			&[readonly]
+			{
+				.readonly();
+			}
+		}
+
+		.template()
+		{
+			display: block;
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			line-height: @line-height-normal;
+			font-family: inherit;
+			text-decoration: none;
+			vertical-align: middle;
+			text-align: left;
+			-webkit-appearance: none;
+			appearance: none;
+			border: none;
+			background: transparent;
+		}
+
+		/***********************************************/
+
+		.size(@fs: 0, @pv: 0, @ph: 0)
+		{
+			& when not (@font-size = 0)
+			{
+				#ui > .size-font-padding(@fs, @pv, @ph);
+
+				&       { @normal(); }
+				&.large { @large();  }
+				&.small { @small();  }
+			}
+		}
+	}
+
+	._textfield-label
+	{
+		._states()
+		{
+			.default() {};
+			.focus() {};
+			.valid() {};
+			.invalid() {};
+			.disabled() {};
+			.readonly() {};
+		}
+
+		.construct(@postfix, @font-size: 0, @padding-ver: 0, @padding-hor: 0)
+		{
+			#ui > ._textfield-label > .template(@postfix);
+			#ui > ._textfield-label > .size(@font-size, @padding-ver, @padding-hor);
+
+			.__addon-states();
+
+			& + .addon
+			{
+				.default();
+			}
+			&:focus + .addon, &.focus + .addon
+			{
+				.focus();
+			}
+			&.valid + .addon, &.valid:focus + .addon
+			{
+				.valid();
+			}
+			&.invalid + .addon, &.invalid:focus + .addon
+			{
+				.invalid();
+			}
+			&:disabled + .addon
+			{
+				.disabled();
+			}
+			&[readonly] + .addon
+			{
+				.readonly();
+			}
+		}
+
+		.template(@postfix)
+		{
+			&
+			{
+				display: block;
+				width: 100%;
+
+				&.addon-left
+				{
+					& ~ .addon
+					{
+						left: 0;
+						text-align: left !important;
+						padding-right: 0 !important;
+					}
+				}
+				&.addon-right
+				{
+					& ~ .addon
+					{
+						right: 0;
+						text-align: right !important;
+						padding-left: 0 !important;
+					}
+				}
+			}
+
+			&@{postfix}
+			{
+				display: block;
+				position: relative;
+				z-index: 1;
+
+				.addon
+				{
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					z-index: 1;
+					font-family: inherit;
+					text-align: center;
+					white-space: nowrap;
+					line-height: @line-height-normal;
+					pointer-events: none;
+
+					background: transparent !important;
+					border-color: transparent !important;
+					box-shadow: none !important;
+				}
+			}
+			&@{postfix} .addon:extend(&.small) {};
+		}
+
+		/***********************************************/
+
+		.size(@fs: 0, @pv: 0, @ph: 0)
+		{
+			& when not (@fs = 0)
+			{
+				#ui > .size-font-padding(@fs, @pv, @ph);
+
+				&       ~ .addon { @normal(); }
+				&.large ~ .addon { @large();  }
+				&.small ~ .addon { @small();  }
+			}
+		}
+
+		.addon-width(@start: 0, @step: 0, @total: 5)
+		{
+			& when not (@start = 0) and not (@step = 0)
+			{
+				&.addon-left
+				{
+					padding-left: @start;
+					#ui > ._textfield-label > ._width-classes-loop(padding-left, @start + @step, @step, 1, @total);
+				}
+				&.addon-right
+				{
+					padding-right: @start;
+					#ui > ._textfield-label > ._width-classes-loop(padding-right, @start + @step, @step, 1, @total);
+				}
+			}
+		}
+		._width-classes-loop(@prop, @value, @step, @current, @total) when (@current <= @total)
+		{
+			&.w@{current}
+			{
+				@{prop}: @value;
+			}
+
+			._width-classes-loop(@prop, @value + @step, @step, @current + 1, @total);
+		}
+	}
+}
