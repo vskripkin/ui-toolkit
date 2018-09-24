@@ -111,4 +111,32 @@
 			background-color: currentColor;
 		}
 	}
+
+	.sizes(@font-size, @prefix, @selector)
+	{
+		#ui.fs-sizes(@font-size);
+
+		.size-nano()  { &.@{prefix}nano  + @{selector} { font-size: @size-nano;  }}
+		.size-mini()  { &.@{prefix}mini  + @{selector} { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{prefix}tiny  + @{selector} { font-size: @size-tiny;  }}
+		.size-small() { &.@{prefix}small + @{selector} { font-size: @size-small; }}
+
+		.size-big()   { &.@{prefix}big   + @{selector} { font-size: @size-big;   }}
+		.size-large() { &.@{prefix}large + @{selector} { font-size: @size-large; }}
+		.size-huge()  { &.@{prefix}huge  + @{selector} { font-size: @size-huge;  }}
+		.size-great() { &.@{prefix}great + @{selector} { font-size: @size-great; }}
+
+		.size-apply()
+		{
+			.size-nano();
+			.size-mini();
+			.size-tiny();
+			.size-small();
+
+			.size-big();
+			.size-large();
+			.size-huge();
+			.size-great();
+		}
+	}
 }
