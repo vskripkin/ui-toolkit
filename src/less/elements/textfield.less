@@ -40,34 +40,37 @@
 
 		&
 		{
-			.default();
-		}
-		&::placeholder
-		{
-			.placeholder();
-		}
-		&:focus, &.@{prefix}focus
-		{
-			.focus();
-		}
-		&.@{prefix}valid, &.@{prefix}valid:focus
-		{
-			.valid();
-		}
-		&.@{prefix}invalid, &.@{prefix}invalid:focus
-		{
-			.invalid();
-		}
-		&:disabled
-		{
-			opacity: @textfield-disabled-opacity !important;
-			cursor:  @textfield-disabled-cursor;
+			&
+			{
+				.default();
+			}
+			&::placeholder
+			{
+				.placeholder();
+			}
+			&:focus, &.@{prefix}focus
+			{
+				.focus();
+			}
+			&.@{prefix}valid, &.@{prefix}valid:focus
+			{
+				.valid();
+			}
+			&.@{prefix}invalid, &.@{prefix}invalid:focus
+			{
+				.invalid();
+			}
+			&:disabled
+			{
+				opacity: @textfield-disabled-opacity !important;
+				cursor:  @textfield-disabled-cursor;
 
-			.disabled() !important;
-		}
-		&:read-only
-		{
-			.readonly();
+				.disabled() !important;
+			}
+			&:read-only
+			{
+				.readonly();
+			}
 		}
 	}
 

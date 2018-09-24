@@ -1,8 +1,8 @@
 #ui()
 {
 	.checkbox(
-		@pseudo: @crbox-class-pseudo,
-		@label: @crbox-class-label,
+		@pseudo: @checkbox-class-pseudo,
+		@label: @checkbox-class-label,
 		@prefix: @crbox-class-prefix,
 		@sign: true)
 	{
@@ -41,40 +41,43 @@
 		#ui-checkbox.sizes(@font-size, @prefix, @pseudo);
 
 
-		& ~ @{pseudo}
+		&
 		{
-			.default();
-		}
-		& ~ @{pseudo}:hover,
-		label:hover & ~ @{pseudo}
-		{
-			.hover();
-		}
-		& ~ @{pseudo}:active,
-		label:hover & ~ @{pseudo}:active
-		{
-			.active();
-		}
-		&:checked ~ @{pseudo},
-		&:checked ~ @{pseudo}:hover,
-		&:checked ~ @{pseudo}:active,
-		label:hover &:checked ~ @{pseudo}
-		{
-			.checked();
-		}
-		&:disabled ~ @{pseudo},
-		&:disabled ~ @{pseudo}:hover,
-		&:disabled ~ @{pseudo}:active,
-		label:hover &:disabled ~ @{pseudo}
-		{
-			.disabled();
-		}
-		&:disabled:checked ~ @{pseudo},
-		&:disabled:checked ~ @{pseudo}:hover,
-		&:disabled:checked ~ @{pseudo}:active,
-		label:hover &:disabled:checked ~ @{pseudo}
-		{
-			.disabled-checked();
+			& ~ @{pseudo}
+			{
+				.default();
+			}
+			& ~ @{pseudo}:hover,
+			label:hover & ~ @{pseudo}
+			{
+				.hover();
+			}
+			& ~ @{pseudo}:active,
+			label:hover & ~ @{pseudo}:active
+			{
+				.active();
+			}
+			&:checked ~ @{pseudo},
+			&:checked ~ @{pseudo}:hover,
+			&:checked ~ @{pseudo}:active,
+			label:hover &:checked ~ @{pseudo}
+			{
+				.checked();
+			}
+			&:disabled ~ @{pseudo},
+			&:disabled ~ @{pseudo}:hover,
+			&:disabled ~ @{pseudo}:active,
+			label:hover &:disabled ~ @{pseudo}
+			{
+				.disabled();
+			}
+			&:disabled:checked ~ @{pseudo},
+			&:disabled:checked ~ @{pseudo}:hover,
+			&:disabled:checked ~ @{pseudo}:active,
+			label:hover &:disabled:checked ~ @{pseudo}
+			{
+				.disabled-checked();
+			}
 		}
 
 

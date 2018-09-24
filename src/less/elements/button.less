@@ -13,39 +13,41 @@
 		@active-color: #ui-button.active-bg(@hover-color)[result];
 
 		#ui-button.template(@font-size, @pad-ver, @pad-hor, @border-width);
+		#ui-button.sizes(@font-size, @prefix);
 
 		&
 		{
-			background-color: @bg-color;
-			color: @color;
-
-			&, &::after
+			&
 			{
+				background-color: @bg-color;
 				color: @color;
-			}
-		}
-		&:hover
-		{
-			background-color: @hover-color;
-		}
-		&:active
-		{
-			background-color: @active-color;
-		}
-		&:disabled
-		{
-			background-color: @bg-color !important;
-			opacity: @button-disabled-opacity !important;
-			cursor:  @button-disabled-cursor;
 
-			&, &::after
+				&, &::after
+				{
+					color: @color;
+				}
+			}
+			&:hover
 			{
-				color: @color !important;
+				background-color: @hover-color;
+			}
+			&:active
+			{
+				background-color: @active-color;
+			}
+			&:disabled
+			{
+				background-color: @bg-color !important;
+				opacity: @button-disabled-opacity !important;
+				cursor:  @button-disabled-cursor;
+
+				&, &::after
+				{
+					color: @color !important;
+				}
 			}
 		}
 
-
-		#ui-button.sizes(@font-size, @prefix);
 
 		.round()
 		{

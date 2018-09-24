@@ -1,135 +1,114 @@
-#ui
+#ui()
 {
-	.make-radio(@size, @selector: label)
+	.radio(
+		@selector: @radio-class-selector,
+		@prefix: @crbox-class-prefix)
 	{
-		.__radio-states()
+		#ui-radio.construct(@selector, @prefix);
+	}
+}
+
+#ui-radio()
+{
+	._states()
+	{
+		.default()
 		{
-			.radio-states();
-			#ui > ._radio > ._states();
+			font-size: @crbox-font-size;
 		}
 
-		#ui > ._radio > .construct(@size, @selector);
+		.hover() {};
+		.active() {};
+		.checked() {};
+		.disabled() {};
+		.disabled_checked() {};
 	}
 
-	._radio()
+	.construct(@_selector, @prefix)
 	{
-		._states()
+		@selector: ~'.@{prefix}@{_selector}';
+
+		#ui-radio._states();
+		.states();
+
+		@font-size: .default[font-size];
+
+		#ui-radio.template(@selector);
+		#ui-radio.sizes(@font-size, @prefix, @selector);
+
+		&
 		{
-			.default() {};
-			.hover() {};
-			.active() {};
-			.checked() {};
-			.disabled() {};
-			.disabled_checked() {};
-		}
-
-		.construct(@size, @_selector)
-		{
-			@selector: ~'@{_selector}';
-
-			#ui > ._radio > .template(@selector);
-
-			&
-			{
-				.__radio-states();
-
-				& + @{selector}
-				{
-					#ui > ._radio > .size(@size);
-					.default();
-				}
-				& + @{selector}:hover, label:hover & + @{selector}
-				{
-					.hover();
-				}
-				& + @{selector}:active
-				{
-					.active();
-				}
-				&:checked + @{selector},
-				&:checked + @{selector}:hover,
-				&:checked + @{selector}:active,
-				label:hover &:checked + @{selector}
-				{
-					.checked();
-				}
-				&:disabled + @{selector},
-				&:disabled + @{selector}:hover,
-				&:disabled + @{selector}:active,
-				label:hover &:disabled + @{selector}
-				{
-					.disabled();
-				}
-				&:disabled:checked + @{selector},
-				&:disabled:checked + @{selector}:hover,
-				&:disabled:checked + @{selector}:active,
-				label:hover &:disabled:checked + @{selector}
-				{
-					.disabled_checked();
-				}
-			}
-		}
-
-		.template(@selector)
-		{
-			&
-			{
-				position: absolute !important;
-				width: 1px !important;
-				height: 1px !important;
-				clip: rect(2px, 2px, 2px, 2px) !important;
-			}
+			.__radio-states();
 
 			& + @{selector}
 			{
-				display: inline-block;
-				position: relative;
-				vertical-align: middle;
-				cursor: pointer;
-				user-select: none;
-				line-height: 0 !important;
-				padding: 0 !important;
-
-				&:after
-				{
-					content: '';
-					position: absolute;
-					z-index: 0;
-					top: 0;
-					left: 0;
-					border-radius: inherit;
-					background-color: currentColor;
-				}
+				.default();
 			}
-			&:disabled + @{selector}
+			& + @{selector}:hover,
+			label:hover & + @{selector}
 			{
-				cursor: auto !important;
+				.hover();
+			}
+			& + @{selector}:active,
+			label:hover & + @{selector}:active
+			{
+				.active();
+			}
+			&:checked + @{selector},
+			&:checked + @{selector}:hover,
+			&:checked + @{selector}:active,
+			label:hover &:checked + @{selector}
+			{
+				.checked();
+			}
+			&:disabled + @{selector},
+			&:disabled + @{selector}:hover,
+			&:disabled + @{selector}:active,
+			label:hover &:disabled + @{selector}
+			{
+				.disabled();
+			}
+			&:disabled:checked + @{selector},
+			&:disabled:checked + @{selector}:hover,
+			&:disabled:checked + @{selector}:active,
+			label:hover &:disabled:checked + @{selector}
+			{
+				.disabled-checked();
 			}
 		}
+	}
 
-		/***********************************************/
+	.template(@selector)
+	{
+		position: absolute !important;
+		width:  1px !important;
+		height: 1px !important;
+		clip:   rect(1px, 1px, 1px, 1px) !important;
 
-		.size(@size)
+		& + @{selector}
 		{
-			#ui > .size-custom(@size);
+			display: inline-block;
+			vertical-align: middle;
+			position: relative;
+			cursor: pointer;
+			user-select: none;
+			line-height: 0 !important;
+			padding: 0 !important;
+		}
+		&:disabled + @{selector}
+		{
+			cursor: auto !important;
+		}
 
-			&
-			{
-				.normal();
-				font-size: @font-size !important;
-				width: 1em;
-				height: 1em;
-			}
-			&.large
-			{
-				.large();
-				font-size: @font-size !important;
-			}
-			&.small
-			{
-				.small();
-				font-size: @font-size !important;
-			}
+		& + @{selector}:after
+		{
+			content: '';
+			position: absolute;
+			z-index: 0;
+			top: 0;
+			left: 0;
+			border-radius: inherit;
+			background-color: currentColor;
 		}
 	}
 }
