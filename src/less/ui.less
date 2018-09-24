@@ -17,5 +17,60 @@
 @import 'behaviors/visibility';
 @import 'grid/index';
 
-@import 'elements/buttons';
+@import 'elements/button';
 @import 'elements/buttonset';
+@import 'elements/textfield';
+
+
+.textfield
+{
+	#ui.textfield();
+
+	.size-large();
+	.addon-left(1.5em, 0.5em);
+
+	.states()
+	{
+		.placeholder()
+		{
+			color: rgba(0, 0, 0, 0.5);
+			font-weight: 500;
+		}
+		.default()
+		{
+			padding: 0.57em 1.213em;
+			font-size: 1.6rem;
+			color: #000;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus()
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid()
+		{
+			border-color: green;
+			box-shadow: inset 0 -1px 0 0 green;
+		}
+		.invalid()
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled()
+		{
+			color: #AAA;
+			border-style: dotted;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+	}
+	.addon()
+	{
+		.states();
+	}
+}

@@ -6,7 +6,8 @@
 		@font-size: @button-font-size,
 		@pad-ver: @button-padding-ver,
 		@pad-hor: @button-padding-hor,
-		@border-width: @button-border-width)
+		@border-width: @button-border-width,
+		@prefix: @button-class-prefix)
 	{
 		@hover-color:  #ui-button.hover-bg(@hover, @bg-color)[result];
 		@active-color: #ui-button.active-bg(@hover-color)[result];
@@ -44,16 +45,16 @@
 		}
 
 
-		#ui-button.sizes(@font-size);
+		#ui-button.sizes(@font-size, @prefix);
 
-		.round(@prefix: @button-class-prefix)
+		.round()
 		{
 			&.@{prefix}round
 			{
 				border-radius: 150px;
 			}
 		}
-		.thin(@prefix: @button-class-prefix)
+		.thin()
 		{
 			&.@{prefix}thin
 			{
@@ -61,7 +62,7 @@
 				padding-right: @pad-ver;
 			}
 		}
-		.circle(@prefix: @button-class-prefix)
+		.circle()
 		{
 			&.@{prefix}circle
 			{
@@ -71,7 +72,7 @@
 			}
 		}
 
-		.text(@prefix: @button-class-prefix)
+		.text()
 		{
 			&.@{prefix}text
 			{
@@ -99,7 +100,7 @@
 				}
 			}
 		}
-		.outline(@prefix: @button-class-prefix)
+		.outline()
 		{
 			&.@{prefix}outline
 			{
@@ -128,7 +129,7 @@
 				}
 			}
 		}
-		.fount(@prefix: @button-class-prefix)
+		.fount()
 		{
 			&.@{prefix}fount
 			{
@@ -147,7 +148,7 @@
 				}
 			}
 		}
-		.ghost(@prefix: @button-class-prefix)
+		.ghost()
 		{
 			&.@{prefix}ghost
 			{
@@ -177,7 +178,7 @@
 			}
 		}
 
-		.loading(@prefix: @button-class-prefix)
+		.loading()
 		{
 			&.@{prefix}loading
 			{
@@ -258,32 +259,9 @@
 	}
 
 
-	.sizes(@font-size)
+	.sizes(@font-size, @class-prefix)
 	{
-		#ui.fs-sizes(@font-size);
-
-		.size-nano( @prefix: @button-class-prefix) { &.@{prefix}nano  { font-size: @size-nano;  }}
-		.size-mini( @prefix: @button-class-prefix) { &.@{prefix}mini  { font-size: @size-mini;  }}
-		.size-tiny( @prefix: @button-class-prefix) { &.@{prefix}tiny  { font-size: @size-tiny;  }}
-		.size-small(@prefix: @button-class-prefix) { &.@{prefix}small { font-size: @size-small; }}
-
-		.size-big(  @prefix: @button-class-prefix) { &.@{prefix}big   { font-size: @size-big;   }}
-		.size-large(@prefix: @button-class-prefix) { &.@{prefix}large { font-size: @size-large; }}
-		.size-huge( @prefix: @button-class-prefix) { &.@{prefix}huge  { font-size: @size-huge;  }}
-		.size-great(@prefix: @button-class-prefix) { &.@{prefix}great { font-size: @size-great; }}
-
-		.size-apply(@prefix: @button-class-prefix)
-		{
-			.size-nano( @prefix);
-			.size-mini( @prefix);
-			.size-tiny( @prefix);
-			.size-small(@prefix);
-
-			.size-big(  @prefix);
-			.size-large(@prefix);
-			.size-huge( @prefix);
-			.size-great(@prefix);
-		}
+		#ui.fs-sizes-mixins(@font-size, @class-prefix);
 	}
 
 

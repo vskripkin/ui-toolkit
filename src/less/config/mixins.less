@@ -1,22 +1,3 @@
-#all-states
-{
-	.default() {};
-	.transparent() {};
-	.hover() {};
-	.focus() {};
-	.active() {};
-	.invalid() {};
-	.valid() {};
-	.readonly() {};
-	.disabled() {};
-	.disabled_checked() {};
-	.checked() {};
-	.checked_hover() {};
-	.checked_focus() {};
-	.checked_active() {};
-	.placeholder() {};
-}
-
 #ui()
 {
 	.clearfix(@clear: both)
@@ -136,33 +117,11 @@
 			}
 		}
 	}
+}
 
-	/*****************************************************/
 
-	.size-font-padding(@fs, @pv: 0, @ph: 0)
-	{
-		#ui > .size-custom(@fs, @pv, @ph);
-
-		@normal:
-		{
-			.normal();
-			font-size: @font-size;
-			padding: @padding-ver @padding-hor;
-		};
-		@large:
-		{
-			.large();
-			font-size: @font-size;
-			padding: @padding-ver @padding-hor;
-		};
-		@small:
-		{
-			.small();
-			font-size: @font-size;
-			padding: @padding-ver @padding-hor;
-		};
-	}
-
+#ui()
+{
 	.fs-sizes(@fs)
 	{
 		@s-normal: @fs;
@@ -178,5 +137,33 @@
 		@size-large: round(@fs +  4 * @step, 4);
 		@size-huge:  round(@fs +  6 * @step, 4);
 		@size-great: round(@fs + 10 * @step, 4);
+	}
+
+	.fs-sizes-mixins(@font-size, @prefix)
+	{
+		#ui.fs-sizes(@font-size);
+
+		.size-nano()  { &.@{prefix}nano  { font-size: @size-nano;  }}
+		.size-mini()  { &.@{prefix}mini  { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{prefix}tiny  { font-size: @size-tiny;  }}
+		.size-small() { &.@{prefix}small { font-size: @size-small; }}
+
+		.size-big()   { &.@{prefix}big   { font-size: @size-big;   }}
+		.size-large() { &.@{prefix}large { font-size: @size-large; }}
+		.size-huge()  { &.@{prefix}huge  { font-size: @size-huge;  }}
+		.size-great() { &.@{prefix}great { font-size: @size-great; }}
+
+		.size-apply()
+		{
+			.size-nano();
+			.size-mini();
+			.size-tiny();
+			.size-small();
+
+			.size-big();
+			.size-large();
+			.size-huge();
+			.size-great();
+		}
 	}
 }
