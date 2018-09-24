@@ -1,217 +1,228 @@
-#ui
+#ui()
 {
-	.make-checkbox(@size, @pseudo: '.pseudo', @label: '.label')
+	.checkbox(
+		@pseudo: @crbox-class-pseudo,
+		@label: @crbox-class-label,
+		@prefix: @crbox-class-prefix,
+		@sign: true)
 	{
-		.__checkbox-states()
+		#ui-checkbox.construct(@pseudo, @label, @prefix, @sign);
+	}
+}
+
+#ui-checkbox()
+{
+	._states()
+	{
+		.default()
 		{
-			.checkbox-states();
-			#ui > ._checkbox > ._states();
+			font-size: @crbox-font-size;
 		}
 
-		#ui > ._checkbox > .construct(@size, @pseudo, @label);
+		.hover()    {};
+		.focus()    {};
+		.active()   {};
+		.checked()  {};
+		.disabled() {};
+		.disabled_checked() {};
 	}
 
-	._checkbox()
+	.construct(@_pseudo, @_label, @prefix, @sign)
 	{
-		._states()
+		@pseudo: ~'.@{prefix}@{_pseudo}';
+		@label:  ~'.@{prefix}@{_label}';
+
+		#ui-checkbox._states();
+		.states();
+
+		@font-size: .default[font-size];
+
+		#ui-checkbox.template(@pseudo, @label, @sign);
+		#ui-checkbox.sizes(@font-size, @prefix, @pseudo);
+
+
+		& ~ @{pseudo}
 		{
-			.default() {};
-			.hover() {};
-			.focus() {};
-			.active() {};
-			.checked() {};
-			.disabled() {};
-			.disabled_checked() {};
+			.default();
+		}
+		& ~ @{pseudo}:hover,
+		label:hover & ~ @{pseudo}
+		{
+			.hover();
+		}
+		& ~ @{pseudo}:active,
+		label:hover & ~ @{pseudo}:active
+		{
+			.active();
+		}
+		&:checked ~ @{pseudo},
+		&:checked ~ @{pseudo}:hover,
+		&:checked ~ @{pseudo}:active,
+		label:hover &:checked ~ @{pseudo}
+		{
+			.checked();
+		}
+		&:disabled ~ @{pseudo},
+		&:disabled ~ @{pseudo}:hover,
+		&:disabled ~ @{pseudo}:active,
+		label:hover &:disabled ~ @{pseudo}
+		{
+			.disabled();
+		}
+		&:disabled:checked ~ @{pseudo},
+		&:disabled:checked ~ @{pseudo}:hover,
+		&:disabled:checked ~ @{pseudo}:active,
+		label:hover &:disabled:checked ~ @{pseudo}
+		{
+			.disabled-checked();
 		}
 
-		.construct(@size, @_pseudo, @_label)
+
+		.label-helpers()
 		{
-			@pseudo: ~'@{_pseudo}';
-			@label:  ~'@{_label}';
-
-			#ui > ._checkbox > .template(@pseudo, @label);
-
-			&
+			& ~ @{label}
 			{
-				.__checkbox-states();
-
-				& ~ @{pseudo}
+				@{label}--checked,
+				@{label}--disabled,
+				@{label}--disabled-checked
 				{
-					#ui > ._checkbox > .size(@size);
-					.default();
+					display: none;
 				}
-				& ~ @{pseudo}:hover, label:hover & ~ @{pseudo}
+				@{label}--default
 				{
-					.hover();
+					display: block;
 				}
-				& ~ @{pseudo}:active, label:hover & ~ @{pseudo}:active
+			}
+			&:checked ~ @{label}
+			{
+				@{label}--default,
+				@{label}--disabled,
+				@{label}--disabled-checked
 				{
-					.active();
+					display: none;
 				}
-				&:checked ~ @{pseudo},
-				&:checked ~ @{pseudo}:hover,
-				&:checked ~ @{pseudo}:active,
-				label:hover &:checked ~ @{pseudo}
+				@{label}--checked
 				{
-					.checked();
+					display: block;
 				}
-				&:disabled ~ @{pseudo},
-				&:disabled ~ @{pseudo}:hover,
-				&:disabled ~ @{pseudo}:active,
-				label:hover &:disabled ~ @{pseudo}
+			}
+			&:disabled ~ @{label}
+			{
+				@{label}--default,
+				@{label}--checked,
+				@{label}--disabled-checked
 				{
-					.disabled();
+					display: none;
 				}
-				&:disabled:checked ~ @{pseudo},
-				&:disabled:checked ~ @{pseudo}:hover,
-				&:disabled:checked ~ @{pseudo}:active,
-				label:hover &:disabled:checked ~ @{pseudo}
+				@{label}--disabled
 				{
-					.disabled_checked();
+					display: block;
 				}
-
-				& ~ @{label}
+			}
+			&:disabled:checked ~ @{label}
+			{
+				@{label}--default,
+				@{label}--checked,
+				@{label}--disabled
 				{
-					@{label}--checked,
-					@{label}--disabled,
-					@{label}--disabled-checked
-					{
-						display: none;
-					}
-					@{label}--default
-					{
-						display: block;
-					}
+					display: none;
 				}
-				&:checked ~ @{label}
+				@{label}--disabled-checked
 				{
-					@{label}--default,
-					@{label}--disabled,
-					@{label}--disabled-checked
-					{
-						display: none;
-					}
-					@{label}--checked
-					{
-						display: block;
-					}
-				}
-				&:disabled ~ @{label}
-				{
-					@{label}--default,
-					@{label}--checked,
-					@{label}--disabled-checked
-					{
-						display: none;
-					}
-					@{label}--disabled
-					{
-						display: block;
-					}
-				}
-				&:disabled:checked ~ @{label}
-				{
-					@{label}--default,
-					@{label}--checked,
-					@{label}--disabled
-					{
-						display: none;
-					}
-					@{label}--disabled-checked
-					{
-						display: block;
-					}
+					display: block;
 				}
 			}
 		}
+	}
 
-		.template(@pseudo, @label)
+	.template(@pseudo, @label, @sign)
+	{
+		position: absolute !important;
+		width:  1px !important;
+		height: 1px !important;
+		clip:   rect(1px, 1px, 1px, 1px) !important;
+
+		& ~ @{pseudo}, & ~ @{label}
 		{
-			&
-			{
-				position: absolute !important;
-				width: 1px !important;
-				height: 1px !important;
-				clip: rect(2px, 2px, 2px, 2px) !important;
-			}
+			display: inline-block;
+			vertical-align: middle;
+			position: relative;
+			cursor: pointer;
+		}
+		&:disabled ~ @{pseudo}, &:disabled ~ @{label}
+		{
+			cursor: @crbox-disabled-cursor !important;
+		}
 
-			& ~ @{pseudo}, & ~ @{label}
-			{
-				display: inline-block;
-				position: relative;
-				vertical-align: middle;
-				cursor: pointer;
-			}
-			&:disabled ~ @{pseudo}, &:disabled ~ @{label}
-			{
-				cursor: auto !important;
-			}
+		& ~ @{pseudo}
+		{
+			user-select: none;
+			line-height: 0 !important;
+			padding: 0 !important;
+		}
 
+
+		& when (@sign)
+		{
 			& ~ @{pseudo}
 			{
-				user-select: none;
-				line-height: 0 !important;
-				padding: 0 !important;
-
 				&:after
 				{
 					content: '';
 					position: absolute;
 					z-index: 0;
-					top: 0;
-					left: 0;
+					width:  61%;
+					height: 37.89%;
+					top:  50%;
+					left: 50%;
+					margin-top:  -26.89%;
+					margin-left: -29.57%;
 					border-radius: 0;
+					border-width: 0 0 0.24em 0.24em;
+					border-style: solid;
+					border-color: transparent;
 					background: transparent;
 					transform: scale(0) rotate(-45deg);
+					transform-origin: center;
+					transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
 				}
 			}
 			&:checked ~ @{pseudo}
 			{
 				&:after
 				{
-					// url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342.4 342.4"%3E%3Cpath fill="%23fff" d="M290,33.3L118.9 204.4 52.3 137.9 0 190.2 118.9 309.1 342.4 85.6 z"/%3E%3C/svg%3E')
-
-					// url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26"%3E%3Cpath fill="%23fff" d="M22,3L10 15 4 9 0 13 10 23 26 7 z"/%3E%3C/svg%3E')
-
-
-					width: 61%;
-					height: 37.89%;
-					top: 50%;
-					left: 50%;
-					margin-top: -26.39%;
-					margin-left: -29.57%;
 					transform: scale(1) rotate(-45deg);
-					transform-origin: center;
-					border-width: 0 0 0.14em 0.14em;
-					border-style: solid;
 					border-color: @color-checkbox-sign;
 				}
 			}
 		}
+	}
 
-		/***********************************************/
+	.sizes(@font-size, @prefix, @pseudo)
+	{
+		#ui.fs-sizes(@font-size);
 
-		.size(@size)
+		.size-nano()  { &.@{prefix}nano  + @{pseudo} { font-size: @size-nano;  }}
+		.size-mini()  { &.@{prefix}mini  + @{pseudo} { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{prefix}tiny  + @{pseudo} { font-size: @size-tiny;  }}
+		.size-small() { &.@{prefix}small + @{pseudo} { font-size: @size-small; }}
+
+		.size-big()   { &.@{prefix}big   + @{pseudo} { font-size: @size-big;   }}
+		.size-large() { &.@{prefix}large + @{pseudo} { font-size: @size-large; }}
+		.size-huge()  { &.@{prefix}huge  + @{pseudo} { font-size: @size-huge;  }}
+		.size-great() { &.@{prefix}great + @{pseudo} { font-size: @size-great; }}
+
+		.size-apply()
 		{
-			#ui > .size-custom(@size);
+			.size-nano();
+			.size-mini();
+			.size-tiny();
+			.size-small();
 
-			&
-			{
-				.normal();
-				font-size: @font-size !important;
-				width: 1em;
-				height: 1em;
-			}
-			&.large
-			{
-				.large();
-				font-size: @font-size !important;
-			}
-			&.small
-			{
-				.small();
-				font-size: @font-size !important;
-			}
+			.size-big();
+			.size-large();
+			.size-huge();
+			.size-great();
 		}
 	}
 }
