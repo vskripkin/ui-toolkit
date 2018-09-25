@@ -22,7 +22,6 @@
 	<section id="sidebar" class="fixed">
 		<div class="logo">
 			<span>Ui Toolkit</span>
-			<i class="material-icons">layers</i>
 		</div>
 		<div class="side-nav">
 			<a href="#buttons" class="active" data-wave="true">Buttons</a>
@@ -95,9 +94,9 @@
 					</div>
 
 					<pre class="code"><code class="language-less">.btn
-{
-	#ui > .button(#FFF, #212121);
-}
+					{
+						#ui > .button(#FFF, #212121);
+					}
 					</code></pre>
 				</div>
 			</div>
@@ -839,43 +838,43 @@
 								<form class="tooltip_preset">
 									<fieldset>
 										<input type="checkbox" id="animation" class="checkbox" checked>
-										<label for="animation"></label>
+										<label for="animation" class="__pseudo"></label>
 										<label for="animation">Animation</label>
 
 										<br />
 
 										<input type="checkbox" id="visible" class="checkbox" checked>
-										<label for="visible"></label>
+										<label for="visible" class="__pseudo"></label>
 										<label for="visible">Visible (if true, tooltip will be added in visible state)</label>
 
 										<br />
 
 										<input type="checkbox" id="destroy" class="checkbox">
-										<label for="destroy"></label>
+										<label for="destroy" class="__pseudo"></label>
 										<label for="destroy">Destroy (if true, tooltip will be deleted after it became hidden )</label>
 									</fieldset>
 									<fieldset>
 										<h6>TRIGGER</h6>
 
 										<input type="checkbox" id="click_trigger" class="checkbox" checked>
-										<label for="click_trigger"></label>
+										<label for="click_trigger" class="__pseudo"></label>
 										<label for="click_trigger">CLICK</label>
 
 										<br />
 
 										<input type="checkbox" id="hover_trigger" class="checkbox" checked>
-										<label for="hover_trigger"></label>
+										<label for="hover_trigger" class="__pseudo"></label>
 										<label for="hover_trigger">HOVER</label>
 
 										<br />
 
 										<input type="checkbox" id="focus_trigger" class="checkbox" checked>
-										<label for="focus_trigger"></label>
+										<label for="focus_trigger" class="__pseudo"></label>
 										<label for="focus_trigger">FOCUS</label>
 									</fieldset>
 
 									<fieldset class="textfields">
-										<label for="tooltip_offset">Offset</label>
+										<label for="tooltip_offset" class="__pseudo">Offset</label>
 										<input id="tooltip_offset" type="text" value="0" />
 
 										<br />
@@ -900,41 +899,65 @@
 
 										<div class="MB10">
 											<input type="checkbox" name="tooltip_inset" id="tooltip_inset" class="checkbox">
-											<label for="tooltip_inset"></label>
+											<label for="tooltip_inset" class="__pseudo"></label>
 											<label for="tooltip_inset">Inset (if true, tooltip will be placed inside the elemenet)</label>
 										</div>
 
 										<div class="radiobtns MB10">
-											<input id="p1" type="radio" name="tooltip_pos" value="top" checked>
-											<label for="p1" class="btn"><span>TOP</span></label>
-											<input id="p2" type="radio" name="tooltip_pos" value="bottom">
-											<label for="p2" class="btn"><span>BOTTOM</span></label>
-											<input id="p3" type="radio" name="tooltip_pos" value="left">
-											<label for="p3" class="btn"><span>LEFT</span></label>
-											<input id="p4" type="radio" name="tooltip_pos" value="right">
-											<label for="p4" class="btn"><span>RIGHT</span></label>
-											<input id="p5" type="radio" name="tooltip_pos" value="center">
-											<label for="p5" class="btn"><span>CENTER</span></label>
+											<label>
+												<input id="p1" type="radio" name="tooltip_pos" value="top" checked>
+												<label for="p1" class="btn __pseudo"><span>TOP</span></label>
+											</label>
+											<label>
+												<input id="p2" type="radio" name="tooltip_pos" value="bottom">
+												<label for="p2" class="btn __pseudo"><span>BOTTOM</span></label>
+											</label>
+											<label>
+												<input id="p3" type="radio" name="tooltip_pos" value="left">
+												<label for="p3" class="btn __pseudo"><span>LEFT</span></label>
+											</label>
+											<label>
+												<input id="p4" type="radio" name="tooltip_pos" value="right">
+												<label for="p4" class="btn __pseudo"><span>RIGHT</span></label>
+											</label>
+											<label>
+												<input id="p5" type="radio" name="tooltip_pos" value="center">
+												<label for="p5" class="btn __pseudo"><span>CENTER</span></label>
+											</label>
 										</div>
 
 										<div class="radiobtns MB10">
-											<input id="a1" type="radio" name="tooltip_align" value="start" checked>
-											<label for="a1" class="btn"><span>START</span></label>
-											<input id="a2" type="radio" name="tooltip_align" value="center">
-											<label for="a2" class="btn"><span>CENTER</span></label>
-											<input id="a3" type="radio" name="tooltip_align" value="end">
-											<label for="a3" class="btn"><span>END</span></label>
+											<label>
+												<input id="a1" type="radio" name="tooltip_align" value="start" checked>
+												<label for="a1" class="btn"><span>START</span></label>
+											</label>
+											<label>
+												<input id="a2" type="radio" name="tooltip_align" value="center">
+												<label for="a2" class="btn"><span>CENTER</span></label>
+											</label>
+											<label>
+												<input id="a3" type="radio" name="tooltip_align" value="end">
+												<label for="a3" class="btn"><span>END</span></label>
+											</label>
 										</div>
 
 										<div class="radiobtns MB10">
-											<input id="t1" type="radio" name="type" value="info" checked>
-											<label for="t1" class="btn"><span>INFO</span></label>
-											<input id="t2" type="radio" name="type" value="warning">
-											<label for="t2" class="btn"><span>WARNING</span></label>
-											<input id="t3" type="radio" name="type" value="error">
-											<label for="t3" class="btn"><span>ERROR</span></label>
-											<input id="t4" type="radio" name="type" value="success">
-											<label for="t4" class="btn"><span>SUCCESS</span></label>
+											<label>
+												<input id="t1" type="radio" name="type" value="info" checked>
+												<label for="t1" class="btn"><span>INFO</span></label>
+											</label>
+											<label>
+												<input id="t2" type="radio" name="type" value="warning">
+												<label for="t2" class="btn"><span>WARNING</span></label>
+											</label>
+											<label>
+												<input id="t3" type="radio" name="type" value="error">
+												<label for="t3" class="btn"><span>ERROR</span></label>
+											</label>
+											<label>
+												<input id="t4" type="radio" name="type" value="success">
+												<label for="t4" class="btn"><span>SUCCESS</span></label>
+											</label>
 										</div>
 									</fieldset>
 
@@ -972,6 +995,7 @@
 									visible: document.getElementById('visible').checked,
 									close: document.getElementById('close').value,
 									destroy: document.getElementById('destroy').checked,
+									self: true,
 
 									location: {
 										position: getRadioCheckedValue('tooltip_pos'),

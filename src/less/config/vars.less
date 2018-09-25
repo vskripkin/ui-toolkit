@@ -11,6 +11,10 @@
 
 @class-prefix: __;
 
+@use-grid:  false;
+@use-popup: false;
+@use-toast: false;
+
 
 // TYPO
 // --------------------------------------------------
@@ -42,7 +46,7 @@
 @link-hover-underline: underline;
 
 
-// BUTTONS
+// BUTTON
 // --------------------------------------------------
 
 @button-class-prefix: @class-prefix;
@@ -63,7 +67,7 @@
 @button-radius: 0.2143em;
 
 
-// TEXTFIELDS
+// TEXTFIELD
 // --------------------------------------------------
 
 @textfield-class-prefix: @class-prefix;
@@ -76,22 +80,43 @@
 @textfield-disabled-opacity: 0.5;
 
 
-// CHECKBOXES
+// CHECKBOX & RADIO
 // --------------------------------------------------
 
-@checkbox-class-prefix: @class-prefix;
-@checkbox-class-pseudo: pseudo;
-@checkbox-class-label:  label;
+@checkfield-class-prefix: @class-prefix;
+@checkfield-class-pseudo: pseudo;
+@checkfield-class-label:  label;
 
-@checkbox-font-size: 1.4rem;
+@checkfield-font-size: 1.4rem;
 
-@checkbox-disabled-cursor: auto;
+@checkfield-disabled-cursor: auto;
+
+
+// TOOLTIP
+// --------------------------------------------------
+
+@tooltip-class-prefix: @class-prefix;
+@tooltip-class-pseudo: pseudo;
+@tooltip-class-label:  label;
+
+@tooltip-font-size: 1.4rem;
+@tooltip-line-height: @line-height-normal;
+
+@tooltip-border-width: 1px;
+@tooltip-border-style: solid;
+@tooltip-radius: 0.2143em;
+
+@tooltip-padding-ver: 0.57em;
+@tooltip-padding-hor: 1.213em;
+@tooltip-margin: 0.7143em;
+
+@tooltip-arrow-width:  0.55em;
+@tooltip-arrow-margin: 0.75em;
 
 
 // GRID
 // --------------------------------------------------
 
-@use-grid:   false;
 @grid-width: @width-base;
 @grid-total: 24;
 

@@ -9,8 +9,8 @@
 		@border-width: @button-border-width,
 		@prefix: @button-class-prefix)
 	{
-		@hover-color:  #ui-button.hover-bg(@hover, @bg-color)[result];
-		@active-color: #ui-button.active-bg(@hover-color)[result];
+		@hover-bg-color:  #ui.hover-bg(@hover, @bg-color)[result];
+		@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
 		#ui-button.template(@font-size, @pad-ver, @pad-hor, @border-width);
 		#ui-button.sizes(@font-size, @prefix);
@@ -29,11 +29,11 @@
 			}
 			&:hover
 			{
-				background-color: @hover-color;
+				background-color: @hover-bg-color;
 			}
 			&:active
 			{
-				background-color: @active-color;
+				background-color: @active-bg-color;
 			}
 			&:disabled
 			{
@@ -87,8 +87,8 @@
 				&:hover
 				{
 					color: @color;
-					border-color: @hover-color;
-					background-color: @hover-color;
+					border-color: @hover-bg-color;
+					background-color: @hover-bg-color;
 
 					&, &::after
 					{
@@ -97,8 +97,8 @@
 				}
 				&:active
 				{
-					border-color: @active-color;
-					background-color: @active-color;
+					border-color: @active-bg-color;
+					background-color: @active-bg-color;
 				}
 			}
 		}
@@ -116,8 +116,8 @@
 				&:hover
 				{
 					color: @color;
-					border-color: @hover-color;
-					background-color: @hover-color;
+					border-color: @hover-bg-color;
+					background-color: @hover-bg-color;
 
 					&, &::after
 					{
@@ -126,8 +126,8 @@
 				}
 				&:active
 				{
-					border-color: @active-color;
-					background-color: @active-color;
+					border-color: @active-bg-color;
+					background-color: @active-bg-color;
 				}
 			}
 		}
@@ -140,13 +140,13 @@
 
 				&:hover
 				{
-					border-color: @hover-color;
-					background-color: @hover-color;
+					border-color: @hover-bg-color;
+					background-color: @hover-bg-color;
 				}
 				&:active
 				{
-					border-color: @active-color;
-					background-color: @active-color;
+					border-color: @active-bg-color;
+					background-color: @active-bg-color;
 				}
 			}
 		}
@@ -159,22 +159,22 @@
 
 				&:hover
 				{
-					color: @hover-color;
-					border-color: @hover-color;
+					color: @hover-bg-color;
+					border-color: @hover-bg-color;
 
 					&, &::after
 					{
-						color: @hover-color;
+						color: @hover-bg-color;
 					}
 				}
 				&:active
 				{
-					color: @active-color;
-					border-color: @active-color;
+					color: @active-bg-color;
+					border-color: @active-bg-color;
 
 					&, &::after
 					{
-						color: @active-color;
+						color: @active-bg-color;
 					}
 				}
 			}
@@ -261,72 +261,8 @@
 	}
 
 
-	.sizes(@font-size, @class-prefix)
+	.sizes(@font-size, @prefix)
 	{
-		#ui.fs-sizes-mixins(@font-size, @class-prefix);
-	}
-
-
-	.hover-bg(@hover-color, @bg-color) when (iscolor(@hover-color))
-	{
-		result: @hover-color;
-	}
-	.hover-bg(@hover-color, @bg-color) when not (iscolor(@hover-color))
-	{
-		@is-transparent: if(@bg-color = transparent, true, false);
-		@is-white: if((red(@bg-color) = 255) and (green(@bg-color) = 255) and (blue(@bg-color) = 255), true, false);
-		@is-black: if((red(@bg-color) = 0)   and (green(@bg-color) = 0)   and (blue(@bg-color) = 0),   true, false);
-
-		& when (@is-white), (@is-transparent)
-		{
-			result: shade(@bg-color, 10%);
-		}
-		& when (@is-black) and not (@is-transparent)
-		{
-			result: tint(@bg-color, 20%);
-		}
-
-		& when not (@is-white) and not (@is-black) and not (@is-transparent)
-		{
-			& when (@hover-color = default)
-			{
-				result: spin(saturate(@bg-color, 20%), 10);
-			}
-			& when (@hover-color = dark)
-			{
-				result: shade(@bg-color, 20%);
-			}
-			& when (@hover-color = darken)
-			{
-				result: darken(@bg-color, 15%);
-			}
-			& when (@hover-color = light)
-			{
-				result: tint(@bg-color, 20%);
-			}
-			& when (@hover-color = lighten)
-			{
-				result: lighten(@bg-color, 15%);
-			}
-		}
-	}
-
-	.active-bg(@bg-color)
-	{
-		@rgb: red(@bg-color);
-		@is-gray: if(@rgb = green(@bg-color) and @rgb = blue(@bg-color), true, false);
-
-		& when (@is-gray) and (@rgb >= 128)
-		{
-			result: shade(@bg-color, 5%);
-		}
-		& when (@is-gray) and (@rgb < 128)
-		{
-			result: tint(@bg-color, 10%);
-		}
-		& when not (@is-gray)
-		{
-			result: spin(desaturate(@bg-color, 25%), 10);
-		}
+		#ui.fs-sizes-mixins(@font-size, @prefix);
 	}
 }

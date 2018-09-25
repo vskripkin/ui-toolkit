@@ -153,7 +153,7 @@
 			if (this.options.selector && !this.options.delegate_target && e && e.currentTarget !== e.delegateTarget)
 			{
 				this.target = e.currentTarget;
-				this.template.innerHTML = _getMessage.call(this) + _getCloseBtn.call(this);
+				this.template.innerHTML = _getCloseBtn.call(this) + _getMessage.call(this);
 				this.options.placeTo.update = true;
 				this.options.placeTo.target = this.target;
 			}
@@ -325,7 +325,14 @@
 		{
 			var xTrigger = this.options.trigger;
 
-			return this.options.closeBtn || this.options.self && (_.isString(xTrigger) ? (xTrigger.indexOf('click') > -1) : (xTrigger.hide && xTrigger.hide.indexOf('click') > -1)) ? '<span class="js-close close"></span>' : '';
+			return this.options.closeBtn || this.options.self &&
+				(
+					_.isString(xTrigger) ?
+						(xTrigger.indexOf('click') > -1) :
+						(xTrigger.hide && xTrigger.hide.indexOf('click') > -1)
+				)
+				&& '<span class="js-close close"></span>'
+				|| '';
 		},
 
 		_setHandlers = function (_nTarget, _aTriggers, _sAction)
