@@ -10,48 +10,49 @@
 
 		.__select-states()
 		{
-			.select-states();
-			#ui-select._states.select-states();
+			.select();
+			#ui-select._states.select();
 		}
 		.__arrow-states()
 		{
-			.arrow-states();
-			#ui-select._states.arrow-states();
+			.select-arrow();
+			#ui-select._states.select-arrow();
 		}
+
 		.__value-before-states()
 		{
-			.value-before-states();
-			#ui-select._states.value-before-states();
+			.value-before();
+			#ui-select._states.value-before();
 		}
 		.__value-after-states()
 		{
-			.value-after-states();
-			#ui-select._states.value-after-states();
+			.value-after();
+			#ui-select._states.value-after();
+		}
+
+		.__list-states()
+		{
+			.list();
+			#ui-select-options._list();
+		}
+		.__list-label-states()
+		{
+			.list-label();
+			#ui-select-options._list-label();
+		}
+		.__list-item()
+		{
+			.list-item();
+			#ui-select-options._list-item();
 		}
  
 		#ui-select.construct(@font-size, @padding-ver, @padding-hor);
 	}
 
-	.make-select-options(@postfix,
+	.select-options(@postfix,
 		@item-font-size:  0, @item-padding-ver:  0, @item-padding-hor:  0,
 		@label-font-size: 0, @label-padding-ver: 0, @label-padding-hor: 0)
 	{
-		.__list-states()
-		{
-			.list-states();
-			#ui-select-options._list-states();
-		}
-		.__label-states()
-		{
-			.label-states();
-			#ui-select-options._label-states();
-		}
-		.__item-states()
-		{
-			.item-states();
-			#ui-select-options._item-states();
-		}
-
 		#ui-select-options.construct(@postfix,
 			@item-font-size,  @item-padding-ver,  @item-padding-hor,
 			@label-font-size, @label-padding-ver, @label-padding-hor);
@@ -103,7 +104,7 @@
 	{
 		.__textfield
 		{
-			#ui._textfield.template();
+			#ui-textfield.template();
 		}
 
 		#ui-select.template();
@@ -138,7 +139,7 @@
 			{
 				.disabled() !important;
 			}
-			select[readonly] + & .__textfield
+			select:read-only + & .__textfield
 			{
 				.readonly() !important;
 			}
@@ -177,7 +178,7 @@
 			{
 				.disabled() !important;
 			}
-			select[readonly] + & .__arrow
+			select:read-only + & .__arrow
 			{
 				.readonly() !important;
 			}
@@ -203,7 +204,7 @@
 			{
 				.disabled() !important;
 			}
-			select[readonly] + & .__textfield ~ .__value:before
+			select:read-only + & .__textfield ~ .__value:before
 			{
 				.readonly() !important;
 			}
@@ -229,7 +230,7 @@
 			{
 				.disabled() !important;
 			}
-			select[readonly] + & .__textfield ~ .__value:after
+			select:read-only + & .__textfield ~ .__value:after
 			{
 				.readonly() !important;
 			}
@@ -251,7 +252,7 @@
 			cursor: not-allowed !important;
 		}
 
-		//for mobile devices
+		// for mobile devices
 		select
 		{
 			position: absolute;
@@ -274,7 +275,7 @@
 			height: 100%;
 			clip: auto;
 
-			&[readonly]
+			&:read-only
 			{
 				cursor: inherit !important;
 				color: transparent !important;

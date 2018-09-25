@@ -12,8 +12,8 @@
 
 @import 'globals/reset';
 @import 'globals/site';
-@import 'globals/keyframes';
 
+@import 'behaviors/keyframes';
 @import 'behaviors/visibility';
 @import 'grid/index';
 
@@ -26,3 +26,116 @@
 @import 'elements/textfield';
 @import 'elements/toast';
 @import 'elements/tooltip';
+
+.selectbox
+{
+	#ui.select(1.5rem, 1rem,
+		@postfix: -options,
+		@item-font-size:  1.5rem, @item-padding-ver:  0.9rem, @item-padding-hor:  1.8rem,
+		@label-font-size: 1.2rem, @label-padding-ver: 0.7rem, @label-padding-hor: 1.8rem);
+
+	.states()
+	{
+		.select()
+		{
+			.placeholder()
+			{
+				color: rgba(0, 0, 0, 0.5);
+				font-weight: 500;
+			}
+			.default()
+			{
+				color: #000;
+				border-width: 0 0 1px;
+				border-style: solid;
+				border-color: rgba(0,0,0,0.15);
+				box-shadow: none;
+			}
+			.focus()
+			{
+				border-color: @color-primary;
+				box-shadow: inset 0 -1px 0 0 @color-primary;
+			}
+			.valid()
+			{
+				border-color: green;
+				box-shadow: inset 0 -1px 0 0 green;
+			}
+			.invalid()
+			{
+				border-color: @color-error;
+				box-shadow: inset 0 -1px 0 0 @color-error;
+			}
+			.disabled()
+			{
+				color: #AAA;
+				border-style: dotted;
+				border-color: rgba(0,0,0,0.15);
+				box-shadow: none;
+			}
+			.opened()
+			{
+				.focus();
+			}
+		}
+		.select-arrow()
+		{
+			.default()
+			{
+				color: #757575;
+			}
+			.disabled()
+			{
+				color: #BBB;
+			}
+		}
+
+		.list()
+		{
+			.default()
+			{
+				z-index: 500 !important;
+				border-radius: 2px;
+				background: #FFF;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 2px 0 rgba(0, 0, 0, 0.12);
+
+				&:before, &:after
+				{
+					content: '';
+					display: block;
+					height: 1.2rem;
+					width: 100%;
+				}
+			}
+		}
+		.list-label()
+		{
+			.default()
+			{
+				color: rgba(0, 0, 0, 0.26);
+				border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+				&:first-child
+				{
+					border-top: none;
+				}
+			}
+		}
+		.list-item()
+		{
+			.default()
+			{
+				color: rgba(0, 0, 0, 0.87);
+			}
+			.hover()
+			{
+				background: #EEE;
+			}
+			.selected()
+			{
+				background: #EEE;
+				font-weight: 500;
+			}
+		}
+	}
+}

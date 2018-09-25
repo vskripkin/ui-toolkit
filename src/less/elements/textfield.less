@@ -35,7 +35,7 @@
 
 		@font-size: .default[font-size];
 
-		#ui-textfield.template(@has-addon);
+		#ui-textfield.template();
 		#ui-textfield.sizes(@font-size, @prefix, @has-addon);
 
 		&
@@ -74,7 +74,7 @@
 		}
 	}
 
-	.template(@has-addon)
+	.template()
 	{
 		display: block;
 		width: 100%;
@@ -181,7 +181,7 @@
 		}
 
 
-		.addon-left(@start: 0, @step: 0, @total: 5)
+		.addon-width(left, @start: 0, @step: 0, @total: 5)
 		{
 			&.@{prefix}addon-left
 			{
@@ -190,7 +190,7 @@
 				#ui-textfield-addon._width-classes(padding-left, @prefix, @start + @step, @step, @total);
 			}
 		}
-		.addon-right(@start: 0, @step: 0, @total: 5)
+		.addon-width(right, @start: 0, @step: 0, @total: 5)
 		{
 			&.@{prefix}addon-right
 			{
