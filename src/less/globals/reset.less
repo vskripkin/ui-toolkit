@@ -1,23 +1,26 @@
-@-webkit-viewport { width: device-width; zoom: 1; min-zoom: 1; max-zoom: 1; user-zoom: 1; }
-@-ms-viewport     { width: device-width; zoom: 1; min-zoom: 1; max-zoom: 1; user-zoom: 1; }
-@-o-viewport      { width: device-width; zoom: 1; min-zoom: 1; max-zoom: 1; user-zoom: 1; }
-@viewport         { width: device-width; zoom: 1; min-zoom: 1; max-zoom: 1; user-zoom: 1; }
+@viewport
+{
+	width: device-width;
+	zoom: 1;
+	min-zoom: 1;
+	max-zoom: 1;
+	user-zoom: 1;
+}
 
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strong, sub, sup, tt, var,
-b, u, i,
+html, body, div, span, object, iframe, img,
+h1, h2, h3, h4, h5, h6, p,
+a, abbr, address, small, big, cite,
+del, em, strong, sub, sup,
+s, i, b, q, tt,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
 input, button, textarea, select,
 figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video, main
+menu, nav, section, summary,
+time, mark, main
 {
 	box-sizing: border-box;
 	margin: 0;
@@ -39,7 +42,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, nav, sectio
 {
 	display: block;
 }
-audio, canvas, video
+canvas
 {
 	display: inline-block;
 }
@@ -67,33 +70,12 @@ html
 }
 
 
-video
-{
-	max-width: 100%;
-	height: auto;
-}
-
-abbr[title], dfn[title]
+abbr[title]
 {
 	border-bottom: none;
 	cursor: help;
 	text-decoration: underline;
 	text-decoration: underline dotted;
-}
-
-b, strong
-{
-	font-weight: bold;
-}
-
-del
-{
-	text-decoration: line-through;
-}
-
-dfn
-{
-	font-style: italic;
 }
 
 hr
@@ -109,31 +91,18 @@ hr
 }
 
 
-pre, code, kbd, samp
+b, strong
 {
-	font-family: monospace, monospace;
-	font-size: 1em;
+	font-weight: bold;
 }
-
-pre
+i, em
 {
-	white-space: pre;
-	white-space: pre-wrap;
-	white-space: pre-line;
-	word-wrap:   break-word;
+	font-style: italic;
 }
-
-
-blockquote, q
+s, del
 {
-	quotes: none;
+	text-decoration: line-through;
 }
-blockquote:before, blockquote:after, q:before, q:after
-{
-	content: '';
-	content: none;
-}
-
 
 small
 {
@@ -182,7 +151,7 @@ legend
 	white-space: normal;
 }
 
-a, button, input, label, select, textarea, video, [tabindex]
+a, button, input, label, select, textarea, [tabindex]
 {
 	touch-action: manipulation;
 	-ms-touch-action: manipulation;
@@ -207,6 +176,7 @@ button, input, select, textarea
 
 textarea
 {
+	padding: 0.8em;
 	overflow: auto;
 	vertical-align: top;
 	resize: vertical;
@@ -274,14 +244,4 @@ iframe
 {
 	max-width: 100%;
 	border: none;
-}
-iframe.hidden
-{
-	position: absolute !important;
-	visibility: hidden !important;
-	height: 0 !important;
-	width: 0 !important;
-	overflow: hidden !important;
-	opacity: 0 !important;
-	border: none !important;
 }

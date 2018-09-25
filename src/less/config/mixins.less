@@ -21,6 +21,22 @@
 		color: transparent !important;
 		text-shadow: none !important;
 	}
+	.disappear()
+	{
+		position: absolute !important;
+		visibility: hidden !important;
+		overflow:   hidden !important;
+		z-index: -100 !important;
+		top:  0;
+		left: 0;
+		width:  1px !important;
+		height: 1px !important;
+		clip:   rect(1px, 1px, 1px, 1px) !important;
+		margin:  0 !important;
+		opacity: 0 !important;
+		border: none !important;
+		pointer-events: none;
+	}
 
 	.spaces-no(...)
 	{

@@ -1,4 +1,4 @@
-#ui()
+#ui
 {
 	.button(@bg-color,
 		@color: @button-color,
@@ -186,6 +186,8 @@
 			{
 				color: transparent !important;
 
+				.keyframes(rotateRight);
+
 				&::after
 				{
 					content: '';
@@ -206,6 +208,8 @@
 					border-style: solid;
 					border-color: currentColor transparent transparent currentColor;
 					animation: rotateRight 1s infinite linear;
+
+					.keyframes(rotateRight);
 				}
 			}
 		}
@@ -216,7 +220,7 @@
 // Button template
 // --------------------------------------------------
 
-#ui-button()
+#ui-button
 {
 	.template(@font-size, @padding-ver, @padding-hor, @border-width)
 	{
