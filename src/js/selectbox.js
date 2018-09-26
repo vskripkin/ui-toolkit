@@ -9,6 +9,7 @@
 			above: '__above',
 			opened: '__opened',
 			input: '__textfield',
+			inner: '__inner',
 			value: '__value',
 			placeholder: '__placeholder',
 			addon: '__addon',
@@ -43,7 +44,7 @@
 		offset: 0,
 		dropdownAlign: 'start',
 		showSelectedIndex: false,
-		arrow: '<i class="material-icons">arrow_drop_down</i>',
+		arrow: '',
 
 		classes: {
 			select: '',
@@ -67,7 +68,7 @@
 			this.options = _getOptions.call(this, _options);
 			this.options.multiple = _select.multiple;
 			this.options.placeholder = this.options.placeholder || this.select.getAttribute('placeholder');
-			this.id = this.options.id || TYPE + (Math.random() * 1e7).toFixed(0) + '_' + (Math.random() * 1e7).toFixed(0);
+			this.id = this.options.id || TYPE + _.randomStr();
 
 			var that = this, sEvents, jTemplate;
 
@@ -77,10 +78,12 @@
 
 				jTemplate = $('<div class="' + this.classes.select + '" id="' + this.id + '">')
 							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
-								  '<span  class="' + Class.value + '"></span>' +
-								  '<span  class="' + Class.arrow +'">' + this.options.arrow + '</span>')
-							.insertBefore(this.select)
-							.append(this.select);
+								  '<span  class="' + Class.inner + '">' +
+									'<span class="' + Class.value + '"></span>' +
+									'<span class="' + Class.arrow +'">' + this.options.arrow + '</span>' +
+								  '</span>')
+							.insertAfter(this.select)
+							.prepend(this.select);
 			}
 			else
 			{
@@ -89,10 +92,13 @@
 				sEvents = 'mousedown.' + TYPE + ' keydown.' + TYPE + ' change.' + TYPE + (this.options.filter ? ' keyup.' + TYPE : '');
 				jTemplate = $('<div class="' + this.classes.select + '" id="' + this.id + '">')
 							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
-								  '<span class="' + Class.value +'"></span>' +
-								  '<span class="' + Class.arrow + '">' + this.options.arrow + '</span>')
-							.insertBefore(this.select)
-							.on(sEvents, _selectboxHandler.bind(this));
+								  '<span  class="' + Class.inner + '">' +
+									'<span class="' + Class.value +'"></span>' +
+									'<span class="' + Class.arrow + '">' + this.options.arrow + '</span>' + 
+								  '</span>')
+							.insertAfter(this.select)
+							.on(sEvents, _selectboxHandler.bind(this))
+							.prepend(this.select);
 			}
 
 			this.$ = {
@@ -164,7 +170,7 @@
 			if (this.options.units)
 			{
 				$('<span class="' + Class.addon + ' __' + this.options.unitsAlign + '">'
-					+ this.options.units + '</span>').insertAfter(this.$.input);
+					+ this.options.units + '</span>').insertBefore(this.$.valueCont);
 			}
 			if (this.options.width) this.$.container.width(this.options.width);
 			if (this.options.placeholder)
@@ -175,10 +181,20 @@
 			}
 			else this.refreshValue();
 
-			if (this.select.getAttribute('tabindex'))
+			if (_.isMobile)
 			{
-				this.$.input.setAttribute('tabindex', this.select.getAttribute('tabindex'));
+				this.$.input.setAttribute('tabindex', -1);
 			}
+			else
+			{
+				if (this.select.getAttribute('tabindex'))
+				{
+					this.$.input.setAttribute('tabindex', this.select.getAttribute('tabindex'));
+				}
+
+				this.select.setAttribute('tabindex', -1);
+			}
+
 			if (this.select.getAttribute('autofocus'))
 			{
 				this.setFocus();
@@ -543,8 +559,15 @@
 			if (this.isDisabled())
 			{
 				this.hide();
-				if (e.keyCode !== 9) this.setFocus();
-				return false;
+
+				// esc and tab
+				if (e.keyCode !== 9 && e.keyCode !== 27)
+				{
+					this.setFocus();
+					return false;
+				}
+
+				return true;
 			}
 
 			switch (e.type)

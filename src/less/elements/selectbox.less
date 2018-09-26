@@ -1,61 +1,9 @@
 #ui
 {
-	.select(
-		@font-size: 0,
-		@padding-ver: 0,
-		@padding-hor: 0)
+	.select(@font-size: 0, @postfix: ~'')
 	{
-		.states();
-		#ui-select._states();
-
-		.__select-states()
-		{
-			.select();
-			#ui-select._states.select();
-		}
-		.__arrow-states()
-		{
-			.select-arrow();
-			#ui-select._states.select-arrow();
-		}
-
-		.__value-before-states()
-		{
-			.value-before();
-			#ui-select._states.value-before();
-		}
-		.__value-after-states()
-		{
-			.value-after();
-			#ui-select._states.value-after();
-		}
-
-		.__list-states()
-		{
-			.list();
-			#ui-select-options._list();
-		}
-		.__list-label-states()
-		{
-			.list-label();
-			#ui-select-options._list-label();
-		}
-		.__list-item()
-		{
-			.list-item();
-			#ui-select-options._list-item();
-		}
- 
-		#ui-select.construct(@font-size, @padding-ver, @padding-hor);
-	}
-
-	.select-options(@postfix,
-		@item-font-size:  0, @item-padding-ver:  0, @item-padding-hor:  0,
-		@label-font-size: 0, @label-padding-ver: 0, @label-padding-hor: 0)
-	{
-		#ui-select-options.construct(@postfix,
-			@item-font-size,  @item-padding-ver,  @item-padding-hor,
-			@label-font-size, @label-padding-ver, @label-padding-hor);
+		#ui-select.construct(@font-size);
+		#ui-select-options.construct(@font-size, @postfix);
 	}
 }
 
@@ -63,7 +11,7 @@
 {
 	._states()
 	{
-		.select-states()
+		.select()
 		{
 			.placeholder() {};
 			.default() {};
@@ -73,7 +21,7 @@
 			.disabled() {};
 			.readonly() {};
 		}
-		.arrow-states()
+		.select-arrow()
 		{
 			.default() {};
 			.hover() {};
@@ -82,42 +30,38 @@
 			.disabled() {};
 			.readonly() {};
 		}
-		.value-before-states()
+		.value-before()
 		{
 			.default() {};
 			.hover() {};
 			.focus() {};
+			.opened() {};
 			.disabled() {};
 			.readonly() {};
 		}
-		.value-after-states()
+		.value-after()
 		{
 			.default() {};
 			.hover() {};
 			.focus() {};
+			.opened() {};
 			.disabled() {};
 			.readonly() {};
 		}
 	}
 
-	.construct(@font-size: 0, @padding-ver: 0, @padding-hor: 0)
+	.construct(@font-size)
 	{
-		.__textfield
-		{
-			#ui-textfield.template();
-		}
+		.states();
+		#ui-select._states();
 
-		#ui-select.template();
-
-		& when not (@font-size = 0)
-		{
-			#ui-select.size(@font-size, @padding-ver, @padding-hor);
-		}
+		#ui-select.template(@font-size);
 
 
 		&
 		{
-			.__select-states();
+			.select();
+			#ui-select._states.select();
 
 			.__textfield
 			{
@@ -144,19 +88,20 @@
 				.readonly() !important;
 			}
 
-			.__value, .__addon
-			{
-				.default();
-			}
 			.__value.__placeholder
 			{
 				.placeholder();
+			}
+			.__value, .__addon
+			{
+				.default();
 			}
 		}
 
 		&
 		{
-			.__arrow-states();
+			.select-arrow();
+			#ui-select._states.select-arrow();
 
 			.__arrow
 			{
@@ -186,7 +131,8 @@
 
 		&
 		{
-			.__value-before-states();
+			.value-before();
+			#ui-select._states.value-before();
 
 			.__value:before
 			{
@@ -212,7 +158,8 @@
 
 		&
 		{
-			.__value-after-states();
+			.value-after();
+			#ui-select._states.value-after();
 
 			.__value:after
 			{
@@ -237,11 +184,15 @@
 		}
 	}
 
-	.template()
+	.template(@font-size)
+	{
+		font-size: @font-size;
+	}
+	.template(...)
 	{
 		display: inline-block;
-		position: relative;
 		vertical-align: middle;
+		position: relative;
 		z-index: 1;
 		width: auto;
 		max-width: 100%;
@@ -249,7 +200,7 @@
 
 		select:disabled + &
 		{
-			cursor: not-allowed !important;
+			cursor: @textfield-disabled-cursor;
 		}
 
 		// for mobile devices
@@ -263,17 +214,19 @@
 			bottom: 0;
 			opacity: 0;
 			width: 100%;
+			height: 100%;
 		}
 
 		.__textfield
 		{
+			#ui-textfield.template();
+
 			position: absolute;
 			z-index: 1;
 			top: 0;
 			left: 0;
 			width: 100% !important;
 			height: 100%;
-			clip: auto;
 
 			&:read-only
 			{
@@ -282,66 +235,78 @@
 			}
 		}
 
-		.__value, .__addon
+		.__inner
 		{
-			background: transparent !important;
-			border-color: transparent !important;
-			box-shadow: none !important;
-			border-radius: 0 !important;
+			display: flex;
+			flex-flow: row nowrap;
+			min-width: auto;
+			max-width: 100%;
 		}
 
 		.__value
 		{
-			position: relative;
-			z-index: 2;
-			display: block;
-			pointer-events: none;
-			line-height: @line-height-normal;
-			white-space: nowrap;
-			text-align: left;
+			flex: 1 1 0%;
+		}
+		.__addon, .__arrow
+		{
+			flex: 0 0 auto;
+		}
+		.__addon.__left  { order: -1; }
+		.__addon.__right { order:  1; }
+		.__arrow         { order:  2; }
+
+		.__value, .__addon, .__arrow
+		{
+			width: auto;
+			min-width: auto;
+			max-width: 100%;
 			overflow: hidden;
-			text-overflow: ellipsis;
 		}
 
-		.__addon
+
+		.__value, .__addon
 		{
+			pointer-events: none;
 			position: relative;
 			z-index: 2;
-			pointer-events: none;
-			line-height: @line-height-normal !important;
-
+			line-height: @textfield-line-height !important;
+			border-radius: 0 !important;
+			border-color: transparent !important;
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+		.__value
+		{
+			text-align: left;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.__addon
+		{
 			&.__left
 			{
 				text-align: left;
-				float: left !important;
 				padding-right: 0.5em;
 			}
 			&.__right
 			{
 				text-align: right;
-				float: right !important;
 				padding-left: 0.5em;
 			}
 		}
 
 		.__arrow
 		{
-			position: absolute !important;
-			z-index: 1;
-			top: 0 !important;
-			right: 0 !important;
-			height: 100%;
-			overflow: hidden;
+			position: relative;
 			text-align: center;
 			transition: transform 0.3s ease;
 			transform: rotate(0deg);
-			will-change: transform;
 
-			#ui.nospaces-line(nowrap);
+			#ui.spaces-no(nowrap);
 
 			&:before, i
 			{
-				#ui.nospaces-line-item();
+				#ui.spaces-yes();
 				vertical-align: middle;
 			}
 			&:before
@@ -437,12 +402,17 @@
 
 #ui-select-options
 {
-	._list-states()
+	._list()
 	{
 		.default() {};
 		.is-nested() {};
 		.under() {};
 		.above() {};
+	}
+	._list-label()
+	{
+		.default() {};
+		.hover() {};
 	}
 	._item-states()
 	{
@@ -454,26 +424,32 @@
 		.has-nested() {};
 		.selected() {};
 	}
-	._label-states()
-	{
-		.default() {};
-		.hover() {};
-	}
 
-	.construct(@postfix,
-		@item-font-size:  0, @item-padding-ver:  0, @item-padding-hor:  0,
-		@label-font-size: 0, @label-padding-ver: 0, @label-padding-hor: 0)
+	.construct(@font-size, @postfix)
 	{
 		&@{postfix}
 		{
+			.__list()
+			{
+				.list();
+				#ui-select-options._list();
+			}
+			.__list-label()
+			{
+				.list-label();
+				#ui-select-options._list-label();
+			}
+			.__list-item()
+			{
+				.list-item();
+				#ui-select-options._item-states();
+			}
+
 			#ui-select-options.template();
-			#ui-select-options.size(
-				@item-font-size,  @item-padding-ver,  @item-padding-hor,
-				@label-font-size, @label-padding-ver, @label-padding-hor);
 
 			&
 			{
-				.__list-states();
+				.__list();
 
 				&
 				{
@@ -491,7 +467,7 @@
 
 			.__label
 			{
-				.__label-states();
+				.__list-label();
 
 				&
 				{
@@ -505,7 +481,7 @@
 
 			.__option
 			{
-				.__item-states();
+				.__list-item();
 
 				&
 				{
