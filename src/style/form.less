@@ -528,60 +528,66 @@
 				}
 			}
 
+
+			.__inner
+			{
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				min-width: auto;
+				max-width: 100%;
+			}
+			.__value           { flex: 1 1 0%;   }
+			.__addon, .__arrow { flex: 0 0 auto; }
+
+			.__addon.__left  { order: -1; }
+			.__addon.__right { order:  1; }
+			.__arrow         { order:  2; }
+
+			.__value, .__addon, .__arrow
+			{
+				display: block;
+				width: auto;
+				min-width: auto;
+				max-width: 100%;
+				overflow: hidden;
+			}
 			.__value, .__addon
 			{
-				background: transparent !important;
-				border-color: transparent !important;
-				box-shadow: none !important;
+				pointer-events: none;
+				position: relative;
+				z-index: 2;
+				line-height: @line-height-normal;
 				border-radius: 0 !important;
+				border-color: transparent !important;
+				background: transparent !important;
+				box-shadow: none !important;
 			}
-
 			.__value
 			{
-				position: relative;
-				z-index: 2;
-				display: block;
-				pointer-events: none;
-				line-height: @line-height-normal;
-				white-space: nowrap;
 				text-align: left;
-				overflow: hidden;
 				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
-
 			.__addon
 			{
-				position: relative;
-				z-index: 2;
-				pointer-events: none;
-				line-height: @line-height-normal !important;
-
 				&.__left
 				{
 					text-align: left;
-					float: left !important;
 					padding-right: 0.5em;
 				}
 				&.__right
 				{
 					text-align: right;
-					float: right !important;
 					padding-left: 0.5em;
 				}
 			}
-
 			.__arrow
 			{
-				position: absolute !important;
-				z-index: 1;
-				top: 0 !important;
-				right: 0 !important;
-				height: 100%;
-				overflow: hidden;
+				position: relative;
 				text-align: center;
 				transition: transform 0.3s ease;
 				transform: rotate(0deg);
-				will-change: transform;
 
 				#ui > .nospaces-line(nowrap);
 
@@ -600,6 +606,7 @@
 					line-height: 1;
 				}
 			}
+
 
 			.__value[data-before]:before
 			{
