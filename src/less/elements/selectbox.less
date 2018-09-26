@@ -1,9 +1,18 @@
 #ui
 {
-	.select(@font-size: 0, @postfix: ~'')
+	.select(
+		@font-size: @textfield-font-size,
+		@postfix: @selectbox-list-postfix,
+		@prefix: @selectbox-class-prefix)
 	{
 		#ui-select.construct(@font-size);
-		#ui-select-options.construct(@font-size, @postfix);
+
+		&-@{postfix}
+		{
+			#ui-select-options.construct(@font-size);
+		}
+
+		#ui-select.sizes(@font-size, @postfix, @prefix);
 	}
 }
 
@@ -61,7 +70,6 @@
 		&
 		{
 			.select();
-			#ui-select._states.select();
 
 			.__textfield
 			{
@@ -71,7 +79,7 @@
 			{
 				.hover();
 			}
-			.__textfield:focus
+			select:focus + .__textfield, .__textfield:focus
 			{
 				.focus();
 			}
@@ -79,11 +87,11 @@
 			{
 				.opened() !important;
 			}
-			select:disabled + & .__textfield
+			select:disabled + .__textfield
 			{
 				.disabled() !important;
 			}
-			select:read-only + & .__textfield
+			select:read-only + .__textfield
 			{
 				.readonly() !important;
 			}
@@ -101,7 +109,6 @@
 		&
 		{
 			.select-arrow();
-			#ui-select._states.select-arrow();
 
 			.__arrow
 			{
@@ -111,7 +118,7 @@
 			{
 				.hover();
 			}
-			& .__textfield:focus ~ .__arrow
+			select:focus ~ .__arrow, .__textfield:focus ~ .__arrow
 			{
 				.focus();
 			}
@@ -119,11 +126,11 @@
 			{
 				.opened() !important;
 			}
-			select:disabled + & .__arrow
+			select:disabled ~ .__arrow
 			{
 				.disabled() !important;
 			}
-			select:read-only + & .__arrow
+			select:read-only ~ .__arrow
 			{
 				.readonly() !important;
 			}
@@ -132,7 +139,6 @@
 		&
 		{
 			.value-before();
-			#ui-select._states.value-before();
 
 			.__value:before
 			{
@@ -142,15 +148,15 @@
 			{
 				.hover();
 			}
-			.__textfield:focus .__value:before
+			.__textfield:focus ~ .__value:before
 			{
 				.focus();
 			}
-			select:disabled + & .__textfield ~ .__value:before
+			select:disabled ~ .__value:before
 			{
 				.disabled() !important;
 			}
-			select:read-only + & .__textfield ~ .__value:before
+			select:read-only ~ .__value:before
 			{
 				.readonly() !important;
 			}
@@ -159,7 +165,6 @@
 		&
 		{
 			.value-after();
-			#ui-select._states.value-after();
 
 			.__value:after
 			{
@@ -169,26 +174,23 @@
 			{
 				.hover();
 			}
-			.__textfield:focus .__value:after
+			.__textfield:focus ~ .__value:after
 			{
 				.focus();
 			}
-			select:disabled + & .__textfield ~ .__value:after
+			select:disabled ~ .__value:after
 			{
 				.disabled() !important;
 			}
-			select:read-only + & .__textfield ~ .__value:after
+			select:read-only ~ .__value:after
 			{
 				.readonly() !important;
 			}
 		}
 	}
 
+
 	.template(@font-size)
-	{
-		font-size: @font-size;
-	}
-	.template(...)
 	{
 		display: inline-block;
 		vertical-align: middle;
@@ -196,18 +198,13 @@
 		z-index: 1;
 		width: auto;
 		max-width: 100%;
-		cursor: pointer;
-
-		select:disabled + &
-		{
-			cursor: @textfield-disabled-cursor;
-		}
+		font-size: @font-size;
 
 		// for mobile devices
 		select
 		{
 			position: absolute;
-			z-index: 1;
+			z-index: 2;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -227,33 +224,35 @@
 			left: 0;
 			width: 100% !important;
 			height: 100%;
+			font-size: 1em !important;
 
 			&:read-only
 			{
-				cursor: inherit !important;
+				cursor: pointer;
 				color: transparent !important;
 			}
 		}
+		select:disabled + .__textfield
+		{
+			cursor: @textfield-disabled-cursor;
+		}
+
 
 		.__inner
 		{
 			display: flex;
 			flex-flow: row nowrap;
+			align-items: center;
 			min-width: auto;
 			max-width: 100%;
 		}
+		.__value           { flex: 1 1 0%;   }
+		.__addon, .__arrow { flex: 0 0 auto; }
 
-		.__value
-		{
-			flex: 1 1 0%;
-		}
-		.__addon, .__arrow
-		{
-			flex: 0 0 auto;
-		}
 		.__addon.__left  { order: -1; }
 		.__addon.__right { order:  1; }
 		.__arrow         { order:  2; }
+
 
 		.__value, .__addon, .__arrow
 		{
@@ -261,9 +260,8 @@
 			min-width: auto;
 			max-width: 100%;
 			overflow: hidden;
+			font-size: 1em !important;
 		}
-
-
 		.__value, .__addon
 		{
 			pointer-events: none;
@@ -294,7 +292,6 @@
 				padding-left: 0.5em;
 			}
 		}
-
 		.__arrow
 		{
 			position: relative;
@@ -319,6 +316,7 @@
 				line-height: 1;
 			}
 		}
+
 
 		.__value[data-before]:before
 		{
@@ -354,166 +352,140 @@
 	}
 
 
-	.size(@fs: 0, @pv: 0, @ph: 0)
+	.sizes(@font-size, @postfix, @prefix)
 	{
-		& when not (@fs = 0)
-		{
-			#ui.size-custom(@fs, @pv, @ph);
+		#ui.fs-sizes(@font-size);
 
-			&
-			{
-				.normal();
-				#ui-select._size(@font-size, @padding-ver, @padding-hor, @height);
-			}
-			&.large
-			{
-				.large();
-				#ui-select._size(@font-size, @padding-ver, @padding-hor, @height);
-			}
-			&.small
-			{
-				.small();
-				#ui-select._size(@font-size, @padding-ver, @padding-hor, @height);
-			}
-		}
-	}
-	._size(@font-size, @padding-ver, @padding-hor, @height)
-	{
-		.__textfield, .__value, .__addon
-		{
-			font-size: @font-size;
-		}
-		&, .__textfield
-		{
-			padding: @padding-ver @height @padding-ver @padding-hor;
-		}
+		.size-nano()  { &.@{prefix}nano,  &-@{postfix}.@{prefix}nano  { font-size: @size-nano;  }}
+		.size-mini()  { &.@{prefix}mini,  &-@{postfix}.@{prefix}mini  { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{prefix}tiny,  &-@{postfix}.@{prefix}tiny  { font-size: @size-tiny;  }}
+		.size-small() { &.@{prefix}small, &-@{postfix}.@{prefix}small { font-size: @size-small; }}
 
-		.__arrow
-		{
-			width: @height;
+		.size-big()   { &.@{prefix}big,   &-@{postfix}.@{prefix}big   { font-size: @size-big;   }}
+		.size-large() { &.@{prefix}large, &-@{postfix}.@{prefix}large { font-size: @size-large; }}
+		.size-huge()  { &.@{prefix}huge,  &-@{postfix}.@{prefix}huge  { font-size: @size-huge;  }}
+		.size-great() { &.@{prefix}great, &-@{postfix}.@{prefix}great { font-size: @size-great; }}
 
-			.material-icons
-			{
-				font-size: @font-size * 1.6;
-			}
+		.size-apply()
+		{
+			.size-nano();
+			.size-mini();
+			.size-tiny();
+			.size-small();
+
+			.size-big();
+			.size-large();
+			.size-huge();
+			.size-great();
 		}
 	}
 }
 
 #ui-select-options
 {
-	._list()
+	._states()
 	{
-		.default() {};
-		.is-nested() {};
-		.under() {};
-		.above() {};
-	}
-	._list-label()
-	{
-		.default() {};
-		.hover() {};
-	}
-	._item-states()
-	{
-		.default() {};
-		.hover() {};
-		.disabled() {};
-
-		.in-optgroup() {};
-		.has-nested() {};
-		.selected() {};
-	}
-
-	.construct(@font-size, @postfix)
-	{
-		&@{postfix}
+		.list()
 		{
-			.__list()
-			{
-				.list();
-				#ui-select-options._list();
-			}
-			.__list-label()
-			{
-				.list-label();
-				#ui-select-options._list-label();
-			}
-			.__list-item()
-			{
-				.list-item();
-				#ui-select-options._item-states();
-			}
+			.default() {};
+			.under() {};
+			.above() {};
+		}
+		.list-label()
+		{
+			.default() {};
+			.hover() {};
+		}
+		.list-item()
+		{
+			.default() {};
+			.hover() {};
+			.disabled() {};
 
-			#ui-select-options.template();
+			.in-optgroup() {};
+			.has-nested() {};
+			.selected() {};
+		}
+	}
+
+	.construct(@font-size)
+	{
+		.states();
+		#ui-select-options._states();
+
+		#ui-select-options.template(@font-size);
+
+		&
+		{
+			.list();
+
+			&, ul
+			{
+				.default();
+			}
+			&.__under
+			{
+				.under();
+			}
+			&.__above
+			{
+				.above();
+			}
+		}
+
+		.__label
+		{
+			.list-label();
 
 			&
 			{
-				.__list();
-
-				&
-				{
-					.default();
-				}
-				&.__under
-				{
-					.under();
-				}
-				&.__above
-				{
-					.above();
-				}
+				.default();
 			}
-
-			.__label
+			&:hover
 			{
-				.__list-label();
-
-				&
-				{
-					.default();
-				}
-				&:hover
-				{
-					.hover();
-				}
+				.hover();
 			}
+		}
 
-			.__option
+		.__option
+		{
+			.list-item();
+
+			&
 			{
-				.__list-item();
-
-				&
-				{
-					.default();
-				}
-				&:hover
-				{
-					.hover();
-				}
-				&.__in-optgroup
-				{
-					.in-optgroup();
-				}
-				&.__has-nested
-				{
-					.has-nested();
-				}
-				&.__selected
-				{
-					.selected();
-				}
-				&[disabled]
-				{
-					.disabled();
-				}
+				.default();
+			}
+			&:hover
+			{
+				.hover();
+			}
+			&.__in-optgroup
+			{
+				.in-optgroup();
+			}
+			&.__has-nested
+			{
+				.has-nested();
+			}
+			&.__selected
+			{
+				.selected();
+			}
+			&:disabled
+			{
+				.disabled();
 			}
 		}
 	}
 
-	.template()
+	.template(@font-size)
 	{
 		#ui.dropdown-list();
+
+		&
+		{
+			font-size: @font-size;
+		}
 
 		&, ul
 		{
@@ -522,8 +494,9 @@
 			overflow-y: auto;
 			min-width: 0;
 			max-height: 40rem;
+			max-height: 40vh;
 
-			&.__with-attr.__option:after
+			&.__with-attr > .__option:after
 			{
 				content: ' - 'attr(data-value);
 				font-size: 0.9em;
@@ -546,7 +519,7 @@
 		{
 			counter-reset: option_num;
 
-			&.__option
+			& > .__option
 			{
 				display: table;
 				width: 100%;
@@ -570,60 +543,10 @@
 			{
 				max-width: none !important;
 
-				&.option
+				& > .option
 				{
 					white-space: nowrap;
 					word-break: normal;
-				}
-			}
-		}
-	}
-
-
-	.size(@item-fs:  0, @item-pv:  0, @item-ph:  0,
-		  @label-fs: 0, @label-pv: 0, @label-ph: 0)
-	{
-		& when not (@label-fs = 0)
-		{
-			#ui.size-font-padding(@label-fs, @label-pv, @label-ph);
-
-			&       .__label { @normal(); }
-			&.large .__label { @large();  }
-			&.small .__label { @small();  }
-		}
-		& when not (@item-fs = 0)
-		{
-			#ui.size-font-padding(@item-fs, @item-pv, @item-ph);
-			#ui.size-custom(@item-fs, @item-pv, @item-ph);
-
-			& .__option
-			{
-				@normal();
-
-				&.__with-nested
-				{
-					.normal();
-					padding-right: @height;
-				}
-			}
-			&.large .__option
-			{
-				@large();
-
-				&.__with-nested
-				{
-					.large();
-					padding-right: @height;
-				}
-			}
-			&.small .__option
-			{
-				@small();
-
-				&.__with-nested
-				{
-					.small();
-					padding-right: @height;
 				}
 			}
 		}

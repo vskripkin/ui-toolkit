@@ -212,6 +212,11 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
 	transition: background-color 0s linear 3600s, color 0s linear 3600s;
 }
 
+input::-ms-clear
+{
+	display: none;
+}
+
 [type="search"]::-webkit-search-decoration,
 [type="search"]::-webkit-search-cancel-button
 {

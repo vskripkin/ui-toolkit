@@ -29,10 +29,9 @@
 
 .selectbox
 {
-	#ui.select(1.5rem, 1rem,
-		@postfix: -options,
-		@item-font-size:  1.5rem, @item-padding-ver:  0.9rem, @item-padding-hor:  1.8rem,
-		@label-font-size: 1.2rem, @label-padding-ver: 0.7rem, @label-padding-hor: 1.8rem);
+	#ui.select();
+
+	.size-large();
 
 	.states()
 	{
@@ -98,6 +97,11 @@
 				border-radius: 2px;
 				background: #FFF;
 				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 2px 0 rgba(0, 0, 0, 0.12);
+
+				& ul
+				{
+					margin-top: -1.2rem;
+				}
 
 				&:before, &:after
 				{

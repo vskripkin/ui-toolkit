@@ -77,13 +77,12 @@
 				_select.style.setProperty('display', 'block', 'important');
 
 				jTemplate = $('<div class="' + this.classes.select + '" id="' + this.id + '">')
-							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
-								  '<span  class="' + Class.inner + '">' +
-									'<span class="' + Class.value + '"></span>' +
-									'<span class="' + Class.arrow +'">' + this.options.arrow + '</span>' +
-								  '</span>')
-							.insertAfter(this.select)
-							.prepend(this.select);
+							.html('<div class="' + Class.inner + '">' +
+									'<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
+									'<span  class="' + Class.value + '"></span>' +
+									'<span  class="' + Class.arrow +'">' + this.options.arrow + '</span>' +
+								  '</div>')
+							.insertAfter(this.select);
 			}
 			else
 			{
@@ -91,15 +90,16 @@
 
 				sEvents = 'mousedown.' + TYPE + ' keydown.' + TYPE + ' change.' + TYPE + (this.options.filter ? ' keyup.' + TYPE : '');
 				jTemplate = $('<div class="' + this.classes.select + '" id="' + this.id + '">')
-							.html('<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
-								  '<span  class="' + Class.inner + '">' +
-									'<span class="' + Class.value +'"></span>' +
-									'<span class="' + Class.arrow + '">' + this.options.arrow + '</span>' + 
-								  '</span>')
+							.html('<div class="' + Class.inner + '">' +
+									'<input class="' + Class.input + '" type="text" readonly="readonly" autocomplete="off">' +
+									'<span  class="' + Class.value +'"></span>' +
+									'<span  class="' + Class.arrow + '">' + this.options.arrow + '</span>' +
+								  '</div>')
 							.insertAfter(this.select)
-							.on(sEvents, _selectboxHandler.bind(this))
-							.prepend(this.select);
+							.on(sEvents, _selectboxHandler.bind(this));
 			}
+
+			jTemplate.find('.' + Class.inner).prepend(this.select);
 
 			this.$ = {
 				container : jTemplate,
@@ -590,7 +590,7 @@
 						this.$.open ? this.hide() : this.show();
 					}
 
-					this.$.container.trigger('mousedown', [true]);
+					this.$.container.trigger('mousedown', true);
 
 					break;
 
