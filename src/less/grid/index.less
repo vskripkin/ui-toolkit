@@ -26,7 +26,7 @@
 
 	.collect() when (@use-grid)
 	{
-		#ui-grid-used.used();
+		#ui-grid-base.used();
 
 		each(@break-points-order, .(@bp-name)
 		{
@@ -39,7 +39,7 @@
 
 			@css-up:
 			{
-				#ui-grid-used.used(@bp-name);
+				#ui-grid-base.used(@bp-name);
 
 				#ui-grid-base.generate-css(@bp-class-up);
 				#ui-grid-cols.generate-css(@bp-class-up);
