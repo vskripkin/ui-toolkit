@@ -1,7 +1,7 @@
 #ui
 {
 	.select(
-		@font-size: @textfield-font-size,
+		@font-size: @selectbox-font-size,
 		@postfix: @selectbox-list-postfix,
 		@prefix: @selectbox-class-prefix)
 	{
@@ -199,6 +199,7 @@
 		width: auto;
 		max-width: 100%;
 		font-size: @font-size;
+		line-height: @selectbox-line-height;
 
 		// for mobile devices
 		select
@@ -225,6 +226,7 @@
 			width: 100% !important;
 			height: 100%;
 			font-size: 1em !important;
+			line-height: inherit !important;
 
 			&:read-only
 			{
@@ -234,7 +236,14 @@
 		}
 		select:disabled + .__textfield
 		{
-			cursor: @textfield-disabled-cursor;
+			cursor: @selectbox-disabled-cursor;
+		}
+		select:disabled + .__textfield,
+		select:disabled ~ .__value,
+		select:disabled ~ .__addon,
+		select:disabled ~ .__arrow
+		{
+			opacity: @selectbox-disabled-opacity !important;
 		}
 
 
@@ -245,6 +254,7 @@
 			align-items: center;
 			min-width: auto;
 			max-width: 100%;
+			height: 100%;
 		}
 		.__value           { flex: 1 1 0%;   }
 		.__addon, .__arrow { flex: 0 0 auto; }
@@ -268,7 +278,7 @@
 			pointer-events: none;
 			position: relative;
 			z-index: 2;
-			line-height: @textfield-line-height !important;
+			line-height: @selectbox-line-height !important;
 			border-radius: 0 !important;
 			border-color: transparent !important;
 			background: transparent !important;
@@ -295,26 +305,29 @@
 		}
 		.__arrow
 		{
+			align-self: stretch;
 			position: relative;
+			min-height: 100%;
 			text-align: center;
 			transition: transform 0.3s ease;
 			transform: rotate(0deg);
 
-			#ui.spaces-no(nowrap);
+			width: (1em * @selectbox-line-height);
 
-			&:before, i
-			{
-				#ui.spaces-yes();
-				vertical-align: middle;
-			}
-			&:before
+			&:after
 			{
 				content: '';
-				height: 100%;
-			}
-			i
-			{
-				line-height: 1;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 0;
+				height: 0;
+				margin-top: -0.17857em;
+				margin-left: -0.35714em;
+
+				border-width: 0.35714em 0.35714em 0;
+				border-style: solid;
+				border-color: currentColor transparent transparent;
 			}
 		}
 

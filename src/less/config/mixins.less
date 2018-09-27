@@ -48,17 +48,14 @@
 	{
 		white-space: nowrap;
 	}
-	.spaces-yes(...)
+	.spaces-yes(@fs: @font-size-base, @lh: @line-height-normal, @wp: normal, @valign: top)
 	{
-		font-size: @font-size-base;
-		line-height: @line-height-normal;
-		letter-spacing: normal;
 		display: inline-block;
-	}
-	.spaces-yes(@valign: top, @white-space: normal)
-	{
 		vertical-align: @valign;
-		white-space: @white-space;
+		font-size: @fs;
+		line-height: @lh;
+		white-space: @wp;
+		letter-spacing: normal;
 	}
 
 	.table(@width: 100%)
