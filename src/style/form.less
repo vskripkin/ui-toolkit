@@ -536,6 +536,7 @@
 				align-items: center;
 				min-width: auto;
 				max-width: 100%;
+				height: 100%;
 			}
 			.__value           { flex: 1 1 0%;   }
 			.__addon, .__arrow { flex: 0 0 auto; }
@@ -584,26 +585,29 @@
 			}
 			.__arrow
 			{
+				align-self: stretch;
 				position: relative;
+				min-height: 100%;
 				text-align: center;
 				transition: transform 0.3s ease;
 				transform: rotate(0deg);
 
-				#ui > .nospaces-line(nowrap);
+				width: (1em * @line-height-normal);
 
-				&:before, i
-				{
-					#ui > .nospaces-line-item();
-					vertical-align: middle;
-				}
-				&:before
+				&:after
 				{
 					content: '';
-					height: 100%;
-				}
-				i
-				{
-					line-height: 1;
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					width: 0;
+					height: 0;
+					margin-top: -0.17857em;
+					margin-left: -0.35714em;
+
+					border-width: 0.35714em 0.35714em 0;
+					border-style: solid;
+					border-color: currentColor transparent transparent;
 				}
 			}
 
@@ -674,7 +678,7 @@
 			}
 			&, .__textfield
 			{
-				padding: @padding-ver @height @padding-ver @padding-hor;
+				padding: @padding-ver @padding-hor;
 			}
 
 			.__arrow
