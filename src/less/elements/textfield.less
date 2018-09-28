@@ -1,26 +1,28 @@
 .addon(@foo: bar) when (default()) { has: false; }
+.hint(@foo: bar)  when (default()) { has: false; }
 
-#ui
+#ui()
 {
-	.textfield(@prefix: @textfield-class-prefix)
+	.textfield(@font-size: @textfield-font-size, @prefix: @textfield-class-prefix)
 	{
 		@has-addon: #ui-textfield-addon.check()[has];
+		@has-hint: #ui-textfield-hint.check()[has];
 
-		#ui-textfield.construct(@has-addon, @prefix);
-		#ui-textfield-addon.construct(@has-addon, @prefix);
+		#ui-textfield.construct(@font-size, @prefix);
+		#ui-textfield-hint.construct(@font-size, @prefix, @has-hint);
+		#ui-textfield-addon.construct(@font-size, @prefix, @has-addon);
+
+		#ui-textfield-mixins.sizes(@font-size, @prefix, @has-addon, @has-hint);
+		#ui-textfield-mixins.addon-width(@prefix, @has-addon);
 	}
 }
 
-#ui-textfield
+#ui-textfield()
 {
 	._states()
 	{
-		.default()
-		{
-			font-size: @textfield-font-size;
-		}
-
 		.placeholder() {};
+		.default()  {};
 		.focus()    {};
 		.valid()    {};
 		.invalid()  {};
@@ -28,53 +30,52 @@
 		.readonly() {};
 	}
 
-	.construct(@has-addon, @prefix)
+	.construct(@font-size, @prefix)
 	{
 		#ui-textfield._states();
 		.states();
 
-		@font-size: .default[font-size];
+		#ui-textfield.template(@font-size);
 
-		#ui-textfield.template();
-		#ui-textfield.sizes(@font-size, @prefix, @has-addon);
 
 		&
 		{
-			&
-			{
-				.default();
-			}
-			&::placeholder
-			{
-				.placeholder();
-			}
-			&:focus, &.@{prefix}focus
-			{
-				.focus();
-			}
-			&.@{prefix}valid, &.@{prefix}valid:focus
-			{
-				.valid();
-			}
-			&.@{prefix}invalid, &.@{prefix}invalid:focus
-			{
-				.invalid();
-			}
-			&:disabled
-			{
-				opacity: @textfield-disabled-opacity !important;
-				cursor:  @textfield-disabled-cursor;
+			.default();
+		}
+		&::placeholder
+		{
+			.placeholder();
+		}
+		&:focus, &.@{prefix}focus
+		{
+			.focus();
+		}
+		&.@{prefix}valid, &.@{prefix}valid:focus
+		{
+			.valid();
+		}
+		&.@{prefix}invalid, &.@{prefix}invalid:focus
+		{
+			.invalid();
+		}
+		&:disabled
+		{
+			opacity: @textfield-disabled-opacity !important;
+			cursor:  @textfield-disabled-cursor;
 
-				.disabled() !important;
-			}
-			&:read-only
-			{
-				.readonly();
-			}
+			.disabled() !important;
+		}
+		&:read-only
+		{
+			.readonly();
 		}
 	}
 
-	.template()
+	.template(@font-size)
+	{
+		font-size: @font-size;
+	}
+	.template(...)
 	{
 		display: block;
 		width: 100%;
@@ -90,12 +91,184 @@
 		border: none;
 		background: transparent;
 	}
+}
 
-	.sizes(@font-size, @prefix, @has-addon) when (@has-addon = false)
+#ui-textfield-addon()
+{
+	.check()
+	{
+		has: true;
+		.addon();
+	}
+
+	._states()
+	{
+		.default()  {};
+		.focus()    {};
+		.valid()    {};
+		.invalid()  {};
+		.disabled() {};
+		.readonly() {};
+	}
+
+	.construct(@font-size, @prefix, @enable) when (@enable)
+	{
+		#ui-textfield-addon._states();
+		.addon();
+
+		#ui-textfield-addon.template(@font-size, @prefix);
+
+
+		& ~ .@{prefix}addon
+		{
+			.default();
+		}
+		&:focus ~ .@{prefix}addon,
+		&.@{prefix}focus ~ .@{prefix}addon
+		{
+			.focus();
+		}
+		&.@{prefix}valid ~ .@{prefix}addon,
+		&.@{prefix}valid:focus ~ .@{prefix}addon
+		{
+			.valid();
+		}
+		&.@{prefix}invalid ~ .@{prefix}addon,
+		&.@{prefix}invalid:focus ~ .@{prefix}addon
+		{
+			.invalid();
+		}
+		&:disabled ~ .@{prefix}addon
+		{
+			.disabled() !important;
+		}
+		&:read-only ~ .@{prefix}addon
+		{
+			.readonly();
+		}
+	}
+
+	.template(@font-size, @prefix, @postfix: @textfield-cont-postfix)
+	{
+		&-@{postfix}
+		{
+			display: block;
+			position: relative;
+			z-index: 1;
+		}
+
+		& ~ .@{prefix}addon
+		{
+			display: block;
+			position: absolute;
+			top: 0;
+			z-index: 1;
+			font-family: inherit;
+			font-size: @font-size;
+			line-height: @textfield-line-height;
+			text-align: center;
+			white-space: nowrap;
+			pointer-events: none;
+
+			background: transparent !important;
+			border-color: transparent !important;
+			box-shadow: none !important;
+
+			&.@{prefix}left
+			{
+				left: 0;
+				text-align: left !important;
+				padding-right: 0 !important;
+			}
+			&.@{prefix}right
+			{
+				right: 0;
+				text-align: right !important;
+				padding-left: 0 !important;
+			}
+		}
+	}
+}
+
+#ui-textfield-hint()
+{
+	.check()
+	{
+		has: true;
+		.hint();
+	}
+
+	._states()
+	{
+		.default()  {};
+		.focus()    {};
+		.valid()    {};
+		.invalid()  {};
+		.disabled() {};
+		.readonly() {};
+	}
+
+	.construct(@font-size, @prefix, @enable) when (@enable)
+	{
+		#ui-textfield-hint._states();
+		.hint();
+
+		#ui-textfield-hint.template(@font-size, @prefix);
+
+
+		& ~ .@{prefix}hint, & ~ .@{prefix}error
+		{
+			.default();
+		}
+		&:focus ~ .@{prefix}hint,  &.@{prefix}focus ~ .@{prefix}hint,
+		&:focus ~ .@{prefix}error, &.@{prefix}focus ~ .@{prefix}error
+		{
+			.focus();
+		}
+		&.@{prefix}valid ~ .@{prefix}hint, &.@{prefix}valid:focus ~ .@{prefix}hint
+		{
+			.valid();
+		}
+		&.@{prefix}invalid ~ .@{prefix}error, &.@{prefix}invalid:focus ~ .@{prefix}error
+		{
+			.invalid();
+		}
+		&:disabled ~ .@{prefix}hint
+		{
+			.disabled() !important;
+		}
+		&:read-only ~ .@{prefix}hint
+		{
+			.readonly();
+		}
+	}
+
+	.template(@font-size, @prefix)
+	{
+		& ~ .@{prefix}hint, & ~ .@{prefix}error
+		{
+			display: block;
+		}
+
+		& ~ .@{prefix}error, &.@{prefix}invalid ~ .@{prefix}error ~ .@{prefix}hint
+		{
+			display: none !important;
+		}
+		&.@{prefix}invalid ~ .@{prefix}error
+		{
+			display: block !important;
+		}
+	}
+}
+
+
+#ui-textfield-mixins()
+{
+	.sizes(@font-size, @prefix, @has-addon, @has-hint) when (@has-addon = false)
 	{
 		#ui.fs-sizes-mixins(@font-size, @prefix);
 	}
-	.sizes(@font-size, @prefix, @has-addon) when (@has-addon = true)
+	.sizes(@font-size, @prefix, @has-addon, @has-hint) when (@has-addon = true)
 	{
 		#ui.fs-sizes(@font-size);
 
@@ -122,133 +295,36 @@
 			.size-great();
 		}
 	}
-}
 
-#ui-textfield-addon
-{
-	.check()
+
+	.addon-width(@prefix, @has-addon) when (@has-addon = true)
 	{
-		has: true;
-		.addon();
-	}
-
-	._states()
-	{
-		.default()
+		.addon-width(left, @start: 1em, @step: 0.5em, @total: 5)
 		{
-			#ui-textfield._states.default();
-		}
-
-		.focus()    {};
-		.valid()    {};
-		.invalid()  {};
-		.disabled() {};
-		.readonly() {};
-	}
-
-	.construct(@enable, @prefix) when (@enable)
-	{
-		#ui-textfield-addon._states();
-		.addon();
-
-		@font-size: .default[font-size];
-
-		#ui-textfield-addon.template(@font-size, @prefix);
-
-		& ~ .@{prefix}addon
-		{
-			.default();
-		}
-		&:focus ~ .@{prefix}addon, &.@{prefix}focus ~ .@{prefix}addon
-		{
-			.focus();
-		}
-		&.@{prefix}valid ~ .@{prefix}addon, &.@{prefix}valid:focus ~ .@{prefix}addon
-		{
-			.valid();
-		}
-		&.@{prefix}invalid ~ .@{prefix}addon, &.@{prefix}invalid:focus ~ .@{prefix}addon
-		{
-			.invalid();
-		}
-		&:disabled ~ .@{prefix}addon
-		{
-			.disabled() !important;
-		}
-		&:read-only ~ .@{prefix}addon
-		{
-			.readonly();
-		}
-
-
-		.addon-width(left, @start: 0, @step: 0, @total: 5)
-		{
-			&.@{prefix}addon-left
+			&.@{prefix}pad-l
 			{
 				padding-left: @start;
 
-				#ui-textfield-addon._width-classes(padding-left, @prefix, @start + @step, @step, @total);
+				#ui-textfield-mixins._width-classes(padding-left, @prefix, @start + @step, @step, @total);
 			}
 		}
-		.addon-width(right, @start: 0, @step: 0, @total: 5)
+		.addon-width(right, @start: 1em, @step: 0.5em, @total: 5)
 		{
-			&.@{prefix}addon-right
+			&.@{prefix}pad-r
 			{
 				padding-right: @start;
 
-				#ui-textfield-addon._width-classes(padding-right, @prefix, @start + @step, @step, @total);
+				#ui-textfield-mixins._width-classes(padding-right, @prefix, @start + @step, @step, @total);
 			}
 		}
 	}
-
-	.template(@font-size, @prefix, @postfix: @textfield-cont-postfix)
-	{
-		&.@{prefix}addon-left ~ .@{prefix}addon
-		{
-			left: 0;
-			text-align: left !important;
-			padding-right: 0 !important;
-		}
-		&.@{prefix}addon-right ~ .@{prefix}addon
-		{
-			right: 0;
-			text-align: right !important;
-			padding-left: 0 !important;
-		}
-
-		&-@{postfix}
-		{
-			display: block;
-			position: relative;
-			z-index: 1;
-
-			.@{prefix}addon
-			{
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				z-index: 1;
-				font-family: inherit;
-				line-height: @textfield-line-height;
-				text-align: center;
-				white-space: nowrap;
-				pointer-events: none;
-
-				background: transparent !important;
-				border-color: transparent !important;
-				box-shadow: none !important;
-			}
-		}
-	}
-
-
 	._width-classes(@prop, @prefix, @value, @step, @total, @curr: 1) when (@curr <= @total)
 	{
-		&.@{prefix}w@{curr}
+		&@{curr}
 		{
 			@{prop}: @value;
 		}
 
-		#ui-textfield-addon._width-classes(@prop, @prefix, @value + @step, @step, @total, @curr + 1);
+		#ui-textfield-mixins._width-classes(@prop, @prefix, @value + @step, @step, @total, @curr + 1);
 	}
 }
