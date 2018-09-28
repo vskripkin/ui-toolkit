@@ -159,25 +159,17 @@
 @bp-xlarge-class:  xlarge;
 @bp-xxlarge-class: xxlarge;
 
-@bp-small:  540px;
-@bp-medium: 992px;
-@bp-large:  1399px;
-@bp-xlarge: 2199px;
+@bp-small-from:      0px;
+@bp-medium-from:   600px;
+@bp-large-from:   1000px;
+@bp-xlarge-from:  1400px;
+@bp-xxlarge-from: 1900px;
 
-@bp-small-from:    0px;
-@bp-small-to:      @bp-small;
-
-@bp-medium-from:  (@bp-small + 1);
-@bp-medium-to:     @bp-medium;
-
-@bp-large-from:   (@bp-medium + 1);
-@bp-large-to:      @bp-large;
-
-@bp-xlarge-from:  (@bp-large + 1);
-@bp-xlarge-to:     @bp-xlarge;
-
-@bp-xxlarge-from: (@bp-xlarge + 1);
-@bp-xxlarge-to:    0px;
+@bp-small-to:   @bp-medium-from  - 1;
+@bp-medium-to:  @bp-large-from   - 1;
+@bp-large-to:   @bp-xlarge-from  - 1;
+@bp-xlarge-to:  @bp-xxlarge-from - 1;
+@bp-xxlarge-to: 0px;
 
 
 .break-points()
