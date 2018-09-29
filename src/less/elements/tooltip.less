@@ -1,20 +1,27 @@
 #ui()
 {
-	.tooltip(@bg-color,
-		@color: @tooltip-color,
-		@hover: @tooltip-hover-color-bg,
-		@font-size: @tooltip-font-size,
-		@pad-ver: @tooltip-padding-ver,
-		@pad-hor: @tooltip-padding-hor,
-		@border-width: @tooltip-border-width,
-		@prefix: @tooltip-class-prefix)
+	.tooltip()
 	{
-		#ui-tooltip.construct(@bg-color, @color, @font-size, @pad-ver, @pad-hor, @border-width, @prefix);
+		.params();
+		#ui-tooltip._params();
+
+		#ui-tooltip.construct(@bg-color, @color, @font-size, @padding-ver, @padding-hor, @border-width, @prefix);
 	}
 }
 
 #ui-tooltip()
 {
+	._params()
+	{
+		@bg-color:     rgba(255,255,255,0);
+		@color:        @tooltip-color;
+		@hover:        @tooltip-hover-color-bg;
+		@font-size:    @tooltip-font-size;
+		@padding-ver:  @tooltip-padding-ver;
+		@padding-hor:  @tooltip-padding-hor;
+		@border-width: @tooltip-border-width;
+		@prefix:       @tooltip-class-prefix;
+	}
 	._states()
 	{
 		.default() {};

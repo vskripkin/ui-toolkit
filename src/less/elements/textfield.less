@@ -1,12 +1,11 @@
 .label(@foo: bar) when (default()) { has: false; }
 .addon(@foo: bar) when (default()) { has: false; }
 .hint(@foo:  bar) when (default()) { has: false; }
-.params(...) {};
 
 
 #ui()
 {
-	.textfield(@prefix: @textfield-class-prefix)
+	.textfield()
 	{
 		@has-label: #ui-textfield-label.check()[has];
 		@has-addon: #ui-textfield-addon.check()[has];
@@ -15,19 +14,20 @@
 		.params();
 		#ui-textfield._params();
 
+		@pre: @prefix;
 		@fs: @font-size;
 		@mb: @margin-bottom;
 		@pt: @padding-top;
 		@pb: @padding-bottom;
 		@ph: @padding-hor;
 
-		#ui-textfield.construct(@prefix, @fs, @mb, @pt, @pb, @ph);
-		#ui-textfield-label.construct(@prefix, @has-label, @fs, @pt, @pb, @ph);
-		#ui-textfield-addon.construct(@prefix, @has-addon, @fs, @pt, @pb, @ph);
-		#ui-textfield-hint.construct(@prefix, @has-hint, @fs);
+		#ui-textfield.construct(@pre, @fs, @mb, @pt, @pb, @ph);
+		#ui-textfield-label.construct(@pre, @has-label, @fs, @pt, @pb, @ph);
+		#ui-textfield-addon.construct(@pre, @has-addon, @fs, @pt, @pb, @ph);
+		#ui-textfield-hint.construct(@pre, @has-hint, @fs);
 
-		#ui-textfield-mixins.sizes(@fs, @prefix, @has-label, @has-addon, @has-hint);
-		#ui-textfield-mixins.addon-width(@prefix, @has-label, @has-addon);
+		#ui-textfield-mixins.sizes(@fs, @pre, @has-label, @has-addon, @has-hint);
+		#ui-textfield-mixins.addon-width(@pre, @has-label, @has-addon);
 
 		& when (@margin-bottom > 0)
 		{
@@ -39,7 +39,7 @@
 		{
 			@pad-ver-min: if(@pt > @pb, @pb, @pt);
 
-			&.@{prefix}thin
+			&.@{pre}thin
 			{
 				padding-left:  @pad-ver-min;
 				padding-right: @pad-ver-min;
@@ -47,7 +47,7 @@
 
 			& when (@has-label)
 			{
-				&.@{prefix}thin ~ .@{prefix}label
+				&.@{pre}thin ~ .@{pre}label
 				{
 					padding-left:  @pad-ver-min;
 					padding-right: @pad-ver-min;
@@ -55,11 +55,11 @@
 			}
 			& when (@has-addon)
 			{
-				& ~ .@{prefix}addon.@{prefix}thin.@{prefix}left
+				& ~ .@{pre}addon.@{pre}thin.@{pre}left
 				{
 					padding-left: @pad-ver-min;
 				}
-				& ~ .@{prefix}addon.@{prefix}thin.@{prefix}right
+				& ~ .@{pre}addon.@{pre}thin.@{pre}right
 				{
 					padding-right: @pad-ver-min;
 				}
@@ -73,7 +73,7 @@
 			}
 			& when (@has-hint)
 			{
-				& ~ .@{prefix}hint, & ~ .@{prefix}error
+				& ~ .@{pre}hint, & ~ .@{pre}error
 				{
 					@rem: round(@fs * @textfield-hint-font-size-rate * @textfield-line-height, 3);
 					@em: @textfield-hint-padding-top + @textfield-hint-padding-bottom;
@@ -90,11 +90,12 @@
 {
 	._params()
 	{
-		@font-size: @textfield-font-size;
-		@margin-bottom: @textfield-margin-bottom;
-		@padding-top: @textfield-padding-top;
+		@prefix:         @textfield-class-prefix;
+		@font-size:      @textfield-font-size;
+		@margin-bottom:  @textfield-margin-bottom;
+		@padding-top:    @textfield-padding-top;
 		@padding-bottom: @textfield-padding-bottom;
-		@padding-hor: @textfield-padding-hor;
+		@padding-hor:    @textfield-padding-hor;
 	}
 	._states()
 	{
@@ -107,7 +108,7 @@
 		.readonly() {};
 	}
 
-	.construct(@prefix, @fs, @mb, @pt, @pb, @ph)
+	.construct(@pre, @fs, @mb, @pt, @pb, @ph)
 	{
 		#ui-textfield._states();
 		.states();
@@ -123,15 +124,15 @@
 		{
 			.placeholder();
 		}
-		&:focus, &.@{prefix}focus
+		&:focus, &.@{pre}focus
 		{
 			.focus();
 		}
-		&.@{prefix}valid, &.@{prefix}valid:focus
+		&.@{pre}valid, &.@{pre}valid:focus
 		{
 			.valid();
 		}
-		&.@{prefix}invalid, &.@{prefix}invalid:focus
+		&.@{pre}invalid, &.@{pre}invalid:focus
 		{
 			.invalid();
 		}
@@ -190,46 +191,46 @@
 		.readonly() {};
 	}
 
-	.construct(@prefix, @enable, @fs, @pt, @pb, @ph) when (@enable)
+	.construct(@pre, @enable, @fs, @pt, @pb, @ph) when (@enable)
 	{
 		#ui-textfield-label._states();
 		.label();
 
-		#ui-textfield-label.template(@prefix, @fs, @pt, @pb, @ph);
+		#ui-textfield-label.template(@pre, @fs, @pt, @pb, @ph);
 
 
-		& ~ .@{prefix}label
+		& ~ .@{pre}label
 		{
 			.default();
 		}
-		&:focus ~ .@{prefix}label, &.@{prefix}focus ~ .@{prefix}label,
-		&:valid ~ .@{prefix}label
+		&:focus ~ .@{pre}label, &.@{pre}focus ~ .@{pre}label,
+		&:valid ~ .@{pre}label
 		{
 			.focus();
 		}
-		&.@{prefix}valid ~ .@{prefix}label, &.@{prefix}valid:focus ~ .@{prefix}label
+		&.@{pre}valid ~ .@{pre}label, &.@{pre}valid:focus ~ .@{pre}label
 		{
 			.valid();
 		}
-		&.@{prefix}invalid ~ .@{prefix}label,  &.@{prefix}invalid:focus ~ .@{prefix}label
+		&.@{pre}invalid ~ .@{pre}label,  &.@{pre}invalid:focus ~ .@{pre}label
 		{
 			.invalid();
 		}
-		&:disabled ~ .@{prefix}label
+		&:disabled ~ .@{pre}label
 		{
 			.focus();
 			.disabled() !important;
 		}
-		&[readonly] ~ .@{prefix}label
+		&[readonly] ~ .@{pre}label
 		{
 			.focus();
 			.readonly();
 		}
 	}
 
-	.template(@prefix, @font-size, @padding-top, @padding-bottom, @padding-hor)
+	.template(@pre, @font-size, @padding-top, @padding-bottom, @padding-hor)
 	{
-		& ~ .@{prefix}label
+		& ~ .@{pre}label
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
 			font-size: @font-size;
@@ -249,17 +250,17 @@
 			border-color: transparent !important;
 			box-shadow: none !important;
 
-			transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-						color     0.15s cubic-bezier(0.4, 0, 0.2, 1);
+			transition: transform @textfield-label-trsn-duration @textfield-label-trsn-function,
+						color     @textfield-label-trsn-duration @textfield-label-trsn-function;
 			transform: translateY(0%) scale(1);
 			transform-origin: left top;
 		}
 
-		&:focus ~ .@{prefix}label,
-		&:valid ~ .@{prefix}label,
-		&:disabled ~ .@{prefix}label,
-		&[readonly] ~ .@{prefix}label,
-		&.@{prefix}focus ~ .@{prefix}label
+		&:focus ~ .@{pre}label,
+		&:valid ~ .@{pre}label,
+		&:disabled ~ .@{pre}label,
+		&[readonly] ~ .@{pre}label,
+		&.@{pre}focus ~ .@{pre}label
 		{
 			transform: translateY(-50%) scale(0.75) !important;
 		}
@@ -284,44 +285,44 @@
 		.readonly() {};
 	}
 
-	.construct(@prefix, @enable, @fs, @pt, @pb, @ph) when (@enable)
+	.construct(@pre, @enable, @fs, @pt, @pb, @ph) when (@enable)
 	{
 		#ui-textfield-addon._states();
 		.addon();
 
-		#ui-textfield-addon.template(@prefix, @fs, @pt, @pb, @ph);
+		#ui-textfield-addon.template(@pre, @fs, @pt, @pb, @ph);
 
 
-		& ~ .@{prefix}addon
+		& ~ .@{pre}addon
 		{
 			.default();
 		}
-		&:focus ~ .@{prefix}addon,
-		&.@{prefix}focus ~ .@{prefix}addon
+		&:focus ~ .@{pre}addon,
+		&.@{pre}focus ~ .@{pre}addon
 		{
 			.focus();
 		}
-		&.@{prefix}valid ~ .@{prefix}addon,
-		&.@{prefix}valid:focus ~ .@{prefix}addon
+		&.@{pre}valid ~ .@{pre}addon,
+		&.@{pre}valid:focus ~ .@{pre}addon
 		{
 			.valid();
 		}
-		&.@{prefix}invalid ~ .@{prefix}addon,
-		&.@{prefix}invalid:focus ~ .@{prefix}addon
+		&.@{pre}invalid ~ .@{pre}addon,
+		&.@{pre}invalid:focus ~ .@{pre}addon
 		{
 			.invalid();
 		}
-		&:disabled ~ .@{prefix}addon
+		&:disabled ~ .@{pre}addon
 		{
 			.disabled() !important;
 		}
-		&[readonly] ~ .@{prefix}addon
+		&[readonly] ~ .@{pre}addon
 		{
 			.readonly();
 		}
 	}
 
-	.template(@prefix, @font-size, @padding-top, @padding-bottom, @padding-hor)
+	.template(@pre, @font-size, @padding-top, @padding-bottom, @padding-hor)
 	{
 		&-@{textfield-cont-postfix}
 		{
@@ -330,7 +331,7 @@
 			z-index: 1;
 		}
 
-		& ~ .@{prefix}addon
+		& ~ .@{pre}addon
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
 			font-size: @font-size;
@@ -349,13 +350,13 @@
 			border-color: transparent !important;
 			box-shadow: none !important;
 
-			&.@{prefix}left
+			&.@{pre}left
 			{
 				left: 0;
 				text-align: left !important;
 				padding-right: 0 !important;
 			}
-			&.@{prefix}right
+			&.@{pre}right
 			{
 				right: 0;
 				text-align: right !important;
@@ -383,45 +384,45 @@
 		.readonly() {};
 	}
 
-	.construct(@prefix, @enable, @fs) when (@enable)
+	.construct(@pre, @enable, @fs) when (@enable)
 	{
 		#ui-textfield-hint._states();
 		.hint();
 
-		#ui-textfield-hint.template(@prefix, @fs);
+		#ui-textfield-hint.template(@pre, @fs);
 
 
-		& ~ .@{prefix}hint, & ~ .@{prefix}error
+		& ~ .@{pre}hint, & ~ .@{pre}error
 		{
 			.default();
 		}
-		&:focus ~ .@{prefix}hint,  &.@{prefix}focus ~ .@{prefix}hint,
-		&:focus ~ .@{prefix}error, &.@{prefix}focus ~ .@{prefix}error
+		&:focus ~ .@{pre}hint,  &.@{pre}focus ~ .@{pre}hint,
+		&:focus ~ .@{pre}error, &.@{pre}focus ~ .@{pre}error
 		{
 			.focus();
 		}
-		&.@{prefix}valid ~ .@{prefix}hint, &.@{prefix}valid:focus ~ .@{prefix}hint
+		&.@{pre}valid ~ .@{pre}hint, &.@{pre}valid:focus ~ .@{pre}hint
 		{
 			.valid();
 		}
-		&.@{prefix}invalid ~ .@{prefix}hint,  &.@{prefix}invalid:focus ~ .@{prefix}hint,
-		&.@{prefix}invalid ~ .@{prefix}error, &.@{prefix}invalid:focus ~ .@{prefix}error
+		&.@{pre}invalid ~ .@{pre}hint,  &.@{pre}invalid:focus ~ .@{pre}hint,
+		&.@{pre}invalid ~ .@{pre}error, &.@{pre}invalid:focus ~ .@{pre}error
 		{
 			.invalid();
 		}
-		&:disabled ~ .@{prefix}hint
+		&:disabled ~ .@{pre}hint
 		{
 			.disabled() !important;
 		}
-		&[readonly] ~ .@{prefix}hint
+		&[readonly] ~ .@{pre}hint
 		{
 			.readonly();
 		}
 	}
 
-	.template(@prefix, @font-size)
+	.template(@pre, @font-size)
 	{
-		& ~ .@{prefix}hint, & ~ .@{prefix}error
+		& ~ .@{pre}hint, & ~ .@{pre}error
 		{
 			display: block;
 			padding-top: @textfield-hint-padding-top;
@@ -430,11 +431,11 @@
 			line-height: @textfield-line-height;
 		}
 
-		& ~ .@{prefix}error, &.@{prefix}invalid ~ .@{prefix}error ~ .@{prefix}hint
+		& ~ .@{pre}error, &.@{pre}invalid ~ .@{pre}error ~ .@{pre}hint
 		{
 			display: none !important;
 		}
-		&.@{prefix}invalid ~ .@{prefix}error
+		&.@{pre}invalid ~ .@{pre}error
 		{
 			display: block !important;
 		}
@@ -444,49 +445,49 @@
 
 #ui-textfield-mixins()
 {
-	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false)
+	.sizes(@font-size, @pre, @has-label: false, @has-addon: false, @has-hint: false)
 	{
-		#ui.fs-sizes-mixins(@font-size, @prefix);
+		#ui.fs-sizes-mixins(@font-size, @pre);
 	}
-	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false) when (@has-label = true)
+	.sizes(@font-size, @pre, @has-label: false, @has-addon: false, @has-hint: false) when (@has-label = true)
 	{
-		.size-nano()  { &.@{prefix}nano  ~ .@{prefix}label { font-size: @size-nano;  }}
-		.size-mini()  { &.@{prefix}mini  ~ .@{prefix}label { font-size: @size-mini;  }}
-		.size-tiny()  { &.@{prefix}tiny  ~ .@{prefix}label { font-size: @size-tiny;  }}
-		.size-small() { &.@{prefix}small ~ .@{prefix}label { font-size: @size-small; }}
+		.size-nano()  { &.@{pre}nano  ~ .@{pre}label { font-size: @size-nano;  }}
+		.size-mini()  { &.@{pre}mini  ~ .@{pre}label { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{pre}tiny  ~ .@{pre}label { font-size: @size-tiny;  }}
+		.size-small() { &.@{pre}small ~ .@{pre}label { font-size: @size-small; }}
 
-		.size-big()   { &.@{prefix}big   ~ .@{prefix}label { font-size: @size-big;   }}
-		.size-large() { &.@{prefix}large ~ .@{prefix}label { font-size: @size-large; }}
-		.size-huge()  { &.@{prefix}huge  ~ .@{prefix}label { font-size: @size-huge;  }}
-		.size-great() { &.@{prefix}great ~ .@{prefix}label { font-size: @size-great; }}
+		.size-big()   { &.@{pre}big   ~ .@{pre}label { font-size: @size-big;   }}
+		.size-large() { &.@{pre}large ~ .@{pre}label { font-size: @size-large; }}
+		.size-huge()  { &.@{pre}huge  ~ .@{pre}label { font-size: @size-huge;  }}
+		.size-great() { &.@{pre}great ~ .@{pre}label { font-size: @size-great; }}
 	}
-	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false) when (@has-addon = true)
+	.sizes(@font-size, @pre, @has-label: false, @has-addon: false, @has-hint: false) when (@has-addon = true)
 	{
-		#ui-textfield-mixins.sizes(@font-size, @prefix);
+		#ui-textfield-mixins.sizes(@font-size, @pre);
 
-		.size-nano()  { &.@{prefix}nano  ~ .@{prefix}addon { font-size: @size-nano;  }}
-		.size-mini()  { &.@{prefix}mini  ~ .@{prefix}addon { font-size: @size-mini;  }}
-		.size-tiny()  { &.@{prefix}tiny  ~ .@{prefix}addon { font-size: @size-tiny;  }}
-		.size-small() { &.@{prefix}small ~ .@{prefix}addon { font-size: @size-small; }}
+		.size-nano()  { &.@{pre}nano  ~ .@{pre}addon { font-size: @size-nano;  }}
+		.size-mini()  { &.@{pre}mini  ~ .@{pre}addon { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{pre}tiny  ~ .@{pre}addon { font-size: @size-tiny;  }}
+		.size-small() { &.@{pre}small ~ .@{pre}addon { font-size: @size-small; }}
 
-		.size-big()   { &.@{prefix}big   ~ .@{prefix}addon { font-size: @size-big;   }}
-		.size-large() { &.@{prefix}large ~ .@{prefix}addon { font-size: @size-large; }}
-		.size-huge()  { &.@{prefix}huge  ~ .@{prefix}addon { font-size: @size-huge;  }}
-		.size-great() { &.@{prefix}great ~ .@{prefix}addon { font-size: @size-great; }}
+		.size-big()   { &.@{pre}big   ~ .@{pre}addon { font-size: @size-big;   }}
+		.size-large() { &.@{pre}large ~ .@{pre}addon { font-size: @size-large; }}
+		.size-huge()  { &.@{pre}huge  ~ .@{pre}addon { font-size: @size-huge;  }}
+		.size-great() { &.@{pre}great ~ .@{pre}addon { font-size: @size-great; }}
 	}
-	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false) when (@has-hint = true)
+	.sizes(@font-size, @pre, @has-label: false, @has-addon: false, @has-hint: false) when (@has-hint = true)
 	{
 		@rate: @textfield-hint-font-size-rate;
 
-		.size-nano()  { &.@{prefix}nano  ~ .@{prefix}hint { font-size: round(@rate * @size-nano, 3);  }}
-		.size-mini()  { &.@{prefix}mini  ~ .@{prefix}hint { font-size: round(@rate * @size-mini, 3);  }}
-		.size-tiny()  { &.@{prefix}tiny  ~ .@{prefix}hint { font-size: round(@rate * @size-tiny, 3);  }}
-		.size-small() { &.@{prefix}small ~ .@{prefix}hint { font-size: round(@rate * @size-small, 3); }}
+		.size-nano()  { &.@{pre}nano  ~ .@{pre}hint { font-size: round(@rate * @size-nano, 3);  }}
+		.size-mini()  { &.@{pre}mini  ~ .@{pre}hint { font-size: round(@rate * @size-mini, 3);  }}
+		.size-tiny()  { &.@{pre}tiny  ~ .@{pre}hint { font-size: round(@rate * @size-tiny, 3);  }}
+		.size-small() { &.@{pre}small ~ .@{pre}hint { font-size: round(@rate * @size-small, 3); }}
 
-		.size-big()   { &.@{prefix}big   ~ .@{prefix}hint { font-size: round(@rate * @size-big, 3);   }}
-		.size-large() { &.@{prefix}large ~ .@{prefix}hint { font-size: round(@rate * @size-large, 3); }}
-		.size-huge()  { &.@{prefix}huge  ~ .@{prefix}hint { font-size: round(@rate * @size-huge, 3);  }}
-		.size-great() { &.@{prefix}great ~ .@{prefix}hint { font-size: round(@rate * @size-great, 3); }}
+		.size-big()   { &.@{pre}big   ~ .@{pre}hint { font-size: round(@rate * @size-big, 3);   }}
+		.size-large() { &.@{pre}large ~ .@{pre}hint { font-size: round(@rate * @size-large, 3); }}
+		.size-huge()  { &.@{pre}huge  ~ .@{pre}hint { font-size: round(@rate * @size-huge, 3);  }}
+		.size-great() { &.@{pre}great ~ .@{pre}hint { font-size: round(@rate * @size-great, 3); }}
 	}
 	.sizes(...)
 	{
@@ -505,24 +506,24 @@
 	}
 
 
-	.addon-width(@prefix, @has-label, @has-addon) when (@has-label = true), (@has-addon = true)
+	.addon-width(@pre, @has-label, @has-addon) when (@has-label = true), (@has-addon = true)
 	{
 		.addon-width(left, @start: 1em, @step: 0.5em, @total: 5)
 		{
-			&.@{prefix}pad-l
+			&.@{pre}pad-l
 			{
-				#ui-textfield-mixins._width-classes(left, @prefix, @has-label, @start, @step, @total);
+				#ui-textfield-mixins._width-classes(left, @pre, @has-label, @start, @step, @total);
 			}
 		}
 		.addon-width(right, @start: 1em, @step: 0.5em, @total: 5)
 		{
-			&.@{prefix}pad-r
+			&.@{pre}pad-r
 			{
-				#ui-textfield-mixins._width-classes(right, @prefix, @has-label, @start, @step, @total);
+				#ui-textfield-mixins._width-classes(right, @pre, @has-label, @start, @step, @total);
 			}
 		}
 	}
-	._width-classes(@prop, @prefix, @has-label, @value, @step, @total, @curr: 0) when (@curr <= @total)
+	._width-classes(@prop, @pre, @has-label, @value, @step, @total, @curr: 0) when (@curr <= @total)
 	{
 		&@{curr}
 		{
@@ -531,7 +532,7 @@
 
 		& when (@has-label) and (@prop = left)
 		{
-			&@{curr} ~ .@{prefix}label
+			&@{curr} ~ .@{pre}label
 			{
 				padding-@{prop}: @value;
 				transform-origin: @value top;
@@ -539,12 +540,12 @@
 		}
 		& when (@has-label) and (@prop = right)
 		{
-			&@{curr} ~ .@{prefix}label
+			&@{curr} ~ .@{pre}label
 			{
 				padding-@{prop}: @value;
 			}
 		}
 
-		#ui-textfield-mixins._width-classes(@prop, @prefix, @has-label, @value + @step, @step, @total, @curr + 1);
+		#ui-textfield-mixins._width-classes(@prop, @pre, @has-label, @value + @step, @step, @total, @curr + 1);
 	}
 }

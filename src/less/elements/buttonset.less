@@ -1,7 +1,10 @@
 #ui()
 {
-	.buttonset(@border-width: @button-border-width, @dir: hor, @prefix: @button-class-prefix)
+	.buttonset()
 	{
+		.params();
+		#ui-buttonset._params();
+
 		#ui-buttonset.template(@border-width, @dir, @prefix);
 
 		.hor(@prefix: @button-class-prefix)
@@ -31,6 +34,13 @@
 
 #ui-buttonset()
 {
+	._params()
+	{
+		@prefix: @button-class-prefix;
+		@border-width: @button-border-width;
+		@dir: hor;
+	}
+
 	.template(@border-width, @dir, @prefix)
 	{
 		display: inline-flex;

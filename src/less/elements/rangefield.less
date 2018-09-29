@@ -1,0 +1,122 @@
+#ui()
+{
+	.rangefield()
+	{
+		
+	}
+}
+
+#ui-rangefield()
+{
+	.template()
+	{
+		display: block;
+		cursor: pointer;
+		width: 100%;
+		height: 18px;
+		border-radius: 0;
+		appearance: none;
+		-webkit-appearance: none;
+
+		&:focus
+		{
+			outline: none;
+		}
+		&::-webkit-slider-runnable-track
+		{
+			width: 100%;
+			height: 1px;
+			cursor: pointer;
+			border: 0px solid #000;
+			border-radius: 0px;
+			background: #E1E1E1;
+			box-shadow: none;
+		}
+		&:focus::-webkit-slider-runnable-track
+		{
+			background: #E1E1E1;
+		}
+		&::-webkit-slider-thumb
+		{
+			box-sizing: content-box;
+			cursor: pointer;
+			height: 12px;
+			width: 12px;
+			margin-top: -11.5px;
+			border: 6px solid transparent;
+			border-radius: 24px;
+			background: @color-primary;
+			background-clip: padding-box;
+			box-shadow: none;
+			appearance: none;
+			-webkit-appearance: none;
+		}
+
+		&::-moz-range-track
+		{
+			cursor: pointer;
+			width: 100%;
+			height: 1px;
+			border: 0px solid #000;
+			border-radius: 0px;
+			background: #E1E1E1;
+			box-shadow: none;
+		}
+		&::-moz-range-thumb
+		{
+			box-sizing: content-box;
+			cursor: pointer;
+			height: 12px;
+			width: 12px;
+			border: 6px solid transparent;
+			border-radius: 24px;
+			background: @color-primary;
+			background-clip: padding-box;
+			box-shadow: none;
+		}
+
+		&::-ms-track
+		{
+			cursor: pointer;
+			width: 100%;
+			height: 1px;
+			color: transparent;
+			border-color: transparent;
+			background: transparent;
+		}
+		&::-ms-fill-lower
+		{
+			border: 0px solid #000;
+			border-radius: 0px;
+			background: #E1E1E1;
+			box-shadow: none;
+		}
+		&::-ms-fill-upper
+		{
+			border: 0px solid #000;
+			border-radius: 0px;
+			background: #E1E1E1;
+			box-shadow: none;
+		}
+		&::-ms-thumb
+		{
+			box-sizing: content-box;
+			cursor: pointer;
+			height: 12px;
+			width: 12px;
+			border: 6px solid transparent;
+			border-radius: 24px;
+			background: @color-primary;
+			background-clip: padding-box;
+			box-shadow: none;
+		}
+		&:focus::-ms-fill-lower
+		{
+			background: #E1E1E1;
+		}
+		&:focus::-ms-fill-upper
+		{
+			background: #E1E1E1;
+		}
+	}
+}

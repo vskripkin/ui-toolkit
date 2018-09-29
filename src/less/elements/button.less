@@ -1,14 +1,10 @@
 #ui()
 {
-	.button(@bg-color,
-		@color: @button-color,
-		@hover: @button-hover-color-bg,
-		@font-size: @button-font-size,
-		@pad-ver: @button-padding-ver,
-		@pad-hor: @button-padding-hor,
-		@border-width: @button-border-width,
-		@prefix: @button-class-prefix)
+	.button()
 	{
+		.params();
+		#ui-button._params();
+
 		@hover-bg-color:  #ui.hover-bg(@hover, @bg-color)[result];
 		@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
@@ -215,6 +211,18 @@
 
 #ui-button()
 {
+	._params()
+	{
+		@prefix:       @button-class-prefix;
+		@bg-color:     rgba(255,255,255,0);
+		@color:        @button-color;
+		@hover:        @button-hover-color-bg;
+		@font-size:    @button-font-size;
+		@padding-ver:  @button-padding-ver;
+		@paddong-hor:  @button-padding-hor;
+		@border-width: @button-border-width;
+	}
+
 	.template(@font-size, @padding-ver, @padding-hor, @border-width)
 	{
 		@em: 2 * @padding-ver + 1em * @button-line-height;

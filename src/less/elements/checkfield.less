@@ -1,17 +1,23 @@
 #ui()
 {
-	.checkfield(
-		@pseudo: @checkfield-class-pseudo,
-		@label:  @checkfield-class-label,
-		@prefix: @checkfield-class-prefix,
-		@type:   checkbox)
+	.checkfield()
 	{
+		.params();
+		#ui-checkfield._params();
+
 		#ui-checkfield.construct(@pseudo, @label, @prefix, @type);
 	}
 }
 
 #ui-checkfield()
 {
+	._params()
+	{
+		@pseudo: @checkfield-class-pseudo;
+		@label:  @checkfield-class-label;
+		@prefix: @checkfield-class-prefix;
+		@type:   checkbox;
+	}
 	._states()
 	{
 		.default()

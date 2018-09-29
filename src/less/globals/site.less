@@ -23,6 +23,20 @@ body
 	position:   relative;
 	font-size:  @font-size-base;
 	background: inherit;
+
+	// catch last margin-bottom
+	&::after
+	{
+		content: '';
+		display: block;
+		height: 1px;
+		width: 0px;
+		margin-top: -1px;
+		position: relative;
+		z-index: -100;
+		visibility: hidden;
+		pointer-events: none;
+	}
 }
 
 ::-moz-selection
