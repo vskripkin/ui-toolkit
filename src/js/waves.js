@@ -5,14 +5,14 @@
 	var TYPE = 'wave',
 
 		DEFAULTS = {
-			delay: 100,
+			delay: 50,
 
 			duration: {
 				opacity: 75,
 				transform: 225
 			},
 			timing: {
-				opacity: 'linear',
+				opacity: 'cubic-bezier(0.4,0,0.2,1)',
 				transform: 'cubic-bezier(0.4,0,0.2,1)'
 			}
 		},
@@ -270,7 +270,7 @@
 			oStyle[_.prefix.css + 'transition-property'] = 'transform';
 			oStyle[_.prefix.css + 'transition-duration'] = DEFAULTS.duration.transform + 'ms';
 			oStyle[_.prefix.css + 'transition-timing-function'] = DEFAULTS.timing.transform;
-			oStyle[_.prefix.css + 'transform'] = 'scale(0)';
+			oStyle[_.prefix.css + 'transform'] = 'scale(0.2)';
 
 			_setStyle(nDiv, oStyle);
 			nDiv.className = 'wave';
