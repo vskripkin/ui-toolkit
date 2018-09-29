@@ -91,7 +91,7 @@
 			{
 				.disabled() !important;
 			}
-			select:read-only + .__textfield
+			select[readonly] + .__textfield
 			{
 				.readonly() !important;
 			}
@@ -130,7 +130,7 @@
 			{
 				.disabled() !important;
 			}
-			select:read-only ~ .__arrow
+			select[readonly] ~ .__arrow
 			{
 				.readonly() !important;
 			}
@@ -156,7 +156,7 @@
 			{
 				.disabled() !important;
 			}
-			select:read-only ~ .__value:before
+			select[readonly] ~ .__value:before
 			{
 				.readonly() !important;
 			}
@@ -182,7 +182,7 @@
 			{
 				.disabled() !important;
 			}
-			select:read-only ~ .__value:after
+			select[readonly] ~ .__value:after
 			{
 				.readonly() !important;
 			}
@@ -228,7 +228,7 @@
 			font-size: 1em !important;
 			line-height: inherit !important;
 
-			&:read-only
+			&[readonly]
 			{
 				cursor: pointer;
 				color: transparent !important;

@@ -141,15 +141,15 @@
 
 		@step: 0.0714286 * @fs;
 
-		@size-nano:  round(@fs - 4 * @step, 4);
-		@size-mini:  round(@fs - 3 * @step, 4);
-		@size-tiny:  round(@fs - 2 * @step, 4);
-		@size-small: round(@fs - 1 * @step, 4);
+		@size-nano:  round(@fs - 4 * @step, 3);
+		@size-mini:  round(@fs - 3 * @step, 3);
+		@size-tiny:  round(@fs - 2 * @step, 3);
+		@size-small: round(@fs - 1 * @step, 3);
 
-		@size-big:   round(@fs +  2 * @step, 4);
-		@size-large: round(@fs +  4 * @step, 4);
-		@size-huge:  round(@fs +  6 * @step, 4);
-		@size-great: round(@fs + 10 * @step, 4);
+		@size-big:   round(@fs +  2 * @step, 3);
+		@size-large: round(@fs +  4 * @step, 3);
+		@size-huge:  round(@fs +  6 * @step, 3);
+		@size-great: round(@fs + 10 * @step, 3);
 	}
 
 	.fs-sizes-mixins(@font-size, @prefix)
@@ -165,7 +165,9 @@
 		.size-large() { &.@{prefix}large { font-size: @size-large; }}
 		.size-huge()  { &.@{prefix}huge  { font-size: @size-huge;  }}
 		.size-great() { &.@{prefix}great { font-size: @size-great; }}
-
+	}
+	.fs-sizes-mixins(...)
+	{
 		.size-apply()
 		{
 			.size-nano();

@@ -17,34 +17,31 @@
 
 		&
 		{
-			&
+			background-color: @bg-color;
+			color: @color;
+
+			&, &::after
 			{
-				background-color: @bg-color;
 				color: @color;
+			}
+		}
+		&:hover
+		{
+			background-color: @hover-bg-color;
+		}
+		&:active
+		{
+			background-color: @active-bg-color;
+		}
+		&:disabled
+		{
+			background-color: @bg-color !important;
+			opacity: @button-disabled-opacity !important;
+			cursor:  @button-disabled-cursor;
 
-				&, &::after
-				{
-					color: @color;
-				}
-			}
-			&:hover
+			&, &::after
 			{
-				background-color: @hover-bg-color;
-			}
-			&:active
-			{
-				background-color: @active-bg-color;
-			}
-			&:disabled
-			{
-				background-color: @bg-color !important;
-				opacity: @button-disabled-opacity !important;
-				cursor:  @button-disabled-cursor;
-
-				&, &::after
-				{
-					color: @color !important;
-				}
+				color: @color !important;
 			}
 		}
 

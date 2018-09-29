@@ -1,24 +1,101 @@
+.label(@foo: bar) when (default()) { has: false; }
 .addon(@foo: bar) when (default()) { has: false; }
-.hint(@foo: bar)  when (default()) { has: false; }
+.hint(@foo:  bar) when (default()) { has: false; }
+.params(...) {};
+
 
 #ui()
 {
-	.textfield(@font-size: @textfield-font-size, @prefix: @textfield-class-prefix)
+	.textfield(@prefix: @textfield-class-prefix)
 	{
+		@has-label: #ui-textfield-label.check()[has];
 		@has-addon: #ui-textfield-addon.check()[has];
-		@has-hint: #ui-textfield-hint.check()[has];
+		@has-hint:  #ui-textfield-hint.check()[has];
 
-		#ui-textfield.construct(@font-size, @prefix);
-		#ui-textfield-hint.construct(@font-size, @prefix, @has-hint);
-		#ui-textfield-addon.construct(@font-size, @prefix, @has-addon);
+		.params();
+		#ui-textfield._params();
 
-		#ui-textfield-mixins.sizes(@font-size, @prefix, @has-addon, @has-hint);
-		#ui-textfield-mixins.addon-width(@prefix, @has-addon);
+		@fs: @font-size;
+		@mb: @margin-bottom;
+		@pt: @padding-top;
+		@pb: @padding-bottom;
+		@ph: @padding-hor;
+
+		#ui-textfield.construct(@prefix, @fs, @mb, @pt, @pb, @ph);
+		#ui-textfield-label.construct(@prefix, @has-label, @fs, @pt, @pb, @ph);
+		#ui-textfield-addon.construct(@prefix, @has-addon, @fs, @pt, @pb, @ph);
+		#ui-textfield-hint.construct(@prefix, @has-hint, @fs);
+
+		#ui-textfield-mixins.sizes(@fs, @prefix, @has-label, @has-addon, @has-hint);
+		#ui-textfield-mixins.addon-width(@prefix, @has-label, @has-addon);
+
+		& when (@margin-bottom > 0)
+		{
+			.margin-bottom(@margin-bottom);
+		}
+
+
+		.thin()
+		{
+			@pad-ver-min: if(@pt > @pb, @pb, @pt);
+
+			&.@{prefix}thin
+			{
+				padding-left:  @pad-ver-min;
+				padding-right: @pad-ver-min;
+			}
+
+			& when (@has-label)
+			{
+				&.@{prefix}thin ~ .@{prefix}label
+				{
+					padding-left:  @pad-ver-min;
+					padding-right: @pad-ver-min;
+				}
+			}
+			& when (@has-addon)
+			{
+				& ~ .@{prefix}addon.@{prefix}thin.@{prefix}left
+				{
+					padding-left: @pad-ver-min;
+				}
+				& ~ .@{prefix}addon.@{prefix}thin.@{prefix}right
+				{
+					padding-right: @pad-ver-min;
+				}
+			}
+		}
+		.margin-bottom(@value)
+		{
+			&
+			{
+				margin-bottom: @value;
+			}
+			& when (@has-hint)
+			{
+				& ~ .@{prefix}hint, & ~ .@{prefix}error
+				{
+					@rem: round(@fs * @textfield-hint-font-size-rate * @textfield-line-height, 3);
+					@em: @textfield-hint-padding-top + @textfield-hint-padding-bottom;
+
+					margin-top: (-1 * @value);
+					margin-bottom: calc(@value - @rem - @em);
+				}
+			}
+		}
 	}
 }
 
 #ui-textfield()
 {
+	._params()
+	{
+		@font-size: @textfield-font-size;
+		@margin-bottom: @textfield-margin-bottom;
+		@padding-top: @textfield-padding-top;
+		@padding-bottom: @textfield-padding-bottom;
+		@padding-hor: @textfield-padding-hor;
+	}
 	._states()
 	{
 		.placeholder() {};
@@ -30,12 +107,12 @@
 		.readonly() {};
 	}
 
-	.construct(@font-size, @prefix)
+	.construct(@prefix, @fs, @mb, @pt, @pb, @ph)
 	{
 		#ui-textfield._states();
 		.states();
 
-		#ui-textfield.template(@font-size);
+		#ui-textfield.template(@fs, @mb, @pt, @pb, @ph);
 
 
 		&
@@ -65,14 +142,16 @@
 
 			.disabled() !important;
 		}
-		&:read-only
+		&[readonly]
 		{
 			.readonly();
 		}
 	}
 
-	.template(@font-size)
+	.template(@font-size, @margin-bottom, @padding-top, @padding-bottom, @padding-hor)
 	{
+		margin-bottom: @margin-bottom;
+		padding: @padding-top @padding-hor @padding-bottom;
 		font-size: @font-size;
 	}
 	.template(...)
@@ -90,6 +169,100 @@
 		appearance: none;
 		border: none;
 		background: transparent;
+	}
+}
+
+#ui-textfield-label()
+{
+	.check()
+	{
+		has: true;
+		.label();
+	}
+
+	._states()
+	{
+		.default()  {};
+		.focus()    {};
+		.valid()    {};
+		.invalid()  {};
+		.disabled() {};
+		.readonly() {};
+	}
+
+	.construct(@prefix, @enable, @fs, @pt, @pb, @ph) when (@enable)
+	{
+		#ui-textfield-label._states();
+		.label();
+
+		#ui-textfield-label.template(@prefix, @fs, @pt, @pb, @ph);
+
+
+		& ~ .@{prefix}label
+		{
+			.default();
+		}
+		&:focus ~ .@{prefix}label, &.@{prefix}focus ~ .@{prefix}label,
+		&:valid ~ .@{prefix}label
+		{
+			.focus();
+		}
+		&.@{prefix}valid ~ .@{prefix}label, &.@{prefix}valid:focus ~ .@{prefix}label
+		{
+			.valid();
+		}
+		&.@{prefix}invalid ~ .@{prefix}label,  &.@{prefix}invalid:focus ~ .@{prefix}label
+		{
+			.invalid();
+		}
+		&:disabled ~ .@{prefix}label
+		{
+			.focus();
+			.disabled() !important;
+		}
+		&[readonly] ~ .@{prefix}label
+		{
+			.focus();
+			.readonly();
+		}
+	}
+
+	.template(@prefix, @font-size, @padding-top, @padding-bottom, @padding-hor)
+	{
+		& ~ .@{prefix}label
+		{
+			padding: @padding-top @padding-hor @padding-bottom;
+			font-size: @font-size;
+
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			left: 0;
+			width: 100%;
+			display: block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			pointer-events: none;
+
+			background: transparent !important;
+			border-color: transparent !important;
+			box-shadow: none !important;
+
+			transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+						color     0.15s cubic-bezier(0.4, 0, 0.2, 1);
+			transform: translateY(0%) scale(1);
+			transform-origin: left top;
+		}
+
+		&:focus ~ .@{prefix}label,
+		&:valid ~ .@{prefix}label,
+		&:disabled ~ .@{prefix}label,
+		&[readonly] ~ .@{prefix}label,
+		&.@{prefix}focus ~ .@{prefix}label
+		{
+			transform: translateY(-50%) scale(0.75) !important;
+		}
 	}
 }
 
@@ -111,12 +284,12 @@
 		.readonly() {};
 	}
 
-	.construct(@font-size, @prefix, @enable) when (@enable)
+	.construct(@prefix, @enable, @fs, @pt, @pb, @ph) when (@enable)
 	{
 		#ui-textfield-addon._states();
 		.addon();
 
-		#ui-textfield-addon.template(@font-size, @prefix);
+		#ui-textfield-addon.template(@prefix, @fs, @pt, @pb, @ph);
 
 
 		& ~ .@{prefix}addon
@@ -142,15 +315,15 @@
 		{
 			.disabled() !important;
 		}
-		&:read-only ~ .@{prefix}addon
+		&[readonly] ~ .@{prefix}addon
 		{
 			.readonly();
 		}
 	}
 
-	.template(@font-size, @prefix, @postfix: @textfield-cont-postfix)
+	.template(@prefix, @font-size, @padding-top, @padding-bottom, @padding-hor)
 	{
-		&-@{postfix}
+		&-@{textfield-cont-postfix}
 		{
 			display: block;
 			position: relative;
@@ -159,13 +332,15 @@
 
 		& ~ .@{prefix}addon
 		{
+			padding: @padding-top @padding-hor @padding-bottom;
+			font-size: @font-size;
+			line-height: @textfield-line-height;
+
 			display: block;
 			position: absolute;
 			top: 0;
 			z-index: 1;
 			font-family: inherit;
-			font-size: @font-size;
-			line-height: @textfield-line-height;
 			text-align: center;
 			white-space: nowrap;
 			pointer-events: none;
@@ -208,12 +383,12 @@
 		.readonly() {};
 	}
 
-	.construct(@font-size, @prefix, @enable) when (@enable)
+	.construct(@prefix, @enable, @fs) when (@enable)
 	{
 		#ui-textfield-hint._states();
 		.hint();
 
-		#ui-textfield-hint.template(@font-size, @prefix);
+		#ui-textfield-hint.template(@prefix, @fs);
 
 
 		& ~ .@{prefix}hint, & ~ .@{prefix}error
@@ -229,6 +404,7 @@
 		{
 			.valid();
 		}
+		&.@{prefix}invalid ~ .@{prefix}hint,  &.@{prefix}invalid:focus ~ .@{prefix}hint,
 		&.@{prefix}invalid ~ .@{prefix}error, &.@{prefix}invalid:focus ~ .@{prefix}error
 		{
 			.invalid();
@@ -237,17 +413,21 @@
 		{
 			.disabled() !important;
 		}
-		&:read-only ~ .@{prefix}hint
+		&[readonly] ~ .@{prefix}hint
 		{
 			.readonly();
 		}
 	}
 
-	.template(@font-size, @prefix)
+	.template(@prefix, @font-size)
 	{
 		& ~ .@{prefix}hint, & ~ .@{prefix}error
 		{
 			display: block;
+			padding-top: @textfield-hint-padding-top;
+			padding-bottom: @textfield-hint-padding-bottom;
+			font-size: round(@font-size * @textfield-hint-font-size-rate, 3);
+			line-height: @textfield-line-height;
 		}
 
 		& ~ .@{prefix}error, &.@{prefix}invalid ~ .@{prefix}error ~ .@{prefix}hint
@@ -264,24 +444,52 @@
 
 #ui-textfield-mixins()
 {
-	.sizes(@font-size, @prefix, @has-addon, @has-hint) when (@has-addon = false)
+	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false)
 	{
 		#ui.fs-sizes-mixins(@font-size, @prefix);
 	}
-	.sizes(@font-size, @prefix, @has-addon, @has-hint) when (@has-addon = true)
+	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false) when (@has-label = true)
 	{
-		#ui.fs-sizes(@font-size);
+		.size-nano()  { &.@{prefix}nano  ~ .@{prefix}label { font-size: @size-nano;  }}
+		.size-mini()  { &.@{prefix}mini  ~ .@{prefix}label { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{prefix}tiny  ~ .@{prefix}label { font-size: @size-tiny;  }}
+		.size-small() { &.@{prefix}small ~ .@{prefix}label { font-size: @size-small; }}
 
-		.size-nano()  { &.@{prefix}nano,  &.@{prefix}nano  + .@{prefix}addon { font-size: @size-nano;  }}
-		.size-mini()  { &.@{prefix}mini,  &.@{prefix}mini  + .@{prefix}addon { font-size: @size-mini;  }}
-		.size-tiny()  { &.@{prefix}tiny,  &.@{prefix}tiny  + .@{prefix}addon { font-size: @size-tiny;  }}
-		.size-small() { &.@{prefix}small, &.@{prefix}small + .@{prefix}addon { font-size: @size-small; }}
+		.size-big()   { &.@{prefix}big   ~ .@{prefix}label { font-size: @size-big;   }}
+		.size-large() { &.@{prefix}large ~ .@{prefix}label { font-size: @size-large; }}
+		.size-huge()  { &.@{prefix}huge  ~ .@{prefix}label { font-size: @size-huge;  }}
+		.size-great() { &.@{prefix}great ~ .@{prefix}label { font-size: @size-great; }}
+	}
+	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false) when (@has-addon = true)
+	{
+		#ui-textfield-mixins.sizes(@font-size, @prefix);
 
-		.size-big()   { &.@{prefix}big,   &.@{prefix}big   + .@{prefix}addon { font-size: @size-big;   }}
-		.size-large() { &.@{prefix}large, &.@{prefix}large + .@{prefix}addon { font-size: @size-large; }}
-		.size-huge()  { &.@{prefix}huge,  &.@{prefix}huge  + .@{prefix}addon { font-size: @size-huge;  }}
-		.size-great() { &.@{prefix}great, &.@{prefix}great + .@{prefix}addon { font-size: @size-great; }}
+		.size-nano()  { &.@{prefix}nano  ~ .@{prefix}addon { font-size: @size-nano;  }}
+		.size-mini()  { &.@{prefix}mini  ~ .@{prefix}addon { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{prefix}tiny  ~ .@{prefix}addon { font-size: @size-tiny;  }}
+		.size-small() { &.@{prefix}small ~ .@{prefix}addon { font-size: @size-small; }}
 
+		.size-big()   { &.@{prefix}big   ~ .@{prefix}addon { font-size: @size-big;   }}
+		.size-large() { &.@{prefix}large ~ .@{prefix}addon { font-size: @size-large; }}
+		.size-huge()  { &.@{prefix}huge  ~ .@{prefix}addon { font-size: @size-huge;  }}
+		.size-great() { &.@{prefix}great ~ .@{prefix}addon { font-size: @size-great; }}
+	}
+	.sizes(@font-size, @prefix, @has-label: false, @has-addon: false, @has-hint: false) when (@has-hint = true)
+	{
+		@rate: @textfield-hint-font-size-rate;
+
+		.size-nano()  { &.@{prefix}nano  ~ .@{prefix}hint { font-size: round(@rate * @size-nano, 3);  }}
+		.size-mini()  { &.@{prefix}mini  ~ .@{prefix}hint { font-size: round(@rate * @size-mini, 3);  }}
+		.size-tiny()  { &.@{prefix}tiny  ~ .@{prefix}hint { font-size: round(@rate * @size-tiny, 3);  }}
+		.size-small() { &.@{prefix}small ~ .@{prefix}hint { font-size: round(@rate * @size-small, 3); }}
+
+		.size-big()   { &.@{prefix}big   ~ .@{prefix}hint { font-size: round(@rate * @size-big, 3);   }}
+		.size-large() { &.@{prefix}large ~ .@{prefix}hint { font-size: round(@rate * @size-large, 3); }}
+		.size-huge()  { &.@{prefix}huge  ~ .@{prefix}hint { font-size: round(@rate * @size-huge, 3);  }}
+		.size-great() { &.@{prefix}great ~ .@{prefix}hint { font-size: round(@rate * @size-great, 3); }}
+	}
+	.sizes(...)
+	{
 		.size-apply()
 		{
 			.size-nano();
@@ -297,34 +505,46 @@
 	}
 
 
-	.addon-width(@prefix, @has-addon) when (@has-addon = true)
+	.addon-width(@prefix, @has-label, @has-addon) when (@has-label = true), (@has-addon = true)
 	{
 		.addon-width(left, @start: 1em, @step: 0.5em, @total: 5)
 		{
 			&.@{prefix}pad-l
 			{
-				padding-left: @start;
-
-				#ui-textfield-mixins._width-classes(padding-left, @prefix, @start + @step, @step, @total);
+				#ui-textfield-mixins._width-classes(left, @prefix, @has-label, @start, @step, @total);
 			}
 		}
 		.addon-width(right, @start: 1em, @step: 0.5em, @total: 5)
 		{
 			&.@{prefix}pad-r
 			{
-				padding-right: @start;
-
-				#ui-textfield-mixins._width-classes(padding-right, @prefix, @start + @step, @step, @total);
+				#ui-textfield-mixins._width-classes(right, @prefix, @has-label, @start, @step, @total);
 			}
 		}
 	}
-	._width-classes(@prop, @prefix, @value, @step, @total, @curr: 1) when (@curr <= @total)
+	._width-classes(@prop, @prefix, @has-label, @value, @step, @total, @curr: 0) when (@curr <= @total)
 	{
 		&@{curr}
 		{
-			@{prop}: @value;
+			padding-@{prop}: @value;
 		}
 
-		#ui-textfield-mixins._width-classes(@prop, @prefix, @value + @step, @step, @total, @curr + 1);
+		& when (@has-label) and (@prop = left)
+		{
+			&@{curr} ~ .@{prefix}label
+			{
+				padding-@{prop}: @value;
+				transform-origin: @value top;
+			}
+		}
+		& when (@has-label) and (@prop = right)
+		{
+			&@{curr} ~ .@{prefix}label
+			{
+				padding-@{prop}: @value;
+			}
+		}
+
+		#ui-textfield-mixins._width-classes(@prop, @prefix, @has-label, @value + @step, @step, @total, @curr + 1);
 	}
 }
