@@ -21,15 +21,21 @@ figure, figcaption, footer, header, hgroup,
 menu, nav, section, summary,
 time, mark, main
 {
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	box-sizing: border-box;
+	outline: none !important;
+	vertical-align: baseline;
+	background: transparent;
+	font: inherit;
 }
 
-address, h1, h2, h3, h4, h5, h6,
-input, button, textarea, select
+::before, ::after
 {
-	font: inherit;
+	box-sizing: border-box;
+	vertical-align: inherit;
+	text-decoration: inherit;
+	background-repeat: no-repeat;
 }
 
 address, article, aside, details, figcaption, figure,
@@ -44,19 +50,6 @@ canvas
 [hidden], template
 {
 	display: none !important;
-}
-
-
-:focus
-{
-	outline: none !important;
-}
-::before, ::after
-{
-	box-sizing: border-box;
-	vertical-align: inherit;
-	text-decoration: inherit;
-	background-repeat: no-repeat;
 }
 
 

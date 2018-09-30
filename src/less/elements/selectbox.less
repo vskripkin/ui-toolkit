@@ -55,15 +55,6 @@
 			.disabled() {};
 			.readonly() {};
 		}
-		.label()
-		{
-			.default()  {};
-			.hover()    {};
-			.focus()    {};
-			.opened()   {};
-			.disabled() {};
-			.readonly() {};
-		}
 		.value-before()
 		{
 			.default() {};
@@ -155,37 +146,6 @@
 				.disabled() !important;
 			}
 			select[readonly] ~ .__arrow
-			{
-				.readonly() !important;
-			}
-		}
-
-		&
-		{
-			#ui-selectbox.states.label();
-			.label();
-
-			.__label
-			{
-				.default();
-			}
-			&:hover .__label
-			{
-				.hover();
-			}
-			select:focus ~ .__label, .__textfield:focus ~ .__label, &.__selected ~ .__label
-			{
-				.focus();
-			}
-			&.__opened .__label
-			{
-				.opened() !important;
-			}
-			select:disabled ~ .__label
-			{
-				.disabled() !important;
-			}
-			select[readonly] ~ .__label
 			{
 				.readonly() !important;
 			}
@@ -332,7 +292,6 @@
 			width: auto;
 			min-width: auto;
 			max-width: 100%;
-			overflow: hidden;
 			font-size: 1em !important;
 		}
 		.__value, .__addon
@@ -363,6 +322,7 @@
 			{
 				text-align: right;
 				padding-left: 0.5em;
+				padding-right: 0;
 			}
 		}
 		.__arrow
