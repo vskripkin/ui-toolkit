@@ -3,28 +3,25 @@
 	.checkfield()
 	{
 		.params();
-		#ui-checkfield._params();
+		#ui-checkfield.params();
 
-		#ui-checkfield.construct(@pseudo, @label, @prefix, @type);
+		#ui-checkfield.construct(@font-size, @pseudo, @label, @prefix, @type);
 	}
 }
 
 #ui-checkfield()
 {
-	._params()
+	.params()
 	{
-		@pseudo: @checkfield-class-pseudo;
-		@label:  @checkfield-class-label;
-		@prefix: @checkfield-class-prefix;
-		@type:   checkbox;
+		@font-size: @checkfield-font-size;
+		@pseudo:    @checkfield-class-pseudo;
+		@label:     @checkfield-class-label;
+		@prefix:    @checkfield-class-prefix;
+		@type:      checkbox;
 	}
-	._states()
+	.states()
 	{
-		.default()
-		{
-			font-size: @checkfield-font-size;
-		}
-
+		.default()  {};
 		.hover()    {};
 		.focus()    {};
 		.active()   {};
@@ -33,22 +30,20 @@
 		.disabled-checked() {};
 	}
 
-	.construct(@_pseudo, @_label, @prefix, @type)
+	.construct(@font-size, @_pseudo, @_label, @prefix, @type)
 	{
 		@pseudo: ~'.@{prefix}@{_pseudo}';
 		@label:  ~'.@{prefix}@{_label}';
 
-		#ui-checkfield._states();
-		.states();
-
-		@font-size: .default[font-size];
-
-		#ui-checkfield.template(@pseudo, @label, @type);
+		#ui-checkfield.template(@font-size, @pseudo, @label, @type);
 		#ui-checkfield.sizes(@font-size, @prefix, @pseudo);
 
 
 		&
 		{
+			#ui-checkfield.states();
+			.states();
+
 			& ~ @{pseudo}
 			{
 				.default();
@@ -144,7 +139,7 @@
 		}
 	}
 
-	.template(@pseudo, @label, @type)
+	.template(@font-size, @pseudo, @label, @type)
 	{
 		position: absolute !important;
 		width:  1px !important;
@@ -165,6 +160,7 @@
 
 		& ~ @{pseudo}
 		{
+			font-size: @font-size;
 			user-select: none;
 			line-height: 0 !important;
 			padding: 0 !important;

@@ -1,9 +1,12 @@
+.track(...) {};
+.thumb(...) {};
+
 #ui()
 {
 	.rangefield()
 	{
 		.params();
-		#ui-rangefield._params();
+		#ui-rangefield.params();
 
 		#ui-rangefield.construct(@font-size, @track-height, @thumb-width, @thumb-height);
 		#ui-rangefield.sizes(@font-size, @prefix);
@@ -14,7 +17,7 @@
 {
 	// https://cssportal.com/style-input-range/
 
-	._params()
+	.params()
 	{
 		@prefix:       @rangefield-class-prefix;
 		@font-size:    @rangefield-font-size;
@@ -22,7 +25,7 @@
 		@thumb-width:  @rangefield-thumb-width;
 		@thumb-height: @rangefield-thumb-height;
 	}
-	._states()
+	.states()
 	{
 		.track()
 		{
@@ -42,14 +45,12 @@
 
 	.construct(@font-size, @track-height, @thumb-width, @thumb-height)
 	{
-		.states();
-		#ui-rangefield._states();
-
 		#ui-rangefield.template(@font-size, @track-height, @thumb-width, @thumb-height);
 
 		&
 		{
 			.track();
+			#ui-rangefield.states.track();
 
 			&::-webkit-slider-runnable-track
 			{
@@ -107,6 +108,7 @@
 		&
 		{
 			.thumb();
+			#ui-rangefield.states.thumb();
 
 			&::-webkit-slider-thumb
 			{

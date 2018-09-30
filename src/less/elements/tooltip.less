@@ -3,7 +3,7 @@
 	.tooltip()
 	{
 		.params();
-		#ui-tooltip._params();
+		#ui-tooltip.params();
 
 		#ui-tooltip.construct(@bg-color, @color, @font-size, @padding-ver, @padding-hor, @border-width, @prefix);
 	}
@@ -11,7 +11,7 @@
 
 #ui-tooltip()
 {
-	._params()
+	.params()
 	{
 		@bg-color:     rgba(255,255,255,0);
 		@color:        @tooltip-color;
@@ -22,7 +22,7 @@
 		@border-width: @tooltip-border-width;
 		@prefix:       @tooltip-class-prefix;
 	}
-	._states()
+	.states()
 	{
 		.default() {};
 		.hover() {};
@@ -37,12 +37,11 @@
 
 		#ui-tooltip.sizes(@font-size, @prefix);
 
-
-		#ui-tooltip._states();
-		.states();
-
 		&
 		{
+			#ui-tooltip.states();
+			.states();
+
 			&
 			{
 				border-color: @bg-color;

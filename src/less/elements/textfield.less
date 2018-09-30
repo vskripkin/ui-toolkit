@@ -12,7 +12,7 @@
 		@has-hint:  #ui-textfield-hint.check()[has];
 
 		.params();
-		#ui-textfield._params();
+		#ui-textfield.params();
 
 		@pre: @prefix;
 		@fs: @font-size;
@@ -88,7 +88,7 @@
 
 #ui-textfield()
 {
-	._params()
+	.params()
 	{
 		@prefix:         @textfield-class-prefix;
 		@font-size:      @textfield-font-size;
@@ -97,7 +97,7 @@
 		@padding-bottom: @textfield-padding-bottom;
 		@padding-hor:    @textfield-padding-hor;
 	}
-	._states()
+	.states()
 	{
 		.placeholder() {};
 		.default()  {};
@@ -110,11 +110,11 @@
 
 	.construct(@pre, @fs, @mb, @pt, @pb, @ph)
 	{
-		#ui-textfield._states();
-		.states();
-
 		#ui-textfield.template(@fs, @mb, @pt, @pb, @ph);
 
+
+		#ui-textfield.states();
+		.states();
 
 		&
 		{
@@ -181,9 +181,10 @@
 		.label();
 	}
 
-	._states()
+	.states()
 	{
 		.default()  {};
+		.hover()    {};
 		.focus()    {};
 		.valid()    {};
 		.invalid()  {};
@@ -193,15 +194,19 @@
 
 	.construct(@pre, @enable, @fs, @pt, @pb, @ph) when (@enable)
 	{
-		#ui-textfield-label._states();
-		.label();
-
 		#ui-textfield-label.template(@pre, @fs, @pt, @pb, @ph);
 
+
+		#ui-textfield-label.states();
+		.label();
 
 		& ~ .@{pre}label
 		{
 			.default();
+		}
+		&:hover ~ .@{pre}label
+		{
+			.hover();
 		}
 		&:focus ~ .@{pre}label, &.@{pre}focus ~ .@{pre}label,
 		&:valid ~ .@{pre}label
@@ -275,9 +280,10 @@
 		.addon();
 	}
 
-	._states()
+	.states()
 	{
 		.default()  {};
+		.hover()    {};
 		.focus()    {};
 		.valid()    {};
 		.invalid()  {};
@@ -287,15 +293,19 @@
 
 	.construct(@pre, @enable, @fs, @pt, @pb, @ph) when (@enable)
 	{
-		#ui-textfield-addon._states();
-		.addon();
-
 		#ui-textfield-addon.template(@pre, @fs, @pt, @pb, @ph);
 
+
+		#ui-textfield-addon.states();
+		.addon();
 
 		& ~ .@{pre}addon
 		{
 			.default();
+		}
+		&:hover ~ .@{pre}addon
+		{
+			.hover();
 		}
 		&:focus ~ .@{pre}addon,
 		&.@{pre}focus ~ .@{pre}addon
@@ -374,9 +384,10 @@
 		.hint();
 	}
 
-	._states()
+	.states()
 	{
 		.default()  {};
+		.hover()    {};
 		.focus()    {};
 		.valid()    {};
 		.invalid()  {};
@@ -386,22 +397,28 @@
 
 	.construct(@pre, @enable, @fs) when (@enable)
 	{
-		#ui-textfield-hint._states();
-		.hint();
-
 		#ui-textfield-hint.template(@pre, @fs);
 
 
-		& ~ .@{pre}hint, & ~ .@{pre}error
+		#ui-textfield-hint.states();
+		.hint();
+
+		& ~ .@{pre}hint,
+		& ~ .@{pre}error
 		{
 			.default();
 		}
-		&:focus ~ .@{pre}hint,  &.@{pre}focus ~ .@{pre}hint,
-		&:focus ~ .@{pre}error, &.@{pre}focus ~ .@{pre}error
+		&:hover ~ .@{pre}hint
+		{
+			.hover();
+		}
+		&:focus ~ .@{pre}hint,
+		&.@{pre}focus ~ .@{pre}hint
 		{
 			.focus();
 		}
-		&.@{pre}valid ~ .@{pre}hint, &.@{pre}valid:focus ~ .@{pre}hint
+		&.@{pre}valid ~ .@{pre}hint,
+		&.@{pre}valid:focus ~ .@{pre}hint
 		{
 			.valid();
 		}

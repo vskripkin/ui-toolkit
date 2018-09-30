@@ -19,19 +19,11 @@ article, aside, canvas, details, embed,
 input, button, textarea, select,
 figure, figcaption, footer, header, hgroup,
 menu, nav, section, summary,
-time, mark, main,
-::before, ::after
-{
-	box-sizing: border-box;
-}
-
-body, figure, blockquote, menu, summary,
-h1, h2, h3, h4, h5, h6, p,
-dl, dt, dd, ol, ul, li,
-input, button, textarea, select,
-form, legend, fieldset
+time, mark, main
 {
 	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 address, h1, h2, h3, h4, h5, h6,
@@ -61,6 +53,7 @@ canvas
 }
 ::before, ::after
 {
+	box-sizing: border-box;
 	vertical-align: inherit;
 	text-decoration: inherit;
 	background-repeat: no-repeat;

@@ -1,30 +1,40 @@
+.select(...) {};
+.arrow(...)  {};
+.value-before(...) {};
+.value-after(...)  {};
+
+.list(...) {};
+.list-label(...) {};
+.list-item(...)  {};
+
+
 #ui()
 {
-	.select()
+	.selectbox()
 	{
 		.params();
-		#ui-select._params();
+		#ui-selectbox.params();
 
-		#ui-select.construct(@font-size);
+		#ui-selectbox.construct(@font-size);
 
 		&-@{postfix}
 		{
-			#ui-select-options.construct(@font-size);
+			#ui-selectbox-list.construct(@font-size);
 		}
 
-		#ui-select.sizes(@font-size, @postfix, @prefix);
+		#ui-selectbox.sizes(@font-size, @postfix, @prefix);
 	}
 }
 
-#ui-select()
+#ui-selectbox()
 {
-	._params()
+	.params()
 	{
 		@font-size: @selectbox-font-size;
-		@postfix: @selectbox-list-postfix;
-		@prefix: @selectbox-class-prefix;
+		@postfix:   @selectbox-list-postfix;
+		@prefix:    @selectbox-class-prefix;
 	}
-	._states()
+	.states()
 	{
 		.select()
 		{
@@ -36,12 +46,21 @@
 			.disabled() {};
 			.readonly() {};
 		}
-		.select-arrow()
+		.arrow()
 		{
 			.default() {};
 			.hover() {};
 			.focus() {};
 			.opened() {};
+			.disabled() {};
+			.readonly() {};
+		}
+		.label()
+		{
+			.default()  {};
+			.hover()    {};
+			.focus()    {};
+			.opened()   {};
 			.disabled() {};
 			.readonly() {};
 		}
@@ -67,14 +86,12 @@
 
 	.construct(@font-size)
 	{
-		.states();
-		#ui-select._states();
-
-		#ui-select.template(@font-size);
+		#ui-selectbox.template(@font-size);
 
 
 		&
 		{
+			#ui-selectbox.states.select();
 			.select();
 
 			.__textfield
@@ -85,7 +102,7 @@
 			{
 				.hover();
 			}
-			select:focus + .__textfield, .__textfield:focus
+			select:focus ~ .__textfield, .__textfield:focus
 			{
 				.focus();
 			}
@@ -93,11 +110,11 @@
 			{
 				.opened() !important;
 			}
-			select:disabled + .__textfield
+			select:disabled ~ .__textfield
 			{
 				.disabled() !important;
 			}
-			select[readonly] + .__textfield
+			select[readonly] ~ .__textfield
 			{
 				.readonly() !important;
 			}
@@ -114,7 +131,8 @@
 
 		&
 		{
-			.select-arrow();
+			#ui-selectbox.states.arrow();
+			.arrow();
 
 			.__arrow
 			{
@@ -144,25 +162,30 @@
 
 		&
 		{
-			.value-before();
+			#ui-selectbox.states.label();
+			.label();
 
-			.__value:before
+			.__label
 			{
 				.default();
 			}
-			&:hover .__value:before
+			&:hover .__label
 			{
 				.hover();
 			}
-			.__textfield:focus ~ .__value:before
+			select:focus ~ .__label, .__textfield:focus ~ .__label, &.__selected ~ .__label
 			{
 				.focus();
 			}
-			select:disabled ~ .__value:before
+			&.__opened .__label
+			{
+				.opened() !important;
+			}
+			select:disabled ~ .__label
 			{
 				.disabled() !important;
 			}
-			select[readonly] ~ .__value:before
+			select[readonly] ~ .__label
 			{
 				.readonly() !important;
 			}
@@ -170,25 +193,53 @@
 
 		&
 		{
-			.value-after();
+			#ui-selectbox.states.value-before();
+			.value-before();
 
-			.__value:after
+			.__value::before
 			{
 				.default();
 			}
-			&:hover .__value:after
+			&:hover .__value::before
 			{
 				.hover();
 			}
-			.__textfield:focus ~ .__value:after
+			.__textfield:focus ~ .__value::before
 			{
 				.focus();
 			}
-			select:disabled ~ .__value:after
+			select:disabled ~ .__value::before
 			{
 				.disabled() !important;
 			}
-			select[readonly] ~ .__value:after
+			select[readonly] ~ .__value::before
+			{
+				.readonly() !important;
+			}
+		}
+
+		&
+		{
+			#ui-selectbox.states.value-after();
+			.value-after();
+
+			.__value::after
+			{
+				.default();
+			}
+			&:hover .__value::after
+			{
+				.hover();
+			}
+			.__textfield:focus ~ .__value::after
+			{
+				.focus();
+			}
+			select:disabled ~ .__value::after
+			{
+				.disabled() !important;
+			}
+			select[readonly] ~ .__value::after
 			{
 				.readonly() !important;
 			}
@@ -236,15 +287,20 @@
 
 			&[readonly]
 			{
-				cursor: pointer;
 				color: transparent !important;
 			}
 		}
-		select:disabled + .__textfield
+
+		.__textfield[readonly], .__arrow
+		{
+			cursor: pointer;
+		}
+		select:disabled ~ .__textfield, select:disabled ~ .__arrow
 		{
 			cursor: @selectbox-disabled-cursor;
 		}
-		select:disabled + .__textfield,
+
+		select:disabled ~ .__textfield,
 		select:disabled ~ .__value,
 		select:disabled ~ .__addon,
 		select:disabled ~ .__arrow
@@ -313,14 +369,15 @@
 		{
 			align-self: stretch;
 			position: relative;
+			z-index: 3;
 			min-height: 100%;
 			text-align: center;
 			transition: transform 0.3s ease;
 			transform: rotate(0deg);
 
-			width: (1em * @selectbox-line-height);
+			width: 1em * @selectbox-line-height;
 
-			&:after
+			&::after
 			{
 				content: '';
 				position: absolute;
@@ -338,15 +395,15 @@
 		}
 
 
-		.__value[data-before]:before
+		.__value[data-before]::before
 		{
 			content: attr(data-before);
 		}
-		.__value[data-after]:after
+		.__value[data-after]::after
 		{
 			content: attr(data-after);
 		}
-		.__value.__placeholder:before, .__value.__placeholder:after
+		.__value.__placeholder::before, .__value.__placeholder::after
 		{
 			content: none !important;
 		}
@@ -401,9 +458,9 @@
 	}
 }
 
-#ui-select-options()
+#ui-selectbox-list()
 {
-	._states()
+	.states()
 	{
 		.list()
 		{
@@ -430,13 +487,11 @@
 
 	.construct(@font-size)
 	{
-		.states();
-		#ui-select-options._states();
-
-		#ui-select-options.template(@font-size);
+		#ui-selectbox-list.template(@font-size);
 
 		&
 		{
+			#ui-selectbox-list.states.list();
 			.list();
 
 			&, ul
@@ -455,6 +510,7 @@
 
 		.__label
 		{
+			#ui-selectbox-list.states.list-label();
 			.list-label();
 
 			&
@@ -467,8 +523,9 @@
 			}
 		}
 
-		.__option
+		.__item
 		{
+			#ui-selectbox-list.states.list-item();
 			.list-item();
 
 			&
@@ -516,7 +573,7 @@
 			max-height: 40rem;
 			max-height: 40vh;
 
-			&.__with-attr > .__option:after
+			&.__with-attr > .__item::after
 			{
 				content: ' - 'attr(data-value);
 				font-size: 0.9em;
@@ -539,13 +596,13 @@
 		{
 			counter-reset: option_num;
 
-			& > .__option
+			& > .__item
 			{
 				display: table;
 				width: 100%;
 				word-break: break-word;
 
-				&:before
+				&::before
 				{
 					counter-increment: option_num;
 					content: counter(option_num)'.';
@@ -563,7 +620,7 @@
 			{
 				max-width: none !important;
 
-				& > .option
+				& > .__item
 				{
 					white-space: nowrap;
 					word-break: normal;
