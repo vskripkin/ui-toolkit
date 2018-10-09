@@ -8,7 +8,7 @@
 		@hover-bg-color:  #ui.hover-bg(@hover, @bg-color)[result];
 		@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-		#ui-button.template(@font-size, @pad-ver, @pad-hor, @border-width);
+		#ui-button.template(@font-size, @padding-ver, @paddong-hor, @border-width);
 		#ui-button.sizes(@font-size, @prefix);
 
 		&
@@ -53,8 +53,8 @@
 		{
 			&.@{prefix}thin
 			{
-				padding-left:  @pad-ver;
-				padding-right: @pad-ver;
+				padding-left:  @padding-ver;
+				padding-right: @padding-ver;
 			}
 		}
 		.circle()
@@ -62,8 +62,8 @@
 			&.@{prefix}circle
 			{
 				border-radius: 150px;
-				padding-left:  @pad-ver;
-				padding-right: @pad-ver;
+				padding-left:  @padding-ver;
+				padding-right: @padding-ver;
 			}
 		}
 
