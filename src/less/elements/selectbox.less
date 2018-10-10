@@ -11,11 +11,21 @@
 #ui()
 {
 	.selectbox(
-		@font-size: @selectbox-font-size,
-		@postfix:   @selectbox-list-postfix,
-		@prefix:    @selectbox-class-prefix)
+		@postfix:        @selectbox-list-postfix,
+		@font-size:      @selectbox-font-size,
+		@margin-bottom:  @selectbox-margin-bottom,
+		@padding-top:    @selectbox-padding-top,
+		@padding-bottom: @selectbox-padding-bottom,
+		@padding-hor:    @selectbox-padding-hor,
+		@prefix:         @selectbox-class-prefix)
 	{
-		#ui-selectbox.construct(@font-size);
+		@fs: @font-size;
+		@mb: @margin-bottom;
+		@pt: @padding-top;
+		@pb: @padding-bottom;
+		@ph: @padding-hor;
+
+		#ui-selectbox.construct(@fs, @mb, @pt, @pb, @ph);
 
 		&-@{postfix}
 		{
@@ -69,9 +79,9 @@
 		}
 	}
 
-	.construct(@font-size)
+	.construct(@fs, @mb, @pt, @pb, @ph)
 	{
-		#ui-selectbox.template(@font-size);
+		#ui-selectbox.template(@fs, @mb, @pt, @pb, @ph);
 
 
 		&
@@ -201,7 +211,13 @@
 	}
 
 
-	.template(@font-size)
+	.template(@font-size, @margin-bottom, @padding-top, @padding-bottom, @padding-hor)
+	{
+		margin-bottom: @margin-bottom;
+		padding: @padding-top @padding-hor @padding-bottom;
+		font-size: @font-size;
+	}
+	.template(...)
 	{
 		display: inline-block;
 		vertical-align: middle;
@@ -209,7 +225,6 @@
 		z-index: 1;
 		width: auto;
 		max-width: 100%;
-		font-size: @font-size;
 		line-height: @selectbox-line-height;
 
 		// for mobile devices
