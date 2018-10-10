@@ -3,11 +3,13 @@
 
 #ui()
 {
-	.rangefield()
+	.rangefield(
+		@font-size:    @rangefield-font-size,
+		@track-height: @rangefield-track-height,
+		@thumb-width:  @rangefield-thumb-width,
+		@thumb-height: @rangefield-thumb-height,
+		@prefix:       @rangefield-class-prefix)
 	{
-		.params();
-		#ui-rangefield.params();
-
 		#ui-rangefield.construct(@font-size, @track-height, @thumb-width, @thumb-height);
 		#ui-rangefield.sizes(@font-size, @prefix);
 	}
@@ -17,14 +19,6 @@
 {
 	// https://cssportal.com/style-input-range/
 
-	.params()
-	{
-		@prefix:       @rangefield-class-prefix;
-		@font-size:    @rangefield-font-size;
-		@track-height: @rangefield-track-height;
-		@thumb-width:  @rangefield-thumb-width;
-		@thumb-height: @rangefield-thumb-height;
-	}
 	.states()
 	{
 		.track()

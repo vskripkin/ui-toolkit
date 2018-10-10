@@ -5,14 +5,17 @@
 
 #ui()
 {
-	.textfield()
+	.textfield(
+		@font-size:      @textfield-font-size,
+		@margin-bottom:  @textfield-margin-bottom,
+		@padding-top:    @textfield-padding-top,
+		@padding-bottom: @textfield-padding-bottom,
+		@padding-hor:    @textfield-padding-hor,
+		@prefix:         @textfield-class-prefix)
 	{
 		@has-label: #ui-textfield-label.check()[has];
 		@has-addon: #ui-textfield-addon.check()[has];
 		@has-hint:  #ui-textfield-hint.check()[has];
-
-		.params();
-		#ui-textfield.params();
 
 		@pre: @prefix;
 		@fs: @font-size;
@@ -88,15 +91,6 @@
 
 #ui-textfield()
 {
-	.params()
-	{
-		@prefix:         @textfield-class-prefix;
-		@font-size:      @textfield-font-size;
-		@margin-bottom:  @textfield-margin-bottom;
-		@padding-top:    @textfield-padding-top;
-		@padding-bottom: @textfield-padding-bottom;
-		@padding-hor:    @textfield-padding-hor;
-	}
 	.states()
 	{
 		.placeholder() {};

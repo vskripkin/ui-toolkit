@@ -1,24 +1,18 @@
 #ui()
 {
-	.checkfield()
+	.checkfield(
+		@type:      checkbox,
+		@font-size: @checkfield-font-size,
+		@pseudo:    @checkfield-class-pseudo,
+		@label:     @checkfield-class-label,
+		@prefix:    @checkfield-class-prefix)
 	{
-		.params();
-		#ui-checkfield.params();
-
 		#ui-checkfield.construct(@font-size, @pseudo, @label, @prefix, @type);
 	}
 }
 
 #ui-checkfield()
 {
-	.params()
-	{
-		@font-size: @checkfield-font-size;
-		@pseudo:    @checkfield-class-pseudo;
-		@label:     @checkfield-class-label;
-		@prefix:    @checkfield-class-prefix;
-		@type:      checkbox;
-	}
 	.states()
 	{
 		.default()  {};

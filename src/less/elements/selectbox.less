@@ -10,11 +10,11 @@
 
 #ui()
 {
-	.selectbox()
+	.selectbox(
+		@font-size: @selectbox-font-size,
+		@postfix:   @selectbox-list-postfix,
+		@prefix:    @selectbox-class-prefix)
 	{
-		.params();
-		#ui-selectbox.params();
-
 		#ui-selectbox.construct(@font-size);
 
 		&-@{postfix}
@@ -28,12 +28,6 @@
 
 #ui-selectbox()
 {
-	.params()
-	{
-		@font-size: @selectbox-font-size;
-		@postfix:   @selectbox-list-postfix;
-		@prefix:    @selectbox-class-prefix;
-	}
 	.states()
 	{
 		.select()
