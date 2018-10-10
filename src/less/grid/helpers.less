@@ -15,7 +15,7 @@
 		x-right,   y-right,
 
 		space-between, space-around,
-		stretch, start, center, end,
+		stretch, baseline, start, center, end,
 
 		fisrt, last, initial,
 		overflow-on, overflow-off,
@@ -527,6 +527,28 @@
 		.@{bp-class-only}-stretch
 		{
 			#ui-grid-hlps-collect(@bp, stretch) when (@bp = @bp-class-only)
+			{
+				@used: true;
+			}
+		}
+
+		.@{bp-class-up}-baseline
+		{
+			#ui-grid-hlps-collect(@bp, baseline) when (@bp = @bp-class-up)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-down}-baseline
+		{
+			#ui-grid-hlps-collect(@bp, baseline) when (@bp = @bp-class-down)
+			{
+				@used: true;
+			}
+		}
+		.@{bp-class-only}-baseline
+		{
+			#ui-grid-hlps-collect(@bp, baseline) when (@bp = @bp-class-only)
 			{
 				@used: true;
 			}

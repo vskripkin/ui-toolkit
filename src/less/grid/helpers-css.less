@@ -27,10 +27,11 @@
 	.space-between() { justify-content: space-between; }
 	.space-around()  { justify-content: space-around;  }
 
-	.item-stretch() { align-self: stretch; align-items: stretch; }
-	.item-start()   { align-self: flex-start; }
-	.item-center()  { align-self: center;     }
-	.item-end()     { align-self: flex-end;   }
+	.item-stretch()  { align-self: stretch;  align-items: stretch;  }
+	.item-baseline() { align-self: baseline; align-items: baseline; }
+	.item-start()    { align-self: flex-start; }
+	.item-center()   { align-self: center;     }
+	.item-end()      { align-self: flex-end;   }
 
 	.item-first()   { order: -1; }
 	.item-last()    { order:  1; }
@@ -123,10 +124,11 @@
 		& when (@prop = space-between) { #ui-grid-hlps-css.space-between(); }
 		& when (@prop = space-around)  { #ui-grid-hlps-css.space-around();  }
 
-		& when (@prop = stretch) { #ui-grid-hlps-css.item-stretch(); }
-		& when (@prop = start)   { #ui-grid-hlps-css.item-start();   }
-		& when (@prop = center)  { #ui-grid-hlps-css.item-center();  }
-		& when (@prop = end)     { #ui-grid-hlps-css.item-end();     }
+		& when (@prop = stretch)  { #ui-grid-hlps-css.item-stretch(); }
+		& when (@prop = baseline) { #ui-grid-hlps-css.item-baseline(); }
+		& when (@prop = start)    { #ui-grid-hlps-css.item-start();   }
+		& when (@prop = center)   { #ui-grid-hlps-css.item-center();  }
+		& when (@prop = end)      { #ui-grid-hlps-css.item-end();     }
 
 		& when (@prop = first)   { #ui-grid-hlps-css.item-first();   }
 		& when (@prop = last)    { #ui-grid-hlps-css.item-last();    }
