@@ -179,6 +179,7 @@
 	{
 		.default()  {};
 		.hover()    {};
+		.filled()   {};
 		.focus()    {};
 		.valid()    {};
 		.invalid()  {};
@@ -202,8 +203,11 @@
 		{
 			.hover();
 		}
-		&:focus ~ .@{pre}label, &.@{pre}focus ~ .@{pre}label,
 		&:valid ~ .@{pre}label
+		{
+			.filled();
+		}
+		&:focus ~ .@{pre}label, &.@{pre}focus ~ .@{pre}label
 		{
 			.focus();
 		}
@@ -233,6 +237,7 @@
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
 			font-size: @font-size;
+			line-height: @textfield-line-height;
 
 			position: absolute;
 			z-index: 2;
@@ -256,12 +261,23 @@
 		}
 
 		&:focus ~ .@{pre}label,
+		&:-webkit-autofill ~ .@{pre}label,
 		&:valid ~ .@{pre}label,
 		&:disabled ~ .@{pre}label,
 		&[readonly] ~ .@{pre}label,
+		&[placeholder] ~ .@{pre}label,
 		&.@{pre}focus ~ .@{pre}label
 		{
 			transform: translateY(-50%) scale(0.75) !important;
+		}
+
+		&:valid:not(:focus) ~ .@{pre}label,
+		&:-webkit-autofill ~ .@{pre}label,
+		&:disabled ~ .@{pre}label,
+		&[readonly] ~ .@{pre}label,
+		&[placeholder] ~ .@{pre}label
+		{
+			transition: none;
 		}
 	}
 }
