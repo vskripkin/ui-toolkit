@@ -9,10 +9,13 @@
 @import 'config/color';
 @import 'config/vars';
 
-@import 'globals/mixins';
-@import 'globals/reset';
-@import 'globals/site';
+& when (@use-reset)
+{
+	@import 'globals/reset';
+	@import 'globals/site';
+}
 
+@import 'behaviors/mixins';
 @import 'behaviors/keyframes';
 @import 'behaviors/visibility';
 @import 'grid/index';
