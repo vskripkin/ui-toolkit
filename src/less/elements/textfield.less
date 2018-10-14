@@ -497,6 +497,14 @@
 		.size-large() { &.@{pre}large ~ .@{pre}label { font-size: @size-large; }}
 		.size-huge()  { &.@{pre}huge  ~ .@{pre}label { font-size: @size-huge;  }}
 		.size-great() { &.@{pre}great ~ .@{pre}label { font-size: @size-great; }}
+
+		.size(@font-size, @class)
+		{
+			&@{pre}@{class} ~ .@{pre}label
+			{
+				font-size: @font-size;
+			}
+		}
 	}
 	.sizes(@font-size, @pre, @has-label: false, @has-addon: false, @has-hint: false) when (@has-addon = true)
 	{
@@ -511,6 +519,14 @@
 		.size-large() { &.@{pre}large ~ .@{pre}addon { font-size: @size-large; }}
 		.size-huge()  { &.@{pre}huge  ~ .@{pre}addon { font-size: @size-huge;  }}
 		.size-great() { &.@{pre}great ~ .@{pre}addon { font-size: @size-great; }}
+
+		.size(@font-size, @class)
+		{
+			&@{pre}@{class} ~ .@{pre}addon
+			{
+				font-size: @font-size;
+			}
+		}
 	}
 	.sizes(@font-size, @pre, @has-label: false, @has-addon: false, @has-hint: false) when (@has-hint = true)
 	{
@@ -525,9 +541,25 @@
 		.size-large() { &.@{pre}large ~ .@{pre}hint { font-size: round(@rate * @size-large, 3); }}
 		.size-huge()  { &.@{pre}huge  ~ .@{pre}hint { font-size: round(@rate * @size-huge, 3);  }}
 		.size-great() { &.@{pre}great ~ .@{pre}hint { font-size: round(@rate * @size-great, 3); }}
+
+		.size(@font-size, @class)
+		{
+			&@{pre}@{class} ~ .@{pre}hint
+			{
+				font-size: round(@rate * @font-size, 3);
+			}
+		}
 	}
 	.sizes(...)
 	{
+		.size(@font-size, @class)
+		{
+			&@{pre}@{class}
+			{
+				font-size: @font-size;
+			}
+		}
+
 		.size-apply()
 		{
 			.size-nano();

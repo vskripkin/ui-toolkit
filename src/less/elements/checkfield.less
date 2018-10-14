@@ -205,19 +205,27 @@
 		}
 	}
 
-	.sizes(@font-size, @prefix, @pseudo)
+	.sizes(@font-size, @pre, @pseudo)
 	{
 		#ui.fs-sizes(@font-size);
 
-		.size-nano()  { &.@{prefix}nano  + @{pseudo} { font-size: @size-nano;  }}
-		.size-mini()  { &.@{prefix}mini  + @{pseudo} { font-size: @size-mini;  }}
-		.size-tiny()  { &.@{prefix}tiny  + @{pseudo} { font-size: @size-tiny;  }}
-		.size-small() { &.@{prefix}small + @{pseudo} { font-size: @size-small; }}
+		.size-nano()  { &.@{pre}nano  ~ @{pseudo} { font-size: @size-nano;  }}
+		.size-mini()  { &.@{pre}mini  ~ @{pseudo} { font-size: @size-mini;  }}
+		.size-tiny()  { &.@{pre}tiny  ~ @{pseudo} { font-size: @size-tiny;  }}
+		.size-small() { &.@{pre}small ~ @{pseudo} { font-size: @size-small; }}
 
-		.size-big()   { &.@{prefix}big   + @{pseudo} { font-size: @size-big;   }}
-		.size-large() { &.@{prefix}large + @{pseudo} { font-size: @size-large; }}
-		.size-huge()  { &.@{prefix}huge  + @{pseudo} { font-size: @size-huge;  }}
-		.size-great() { &.@{prefix}great + @{pseudo} { font-size: @size-great; }}
+		.size-big()   { &.@{pre}big   ~ @{pseudo} { font-size: @size-big;   }}
+		.size-large() { &.@{pre}large ~ @{pseudo} { font-size: @size-large; }}
+		.size-huge()  { &.@{pre}huge  ~ @{pseudo} { font-size: @size-huge;  }}
+		.size-great() { &.@{pre}great ~ @{pseudo} { font-size: @size-great; }}
+
+		.size(@font-size, @class)
+		{
+			&@{pre}@{class}, &@{pre}@{class} ~ @{pseudo}
+			{
+				font-size: @font-size;
+			}
+		}
 
 		.size-apply()
 		{
