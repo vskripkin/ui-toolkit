@@ -4,12 +4,12 @@
 {
 	@props: inline, table, table-inline, collapse;
 
-	.used()
+	.used() when (@use-grid)
 	{
 		#ui-grid-base-css.grid();
 		#ui-grid-base-css.item();
 	}
-	.used(@bp-name)
+	.used(@bp-name) when (@use-grid)
 	{
 		#ui-grid-base-css.gaps(@break-points[@@bp-name][gap]);
 	}
