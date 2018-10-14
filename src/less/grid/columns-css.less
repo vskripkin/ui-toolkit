@@ -2,17 +2,17 @@
 {
 	.width(@width)
 	{
-		flex-basis: auto;
-		width:      @width;
-		max-width:  @width;
+		flex: 0 0 auto;
+		width: @width;
+		max-width: @width;
 	}
 	.widthpx(@val)
 	{
 		@width: round(@grid-width * unit(@val / 100), 3);
 
-		flex-basis: auto;
-		width:      @width;
-		max-width:  @width;
+		flex: 0 0 auto;
+		width: @width;
+		max-width: @width;
 	}
 	.toright(@range)
 	{
@@ -32,17 +32,13 @@
 
 	.width-tight()
 	{
-		flex-grow: 0;
-		flex-basis: auto;
-
+		flex: 0 0 auto;
 		width: auto;
 		max-width: 100%;
 	}
 	.width-auto()
 	{
-		flex-grow: 1;
-		flex-basis: 0;
-
+		flex: 1 1 0%;
 		width: auto;
 		max-width: 100%;
 	}
