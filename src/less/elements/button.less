@@ -18,13 +18,8 @@
 
 		&
 		{
-			background-color: @bg-color;
 			color: @color;
-
-			&, &::after
-			{
-				color: @color;
-			}
+			background-color: @bg-color;
 		}
 		&:hover
 		{
@@ -36,14 +31,10 @@
 		}
 		&:disabled
 		{
+			color: @color !important;
 			background-color: @bg-color !important;
 			opacity: @button-disabled-opacity !important;
 			cursor:  @button-disabled-cursor;
-
-			&, &::after
-			{
-				color: @color !important;
-			}
 		}
 
 
@@ -72,31 +63,56 @@
 			}
 		}
 
-		.text()
+		.invert()
 		{
-			&.@{prefix}text
-			{
-				background-color: transparent;
+			@hover-type: if(iscolor(@hover), if(iscolor(@button-hover-color-bg), default, @button-hover-color-bg), @hover);
+			@hover-bg-color:  #ui.hover-bg(@hover-type, @color)[result];
+			@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-				&, &::after
-				{
-					color: @bg-color;
-				}
+			&.@{prefix}invert
+			{
+				color: @bg-color;
+				background-color: @color;
+
 				&:hover
 				{
-					color: @color;
 					border-color: @hover-bg-color;
 					background-color: @hover-bg-color;
-
-					&, &::after
-					{
-						color: @color;
-					}
 				}
 				&:active
 				{
 					border-color: @active-bg-color;
 					background-color: @active-bg-color;
+				}
+				&:disabled
+				{
+					color: @bg-color !important;
+					background-color: @color !important;
+				}
+			}
+		}
+		.text()
+		{
+			&.@{prefix}text
+			{
+				color: @bg-color;
+				background-color: transparent;
+
+				&:hover
+				{
+					color: @color;
+					border-color: @hover-bg-color;
+					background-color: @hover-bg-color;
+				}
+				&:active
+				{
+					border-color: @active-bg-color;
+					background-color: @active-bg-color;
+				}
+				&:disabled
+				{
+					color: @bg-color !important;
+					background-color: transparent !important;
 				}
 			}
 		}
@@ -104,28 +120,26 @@
 		{
 			&.@{prefix}outline
 			{
+				color: @bg-color;
 				border-color: @bg-color;
 				background-color: transparent;
 
-				&, &::after
-				{
-					color: @bg-color;
-				}
 				&:hover
 				{
 					color: @color;
 					border-color: @hover-bg-color;
 					background-color: @hover-bg-color;
-
-					&, &::after
-					{
-						color: @color;
-					}
 				}
 				&:active
 				{
 					border-color: @active-bg-color;
 					background-color: @active-bg-color;
+				}
+				&:disabled
+				{
+					color: @bg-color !important;
+					border-color: @bg-color !important;
+					background-color: transparent !important;
 				}
 			}
 		}
@@ -133,7 +147,9 @@
 		{
 			&.@{prefix}fount
 			{
-				border-color: fade(@color, alpha(@color) / 2 * 100);
+				@border-color: fade(@color, alpha(@color) / 2 * 100);
+
+				border-color: @border-color;
 				background-color: transparent;
 
 				&:hover
@@ -146,34 +162,37 @@
 					border-color: @active-bg-color;
 					background-color: @active-bg-color;
 				}
+				&:disabled
+				{
+					border-color: @border-color !important;
+					background-color: transparent !important;
+				}
 			}
 		}
 		.ghost()
 		{
 			&.@{prefix}ghost
 			{
-				border-color: fade(@color, alpha(@color) / 2 * 100);
+				@border-color: fade(@color, alpha(@color) / 2 * 100);
+
+				border-color: @border-color;
 				background-color: transparent;
 
 				&:hover
 				{
 					color: @hover-bg-color;
 					border-color: @hover-bg-color;
-
-					&, &::after
-					{
-						color: @hover-bg-color;
-					}
 				}
 				&:active
 				{
 					color: @active-bg-color;
 					border-color: @active-bg-color;
-
-					&, &::after
-					{
-						color: @active-bg-color;
-					}
+				}
+				&:disabled
+				{
+					color: @hover-bg-color !important;
+					border-color: @border-color !important;
+					background-color: transparent !important;
 				}
 			}
 		}
