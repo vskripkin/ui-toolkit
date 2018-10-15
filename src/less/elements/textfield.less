@@ -25,7 +25,7 @@
 		@ph: @padding-hor;
 
 		#ui-textfield.construct(@pre, @fs, @mb, @pt, @pb, @ph);
-		#ui-textfield-label.construct(@pre, @has-label, @fs, @pt, @pb, @ph);
+		#ui-textfield-label.construct(@pre, @has-label, @fs, @pt, @pb, @ph, @has-addon);
 		#ui-textfield-addon.construct(@pre, @has-addon, @fs, @pt, @pb, @ph);
 		#ui-textfield-hint.construct(@pre, @has-hint, @fs);
 
@@ -180,6 +180,7 @@
 		.default()  {};
 		.hover()    {};
 		.filled()   {};
+		.moved()    {};
 		.focus()    {};
 		.valid()    {};
 		.invalid()  {};
@@ -187,9 +188,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @pt, @pb, @ph) when (@enable)
+	.construct(@pre, @enable, @fs, @pt, @pb, @ph, @has-addon) when (@enable)
 	{
-		#ui-textfield-label.template(@pre, @fs, @pt, @pb, @ph);
+		#ui-textfield-label.template(@pre, @fs, @pt, @pb, @ph, @has-addon);
 
 
 		#ui-textfield-label.states();
@@ -203,6 +204,25 @@
 		{
 			.hover();
 		}
+
+		&:focus ~ .@{pre}label,
+		&:valid ~ .@{pre}label,
+		&:disabled ~ .@{pre}label,
+		&[readonly] ~ .@{pre}label,
+		&[placeholder]:not([placeholder=" "]) ~ .@{pre}label,
+		&.@{pre}focus ~ .@{pre}label
+		{
+			.moved();
+		}
+		&:-webkit-autofill ~ .@{pre}label
+		{
+			.moved();
+		}
+		&[type="email"]:not(:placeholder-shown) ~ .@{pre}label
+		{
+			.moved();
+		}
+
 		&:valid ~ .@{pre}label
 		{
 			.filled();
@@ -231,7 +251,7 @@
 		}
 	}
 
-	.template(@pre, @font-size, @padding-top, @padding-bottom, @padding-hor)
+	.template(@pre, @font-size, @padding-top, @padding-bottom, @padding-hor, @has-addon)
 	{
 		& ~ .@{pre}label
 		{
@@ -288,6 +308,32 @@
 		&:-webkit-autofill ~ .@{pre}label
 		{
 			transition: none;
+		}
+
+
+		& when (@has-addon)
+		{
+			& ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			{
+				display: none;
+			}
+			&:focus ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
+			&:valid ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
+			&:disabled ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
+			&[readonly] ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
+			&[placeholder]:not([placeholder=" "]) ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
+			&.@{pre}focus ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			{
+				display: block;
+			}
+			&:-webkit-autofill ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			{
+				display: block;
+			}
+			&[type="email"]:not(:placeholder-shown) ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			{
+				display: block;
+			}
 		}
 	}
 }
