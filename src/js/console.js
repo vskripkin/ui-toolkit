@@ -27,22 +27,27 @@
 	 *		}
 	 *	}
 	 */
-	_.Console = Console = function (_isDebug, _oRequests)
+	_.Console = Console = function (_isDebug, _oMethods)
 	{
 		this.debug(_isDebug);
 
-		for (var sName in _oRequests)
+		for (var sName in _oMethods)
 		{
-			this[sName] = (function (_oRequest)
+			this[sName] = (function (_oMethod)
 			{
 				return function ()
 				{
 					var aMessages = Array.prototype.slice.call(arguments),
-						aFormattedMsg = _.isIE ? aMessages : _oRequest.format(aMessages);
+						aFormattedMsg = _.isIE ? aMessages : _oMethod.format(aMessages);
 
-					return this.produceFunc(aFormattedMsg, _oRequest.trace);
+					if (_oMethod.indent && aFormattedMsg[0])
+					{
+						aFormattedMsg[0] = this._getIndent(_oMethod.indent) + aFormattedMsg[0];
+					}
+
+					return this._produceFunc(aFormattedMsg, _oMethod.trace);
 				};
-			})(_oRequests[sName]);
+			})(_oMethods[sName]);
 		}
 
 		return this;
@@ -60,6 +65,7 @@
 	Console.prototype = {
 		constructor: Console,
 		debug: Console.debug,
+		indent: '    ',
 
 		log: function ()
 		{
@@ -101,7 +107,7 @@
 			return Function.prototype.bind.apply(OriginalError, aMessages);
 		},
 
-		produceFunc: function (_args, _bTrace)
+		_produceFunc: function (_args, _bTrace)
 		{
 			if (!this.debug())
 			{
@@ -127,6 +133,18 @@
 			}
 
 			return Function.prototype.bind.apply(OriginalLog, _args);
+		},
+		_getIndent: function (_iIndent)
+		{
+			var sIndent = this.indent,
+				sResult = '';
+
+			while (_iIndent--)
+			{
+				sResult += sIndent;
+			}
+
+			return sResult;
 		}
 	};
 })(window.jQuery, window._);
