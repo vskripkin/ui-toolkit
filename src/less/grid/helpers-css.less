@@ -37,12 +37,26 @@
 	.item-last()    { order:  1; }
 	.item-initial() { order:  0; }
 
-	.item-overflow-on()  { overflow: hidden; text-overflow: ellipsis; }
-	.item-overflow-off() { overflow: visible; }
-
 
 	@grid:  @grid-grid-class;
 	@item:  @grid-item-class;
+
+	.overflow-on()
+	{
+		&.@{grid} > .@{item}, .@{grid} > &.@{item}
+		{
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+	.overflow-off()
+	{
+		&.@{grid} > .@{item}, .@{grid} > &.@{item}
+		{
+			overflow: visible;
+			text-overflow: clip;
+		}
+	}
 
 	.first-cell()
 	{
@@ -134,8 +148,8 @@
 		& when (@prop = last)    { #ui-grid-hlps-css.item-last();    }
 		& when (@prop = initial) { #ui-grid-hlps-css.item-initial(); }
 
-		& when (@prop = overflow-on)  { #ui-grid-hlps-css.item-overflow-on();  }
-		& when (@prop = overflow-off) { #ui-grid-hlps-css.item-overflow-off(); }
+		& when (@prop = overflow-on)  { #ui-grid-hlps-css.overflow-on();  }
+		& when (@prop = overflow-off) { #ui-grid-hlps-css.overflow-off(); }
 
 
 		& when (@prop = first-cell)   { #ui-grid-hlps-css.first-cell();   }
