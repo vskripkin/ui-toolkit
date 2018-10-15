@@ -599,19 +599,16 @@
 			padding-@{prop}: @value;
 		}
 
-		& when (@has-label) and (@prop = left)
+		& when (@has-label)
 		{
-			&@{curr} ~ .@{pre}label
+			&@{curr} ~ .@{pre}label:not(.@{pre}over-addon)
 			{
 				padding-@{prop}: @value;
-				transform-origin: @value top;
-			}
-		}
-		& when (@has-label) and (@prop = right)
-		{
-			&@{curr} ~ .@{pre}label
-			{
-				padding-@{prop}: @value;
+
+				& when (@prop = left)
+				{
+					transform-origin: @value top;
+				}
 			}
 		}
 
