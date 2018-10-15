@@ -228,6 +228,10 @@
 		{
 			& when (@hover-color = default)
 			{
+				result: @bg-color;
+			}
+			& when (@hover-color = bright)
+			{
 				result: spin(saturate(@bg-color, 20%), 10);
 			}
 			& when (@hover-color = dark)
