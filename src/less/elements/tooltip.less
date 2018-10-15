@@ -24,9 +24,9 @@
 
 	.construct(@bg-color, @color, @font-size, @pad-ver, @pad-hor, @border-width, @prefix)
 	{
-		@hover-bg-color:  #ui.hover-bg(@hover, @bg-color)[result];
+		@hover-bg-color: #ui.hover-bg(@hover, @bg-color)[result];
 
-		#ui-tooltip.template(@font-size, @pad-ver, @pad-hor, @border-width);
+		#ui-tooltip.template(@color, @font-size, @pad-ver, @pad-hor, @border-width);
 		#ui-tooltip.add-arrow();
 
 		#ui-tooltip.sizes(@font-size, @prefix);
@@ -53,7 +53,7 @@
 		}
 	}
 
-	.template(@font-size, @padding-ver, @padding-hor, @border-width)
+	.template(@color, @font-size, @padding-ver, @padding-hor, @border-width)
 	{
 		@em: 2 * @padding-ver + 1em * @tooltip-line-height;
 		@px: 2 * @border-width;
@@ -62,6 +62,7 @@
 		min-height: calc(@em + @px);
 		padding:      @padding-ver @padding-hor;
 		font-size:    @font-size;
+		color:        @color;
 		border-width: @border-width;
 	}
 	.template(...)
