@@ -205,11 +205,11 @@
 	}
 
 
-	.hover-bg(@hover-color, @bg-color) when (iscolor(@hover-color))
+	.hover-bg(@hover-color, @bg-color) when (iscolor(@hover-color)), (@hover-color = default)
 	{
 		result: @hover-color;
 	}
-	.hover-bg(@hover-color, @bg-color) when not (iscolor(@hover-color))
+	.hover-bg(@hover-color, @bg-color) when not (iscolor(@hover-color)) and not (@hover-color = default)
 	{
 		@is-transparent: if(@bg-color = transparent, true, false);
 		@is-white: if((red(@bg-color) = 255) and (green(@bg-color) = 255) and (blue(@bg-color) = 255), true, false);
@@ -226,10 +226,6 @@
 
 		& when not (@is-white) and not (@is-black) and not (@is-transparent)
 		{
-			& when (@hover-color = default)
-			{
-				result: @bg-color;
-			}
 			& when (@hover-color = bright)
 			{
 				result: spin(saturate(@bg-color, 20%), 10);
