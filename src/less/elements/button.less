@@ -209,15 +209,29 @@
 		{
 			&.@{prefix}loading
 			{
-				color: transparent !important;
+				backface-visibility: hidden;
+				transform: rotateY(180deg);
 
-				.keyframes(rotateRight);
+				&::before
+				{
+					content: '';
+					position: absolute;
+					z-index: 99;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					border: inherit;
+					border-radius: inherit;
+					box-shadow: inherit;
+					background: inherit;
+					transform: rotateY(180deg);
+				}
 
 				&::after
 				{
 					content: '';
-					// fix disproportions of width and height due to sub-pixel rounding bug
-					display: table;
+					display: table; // fix disproportions of width and height due to sub-pixel rounding bug
 					position: absolute;
 					z-index: 100;
 					top:  50%;
@@ -232,9 +246,9 @@
 					border-width: 0.1837em;
 					border-style: solid;
 					border-color: currentColor transparent transparent currentColor;
-					animation: rotateRight 1s infinite linear;
+					animation: backfaceRotateRight 1s infinite linear;
 
-					.keyframes(rotateRight);
+					.keyframes(backfaceRotateRight);
 				}
 			}
 		}
