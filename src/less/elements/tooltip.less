@@ -10,7 +10,7 @@
 		@border-width: @tooltip-border-width,
 		@prefix:       @tooltip-class-prefix)
 	{
-		#ui-tooltip.construct(@bg-color, @color, @font-size, @padding-ver, @padding-hor, @border-width, @prefix);
+		#ui-tooltip.construct(@bg-color, @color, @hover, @font-size, @padding-ver, @padding-hor, @border-width, @prefix);
 	}
 }
 
@@ -22,7 +22,7 @@
 		.hover() {};
 	}
 
-	.construct(@bg-color, @color, @font-size, @pad-ver, @pad-hor, @border-width, @prefix)
+	.construct(@bg-color, @color, @hover, @font-size, @pad-ver, @pad-hor, @border-width, @prefix)
 	{
 		@hover-bg-color: #ui.hover-bg(@hover, @bg-color)[result];
 

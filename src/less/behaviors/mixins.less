@@ -196,9 +196,13 @@
 	}
 
 
-	.hover-bg(@hover-color, @bg-color) when (iscolor(@hover-color)), (@hover-color = default)
+	.hover-bg(@hover-color, @bg-color) when (iscolor(@hover-color))
 	{
 		result: @hover-color;
+	}
+	.hover-bg(@hover-color, @bg-color) when (@hover-color = default)
+	{
+		result: @bg-color;
 	}
 	.hover-bg(@hover-color, @bg-color) when not (iscolor(@hover-color)) and not (@hover-color = default)
 	{
