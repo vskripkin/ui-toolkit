@@ -262,6 +262,7 @@
 			&.@{pre}@{class}
 			{
 				@border-color: fade(@color, alpha(@color) / 2 * 100);
+				@hover-bg-color: #ui.hover-bg(@hover, @color)[result];
 
 				border-color: @border-color;
 				background-color: transparent;
@@ -272,8 +273,8 @@
 				}
 				&:active
 				{
-					&, &::before, &::after { color: #ui.hover-bg(@hover, @color)[result]; }
-					border-color: currentColor;
+					&, &::before, &::after { color: @hover-bg-color; }
+					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
 				&:disabled
@@ -287,17 +288,19 @@
 		{
 			&.@{pre}@{class}
 			{
+				@hover-bg-color: #ui.hover-bg(@hover, @color)[result];
+
 				background-color: transparent;
 
 				&:hover
 				{
-					border-color: currentColor;
+					border-color: @color;
 					background-color: transparent;
 				}
 				&:active
 				{
-					&, &::before, &::after { color: #ui.hover-bg(@hover, @color)[result]; }
-					border-color: currentColor;
+					&, &::before, &::after { color: @hover-bg-color; }
+					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
 				&:disabled
@@ -321,7 +324,7 @@
 				&:active
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
 				&:disabled
@@ -348,7 +351,7 @@
 				&:active
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
 				&:disabled
@@ -368,13 +371,13 @@
 
 				&:hover
 				{
-					border-color: currentColor;
+					border-color: @bg-color;
 					background-color: transparent;
 				}
 				&:active
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
 				&:disabled
@@ -418,12 +421,12 @@
 				&:hover
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 				}
 				&:active
 				{
 					&, &::before, &::after { color: @active-bg-color; }
-					border-color: currentColor;
+					border-color: @active-bg-color;
 				}
 				&:disabled
 				{
@@ -441,12 +444,12 @@
 				&:hover
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 				}
 				&:active
 				{
 					&, &::before, &::after { color: @active-bg-color; }
-					border-color: currentColor;
+					border-color: @active-bg-color;
 				}
 				&:disabled
 				{
@@ -496,12 +499,12 @@
 				&:hover
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 				}
 				&:active
 				{
 					&, &::before, &::after { color: @active-bg-color; }
-					border-color: currentColor;
+					border-color: @active-bg-color;
 				}
 				&:disabled
 				{
@@ -524,12 +527,12 @@
 				&:hover
 				{
 					&, &::before, &::after { color: @hover-bg-color; }
-					border-color: currentColor;
+					border-color: @hover-bg-color;
 				}
 				&:active
 				{
 					&, &::before, &::after { color: @active-bg-color; }
-					border-color: currentColor;
+					border-color: @active-bg-color;
 				}
 				&:disabled
 				{
