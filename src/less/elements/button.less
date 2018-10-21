@@ -18,7 +18,7 @@
 
 		&
 		{
-			color: @color;
+			&, &::before, &::after { color: @color; }
 			background-color: @bg-color;
 		}
 		&:hover
@@ -31,7 +31,7 @@
 		}
 		&:disabled
 		{
-			color: @color !important;
+			&, &::before, &::after { color: @color !important; }
 			background-color: @bg-color !important;
 
 			opacity: @button-disabled-opacity !important;
@@ -71,6 +71,37 @@
 				padding-right: @padding-ver;
 			}
 		}
+		.loading()
+		{
+			&.@{pre}loading
+			{
+				pointer-events: none;
+				color: transparent !important;
+
+				&::after
+				{
+					content: '';
+					display: table; // fix disproportions of width and height due to sub-pixel rounding bug
+					position: absolute;
+					z-index: 100;
+					top:  50%;
+					left: 50%;
+					width:  auto;
+					height: auto;
+					width:  1.24em;
+					height: 1.24em;
+					margin-top:  -0.62em;
+					margin-left: -0.62em;
+					border-radius: 50%;
+					border-width: 0.1837em;
+					border-style: solid;
+					border-color: currentColor transparent transparent currentColor;
+					animation: rotateRight 1s infinite linear;
+
+					.keyframes(rotateRight);
+				}
+			}
+		}
 
 
 		.invert(@class: invert)
@@ -81,7 +112,7 @@
 
 			&.@{pre}@{class}
 			{
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: @color;
 
 				&:hover
@@ -94,12 +125,11 @@
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					background-color: @color !important;
 				}
 			}
 		}
-
 
 
 		.ghost(@class: ghost)
@@ -156,7 +186,7 @@
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: transparent;
 
 				&:hover
@@ -169,7 +199,7 @@
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					background-color: transparent !important;
 				}
 			}
@@ -182,7 +212,7 @@
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
 				background-color: transparent;
 
@@ -198,7 +228,7 @@
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					border-color: @border-color !important;
 					background-color: transparent !important;
 				}
@@ -218,7 +248,7 @@
 				}
 				&:active
 				{
-					color: #ui.hover-bg(@hover, @color)[result];
+					&, &::before, &::after { color: #ui.hover-bg(@hover, @color)[result]; }
 					background-color: transparent;
 				}
 				&:disabled
@@ -242,7 +272,7 @@
 				}
 				&:active
 				{
-					color: #ui.hover-bg(@hover, @color)[result];
+					&, &::before, &::after { color: #ui.hover-bg(@hover, @color)[result]; }
 					border-color: currentColor;
 					background-color: transparent;
 				}
@@ -266,7 +296,7 @@
 				}
 				&:active
 				{
-					color: #ui.hover-bg(@hover, @color)[result];
+					&, &::before, &::after { color: #ui.hover-bg(@hover, @color)[result]; }
 					border-color: currentColor;
 					background-color: transparent;
 				}
@@ -281,7 +311,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: transparent;
 
 				&:hover
@@ -290,13 +320,13 @@
 				}
 				&:active
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 					background-color: transparent;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					background-color: transparent !important;
 				}
 			}
@@ -307,7 +337,7 @@
 			{
 				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
 				background-color: transparent;
 
@@ -317,13 +347,13 @@
 				}
 				&:active
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 					background-color: transparent;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					border-color: @border-color !important;
 					background-color: transparent !important;
 				}
@@ -333,7 +363,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: transparent;
 
 				&:hover
@@ -343,13 +373,13 @@
 				}
 				&:active
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 					background-color: transparent;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					background-color: transparent !important;
 				}
 			}
@@ -364,11 +394,11 @@
 
 				&:hover
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 				}
 				&:active
 				{
-					color: @active-bg-color;
+					&, &::before, &::after { color: @active-bg-color; }
 				}
 				&:disabled
 				{
@@ -387,12 +417,12 @@
 
 				&:hover
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 				}
 				&:active
 				{
-					color: @active-bg-color;
+					&, &::before, &::after { color: @active-bg-color; }
 					border-color: currentColor;
 				}
 				&:disabled
@@ -410,12 +440,12 @@
 
 				&:hover
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 				}
 				&:active
 				{
-					color: @active-bg-color;
+					&, &::before, &::after { color: @active-bg-color; }
 					border-color: currentColor;
 				}
 				&:disabled
@@ -433,20 +463,20 @@
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: transparent;
 
 				&:hover
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 				}
 				&:active
 				{
-					color: @active-bg-color;
+					&, &::before, &::after { color: @active-bg-color; }
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					background-color: transparent !important;
 				}
 			}
@@ -459,23 +489,23 @@
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
 				background-color: transparent;
 
 				&:hover
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 				}
 				&:active
 				{
-					color: @active-bg-color;
+					&, &::before, &::after { color: @active-bg-color; }
 					border-color: currentColor;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					border-color: @border-color !important;
 					background-color: transparent !important;
 				}
@@ -488,22 +518,22 @@
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: transparent;
 
 				&:hover
 				{
-					color: @hover-bg-color;
+					&, &::before, &::after { color: @hover-bg-color; }
 					border-color: currentColor;
 				}
 				&:active
 				{
-					color: @active-bg-color;
+					&, &::before, &::after { color: @active-bg-color; }
 					border-color: currentColor;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					border-color: transparent !important;
 					background-color: transparent !important;
 				}
@@ -522,12 +552,12 @@
 
 				&:hover
 				{
-					color: @bg-color;
+					&, &::before, &::after { color: @bg-color; }
 					background-color: @hover-bg-color;
 				}
 				&:active
 				{
-					color: @bg-color;
+					&, &::before, &::after { color: @bg-color; }
 					background-color: @active-bg-color;
 				}
 				&:disabled
@@ -549,13 +579,13 @@
 
 				&:hover
 				{
-					color: @bg-color;
+					&, &::before, &::after { color: @bg-color; }
 					border-color: transparent;
 					background-color: @hover-bg-color;
 				}
 				&:active
 				{
-					color: @bg-color;
+					&, &::before, &::after { color: @bg-color; }
 					border-color: transparent;
 					background-color: @active-bg-color;
 				}
@@ -571,22 +601,22 @@
 		{
 			&.@{pre}@{class}
 			{
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				background-color: transparent;
 
 				&:hover
 				{
-					color: @color;
+					&, &::before, &::after { color: @color; }
 					background-color: @hover-bg-color;
 				}
 				&:active
 				{
-					color: @color;
+					&, &::before, &::after { color: @color; }
 					background-color: @active-bg-color;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					background-color: transparent !important;
 				}
 			}
@@ -597,60 +627,27 @@
 			{
 				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
 
-				color: @bg-color;
+				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
 				background-color: transparent;
 
 				&:hover
 				{
-					color: @color;
+					&, &::before, &::after { color: @color; }
 					border-color: transparent;
 					background-color: @hover-bg-color;
 				}
 				&:active
 				{
-					color: @color;
+					&, &::before, &::after { color: @color; }
 					border-color: transparent;
 					background-color: @active-bg-color;
 				}
 				&:disabled
 				{
-					color: @bg-color !important;
+					&, &::before, &::after { color: @bg-color !important; }
 					border-color: @border-color !important;
 					background-color: transparent !important;
-				}
-			}
-		}
-
-
-		.loading()
-		{
-			&.@{pre}loading
-			{
-				pointer-events: none;
-				-webkit-text-fill-color: transparent;
-
-				&::after
-				{
-					content: '';
-					display: table; // fix disproportions of width and height due to sub-pixel rounding bug
-					position: absolute;
-					z-index: 100;
-					top:  50%;
-					left: 50%;
-					width:  auto;
-					height: auto;
-					width:  1.24em;
-					height: 1.24em;
-					margin-top:  -0.62em;
-					margin-left: -0.62em;
-					border-radius: 50%;
-					border-width: 0.1837em;
-					border-style: solid;
-					border-color: currentColor transparent transparent currentColor;
-					animation: rotateRight 1s infinite linear;
-
-					.keyframes(rotateRight);
 				}
 			}
 		}
