@@ -313,24 +313,24 @@
 
 		& when (@has-addon)
 		{
-			& ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			& ~ .@{pre}label ~ .@{pre}addon
 			{
 				display: none;
 			}
-			&:focus ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
-			&:valid ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
-			&:disabled ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
-			&[readonly] ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
-			&[placeholder]:not([placeholder=" "]) ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon,
-			&.@{pre}focus ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			&:focus ~ .@{pre}label ~ .@{pre}addon,
+			&:valid ~ .@{pre}label ~ .@{pre}addon,
+			&:disabled ~ .@{pre}label ~ .@{pre}addon,
+			&[readonly] ~ .@{pre}label ~ .@{pre}addon,
+			&[placeholder]:not([placeholder=" "]) ~ .@{pre}label ~ .@{pre}addon,
+			&.@{pre}focus ~ .@{pre}label ~ .@{pre}addon
 			{
 				display: block;
 			}
-			&:-webkit-autofill ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			&:-webkit-autofill ~ .@{pre}label ~ .@{pre}addon
 			{
 				display: block;
 			}
-			&[type="email"]:not(:placeholder-shown) ~ .@{pre}label.@{pre}over-addon ~ .@{pre}addon
+			&[type="email"]:not(:placeholder-shown) ~ .@{pre}label ~ .@{pre}addon
 			{
 				display: block;
 			}
@@ -647,7 +647,7 @@
 
 		& when (@has-label)
 		{
-			&@{curr} ~ .@{pre}label:not(.@{pre}over-addon)
+			&@{curr} ~ .@{pre}addon ~ .@{pre}label
 			{
 				padding-@{prop}: @value;
 

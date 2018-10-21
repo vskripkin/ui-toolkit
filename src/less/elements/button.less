@@ -73,13 +73,13 @@
 		}
 
 
-		.invert()
+		.invert(@class: invert)
 		{
 			@hover-type: if(iscolor(@hover), if(iscolor(@button-hover-color-bg), default, @button-hover-color-bg), @hover);
 			@hover-bg-color:  #ui.hover-bg(@hover-type, @color)[result];
 			@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
-			&.@{pre}invert
+			&.@{pre}@{class}
 			{
 				color: @bg-color;
 				background-color: @color;
@@ -102,9 +102,9 @@
 
 
 
-		.ghost()
+		.ghost(@class: ghost)
 		{
-			&.@{pre}ghost
+			&.@{pre}@{class}
 			{
 				background-color: transparent;
 
@@ -122,9 +122,9 @@
 				}
 			}
 		}
-		.ghost-line()
+		.ghost-line(@class: ghost-line)
 		{
-			&.@{pre}ghost-line
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@color, alpha(@color) / 2 * 100);
 
@@ -149,9 +149,9 @@
 			}
 		}
 
-		.link()
+		.link(@class: link)
 		{
-			&.@{pre}link
+			&.@{pre}@{class}
 			{
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
@@ -174,9 +174,9 @@
 				}
 			}
 		}
-		.link-line()
+		.link-line(@class: link-line)
 		{
-			&.@{pre}link-line
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
@@ -206,9 +206,9 @@
 		}
 
 
-		.ghost--const()
+		.ghost--const(@class: ghost--const)
 		{
-			&.@{pre}ghost--const
+			&.@{pre}@{class}
 			{
 				background-color: transparent;
 
@@ -227,9 +227,9 @@
 				}
 			}
 		}
-		.ghost-line--const()
+		.ghost-line--const(@class: ghost-line--const)
 		{
-			&.@{pre}ghost-line--const
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@color, alpha(@color) / 2 * 100);
 
@@ -253,9 +253,9 @@
 				}
 			}
 		}
-		.ghost--const-line()
+		.ghost--const-line(@class: ghost--const-line)
 		{
-			&.@{pre}ghost--const-line
+			&.@{pre}@{class}
 			{
 				background-color: transparent;
 
@@ -277,9 +277,9 @@
 			}
 		}
 
-		.link--const()
+		.link--const(@class: link--const)
 		{
-			&.@{pre}link--const
+			&.@{pre}@{class}
 			{
 				color: @bg-color;
 				background-color: transparent;
@@ -301,9 +301,9 @@
 				}
 			}
 		}
-		.link-line--const()
+		.link-line--const(@class: link-line--const)
 		{
-			&.@{pre}link-line--const
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
 
@@ -329,9 +329,9 @@
 				}
 			}
 		}
-		.link--const-line()
+		.link--const-line(@class: link--const-line)
 		{
-			&.@{pre}link--const-line
+			&.@{pre}@{class}
 			{
 				color: @bg-color;
 				background-color: transparent;
@@ -356,9 +356,9 @@
 		}
 
 
-		.ghost--font()
+		.ghost--font(@class: ghost--font)
 		{
-			&.@{pre}ghost--font
+			&.@{pre}@{class}
 			{
 				background-color: transparent;
 
@@ -376,9 +376,9 @@
 				}
 			}
 		}
-		.ghost-line--font()
+		.ghost-line--font(@class: ghost-line--font)
 		{
-			&.@{pre}ghost-line--font
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@color, alpha(@color) / 2 * 100);
 
@@ -402,9 +402,9 @@
 				}
 			}
 		}
-		.ghost--font-line()
+		.ghost--font-line(@class: ghost--font-line)
 		{
-			&.@{pre}ghost--font-line
+			&.@{pre}@{class}
 			{
 				background-color: transparent;
 
@@ -426,9 +426,9 @@
 			}
 		}
 
-		.link--font()
+		.link--font(@class: link--font)
 		{
-			&.@{pre}link--font
+			&.@{pre}@{class}
 			{
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
@@ -451,9 +451,9 @@
 				}
 			}
 		}
-		.link-line--font()
+		.link-line--font(@class: link-line--font)
 		{
-			&.@{pre}link-line--font
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
@@ -481,9 +481,9 @@
 				}
 			}
 		}
-		.link--font-line()
+		.link--font-line(@class: link--font-line)
 		{
-			&.@{pre}link--font-line
+			&.@{pre}@{class}
 			{
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
@@ -511,9 +511,9 @@
 		}
 
 
-		.ghost--bg()
+		.ghost--bg(@class: ghost--bg)
 		{
-			&.@{pre}ghost--bg
+			&.@{pre}@{class}
 			{
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
@@ -536,9 +536,9 @@
 				}
 			}
 		}
-		.ghost-line--bg()
+		.ghost-line--bg(@class: ghost-line--bg)
 		{
-			&.@{pre}ghost-line--bg
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@color, alpha(@color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
@@ -567,9 +567,9 @@
 			}
 		}
 
-		.link--bg()
+		.link--bg(@class: link--bg)
 		{
-			&.@{pre}link--bg
+			&.@{pre}@{class}
 			{
 				color: @bg-color;
 				background-color: transparent;
@@ -591,9 +591,9 @@
 				}
 			}
 		}
-		.link-line--bg()
+		.link-line--bg(@class: link-line--bg)
 		{
-			&.@{pre}link-line--bg
+			&.@{pre}@{class}
 			{
 				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
 
