@@ -19,7 +19,7 @@
 		}
 
 		// JS 1.8 gecko
-		var noOffset = function (_sDate)
+		var no_offset = function (_sDate)
 			{
 				var aDate = _sDate.slice(0,-5).split(/\D/).map(function (_sValue)
 					{
@@ -29,28 +29,28 @@
 				aDate[1] -= 1;
 
 				var oDate = new Date(Date.UTC.apply(Date, aDate)),
-					sOffsetString = _sDate.slice(-5),
-					iOffset = parseInt(sOffsetString, 10) / 100;
+					sTimezone = _sDate.slice(-5),
+					iTimezone = parseInt(sTimezone, 10) / 100;
 
-				if (sOffsetString.slice(0, 1) === '+')
+				if (sTimezone.slice(0, 1) === '+')
 				{
-					iOffset *= -1;
+					iTimezone = -1 * iTimezone;
 				}
 
-				oDate.setHours(oDate.getHours() + iOffset);
+				oDate.setHours(oDate.getHours() + iTimezone);
+
 				return oDate;
 			};
 
-		if (noOffset(sTestISO).getTime() === 1322118027000)
+		if (no_offset(sTestISO).getTime() === 1322118027000)
 		{
-			return noOffset;
+			return no_offset;
 		}
 
 		// kennebec@SO + QTax@SO
 		return function (_sDate)
 		{
 			var rxDate = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/,
-				// rxDate = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d{4}))?$/,
 				aDate = rxDate.exec(_sDate) || [],
 				oDate;
 
@@ -85,7 +85,7 @@
 
 					if (iTimeZone)
 					{
-						oDate.setUTCMinutes(oDate.getUTCMinutes()+ iTimeZone);
+						oDate.setUTCMinutes(oDate.getUTCMinutes() + iTimeZone);
 					}
 				}
 
