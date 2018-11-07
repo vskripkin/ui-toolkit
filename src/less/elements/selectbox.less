@@ -500,7 +500,7 @@
 			}
 		}
 
-		.__option
+		.__item
 		{
 			#ui-selectbox-list.states.list-item();
 			.list-item();
@@ -550,7 +550,7 @@
 			max-height: 40rem;
 			max-height: 40vh;
 
-			&.__with-attr > .__option::after
+			&.__with-attr > .__item::after
 			{
 				content: ' - 'attr(data-value);
 				font-size: 0.9em;
@@ -573,7 +573,7 @@
 		{
 			counter-reset: option_num;
 
-			& > .__option
+			& > .__item
 			{
 				display: table;
 				width: 100%;
@@ -597,7 +597,7 @@
 			{
 				max-width: none !important;
 
-				& > .__option
+				& > .__item
 				{
 					white-space: nowrap;
 					word-break: normal;

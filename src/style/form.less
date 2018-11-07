@@ -761,7 +761,7 @@
 					}
 				}
 
-				.__option
+				.__item
 				{
 					.__item-states();
 
@@ -805,7 +805,7 @@
 				min-width: 0;
 				max-height: 40rem;
 
-				&.__with-attr > .__option:after
+				&.__with-attr > .__item:after
 				{
 					content: ' - 'attr(data-value);
 					font-size: 0.9em;
@@ -828,7 +828,7 @@
 			{
 				counter-reset: option_num;
 
-				& > .__option
+				& > .__item
 				{
 					display: table;
 					width: 100%;
@@ -879,7 +879,7 @@
 				#ui > .size-font-padding(@item-fs, @item-pv, @item-ph);
 				#ui > .size-custom(@item-fs, @item-pv, @item-ph);
 
-				& .__option
+				& .__item
 				{
 					@normal();
 
@@ -889,7 +889,7 @@
 						padding-right: @height;
 					}
 				}
-				&.large .__option
+				&.large .__item
 				{
 					@large();
 
@@ -899,7 +899,7 @@
 						padding-right: @height;
 					}
 				}
-				&.small .__option
+				&.small .__item
 				{
 					@small();
 

@@ -9,7 +9,7 @@
 			label: '__label',
 			opened: '__opened',
 			fixed: '__fixed',
-			option: '__option',
+			option: '__item',
 			selected: '__selected',
 			ignore: '__ignore',
 			nested: '__with-nested',
