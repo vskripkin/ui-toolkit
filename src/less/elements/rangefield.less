@@ -8,9 +8,10 @@
 		@track-height: @rangefield-track-height,
 		@thumb-width:  @rangefield-thumb-width,
 		@thumb-height: @rangefield-thumb-height,
+		@thumb-offset: @rangefield-thumb-offset,
 		@prefix:       @rangefield-class-prefix)
 	{
-		#ui-rangefield.construct(@font-size, @track-height, @thumb-width, @thumb-height);
+		#ui-rangefield.construct(@font-size, @track-height, @thumb-width, @thumb-height, @thumb-offset);
 		#ui-rangefield.sizes(@font-size, @prefix);
 	}
 }
@@ -37,9 +38,9 @@
 		}
 	}
 
-	.construct(@font-size, @track-height, @thumb-width, @thumb-height)
+	.construct(@font-size, @track-height, @thumb-width, @thumb-height, @thumb-offset)
 	{
-		#ui-rangefield.template(@font-size, @track-height, @thumb-width, @thumb-height);
+		#ui-rangefield.template(@font-size, @track-height, @thumb-width, @thumb-height, @thumb-offset);
 
 		&
 		{
@@ -158,11 +159,11 @@
 		}
 	}
 
-	.template(@font-size, @track-height, @thumb-width, @thumb-height)
+	.template(@font-size, @track-height, @thumb-width, @thumb-height, @thumb-offset)
 	{
 		@max: if(@track-height > @thumb-height, @track-height, @thumb-height);
 
-		height: calc(@max + 2 * @rangefield-thumb-border-width);
+		height: calc(@max + 2 * @thumb-offset);
 		font-size: @font-size;
 
 		box-sizing: content-box;
@@ -186,10 +187,11 @@
 		{
 			width:  @thumb-height;
 			height: @thumb-width;
-			border: @rangefield-thumb-border-width solid transparent;
+			border: @thumb-offset solid transparent;
 
 			box-sizing: content-box;
 			cursor: pointer;
+			background-color: currentColor;
 			background-clip: padding-box !important;
 			box-shadow: none;
 			appearance: none;
@@ -224,7 +226,7 @@
 
 			@thumb-half: @thumb-height / 2;
 			@track-half: @track-height / 2;
-			margin-top: calc(-1 * (@thumb-half - @track-half + @rangefield-thumb-border-width));
+			margin-top: calc(-1 * (@thumb-half - @track-half + @thumb-offset));
 		}
 		&::-moz-range-thumb
 		{
