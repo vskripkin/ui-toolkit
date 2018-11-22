@@ -266,7 +266,7 @@
 	_.unduplicate = function (text)
 	{
 		//     _.isString(text) && text.replace(/(\S+)(?=.*\1)/g, '');
-		return _.isString(text) && text.replace(/(\b\w+\b)(?=.*\b\1\b)/g, '');
+		return _.isString(text) && text.replace(/(\b\w+\b)(?=.*\b\1\b)/g, '').trim();
 	};
 	_.cleanStr = function (text)
 	{
