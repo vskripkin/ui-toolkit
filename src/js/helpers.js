@@ -270,7 +270,7 @@
 	};
 	_.cleanStr = function (text)
 	{
-		return _.isString(text) && _.unduplicate(text).replace(/\s{2,}/g, ' ').trim();
+		return _.isString(text) && text.replace(/\s{2,}/g, ' ').trim();
 	};
 
 	_.hashCode = function (_str)

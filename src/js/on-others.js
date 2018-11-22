@@ -73,7 +73,7 @@
 			}
 		}
 
-		_sEvents = _.cleanStr(_sEvents);
+		_sEvents = _.cleanStr(_.unduplicate(_sEvents));
 
 		if (_sEvents.length === 0)
 		{
@@ -134,7 +134,7 @@
 				return false;
 			}
 
-			var sEvents = _.cleanStr(_xEvents),
+			var sEvents = _.cleanStr(_.unduplicate(_sEvents)),
 				aElemEventIDs = oElemEventIDs[sElemID],
 				oEvent, i, L;
 
