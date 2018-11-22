@@ -1,0 +1,47 @@
+#ui()
+{
+	.selectfield(
+		@font-size:      @selectfield-font-size,
+		@margin-bottom:  @selectfield-margin-bottom,
+		@padding-top:    @selectfield-padding-top,
+		@padding-bottom: @selectfield-padding-bottom,
+		@padding-hor:    @selectfield-padding-hor,
+		@prefix:         @textfield-class-prefix,
+		@arrow:          default)
+	{
+		#ui.textfield(
+			@font-size,
+			@margin-bottom,
+			@padding-top,
+			@padding-bottom,
+			@padding-hor,
+			@prefix
+		);
+
+		#ui-selectfield.template(@arrow, @padding-hor);
+	}
+}
+
+
+#ui-selectfield()
+{
+	.template(@arrow, @padding-hor)
+	{
+		& when (@arrow = default)
+		{
+			@pad-hor: @padding-hor * @selectfield-arrow-offset-rate;
+
+			background-image: url('data:image/svg+xml;charset=utf8,%3Csvg fill="%23000000" fill-opacity="0.54" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3Cpath d="M0 0h24v24H0z" fill="none"/%3E%3C/svg%3E');
+			background-position: 100% 50%;
+			background-repeat: no-repeat;
+			background-size: @pad-hor @pad-hor;
+			padding-right: @pad-hor;
+		}
+
+		option
+		{
+			font-size: 1.15em;
+			background: #FFF !important;
+		}
+	}
+}

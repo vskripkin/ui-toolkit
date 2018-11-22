@@ -24,13 +24,15 @@
 		@pb: @padding-bottom;
 		@ph: @padding-hor;
 
+		@pad-ver-min: if(@pt > @pb, @pb, @pt);
+
 		#ui-textfield.construct(@pre, @fs, @mb, @pt, @pb, @ph);
 		#ui-textfield-label.construct(@pre, @has-label, @fs, @pt, @pb, @ph, @has-addon);
 		#ui-textfield-addon.construct(@pre, @has-addon, @fs, @pt, @pb, @ph);
-		#ui-textfield-hint.construct(@pre, @has-hint, @fs);
+		#ui-textfield-hint.construct(@pre, @has-hint, @fs, @ph);
 
 		#ui-textfield-mixins.sizes(@fs, @pre, @has-label, @has-addon, @has-hint);
-		#ui-textfield-mixins.addon-width(@pre, @has-label, @has-addon);
+		#ui-textfield-mixins.addon-width(@pre, @has-label, @has-addon, @padding-hor, @pad-ver-min);
 
 		& when (@margin-bottom > 0)
 		{
@@ -40,8 +42,6 @@
 
 		.thin()
 		{
-			@pad-ver-min: if(@pt > @pb, @pb, @pt);
-
 			&.@{pre}thin
 			{
 				padding-left:  @pad-ver-min;
@@ -50,10 +50,11 @@
 
 			& when (@has-label)
 			{
-				&.@{pre}thin ~ .@{pre}label
+				&.@{pre}thin ~ .@{pre}label, & ~ .@{pre}label.@{pre}thin, & ~ .@{pre}addon ~ .@{pre}label.@{pre}thin
 				{
 					padding-left:  @pad-ver-min;
 					padding-right: @pad-ver-min;
+					transform-origin: @pad-ver-min top;
 				}
 			}
 			& when (@has-addon)
@@ -218,6 +219,12 @@
 		{
 			.moved();
 		}
+		/*
+		  для iOS, так как там нет поддержки атрибута inputmode="email", поэтому единственный
+		  способ показать клавиатуру с собачкой - использовать [type="email"], и в этом случае
+		  псевдокласс :valid сработает не когда ввели первый символ, а когда ввели именно email,
+		  поэтому не рассчитываем на :valid, а используем вместо него :not(:placeholder-shown)
+		*/
 		&[type="email"]:not(:placeholder-shown) ~ .@{pre}label
 		{
 			.moved();
@@ -241,12 +248,10 @@
 		}
 		&:disabled ~ .@{pre}label
 		{
-			.focus();
 			.disabled() !important;
 		}
 		&[readonly] ~ .@{pre}label
 		{
-			.focus();
 			.readonly();
 		}
 	}
@@ -274,10 +279,12 @@
 			border-color: transparent !important;
 			box-shadow: none !important;
 
-			transition: transform @textfield-label-trsn-duration @textfield-label-trsn-function,
-						color     @textfield-label-trsn-duration @textfield-label-trsn-function;
-			transform: translateY(0%) scale(1);
-			transform-origin: left top;
+			transition: text-indent @textfield-label-trsn-duration @textfield-label-trsn-function,
+						transform   @textfield-label-trsn-duration @textfield-label-trsn-function,
+						color       @textfield-label-trsn-duration @textfield-label-trsn-function;
+			transform: @textfield-label-transform-default;
+			transform-origin: @padding-hor top;
+			text-indent: 0em;
 		}
 
 		&:focus ~ .@{pre}label,
@@ -288,14 +295,17 @@
 		&.@{pre}focus ~ .@{pre}label
 		{
 			transform: @textfield-label-transform !important;
+			text-indent: 0em !important;
 		}
 		&:-webkit-autofill ~ .@{pre}label
 		{
 			transform: @textfield-label-transform !important;
+			text-indent: 0em !important;
 		}
 		&[type="email"]:not(:placeholder-shown) ~ .@{pre}label
 		{
 			transform: @textfield-label-transform !important;
+			text-indent: 0em !important;
 		}
 
 		&:valid:not(:focus) ~ .@{pre}label,
@@ -461,9 +471,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs) when (@enable)
+	.construct(@pre, @enable, @fs, @ph) when (@enable)
 	{
-		#ui-textfield-hint.template(@pre, @fs);
+		#ui-textfield-hint.template(@pre, @fs, @ph);
 
 
 		#ui-textfield-hint.states();
@@ -503,13 +513,14 @@
 		}
 	}
 
-	.template(@pre, @font-size)
+	.template(@pre, @font-size, @padding-hor)
 	{
 		& ~ .@{pre}hint, & ~ .@{pre}error
 		{
+			@pad-hor: round(@padding-hor / @textfield-hint-font-size-rate, 3);
+
 			display: block;
-			padding-top: @textfield-hint-padding-top;
-			padding-bottom: @textfield-hint-padding-bottom;
+			padding: @textfield-hint-padding-top @pad-hor @textfield-hint-padding-bottom;
 			font-size: round(@font-size * @textfield-hint-font-size-rate, 3);
 			line-height: @textfield-line-height;
 		}
@@ -621,43 +632,52 @@
 	}
 
 
-	.addon-width(@pre, @has-label, @has-addon) when (@has-label = true), (@has-addon = true)
+	.addon-width(@pre, @has-label, @has-addon, @ph, @pv-min) when (@has-label = true), (@has-addon = true)
 	{
 		.addon-width(left, @start: 1em, @step: 0.5em, @total: 5)
 		{
 			&.@{pre}pad-l
 			{
-				#ui-textfield-mixins._width-classes(left, @pre, @has-label, @start, @step, @total);
+				#ui-textfield-mixins._width-classes(left, @pre, @has-label, @has-addon, @ph, @pv-min, @start, @step, @total);
 			}
 		}
 		.addon-width(right, @start: 1em, @step: 0.5em, @total: 5)
 		{
 			&.@{pre}pad-r
 			{
-				#ui-textfield-mixins._width-classes(right, @pre, @has-label, @start, @step, @total);
+				#ui-textfield-mixins._width-classes(right, @pre, @has-label, @has-addon, @ph, @pv-min, @start, @step, @total);
 			}
 		}
 	}
-	._width-classes(@prop, @pre, @has-label, @value, @step, @total, @curr: 0) when (@curr <= @total)
+	._width-classes(@prop, @pre, @has-label, @has-addon, @ph, @pv-min, @value, @step, @total, @curr: 0) when (@curr <= @total)
 	{
 		&@{curr}
 		{
 			padding-@{prop}: @value;
 		}
 
-		& when (@has-label)
+		& when (@has-label) and (@has-addon)
 		{
 			&@{curr} ~ .@{pre}addon ~ .@{pre}label
 			{
-				padding-@{prop}: @value;
-
 				& when (@prop = left)
 				{
-					transform-origin: @value top;
+					text-indent: @value - @ph;
+				}
+				& when (@prop = right)
+				{
+					padding-@{prop}: @value;
+				}
+			}
+			&@{curr}.@{pre}thin ~ .@{pre}addon ~ .@{pre}label, &@{curr} ~ .@{pre}addon ~ .@{pre}label.@{pre}thin
+			{
+				& when (@prop = left)
+				{
+					text-indent: @value - @pv-min;
 				}
 			}
 		}
 
-		#ui-textfield-mixins._width-classes(@prop, @pre, @has-label, @value + @step, @step, @total, @curr + 1);
+		#ui-textfield-mixins._width-classes(@prop, @pre, @has-label, @has-addon, @ph, @pv-min, @value + @step, @step, @total, @curr + 1);
 	}
 }

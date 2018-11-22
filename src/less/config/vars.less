@@ -88,11 +88,26 @@
 
 @textfield-label-trsn-duration: 0.15s;
 @textfield-label-trsn-function: cubic-bezier(0.4, 0, 0.2, 1);
-@textfield-label-transform: translateY(-50%) scale(0.75);
+@textfield-label-transform-default: translateY(0%) scale(1);
+@textfield-label-transform: translateY(-50%) scale(@textfield-label-scale);
+@textfield-label-scale: 0.75;
 
 @textfield-hint-font-size-rate: 0.7;
 @textfield-hint-padding-top: 0.25em;
 @textfield-hint-padding-bottom: 0.5em;
+
+
+// SELECTFIELD
+// --------------------------------------------------
+
+@selectfield-font-size: 1.4rem;
+
+@selectfield-padding-top: 0.57em;
+@selectfield-padding-bottom: 0.57em;
+@selectfield-padding-hor: 1.213em;
+@selectfield-margin-bottom: 0;
+
+@selectfield-arrow-offset-rate: 1.4;
 
 
 // SELECTBOX
