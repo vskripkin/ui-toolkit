@@ -134,7 +134,7 @@
 				return false;
 			}
 
-			var sEvents = _.cleanStr(_.unduplicate(_sEvents)),
+			var sEvents = _.cleanStr(_.unduplicate(_xEvents)),
 				aElemEventIDs = oElemEventIDs[sElemID],
 				oEvent, i, L;
 
