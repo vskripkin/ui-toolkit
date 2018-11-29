@@ -774,13 +774,14 @@
 										_parseHTMLColl.call(this, nElem.childNodes) +
 									'</li>';
 							break;
+
 						case 'optgroup':
 							if (options.nested)
 							{
 								HTML += '<li' + attrs + ' class="' + Class.label + ' ' + Class.ignore + ' ' + Class.has_nested + '">' +
-										getContent.call(this, nElem, sTag, i, attrs, Class) +
-										'<ul>' + _parseHTMLColl.call(this, nElem.childNodes) + '</ul>' +
-									'</li>';
+											getContent.call(this, nElem, sTag, i, attrs, Class) +
+											'<ul>' + _parseHTMLColl.call(this, nElem.childNodes) + '</ul>' +
+										'</li>';
 							}
 							else
 							{
@@ -798,6 +799,7 @@
 
 							HTML += '<li' + attrs + ' class="' + _class + '">' + _parseHTMLColl.call(this, nElem.childNodes) + '</li>';
 							break;
+
 						case 'ul':
 							if (options.nested)
 							{

@@ -3,10 +3,6 @@
 .value-before(...) {};
 .value-after(...)  {};
 
-.list(...) {};
-.list-label(...) {};
-.list-item(...)  {};
-
 
 #ui()
 {
@@ -29,7 +25,7 @@
 
 		&-@{postfix}
 		{
-			#ui-selectbox-list.construct(@font-size);
+			#ui.dropdown(@font-size);
 		}
 
 		#ui-selectbox.sizes(@font-size, @postfix, @prefix);
@@ -431,178 +427,6 @@
 			.size-large();
 			.size-huge();
 			.size-great();
-		}
-	}
-}
-
-#ui-selectbox-list()
-{
-	.states()
-	{
-		.list()
-		{
-			.default() {};
-			.under() {};
-			.above() {};
-		}
-		.list-label()
-		{
-			.default() {};
-			.hover() {};
-		}
-		.list-item()
-		{
-			.default() {};
-			.hover() {};
-			.disabled() {};
-
-			.in-optgroup() {};
-			.has-nested() {};
-			.selected() {};
-		}
-	}
-
-	.construct(@font-size)
-	{
-		#ui-selectbox-list.template(@font-size);
-
-		&
-		{
-			#ui-selectbox-list.states.list();
-			.list();
-
-			&, ul
-			{
-				.default();
-			}
-			&.__under
-			{
-				.under();
-			}
-			&.__above
-			{
-				.above();
-			}
-		}
-
-		.__label
-		{
-			#ui-selectbox-list.states.list-label();
-			.list-label();
-
-			&
-			{
-				.default();
-			}
-			&:hover
-			{
-				.hover();
-			}
-		}
-
-		.__item
-		{
-			#ui-selectbox-list.states.list-item();
-			.list-item();
-
-			&
-			{
-				.default();
-			}
-			&:hover
-			{
-				.hover();
-			}
-			&.__in-optgroup
-			{
-				.in-optgroup();
-			}
-			&.__has-nested
-			{
-				.has-nested();
-			}
-			&.__selected
-			{
-				.selected();
-			}
-			&:disabled
-			{
-				.disabled();
-			}
-		}
-	}
-
-	.template(@font-size)
-	{
-		#ui.dropdown-list();
-
-		&
-		{
-			font-size: @font-size;
-		}
-
-		&, ul
-		{
-			width: auto !important;
-			overflow-x: hidden;
-			overflow-y: auto;
-			min-width: 0;
-			max-height: 40rem;
-			max-height: 40vh;
-
-			&.__with-attr > .__item::after
-			{
-				content: ' - 'attr(data-value);
-				font-size: 0.9em;
-			}
-		}
-
-		&.__scroll
-		{
-			overflow-x: hidden !important;
-			overflow-y: scroll !important;
-		}
-
-		&.__with-nested
-		{
-			max-height: none;
-			overflow: visible !important;
-		}
-
-		&.__decimal
-		{
-			counter-reset: option_num;
-
-			& > .__item
-			{
-				display: table;
-				width: 100%;
-				word-break: break-word;
-
-				&::before
-				{
-					counter-increment: option_num;
-					content: counter(option_num)'.';
-					display: table-cell;
-					width: 1px;
-					padding-right: 0.5rem;
-					white-space: nowrap;
-				}
-			}
-		}
-
-		&.__oneline
-		{
-			&, ul
-			{
-				max-width: none !important;
-
-				& > .__item
-				{
-					white-space: nowrap;
-					word-break: normal;
-				}
-			}
 		}
 	}
 }

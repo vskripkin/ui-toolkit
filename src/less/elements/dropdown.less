@@ -1,15 +1,143 @@
+.list(...) {};
+.list-label(...) {};
+.list-item(...)  {};
+
 #ui()
 {
-	.dropdown-list()
+	.dropdown(@font-size: @font-size-base)
 	{
+		#ui-dropdown.construct(@font-size);
+	}
+}
+
+#ui-dropdown()
+{
+	.states()
+	{
+		.list()
+		{
+			.default() {};
+			.under() {};
+			.above() {};
+		}
+		.list-label()
+		{
+			.default() {};
+			.hover() {};
+		}
+		.list-item()
+		{
+			.default() {};
+			.hover() {};
+			.disabled() {};
+
+			.in-optgroup() {};
+			.has-nested() {};
+			.selected() {};
+		}
+	}
+
+	.construct(@font-size)
+	{
+		#ui-dropdown.template(@font-size);
+
+		&
+		{
+			#ui-dropdown.states.list();
+			.list();
+
+			&, ul
+			{
+				.default();
+			}
+			&.__under
+			{
+				.under();
+			}
+			&.__above
+			{
+				.above();
+			}
+		}
+
+		.__label
+		{
+			#ui-dropdown.states.list-label();
+			.list-label();
+
+			&
+			{
+				.default();
+			}
+			&:hover
+			{
+				.hover();
+			}
+		}
+
+		.__item
+		{
+			#ui-dropdown.states.list-item();
+			.list-item();
+
+			&
+			{
+				.default();
+			}
+			&:hover
+			{
+				.hover();
+			}
+			&.__in-optgroup
+			{
+				.in-optgroup();
+			}
+			&.__has-nested
+			{
+				.has-nested();
+			}
+			&.__selected
+			{
+				.selected();
+			}
+			&:disabled
+			{
+				.disabled();
+			}
+		}
+	}
+
+
+	.template(@font-size)
+	{
+		&
+		{
+			font-size: @font-size;
+			line-height: @line-height-normal;
+		}
+		ul
+		{
+			font-size: inherit;
+			line-height: inherit;
+		}
+
 		&, ul
 		{
 			display: none;
+			list-style: none;
 			position: absolute;
 			z-index: 3;
-			overflow: visible;
-			line-height: @line-height-normal;
-			list-style: none;
+			width: auto !important;
+			overflow-x: hidden;
+			overflow-y: auto;
+			max-height: 40rem;
+			max-height: 40vh;
+
+			&.__with-nested
+			{
+				max-height: none;
+				overflow: visible !important;
+			}
 		}
 		&
 		{
@@ -19,9 +147,9 @@
 		}
 		ul
 		{
+			min-width: 0;
 			top: 0;
 			left: 100%;
-			font-size: 1em;
 		}
 
 
@@ -29,6 +157,11 @@
 		{
 			position: fixed;
 			top: auto;
+		}
+		&.__with-attr > .__item::after
+		{
+			content: ' - 'attr(data-value);
+			font-size: 0.9em;
 		}
 
 		&.__opened, li:hover > ul, ul:hover
