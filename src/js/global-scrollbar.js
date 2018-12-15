@@ -32,20 +32,12 @@
 				return false;
 			}
 
-
-			var nHTML = document.documentElement,
-				iWidth = Math.round(window.innerWidth - nHTML.clientWidth);
-
-			if (iWidth <= 0)
-			{
-				_callback && _callback(0, this.side, this.prop);
-				return;
-			}
-
-
 			this._hidden = true;
 
-			var sProp = this.prop,
+
+			var nHTML = document.documentElement,
+				iWidth = Math.round(window.innerWidth - nHTML.clientWidth),
+				sProp = this.prop,
 				sSide = this.side;
 
 			this._width = iWidth;
@@ -94,8 +86,8 @@
 				return false;
 			}
 
-
 			this._hidden = false;
+
 
 			var sProp = this.prop,
 				sSide = this.side,
