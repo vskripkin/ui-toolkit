@@ -230,6 +230,7 @@
 			{
 				bFromEvent = bFromJS = false;
 				window.history.pushState('', document.title, window.location.href);
+				window.history.back();
 			};
 			H.push = function ()
 			{
