@@ -36,7 +36,7 @@
 
 
 			var nHTML = document.documentElement,
-				iWidth = Math.round(window.innerWidth - nHTML.clientWidth),
+				iWidth = this.width(),
 				sProp = this.prop,
 				sSide = this.side;
 
@@ -128,6 +128,10 @@
 			{
 				_callback(this._width, sSide, sProp);
 			}
+		},
+		width: function ()
+		{
+			return Math.round(window.innerWidth - document.documentElement.clientWidth);
 		}
 	};
 })(window.jQuery, window._);
