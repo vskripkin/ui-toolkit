@@ -20,61 +20,71 @@
 		};
 
 	Placer.DEFAULTS = {
-		/* required
+		/*
 		-------------------------
 		placed: jQuery || HTMLElement || CSS Selector String,
 		target: jQuery || HTMLElement || CSS Selector String,
+		location: {},
 		-------------------------
 		*/
-		common: {
-		/*  return true or false, if true - params will be applied
-			condition: f(){}
-			whenFALSE: f(){}
-			whenTRUE:  f(){}    */
-			position: 'top', // bottom, left, right
-			align: 'start',  // center, end
-			side: 'out',     //'in'
-			parent: 'body',
-			offsetParent: false,
-			fixed: false,
-			width: false,
-			height: false,
-			minWidth: false,
-			maxWidth: false,
-			minHeight: false,
-			maxHeight: false,
-			priority: 0,
-			includeMargin: true,
-			offset: {
-				ver: 0,
-				hor: 0
-			},
-			props: {
-				ver: 'top',
-				hor: 'left'
-			}
-		},
 
-		/* will overwrite specified common features
-		   can be json object or array of json objects
-		location: {},
-		 */
-
-		/* function to check if position should be updated */
-		checkPos: false,
+		checkPos: false, // function to check if position should be updated
 		checkInterval: 1000,
 		update: false
 	};
+	Placer.LOC = {
+		/*
+		condition: f(){} // return true or false, if true - params will be applied
+		whenFALSE: f(){}
+		whenTRUE:  f(){}
+		*/
+		position: 'top', // bottom, left, right
+		align: 'start',  // center, end
+		side: 'out',     // in
+		parent: 'body',
+		offsetParent: false,
+		fixed: false,
+		width: false, // true или число
+		height: false,
+		minWidth: false,
+		maxWidth: false,
+		minHeight: false,
+		maxHeight: false,
+		priority: 0,
+		includeMargin: true,
+		offset: {
+			ver: 0,
+			hor: 0
+		},
+		props: {
+			ver: 'top',
+			hor: 'left'
+		}
+	};
+	Placer.STYLES = [
+		'margin-top',
+		'margin-bottom',
+		'margin-right',
+		'margin-left',
+		'width',
+		'height',
+		'min-width',
+		'min-height',
+		'position'
+	];
+
 
 	Placer.prototype =
 	{
 		constructor: Placer,
 		type: TYPE,
 
+
 		init: function (_options)
 		{
-			this.options = _getOptions.call(this, _options);
-			this.options.checkPos = this.options.checkPos || this.options.location.length > 1;
+			this.options = _options = _getOptions.call(this, _options);
+			this.placed = _options.placed;
+			this.target = _options.target;
 
 			_saveDefaultStyle.call(this);
 
@@ -83,10 +93,46 @@
 			return this;
 		},
 
+		start: function ()
+		{
+			if (this.options.checkPos)
+			{
+				var that = this,
+					check_pos = this.options.checkPos;
+
+				this.stop();
+				this.timer = setInterval(function ()
+				{
+					if (check_pos.call(that))
+					{
+						_restoreDefaultStyle.call(that);
+						that.set();
+					}
+				},
+				this.options.checkInterval);
+			}
+
+			this.set();
+		},
+		stop: function ()
+		{
+			if (this.timer)
+			{
+				clearInterval(this.timer);
+			}
+			if (this.lastLoc && this.lastLoc.whenFALSE)
+			{
+				this.lastLoc.whenFALSE.call(this);
+			}
+
+			this.lastLoc = undefined;
+			_restoreDefaultStyle.call(this);
+		},
+
 		set: function ()
 		{
 			var aLocations = this.options.location,
-				oParams, oLoc, oPrevLoc, oNewLoc, i, L;
+				oParams, oLoc, oNewLoc, i, L;
 
 			for (i = 0, L = aLocations.length; i < L; i++)
 			{
@@ -112,6 +158,7 @@
 				}
 			}
 
+
 			if (!this.lastLoc || this.lastLoc.id !== oNewLoc.id)
 			{
 				if (this.lastLoc && this.lastLoc.whenFALSE)
@@ -119,7 +166,9 @@
 					this.lastLoc.whenFALSE.call(this);
 				}
 
+
 				this.lastLoc = oNewLoc;
+
 				if (oNewLoc.whenTRUE)
 				{
 					oNewLoc.whenTRUE.call(this, oParams);
@@ -127,43 +176,6 @@
 			}
 
 			_applyLocation.call(this, oNewLoc);
-		},
-
-		start: function ()
-		{
-			if (this.options.checkPos)
-			{
-				var fCheck = this.options.checkPos,
-					that = this;
-
-				this.stop();
-				this.timer = setInterval(function ()
-				{
-					if (fCheck.call(that))
-					{
-						_restoreDefaultStyle.call(that);
-						that.set();
-					}
-				},
-				this.options.checkInterval);
-			}
-
-			this.set();
-		},
-
-		stop: function ()
-		{
-			if (this.timer)
-			{
-				clearInterval(this.timer);
-			}
-			if (this.lastLoc && this.lastLoc.whenFALSE)
-			{
-				this.lastLoc.whenFALSE.call(this);
-			}
-
-			this.lastLoc = undefined;
-			_restoreDefaultStyle.call(this);
 		},
 
 		destroy : function ()
@@ -215,126 +227,155 @@
 
 	var _getOptions = function (_options)
 		{
-			var that = this,
-				options = $.extend({}, Placer.DEFAULTS, _options),
-				aPossibleValues =  [window,
-									document,
-									document.documentElement,
-									document.body,
-									$(window),
-									$(document),
-									document.documentElement._jQ(),
-									document.body._jQ(),
-									'body',
-									'html',
-									undefined,
-									true,
-									false];
+			var options = $.extend({}, Placer.DEFAULTS, _options),
+				aPossibleParent = [
+					window,
+					document,
+					document.documentElement,
+					document.body,
+					'body',
+					'html',
+					undefined,
+					true,
+					false
+				],
 
-			delete options.common;
+				aLoc = options.location,
+				oLoc, nParent, nOffsetParent, i, L;
 
-			this.placed = (options.placed instanceof $ ? options.placed : $(options.placed)).get(0);
-			this.target = (options.target instanceof $ ? options.target : $(options.target)).get(0);
 
-			if (!_.isArray(options.location))
+			if (_options.placed instanceof $)
 			{
-				options.location = [options.location];
+				_options.placed = _options.placed.get(0);
+			}
+			else if (_.isString(_options.placed))
+			{
+				_options.placed = $(_options.placed).get(0)
 			}
 
-			if (options.location.length > 1)
+			if (_options.target instanceof $)
 			{
-				options.location.sort(function (a, b)
+				_options.target = _options.target.get(0);
+			}
+			else if (_.isString(_options.target))
+			{
+				_options.target = $(_options.target).get(0)
+			}
+
+
+			if (!_.isArray(aLoc))
+			{
+				aLoc = options.location = [options.location];
+			}
+			if (aLoc.length > 1)
+			{
+				aLoc.sort(function (a, b)
 				{
 					return (b.priority || 0) - (a.priority || 0);
 				});
 			}
 
-			_.forEach(options.location, function (_oLoc, i)
+
+			for (i = 0, L = aLoc.length; i < L; i++)
 			{
-				options.location[i] = _oLoc = $.extend(true, {}, Placer.DEFAULTS.common, _oLoc);
+				oLoc = aLoc[i] = $.extend(true, {}, Placer.LOC, aLoc[i]);
 
-				_oLoc.id = _.randomStr();
-				_oLoc.tries = 0;
+				oLoc.id = _.randomStr();
+				oLoc.tries = 0;
 
-				if (_.isObject(_oLoc.offset))
+				if (_.isObject(oLoc.offset))
 				{
-					_oLoc.offset = {
-						ver: parseInt(_oLoc.offset.ver) || 0,
-						hor: parseInt(_oLoc.offset.hor) || 0
+					oLoc.offset = {
+						ver: parseInt(oLoc.offset.ver) || 0,
+						hor: parseInt(oLoc.offset.hor) || 0
 					}
 				}
 				else
 				{
-					_oLoc.offset = {
-						ver: parseInt(_oLoc.offset) || 0,
-						hor: parseInt(_oLoc.offset) || 0
+					oLoc.offset = {
+						ver: parseInt(oLoc.offset) || 0,
+						hor: parseInt(oLoc.offset) || 0
 					}
 				}
 
-				if (_oLoc.position === 'center' && _oLoc.align === 'center')
+
+				nParent = oLoc.parent;
+
+				if (nParent instanceof $)
 				{
-					_oLoc.includeMargin = false;
+					nParent = nParent.get(0);
 				}
 
-				if (aPossibleValues.indexOf(_oLoc.parent) > -1)
+				if (aPossibleParent.indexOf(nParent) > -1)
 				{
-					_oLoc.parent = document.body;
+					nParent = document.body;
 				}
-				_oLoc.parent = (_oLoc.parent instanceof $ ? _oLoc.parent : $(_oLoc.parent)).get(0);
-
-				if (!_oLoc.offsetParent)
+				else if (_.isString(nParent))
 				{
-					if (window.getComputedStyle(_oLoc.parent).position === 'static')
+					nParent = $(nParent).get(0);
+				}
+
+				oLoc.parent = nParent;
+
+
+				nOffsetParent = oLoc.offsetParent;
+
+				if (!nOffsetParent)
+				{
+					if (window.getComputedStyle(nParent).position === 'static')
 					{
-						if (_oLoc.parent.offsetParent !== null)
+						if (nParent.offsetParent !== null)
 						{
-							_oLoc.offsetParent = _oLoc.parent.offsetParent;
+							nOffsetParent = nParent.offsetParent;
 						}
 						else
 						{
 							if (window.getComputedStyle(document.body).position === 'static')
 							{
-								_oLoc.offsetParent  = document.documentElement;
+								nOffsetParent = document.documentElement;
 							}
 							else
 							{
-								_oLoc.offsetParent  = document.body;
+								nOffsetParent = document.body;
 							}
 						}
 					}
 					else
 					{
-						_oLoc.offsetParent = _oLoc.parent;
+						nOffsetParent = nParent;
 					}
 				}
-				_oLoc.offsetParent = (_oLoc.offsetParent instanceof $ ? _oLoc.offsetParent : $(_oLoc.offsetParent)).get(0);
-
-				if (parseInt(_oLoc.width) <= 0)
+				else if (nOffsetParent instanceof $)
 				{
-					_oLoc.width = 'auto';
+					nOffsetParent = nOffsetParent.get(0);
 				}
-				if (_.isNumeric(_oLoc.width) && _oLoc.width > 0)
+				else if (_.isString(nOffsetParent))
 				{
-					_oLoc.width = Math.round(_oLoc.width) + 'px';
-				}
-				else if (!_.isBoolean(_oLoc.width))
-				{
-					_oLoc.width = false;
+					nOffsetParent = $(nOffsetParent).get(0);
 				}
 
-				if (parseInt(_oLoc.height) <= 0)
+				oLoc.offsetParent = nOffsetParent;
+
+
+				if (oLoc.width > 0)
 				{
-					_oLoc.height = 'auto';
+					oLoc.width = Math.round(oLoc.width) + 'px';
 				}
-				if (_.isNumeric(_oLoc.height) && _oLoc.height > 0)
+				else if (!_.isBoolean(oLoc.width))
 				{
-					_oLoc.height = Math.round(_oLoc.height) + 'px';
+					oLoc.width = false;
 				}
-				else if (!_.isBoolean(_oLoc.height))
+
+
+				if (oLoc.height > 0)
 				{
-					_oLoc.height = false;
+					oLoc.height = Math.round(oLoc.height) + 'px';
 				}
-			});
+				else if (!_.isBoolean(oLoc.height))
+				{
+					oLoc.height = false;
+				}
+			}
 
 			return options;
 		},
@@ -343,25 +384,33 @@
 		{
 			this.styleDefault = {};
 
-			var oPlacedStyle = this.placed.style,
-				oStyleDefault = this.styleDefault;
 
-			_.forEach(_aWantedStyles, function (_sProp)
+			var oPlacedStyle  = this.placed.style,
+				oDefaultStyle = this.styleDefault,
+				aWantedStyles = Placer.STYLES,
+				sProp, i, L;
+
+			for (i = 0, L = aWantedStyles.length; i < L; i++)
 			{
-				oStyleDefault[_sProp] = {};
-				oStyleDefault[_sProp].value = oPlacedStyle.getPropertyValue(_sProp);
-				oStyleDefault[_sProp].priority = oPlacedStyle.getPropertyPriority(_sProp);
-			});
-		},
+				sProp = aWantedStyles[i];
 
+				oDefaultStyle[sProp] = {};
+				oDefaultStyle[sProp].value = oPlacedStyle.getPropertyValue(sProp);
+				oDefaultStyle[sProp].priority = oPlacedStyle.getPropertyPriority(sProp);
+			}
+		},
 		_restoreDefaultStyle = function ()
 		{
-			var oPlacedStyle = this.placed.style;
+			var oPlacedStyle = this.placed.style,
+				oDefaultStyle = this.styleDefault,
+				sProp, oValue;
 
-			_.forEach(this.styleDefault, function (_oValue, _sProp)
+			for (sProp in oDefaultStyle)
 			{
-				oPlacedStyle.setProperty(_sProp, _oValue.value, _oValue.priority);
-			});
+				oValue = oDefaultStyle[sProp];
+
+				oPlacedStyle.setProperty(sProp, oValue.value, oValue.priority);
+			}
 		},
 
 		_getMainParams = function (_oLoc)
@@ -377,11 +426,17 @@
 				sVerProp   = _oLoc.props.ver,
 				sHorProp   = _oLoc.props.hor;
 
+
 			if (_oLoc.includeMargin)
 			{
-				iExtraV -= _getMargin.call(this, _oOpposite[sVerProp]);
-				iExtraH -= _getMargin.call(this, _oOpposite[sHorProp]);
+				var sOppVerProp = sVerProp === 'top'  ? 'bottom' : 'top',
+					sOppHorProp = sHorProp === 'left' ? 'right'  : 'left',
+					oPlacedCSS = window.getComputedStyle(this.placed);
+
+				iExtraV -= Math.round(parseInt(oPlacedCSS['margin-' + sOppVerProp])) || 0;
+				iExtraH -= Math.round(parseInt(oPlacedCSS['margin-' + sOppHorProp])) || 0;
 			}
+
 
 			if (!_oLoc.fixed)
 			{
@@ -408,6 +463,7 @@
 				};
 			}
 
+
 			return {
 				target: {
 					width:  oTargetBounds.width,
@@ -417,7 +473,6 @@
 					right:  Math.round(oTargetBounds.right),
 					bottom: Math.round(oTargetBounds.bottom)
 				},
-				offsetParent: oOffsetBounds,
 				placed: {
 					width:  Math.round(this.placed.offsetWidth),
 					height: Math.round(this.placed.offsetHeight),
@@ -428,11 +483,12 @@
 				spaceLeft:  Math.round(oTargetBounds.top),
 				spaceRight: iWinWidth  - Math.round(oTargetBounds.right),
 				spaceUnder: iWinHeight - Math.round(oTargetBounds.bottom),
-				extraV    : iExtraV,
-				extraH    : iExtraH
+
+				offsetParent: oOffsetBounds,
+				extraV : iExtraV,
+				extraH : iExtraH
 			};
 		},
-
 		_applyLocation = function (_oLocation, _oParams, _oSign)
 		{
 			if (typeof _oParams === 'undefined')
@@ -519,14 +575,18 @@
 				}
 			}
 
-			var oParams = _oParams || _getMainParams.call(this, _oLocation),
+
+			var sVerProp = _oLocation.props.ver,
+				sHorProp = _oLocation.props.hor,
+
+				oParams = _oParams || _getMainParams.call(this, _oLocation),
 				oSign = _oSign || _oPossibleLocations[_oLocation.align]
 													 [_oLocation.side]
 													 [_oLocation.position].call(this, _oLocation.props),
 				oPosition = {},
 				sProp;
 
-			oPosition[_oLocation.props.ver] = oSign.ver.tt * oParams.target.top
+			oPosition[sVerProp] = oSign.ver.tt * oParams.target.top
 											+ oSign.ver.th * oParams.target.height
 											+ oSign.ver.ot * oParams.offsetParent.top
 											+ oSign.ver.oh * oParams.offsetParent.height
@@ -534,7 +594,7 @@
 											+ oSign.ver.ov * _oLocation.offset.ver
 											+ oParams.extraV;
 
-			oPosition[_oLocation.props.hor] = oSign.hor.tl * oParams.target.left
+			oPosition[sHorProp] = oSign.hor.tl * oParams.target.left
 											+ oSign.hor.tw * oParams.target.width
 											+ oSign.hor.ol * oParams.offsetParent.left
 											+ oSign.hor.ow * oParams.offsetParent.width
@@ -542,17 +602,16 @@
 											+ oSign.hor.oh * _oLocation.offset.hor
 											+ oParams.extraH;
 
+
 			this.placed.style.setProperty('bottom', 'auto', 'important');
 			this.placed.style.setProperty('right',  'auto', 'important');
 
+
 			for (sProp in oPosition)
 			{
-				if (!isNaN(oPosition[sProp]))
-				{
-					oPosition[sProp] = Math.round(oPosition[sProp]) + 'px';
-				}
-				this.placed.style.setProperty(sProp, oPosition[sProp], 'important');
+				this.placed.style.setProperty(sProp, Math.round(oPosition[sProp]) + 'px', 'important');
 			}
+
 
 			// check to see if placing in new offset caused the placed element to resize itself
 			if (_oLocation.tries < 10)
@@ -568,7 +627,9 @@
 						width: iPlacedWidth,
 						height: iPlacedHeight
 					};
+
 					_applyLocation.call(this, _oLocation, oParams, oSign);
+
 					return false;
 				}
 			}
@@ -577,34 +638,54 @@
 				_oLocation.tries = 0;
 			}
 
+
+			var oPlacedBound = this.placed.getBoundingClientRect(),
+				iBoundLeft  = oPlacedBound.left,
+				iBoundRight = oPlacedBound.right,
+				iWinWidth = window.innerWidth - _.globalScrollbar.width();
+
+			if (sHorProp === 'left' && iBoundRight > iWinWidth)
+			{
+				var iLeft = oPosition.left,
+					iFixRight = iBoundRight - iWinWidth + 5,
+					iFreeLeft = iBoundLeft - 5;
+
+				if (iFixRight > iFreeLeft)
+				{
+					iLeft -= iFreeLeft;
+				}
+				else
+				{
+					iLeft -= iFixRight;
+				}
+
+				this.placed.style.setProperty('left', Math.round(iLeft) + 'px', 'important');
+			}
+			else if (sHorProp === 'right' && iBoundLeft < 0)
+			{
+				var iRight = oPosition.right,
+					iFixLeft = -1 * iBoundLeft + 5,
+					iFreeRight = iWinWidth - iBoundRight - 5;
+
+				if (iFixLeft > iFreeRight)
+				{
+					iRight -= iFreeRight;
+				}
+				else
+				{
+					iRight -= iFixLeft;
+				}
+
+				this.placed.style.setProperty('right', Math.round(iRight) + 'px', 'important');
+			}
+
+
 			this.currentBounds = oParams.target;
 			this.placed._jQ().trigger('placed');
+
 			return true;
 		},
 
-		_getMargin = function (_sSide)
-		{
-			var oPlacedStyle = window.getComputedStyle(this.placed);
-
-			return Math.round(parseInt(oPlacedStyle['margin-' + _sSide])) || 0;
-		},
-
-		_aWantedStyles =   ['margin-top',
-							'margin-bottom',
-							'margin-right',
-							'margin-left',
-							'width',
-							'height',
-							'min-width',
-							'min-height',
-							'position'],
-
-		_oOpposite = {
-			top: 'bottom',
-			bottom: 'top',
-			left: 'right',
-			right: 'left'
-		},
 
 		_oPossibleLocations = {
 			start: {
