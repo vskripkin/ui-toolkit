@@ -71,18 +71,12 @@
 		border-radius: @tooltip-radius;
 		border-style:  @tooltip-border-style;
 
-		position: absolute;
-		z-index: 10000000;
+		position: relative;
 		display: block;
 		width: auto;
-		margin: 0;
 		border-color: transparent;
 		cursor: pointer;
 
-		&.fixed
-		{
-			position: fixed !important;
-		}
 
 		&.animation
 		{
@@ -111,22 +105,6 @@
 				text-decoration: none;
 			}
 		}
-
-		&.outset
-		{
-			&.top    { margin-bottom: @tooltip-margin; }
-			&.bottom { margin-top:    @tooltip-margin; }
-			&.left   { margin-right:  @tooltip-margin; }
-			&.right  { margin-left:   @tooltip-margin; }
-		}
-
-		&.inset
-		{
-			&.top    { margin-top:    @tooltip-margin; }
-			&.bottom { margin-bottom: @tooltip-margin; }
-			&.left   { margin-left:   @tooltip-margin; }
-			&.right  { margin-right:  @tooltip-margin; }
-		}
 	}
 
 	.sizes(@font-size, @prefix)
@@ -137,6 +115,26 @@
 
 	.add-arrow()
 	{
+		&.outset
+		{
+			&.top    { margin-bottom: @tooltip-margin; }
+			&.bottom { margin-top:    @tooltip-margin; }
+			&.left   { margin-right:  @tooltip-margin; }
+			&.right  { margin-left:   @tooltip-margin; }
+		}
+		&.inset
+		{
+			&.top    { margin-top:    @tooltip-margin; }
+			&.bottom { margin-bottom: @tooltip-margin; }
+			&.left   { margin-left:   @tooltip-margin; }
+			&.right  { margin-right:  @tooltip-margin; }
+		}
+		&.no_arrow
+		{
+			margin: 0 !important;
+		}
+
+
 		&:before
 		{
 			content: '';

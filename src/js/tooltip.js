@@ -69,14 +69,30 @@
 				this.target = _nElem._selectbox.node.input;
 			}
 
-			this.template = $('<div>').html(_getCloseBtn.call(this) + _getMessage.call(this))
-				.addClass(  this.type + '_' + options.type + 
-							' ' + ((options.location.side === 'in' || options.no_arrow) ? 'no' : options.location.align) + '_arrow' + 
-							' ' + options.location.position + 
-							(options.animation ? ' animation' : '') + 
-							(options.location.fixed ? ' fixed' : '') + 
-							(options.location.side === 'in' ? ' inset': ' outset'))
+
+			this.wrapper = $('<div>')
+				.addClass(this.type + '_' + 'wrp')
+				.css({
+					'position': options.location.fixed ? 'fixed' : 'absolute',
+					'z-index': 10000000
+				})
 				.get(0);
+
+			this.template = $('<div>')
+				.html(_getCloseBtn.call(this) + _getMessage.call(this))
+				.addClass(
+					this.type + '_' + options.type + 
+					' ' + (options.no_arrow ? 'no' : options.location.align) + '_arrow' + 
+					options.location.position + 
+					(options.animation ? ' animation' : '') + 
+					(options.location.fixed ? ' fixed' : '') + 
+					(options.location.side === 'in' ? ' inset': ' outset')
+				)
+				.get(0);
+
+			this.wrapper.appendChild(this.template);
+
+
 			this.isHidden = true;
 			this.eventTargets = [];
 
@@ -229,12 +245,11 @@
 		{
 			this.hoverState = 'out';
 
-			var nTip = this.template,
-				that = this;
-
-			this.template.placer && this.template.placer.destroy();
+			this.wrapper.placer && this.wrapper.placer.destroy();
 			this.timeout && clearTimeout(this.timeout);
 			this.closeTimeout && clearTimeout(this.closeTimeout);
+
+			var that = this;
 
 			_.forEach(this.eventTargets, function (_nTarget)
 			{
@@ -390,7 +405,7 @@
 				this.template.style.maxWidth = 'none';
 			}
 
-			this.template._jQ().detach().placeTo(this.options.placeTo);
+			this.wrapper._jQ().detach().placeTo(this.options.placeTo);
 			this.template.classList.remove('out');
 			this.template.classList.add('in');
 
@@ -415,7 +430,15 @@
 			var that = this,
 				afterHide = function ()
 				{
-					that.template._jQ()[that.options.delete]();
+					if (that.options.delete === 'remove')
+					{
+						that.wrapper._jQ().remove();
+						that.template._jQ().remove();
+					}
+					else
+					{
+						that.wrapper._jQ()[that.options.delete]();
+					}
 
 					that.element._jQ().trigger(that.type + '-hide');
 					that.template._jQ().trigger(that.type + '-hide');
