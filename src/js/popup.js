@@ -603,7 +603,7 @@
 
 		close: function (_sWho)
 		{
-			if (_sWho === 'bg' && this.options.modal) return;
+			if (this.options.modal && _sWho && _sWho !== 'btn') return;
 			if (_sWho === 'esc' && !this.options.escape) return;
 
 			this.state = 'closing';
