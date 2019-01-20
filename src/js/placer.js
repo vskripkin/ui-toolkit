@@ -640,43 +640,81 @@
 
 
 			var oPlacedBound = this.placed.getBoundingClientRect(),
+				sFixedSide = _getHorFixedSide(_oLocation),
+				iNewValue = 0,
+
 				iBoundLeft  = oPlacedBound.left,
 				iBoundRight = oPlacedBound.right,
-				iWinWidth = window.innerWidth - _.globalScrollbar.width();
+				iLeftLimit = 5,
+				iRightLimit = window.innerWidth - _.globalScrollbar.width() - 5;
 
-			if (sHorProp === 'left' && iBoundRight > iWinWidth)
+			if (sFixedSide === 'left' && iBoundRight > iRightLimit)
 			{
-				var iLeft = oPosition.left,
-					iFixRight = iBoundRight - iWinWidth + 5,
-					iFreeLeft = iBoundLeft - 5;
+				var iFixRight = iBoundRight - iRightLimit,
+					iFreeLeft = iBoundLeft - iLeftLimit;
 
-				if (iFixRight > iFreeLeft)
+				if (sHorProp === 'left')
 				{
-					iLeft -= iFreeLeft;
+					iNewValue = oPosition.left;
+
+					if (iFixRight > iFreeLeft)
+					{
+						iNewValue -= iFreeLeft;
+					}
+					else
+					{
+						iNewValue -= iFixRight;
+					}
 				}
 				else
 				{
-					iLeft -= iFixRight;
+					iNewValue = oPosition.right;
+
+					if (iFixRight > iFreeLeft)
+					{
+						iNewValue += iFreeLeft;
+					}
+					else
+					{
+						iNewValue += iFixRight;
+					}
 				}
 
-				this.placed.style.setProperty('left', Math.round(iLeft) + 'px', 'important');
+				this.placed.style.setProperty(sHorProp, Math.round(iNewValue) + 'px', 'important');
 			}
-			else if (sHorProp === 'right' && iBoundLeft < 0)
+			else if (sFixedSide === 'right' && iBoundLeft < 0)
 			{
-				var iRight = oPosition.right,
-					iFixLeft = -1 * iBoundLeft + 5,
-					iFreeRight = iWinWidth - iBoundRight - 5;
+				var iFixLeft = -1 * iBoundLeft + iLeftLimit,
+					iFreeRight = iRightLimit - iBoundRight;
 
-				if (iFixLeft > iFreeRight)
+				if (sHorProp === 'left')
 				{
-					iRight -= iFreeRight;
+					iNewValue = oPosition.right;
+
+					if (iFixLeft > iFreeRight)
+					{
+						iNewValue += iFreeRight;
+					}
+					else
+					{
+						iNewValue += iFixLeft;
+					}
 				}
 				else
 				{
-					iRight -= iFixLeft;
+					iNewValue = oPosition.right;
+
+					if (iFixLeft > iFreeRight)
+					{
+						iNewValue -= iFreeRight;
+					}
+					else
+					{
+						iNewValue -= iFixLeft;
+					}
 				}
 
-				this.placed.style.setProperty('right', Math.round(iRight) + 'px', 'important');
+				this.placed.style.setProperty(sHorProp, Math.round(iNewValue) + 'px', 'important');
 			}
 
 
@@ -684,6 +722,27 @@
 			this.placed._jQ().trigger('placed');
 
 			return true;
+		},
+
+		_getHorFixedSide = function (_oLoc)
+		{
+			var sAlign = _oLoc.align,
+				sSide = _oLoc.side,
+				sPosition = _oLoc.position;
+
+			if (sPosition === 'top' || sPosition === 'bottom')
+			{
+				if (sAlign === 'start')  return 'left';
+				if (sAlign === 'center') return 'center';
+				if (sAlign === 'end')    return 'right';
+			}
+
+			if (sAlign === 'center' && sPosition === 'center') return 'center';
+
+			if (sSide === 'out' && sPosition === 'left')  return 'right';
+			if (sSide === 'in'  && sPosition === 'right') return 'right';
+
+			return 'left';
 		},
 
 
