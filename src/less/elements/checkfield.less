@@ -29,7 +29,7 @@
 		@pseudo: ~'.@{prefix}@{_pseudo}';
 		@label:  ~'.@{prefix}@{_label}';
 
-		#ui-checkfield.template(@font-size, @pseudo, @label, @type);
+		#ui-checkfield.template(@font-size, @pseudo, @label, @prefix, @type);
 		#ui-checkfield.sizes(@font-size, @prefix, @pseudo);
 
 
@@ -133,7 +133,7 @@
 		}
 	}
 
-	.template(@font-size, @pseudo, @label, @type)
+	.template(@font-size, @pseudo, @label, @prefix, @type)
 	{
 		position: absolute !important;
 		width:  1px !important;
@@ -204,6 +204,14 @@
 			{
 				transform: scale(1) rotate(-45deg);
 				border-color: @color-checkfield-sign;
+			}
+		}
+
+		&.@{prefix}no-trsn ~ @{pseudo}
+		{
+			&, &:after
+			{
+				transition: none !important;
 			}
 		}
 	}
