@@ -10,7 +10,10 @@
 
 	var nTextarea = null,
 		toString = Object.prototype.toString,
-		restArguments = function (_func, _iStartIndex)
+		bDefined = !!_,
+		__ = {},
+
+		rest_arguments = function (_func, _iStartIndex)
 		{
 			_iStartIndex = _iStartIndex == null ? _func.length - 1 : parseInt(_iStartIndex);
 
@@ -33,6 +36,7 @@
 					case 2: return _func.call(this, args[0], args[1], aRest);
 				}
 
+
 				var aArgs = Array(_iStartIndex + 1);
 
 				for (index = 0; index < _iStartIndex; index++)
@@ -46,11 +50,11 @@
 			};
 		};
 
-	_ || (_ = window._ = {
+	!bDefined && (_ = window._ = {
 		noop: function () {},
 		isArray: $.isArray,
 		isObject: $.isPlainObject,
-		restArguments: restArguments,
+		restArguments: rest_arguments,
 
 		throttle: function (_func, _iWait, options)
 		{
@@ -132,7 +136,7 @@
 						xResult = _func.apply(context, args);
 					}
 				},
-				debounced = restArguments(function (args)
+				debounced = rest_arguments(function (args)
 				{
 					if (iTimeout)
 					{
@@ -166,7 +170,7 @@
 
 			return debounced;
 		},
-		delay: restArguments(function (_func, _iWait, args)
+		delay: rest_arguments(function (_func, _iWait, args)
 		{
 			return setTimeout(Function.prototype.apply.bind(_func, null, args), _iWait);
 		}),
@@ -239,41 +243,42 @@
 		}
 	});
 
-	_.isNode = function (obj)
+
+	__.isNode = function (obj)
 	{
 		return obj && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string';
 	};
-	_.isNumeric = function (value)
+	__.isNumeric = function (value)
 	{
 		return !_.isString(value) && _.isFinite(value);
 	};
-	_.isInteger = function(value)
+	__.isInteger = function(value)
 	{
 		return _.isNumeric(value) && Math.floor(value) === value;
 	};
 
-	_.randomStr = function ()
+	__.randomStr = function ()
 	{
 		return '_' + parseInt((Math.random() * 1e8).toString().replace('.','')).toString(36);
 	};
-	_.decodeHtml = function (html)
+	__.decodeHtml = function (html)
 	{
 		nTextarea || (nTextarea = document.createElement('textarea'));
 		nTextarea.innerHTML = html;
 
 		return nTextarea.value;
 	};
-	_.unduplicate = function (text)
+	__.unduplicate = function (text)
 	{
 		//     _.isString(text) && text.replace(/(\S+)(?=.*\1)/g, '');
 		return _.isString(text) && text.replace(/(\b\w+\b)(?=.*\b\1\b)/g, '').trim();
 	};
-	_.cleanStr = function (text)
+	__.cleanStr = function (text)
 	{
 		return _.isString(text) && text.replace(/\s{2,}/g, ' ').trim();
 	};
 
-	_.hashCode = function (_str)
+	__.hashCode = function (_str)
 	{
 		_str = String(_str);
 
@@ -291,6 +296,31 @@
 
 		return parseInt(iHash.toString().replace('.', '')).toString(36).replace('-', '');
 	};
+
+	$.extend(_, __);
+
+
+	if (!bDefined)
+	{
+		var oUndScr = Object.getOwnPropertyDescriptor(window, '_'),
+			oUndScrVal = oUndScr.value;
+
+		Object.defineProperty(window, '_', {
+			get: function ()
+			{
+				return oUndScrVal;
+			},
+			set: function (_)
+			{
+				oUndScr.value = _;
+				$.extend(_, __);
+
+				Object.defineProperty(window, '_', oUndScr);
+			},
+			configurable: true
+		});
+	}
+
 
 	Element.prototype._jQ = function ()
 	{
