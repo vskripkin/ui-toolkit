@@ -332,6 +332,26 @@
 	}
 
 
+	$.Resolved = $.Deferred().resolve();
+	$.Rejected = $.Deferred().reject();
+
+	$.isDeferred = function (_xDefer)
+	{
+		return !!(_xDefer && _xDefer.promise && _xDefer.state);
+	};
+	$.isFired = function (_jDefer)
+	{
+		return _jDefer && _jDefer.state() !== 'pending';
+	};
+	$.isResolved = function (_jDefer)
+	{
+		return _jDefer && _jDefer.state() === 'resolved';
+	};
+	$.isRejected = function (_jDefer)
+	{
+		return _jDefer && _jDefer.state() === 'rejected';
+	};
+
 	Element.prototype._jQ = function ()
 	{
 		return this.__jQ || (this.__jQ = $(this));
