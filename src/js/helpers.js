@@ -51,6 +51,7 @@
 
 	!bDefined && (_ = window._ = {
 		noop: function () {},
+		extend: $.extend,
 		isArray: $.isArray,
 		isObject: $.isPlainObject,
 		restArguments: rest_arguments,
