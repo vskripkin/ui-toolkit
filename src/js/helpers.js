@@ -11,7 +11,7 @@
 	var nTextarea = null,
 		toString = Object.prototype.toString,
 		bDefined = !!_,
-		__ = {},
+		__ = null,
 
 		rest_arguments = function (_func, _iStartIndex)
 		{
@@ -50,7 +50,7 @@
 			};
 		};
 
-	!bDefined && (_ = window._ = {
+	!bDefined && (_ = window._ = __ = {
 		noop: function () {},
 		isArray: $.isArray,
 		isObject: $.isPlainObject,
@@ -244,41 +244,41 @@
 	});
 
 
-	__.isNode = function (obj)
+	_.isNode = function (obj)
 	{
 		return obj && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string';
 	};
-	__.isNumeric = function (value)
+	_.isNumeric = function (value)
 	{
 		return !_.isString(value) && _.isFinite(value);
 	};
-	__.isInteger = function(value)
+	_.isInteger = function(value)
 	{
 		return _.isNumeric(value) && Math.floor(value) === value;
 	};
 
-	__.randomStr = function ()
+	_.randomStr = function ()
 	{
 		return '_' + parseInt((Math.random() * 1e8).toString().replace('.','')).toString(36);
 	};
-	__.decodeHtml = function (html)
+	_.decodeHtml = function (html)
 	{
 		nTextarea || (nTextarea = document.createElement('textarea'));
 		nTextarea.innerHTML = html;
 
 		return nTextarea.value;
 	};
-	__.unduplicate = function (text)
+	_.unduplicate = function (text)
 	{
 		//     _.isString(text) && text.replace(/(\S+)(?=.*\1)/g, '');
 		return _.isString(text) && text.replace(/(\b\w+\b)(?=.*\b\1\b)/g, '').trim();
 	};
-	__.cleanStr = function (text)
+	_.cleanStr = function (text)
 	{
 		return _.isString(text) && text.replace(/\s{2,}/g, ' ').trim();
 	};
 
-	__.hashCode = function (_str)
+	_.hashCode = function (_str)
 	{
 		_str = String(_str);
 
@@ -297,8 +297,6 @@
 		return parseInt(iHash.toString().replace('.', '')).toString(36).replace('-', '');
 	};
 
-	$.extend(_, __);
-
 
 	if (!bDefined)
 	{
@@ -312,8 +310,16 @@
 			},
 			set: function (_)
 			{
-				oUndScr.value = _;
-				$.extend(_, __);
+				for (var sMethod in oUndScrVal)
+				{
+					if (!(sMethod in __))
+					{
+						_[sMethod] = oUndScrVal[sMethod];
+					}
+				}
+
+
+				oUndScr.value = oUndScrVal = _;
 
 				Object.defineProperty(window, '_', oUndScr);
 			},
