@@ -70,20 +70,13 @@
 		.template(...)
 		{
 			border-radius: @button-radius;
-			position: absolute;
-			z-index: 1000000000;
+			padding: @tooltip-padding;
+			position: relative;
 			display: block;
 			width: auto;
-			margin: 0;
-			padding: @tooltip-padding;
 			border-width: 0;
 			border-style: solid;
 			cursor: pointer;
-
-			&.fixed
-			{
-				position: fixed !important;
-			}
 
 			&.animation
 			{
