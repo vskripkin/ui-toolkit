@@ -83,7 +83,7 @@
 				.addClass(
 					this.type + '_' + options.type + 
 					' ' + (options.no_arrow ? 'no' : options.location.align) + '_arrow' + 
-					options.location.position + 
+					' ' + options.location.position + 
 					(options.animation ? ' animation' : '') + 
 					(options.location.fixed ? ' fixed' : '') + 
 					(options.location.side === 'in' ? ' inset': ' outset')
