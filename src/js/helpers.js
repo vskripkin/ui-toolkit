@@ -11,7 +11,6 @@
 	var nTextarea = null,
 		toString = Object.prototype.toString,
 		bDefined = !!_,
-		__ = null,
 
 		rest_arguments = function (_func, _iStartIndex)
 		{
@@ -50,7 +49,7 @@
 			};
 		};
 
-	!bDefined && (_ = window._ = __ = {
+	!bDefined && (_ = window._ = {
 		noop: function () {},
 		isArray: $.isArray,
 		isObject: $.isPlainObject,
@@ -312,7 +311,7 @@
 			{
 				for (var sMethod in oUndScrVal)
 				{
-					if (!(sMethod in __))
+					if (!(sMethod in _))
 					{
 						_[sMethod] = oUndScrVal[sMethod];
 					}
