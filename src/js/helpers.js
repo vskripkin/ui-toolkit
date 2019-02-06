@@ -187,6 +187,10 @@
 		{
 			return toString.call(a) === '[object Number]';
 		},
+		isRegExp: function ()
+		{
+			return toString.call(a) === '[object RegExp]';
+		},
 		isBoolean: function (a)
 		{
 			return a === true || a === false || toString.call(a) === '[object Boolean]';
