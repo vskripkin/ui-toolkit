@@ -281,6 +281,11 @@
 		Waves = {
 			init: function(_options)
 			{
+				if (Waves.__inited) return;
+
+				Waves.__inited = true;
+
+
 				_options || (_options = {});
 
 				if (typeof _options.delay !== 'undefined')
