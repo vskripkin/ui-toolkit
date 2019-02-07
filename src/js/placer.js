@@ -244,22 +244,22 @@
 				oLoc, nParent, nOffsetParent, i, L;
 
 
-			if (_options.placed instanceof $)
+			if (options.placed instanceof $)
 			{
-				_options.placed = _options.placed.get(0);
+				options.placed = options.placed.get(0);
 			}
-			else if (_.isString(_options.placed))
+			else if (_.isString(options.placed))
 			{
-				_options.placed = $(_options.placed).get(0)
+				options.placed = $(options.placed).get(0)
 			}
 
-			if (_options.target instanceof $)
+			if (options.target instanceof $)
 			{
-				_options.target = _options.target.get(0);
+				options.target = options.target.get(0);
 			}
-			else if (_.isString(_options.target))
+			else if (_.isString(options.target))
 			{
-				_options.target = $(_options.target).get(0)
+				options.target = $(options.target).get(0)
 			}
 
 
