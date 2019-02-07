@@ -79,7 +79,8 @@
 			{
 				& ~ .@{pre}hint, & ~ .@{pre}error
 				{
-					@rem: round(@fs * @textfield-hint-font-size-rate * @textfield-line-height, 3);
+					// браузер округляет line-height вниз, поэтому здесь округляем до десятых рема
+					@rem: floor(@fs * @textfield-hint-font-size-rate * @textfield-line-height * 10) / 10;
 					@em: @textfield-hint-padding-top + @textfield-hint-padding-bottom;
 
 					margin-top: (-1 * @value);
