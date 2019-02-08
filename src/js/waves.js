@@ -8,8 +8,8 @@
 			delay: 50,
 
 			duration: {
-				opacity: 75,
-				transform: 225
+				opacity: 150,
+				transform: 300
 			},
 			timing: {
 				opacity: 'cubic-bezier(0.4,0,0.2,1)',
