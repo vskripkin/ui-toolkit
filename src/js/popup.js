@@ -130,7 +130,11 @@
 
 				if (e.target === nCont)
 				{
-					nCont.style.display = 'none';
+					if (!nCont.classList.contains(Class.container_visible))
+					{
+						nCont.style.display = 'none';
+					}
+
 					nCont.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
 					_.globalScrollbar.restore();
 				}
@@ -613,6 +617,9 @@
 				clearTimeout(this.timeout);
 			}
 
+
+			__queue.remove(this);
+
 			var that = this;
 			this.timeout = setTimeout(function()
 			{
@@ -622,8 +629,6 @@
 				{
 					that._close();
 				}
-
-				__queue.remove(that);
 			}, this.options.delay.close);
 
 			return true;

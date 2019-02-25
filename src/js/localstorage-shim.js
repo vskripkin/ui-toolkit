@@ -5,6 +5,24 @@
 			var oData = {};
 
 			return {
+				key: function (_index)
+				{
+					var i = 0,
+						index = parseInt(_index) || 0,
+						sKey;
+
+					for (sKey in oData)
+					{
+						if (index === i)
+						{
+							return oData[sKey];
+						}
+
+						i++;
+					}
+
+					return null;
+				},
 				getItem: function (_sKey)
 				{
 					return String(_sKey) in oData ? oData[_sKey] : null;
