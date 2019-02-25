@@ -24,10 +24,20 @@
 		},
 
 		sTransitionEnd = _.support.transition.end,
-		request_frame = window.requestAnimationFrame || function (_func)
-		{
-			return setTimeout(_func, 1000/60);
-		},
+		request_frame = window.requestAnimationFrame ?
+			function (_func)
+			{
+				/*
+				  вызываем через двойной requestAnimationFrame, потому что если вызывать через один,
+				  то периодически проскакивает баг, когда анимация не проигрывается, сразу виден
+				  конечный результат
+				*/
+				return window.requestAnimationFrame(window.requestAnimationFrame.bind(window, _func));
+			} :
+			function (_func)
+			{
+				return setTimeout(_func, 1000/60);
+			},
 
 		__cont = {
 			get: function ()
@@ -62,13 +72,14 @@
 				{
 					if (iTimeout) return;
 
+					// 27 = кнопка Escape
+					if (e.which !== 27) return;
+
+
 					iTimeout = setTimeout(function ()
 					{
 						iTimeout = null;
 					}, 100);
-
-					// 27 = кнопка Escape
-					if (e.which !== 27) return;
 
 					var nActive = document.activeElement,
 						sTagName = nActive && nActive.tagName.toLowerCase();
@@ -87,6 +98,9 @@
 
 			show: function ()
 			{
+				__cont.state = 'showing';
+
+
 				var nCont = __cont.get();
 
 				nCont.style.display = 'block';
@@ -94,6 +108,11 @@
 
 				setTimeout(function ()
 				{
+					if (__cont.state !== 'showing') return;
+
+					__cont.state = 'shown';
+
+
 					// fix transitionend event for hidden tab
 					nCont.offsetHeight;
 					nCont.offsetWidth;
@@ -103,12 +122,16 @@
 			},
 			hide: function ()
 			{
+				__cont.state = 'hiding';
+
 				var nCont = __cont.get();
 
 				nCont.addEventListener(sTransitionEnd, __cont._onTransitionend, {passive: true});
 
 				setTimeout(function ()
 				{
+					if (__cont.state !== 'hiding') return;
+
 					// fix transitionend event for hidden tab
 					nCont.offsetHeight;
 					nCont.offsetWidth;
@@ -117,6 +140,8 @@
 
 					setTimeout(function ()
 					{
+						if (__cont.state !== 'hiding') return;
+
 						if (parseFloat(getComputedStyle(nCont).opacity) < 0.1)
 						{
 							__cont._onTransitionend({target: nCont});
@@ -126,15 +151,16 @@
 			},
 			_onTransitionend: function on_transitionend (e)
 			{
+				if (__cont.state !== 'hiding') return;
+
+
 				var nCont = __cont.get();
 
 				if (e.target === nCont)
 				{
-					if (!nCont.classList.contains(Class.container_visible))
-					{
-						nCont.style.display = 'none';
-					}
+					__cont.state = 'hidden';
 
+					nCont.style.display = 'none';
 					nCont.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
 					_.globalScrollbar.restore();
 				}
@@ -183,14 +209,14 @@
 
 				if (index === -1) return;
 
+
 				Q.splice(index, 1);
+				Q.onRemove();
 
 				if (Q.length)
 				{
 					Q.last().show();
 				}
-
-				Q.onRemove();
 			};
 			Q.last = function ()
 			{
@@ -375,7 +401,7 @@
 		return oPopup;
 	};
 
-	$.popup = Popup.open;
+	$.popup = _.popup = Popup.open;
 
 	Popup.DEFAULTS = {
 		className: '',
@@ -404,26 +430,33 @@
 		{
 			this.options = $.extend(true, {}, Popup.DEFAULTS, _options);
 
-			var sHTML = '<div class="' + Class.wrapper + ' ' + this.options.className + '" style="display: none;">' +
-							'<div class="' + Class.content + '"></div>' +
-						'</div>',
-				nDiv = document.createElement('div');
+			this._open  = this._open.bind(this);
+			this._close = this._close.bind(this);
 
-			nDiv.insertAdjacentHTML('afterbegin', sHTML);
+
+			var nWrapper = document.createElement('div'),
+				nContent = document.createElement('div');
+
+			nWrapper.className = Class.wrapper + ' ' + this.options.className;
+			nWrapper.style.display = 'none';
+
+			nContent.className = Class.content;
 
 			this.dom = {
-				wrapper: nDiv.querySelector('.' + Class.wrapper),
-				content: nDiv.querySelector('.' + Class.content),
+				wrapper: nWrapper,
+				content: nContent,
 				inner: null,
 				close: null
 			};
 
+
 			if (!this.options.modal)
 			{
-				this.dom.wrapper._jQ().on('click', this.onBgClick.bind(this));
+				nWrapper._jQ().on('click', this.onBgClick.bind(this));
 			}
 
-			__cont.append(this.dom.wrapper);
+			nWrapper.appendChild(nContent);
+			__cont.append(nWrapper);
 
 			return this;
 		},
@@ -520,6 +553,9 @@
 
 		show: function ()
 		{
+			if (this.state === 'closing' || this.state === 'closed') return;
+
+
 			var nWrapper = this.dom.wrapper;
 
 			nWrapper.style.display = 'block';
@@ -532,6 +568,9 @@
 		},
 		hide: function ()
 		{
+			if (this.state === 'closing' || this.state === 'closed') return;
+
+
 			var nWrapper = this.dom.wrapper;
 
 			nWrapper.addEventListener(sTransitionEnd, function on_transitionend (e)
@@ -554,39 +593,39 @@
 		open: function ()
 		{
 			this.state = 'opening';
-			__queue.add(this);
 
 			if (this.timeout)
 			{
 				clearTimeout(this.timeout);
 			}
 
-			var that = this;
-			this.timeout = setTimeout(function()
-			{
-				that.timeout = null;
-
-				if (that.state === 'opening')
-				{
-					that._open();
-				}
-			}, this.options.delay.open);
+			this.timeout = setTimeout(this._open, this.options.delay.open);
 		},
 		_open: function ()
 		{
+			if (this.state !== 'opening') return;
+
+			if (this.timeout)
+			{
+				clearTimeout(this.timeout);
+				this.timeout = null;
+			}
+
 			this.state = 'opened';
+
+			__queue.add(this);
+
 
 			if (this.options.beforeOpen)
 			{
 				this.options.beforeOpen.call(this);
 			}
 
-			var that = this,
-				nWrapper = this.dom.wrapper;
+			var after_open = this.options.afterOpen;
+			after_open && (after_open = after_open.bind(this));
 
+			var nWrapper = this.dom.wrapper;
 			nWrapper.style.display = 'block';
-
-			var that = this;
 
 			request_frame(function ()
 			{
@@ -596,19 +635,15 @@
 
 				nWrapper.classList.add(Class.wrapper_visible);
 
-				if (that.options.afterOpen)
-				{
-					that.options.afterOpen.call(that);
-				}
+				after_open && after_open();
 			});
-
-			return true;
 		},
 
 		close: function (_sWho)
 		{
 			if (this.options.modal && _sWho && _sWho !== 'btn') return;
 			if (_sWho === 'esc' && !this.options.escape) return;
+
 
 			this.state = 'closing';
 
@@ -617,48 +652,38 @@
 				clearTimeout(this.timeout);
 			}
 
-
-			__queue.remove(this);
-
-			var that = this;
-			this.timeout = setTimeout(function()
-			{
-				that.timeout = null;
-
-				if (that.state === 'closing')
-				{
-					that._close();
-				}
-			}, this.options.delay.close);
-
-			return true;
+			this.timeout = setTimeout(this._close, this.options.delay.close);
 		},
 		_close: function ()
 		{
+			if (this.state !== 'closing') return;
+
 			if (this.timeout)
 			{
 				clearTimeout(this.timeout);
 				this.timeout = null;
 			}
 
+			this.state = 'closed';
+
+			__queue.remove(this);
+
+
 			if (this.options.beforeClose)
 			{
 				this.options.beforeClose.call(this);
 			}
 
-			var that = this,
-				nWrapper = this.dom.wrapper;
+			var after_close = this.options.afterClose;
+			after_close && (after_close = after_close.bind(this));
+
+			var nWrapper = this.dom.wrapper;
 
 			nWrapper.addEventListener(sTransitionEnd, function on_transitionend (e)
 			{
 				if (e.target === this)
 				{
-					that.state = 'closed';
-
-					if (that.options.afterClose)
-					{
-						that.options.afterClose.call(that);
-					}
+					after_close && after_close();
 
 					this.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
 					this._jQ().remove();
@@ -671,8 +696,6 @@
 
 			nWrapper.style.pointerEvents = 'none';
 			nWrapper.classList.remove(Class.wrapper_visible);
-
-			return true;
 		}
 	};
 
