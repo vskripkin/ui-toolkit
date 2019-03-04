@@ -240,10 +240,16 @@
 			HH.pop =
 			HH.onPopstate = _.noop;
 
-			if (!('pushState' in window.history))
+			/*
+			  в IE событие popstate не срабатывает, если поменялся только хеш адреса, поэтому
+			  отключаем историю для IE, так как без popstate не сможем нормально обрабатывать
+			  все изменения в истории
+			*/
+			if (!('pushState' in window.history) || _.isIE)
 			{
 				return HH;
 			}
+
 
 			H.onPopstate = _.noop;
 
@@ -255,6 +261,7 @@
 			{
 				__history = HH;
 			};
+
 
 			H.clear = function ()
 			{
