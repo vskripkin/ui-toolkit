@@ -7,10 +7,14 @@
 {
 	.textfield(
 		@font-size:      @textfield-font-size,
+		@line-height:    @textfield-line-height,
 		@margin-bottom:  @textfield-margin-bottom,
 		@padding-top:    @textfield-padding-top,
 		@padding-bottom: @textfield-padding-bottom,
 		@padding-hor:    @textfield-padding-hor,
+		@border-top:     @textfield-border-top,
+		@border-bottom:  @textfield-border-bottom,
+		@border-hor:     @textfield-border-hor,
 		@prefix:         @textfield-class-prefix)
 	{
 		@has-label: #ui-textfield-label.check()[has];
@@ -19,17 +23,21 @@
 
 		@pre: @prefix;
 		@fs: @font-size;
+		@lh: @line-height;
 		@mb: @margin-bottom;
 		@pt: @padding-top;
 		@pb: @padding-bottom;
 		@ph: @padding-hor;
+		@bt: @border-top;
+		@bb: @border-bottom;
+		@bh: @border-hor;
 
 		@pad-ver-min: if(@pt > @pb, @pb, @pt);
 
-		#ui-textfield.construct(@pre, @fs, @mb, @pt, @pb, @ph);
-		#ui-textfield-label.construct(@pre, @has-label, @fs, @pt, @pb, @ph, @has-addon);
-		#ui-textfield-addon.construct(@pre, @has-addon, @fs, @pt, @pb, @ph);
-		#ui-textfield-hint.construct(@pre, @has-hint, @fs, @ph);
+		#ui-textfield.construct(@pre, @fs, @lh, @mb, @pt, @pb, @ph, @bt, @bb, @bh);
+		#ui-textfield-label.construct(@pre, @has-label, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon);
+		#ui-textfield-addon.construct(@pre, @has-addon, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
+		#ui-textfield-hint.construct(@pre, @has-hint, @fs, @lh, @ph, @bh);
 
 		#ui-textfield-mixins.sizes(@fs, @pre, @has-label, @has-addon, @has-hint);
 		#ui-textfield-mixins.addon-width(@pre, @has-label, @has-addon, @padding-hor, @pad-ver-min);
@@ -80,11 +88,16 @@
 				& ~ .@{pre}hint, & ~ .@{pre}error
 				{
 					// браузер округляет line-height вниз, поэтому здесь округляем до десятых рема
-					@rem: floor(@fs * @textfield-hint-font-size-rate * @textfield-line-height * 10) / 10;
-					@em: @textfield-hint-padding-top + @textfield-hint-padding-bottom;
+
+					//@rem: floor(@fs * @textfield-hint-font-size-rate * @line-height * 10) / 10;
+					//@em: @textfield-hint-padding-top + @textfield-hint-padding-bottom;
+					//margin-bottom: calc(@value - @rem - @em);
+					@fs-px: @fs * @textfield-hint-font-size-rate * @font-size-root;
+					@content-em: unit(round(floor(@fs-px * @lh) / @fs-px * 100) / 100, em);
+					@pad-y: @textfield-hint-padding-top + @textfield-hint-padding-bottom;
 
 					margin-top: (-1 * @value);
-					margin-bottom: calc(@value - @rem - @em);
+					margin-bottom: calc(@value - @pad-y - @content-em);
 				}
 			}
 		}
@@ -104,9 +117,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @fs, @mb, @pt, @pb, @ph)
+	.construct(@pre, @fs, @lh, @mb, @pt, @pb, @ph, @bt, @bb, @bh)
 	{
-		#ui-textfield.template(@fs, @mb, @pt, @pb, @ph);
+		#ui-textfield.template(@fs, @lh, @mb, @pt, @pb, @ph, @bt, @bb, @bh);
 
 
 		#ui-textfield.states();
@@ -145,11 +158,23 @@
 		}
 	}
 
-	.template(@font-size, @margin-bottom, @padding-top, @padding-bottom, @padding-hor)
+	.template(
+		@font-size,   @line-height,    @margin-bottom,
+		@padding-top, @padding-bottom, @padding-hor,
+		@border-top,  @border-bottom,  @border-hor)
 	{
 		margin-bottom: @margin-bottom;
 		padding: @padding-top @padding-hor @padding-bottom;
+		border-width: @border-top @border-hor @border-bottom;
+
 		font-size: @font-size;
+		line-height: @line-height;
+
+		@fs-px: @font-size * @font-size-root;
+		@content-em: unit(round(floor(@fs-px * @line-height) / @fs-px * 100) / 100, em);
+		@padding-y: @padding-top + @padding-bottom;
+		@border-y: @border-top + @border-bottom;
+		height: calc(@content-em + @padding-y + @border-y);
 	}
 	.template(...)
 	{
@@ -159,12 +184,12 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		font-family: inherit;
-		line-height: @textfield-line-height;
 		text-align: left;
 		text-decoration: none;
 		vertical-align: middle;
 		appearance: none;
-		border: none;
+		border-style: solid;
+		border-color: transparent;
 		background: transparent;
 	}
 }
@@ -190,9 +215,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @pt, @pb, @ph, @has-addon) when (@enable)
+	.construct(@pre, @enable, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon) when (@enable)
 	{
-		#ui-textfield-label.template(@pre, @fs, @pt, @pb, @ph, @has-addon);
+		#ui-textfield-label.template(@pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon);
 
 
 		#ui-textfield-label.states();
@@ -257,13 +282,26 @@
 		}
 	}
 
-	.template(@pre, @font-size, @padding-top, @padding-bottom, @padding-hor, @has-addon)
+	.template(
+		@pre,         @font-size,      @line-height,
+		@padding-top, @padding-bottom, @padding-hor,
+		@border-top,  @border-bottom,  @border-hor,
+		@has-addon)
 	{
 		& ~ .@{pre}label
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
+			border-width: @border-top @border-hor @border-bottom;
+
 			font-size: @font-size;
-			line-height: @textfield-line-height;
+			line-height: @line-height;
+
+			@fs-px: @font-size * @font-size-root;
+			@content-em: unit(round(floor(@fs-px * @line-height) / @fs-px * 100) / 100, em);
+			@padding-y: @padding-top + @padding-bottom;
+			@border-y: @border-top + @border-bottom;
+			height: calc(@content-em + @padding-y + @border-y);
+
 
 			position: absolute;
 			z-index: 2;
@@ -278,6 +316,7 @@
 
 			background: transparent !important;
 			border-color: transparent !important;
+			border-style: solid;
 			box-shadow: none !important;
 
 			transition: text-indent @textfield-label-trsn-duration @textfield-label-trsn-function,
@@ -285,6 +324,9 @@
 						color       @textfield-label-trsn-duration @textfield-label-trsn-function;
 			transform: @textfield-label-transform-default;
 			transform-origin: @padding-hor top;
+			transform-origin: calc(@padding-hor + @border-hor) top;
+			transform-origin-x: calc(@padding-hor + @border-hor);
+			transform-origin-y: top;
 			text-indent: 0em;
 		}
 
@@ -368,9 +410,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @pt, @pb, @ph) when (@enable)
+	.construct(@pre, @enable, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh) when (@enable)
 	{
-		#ui-textfield-addon.template(@pre, @fs, @pt, @pb, @ph);
+		#ui-textfield-addon.template(@pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
 
 
 		#ui-textfield-addon.states();
@@ -409,7 +451,11 @@
 		}
 	}
 
-	.template(@pre, @font-size, @padding-top, @padding-bottom, @padding-hor)
+	.template(
+		@pre,         @font-size,      @line-height,
+		@padding-top, @padding-bottom, @padding-hor,
+		@border-top,  @border-bottom,  @border-hor
+	)
 	{
 		&-@{textfield-cont-postfix}
 		{
@@ -421,8 +467,16 @@
 		& ~ .@{pre}addon
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
+			border-width: @border-top @border-hor @border-bottom;
+
 			font-size: @font-size;
-			line-height: @textfield-line-height;
+			line-height: @line-height;
+
+			@fs-px: @font-size * @font-size-root;
+			@content-em: unit(round(floor(@fs-px * @line-height) / @fs-px * 100) / 100, em);
+			@padding-y: @padding-top + @padding-bottom;
+			@border-y: @border-top + @border-bottom;
+			height: calc(@content-em + @padding-y + @border-y);
 
 			display: block;
 			position: absolute;
@@ -472,9 +526,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @ph) when (@enable)
+	.construct(@pre, @enable, @fs, @lh, @ph, @bh) when (@enable)
 	{
-		#ui-textfield-hint.template(@pre, @fs, @ph);
+		#ui-textfield-hint.template(@pre, @fs, @lh, @ph, @bh);
 
 
 		#ui-textfield-hint.states();
@@ -514,16 +568,20 @@
 		}
 	}
 
-	.template(@pre, @font-size, @padding-hor)
+	.template(@pre, @font-size, @line-height, @padding-hor, @border-hor)
 	{
 		& ~ .@{pre}hint, & ~ .@{pre}error
 		{
 			@pad-hor: round(@padding-hor / @textfield-hint-font-size-rate, 3);
 
 			display: block;
-			padding: @textfield-hint-padding-top @pad-hor @textfield-hint-padding-bottom;
+			padding: @textfield-hint-padding-top  @pad-hor  @textfield-hint-padding-bottom;
 			font-size: round(@font-size * @textfield-hint-font-size-rate, 3);
-			line-height: @textfield-line-height;
+			line-height: @line-height;
+
+			border-width: 0 @border-hor;
+			border-style: solid;
+			border-color: transparent !important;
 		}
 
 		& ~ .@{pre}error, &.@{pre}invalid ~ .@{pre}error ~ .@{pre}hint
