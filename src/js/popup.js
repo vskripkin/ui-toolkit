@@ -239,6 +239,7 @@
 			HH.push =
 			HH.pop =
 			HH.onPopstate = _.noop;
+			HH.handlePopstate = _.noop;
 
 			/*
 			  в IE событие popstate не срабатывает, если поменялся только хеш адреса, поэтому
@@ -293,8 +294,7 @@
 					}
 				}
 			};
-
-			window.addEventListener('popstate', function ()
+			H.handlePopstate = function ()
 			{
 				if (!bFromJS)
 				{
@@ -312,6 +312,11 @@
 						H.clear();
 					}
 				}
+			};
+
+			window.addEventListener('popstate', function ()
+			{
+				__history.handlePopstate();
 			});
 
 			return H;
