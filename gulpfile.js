@@ -75,11 +75,11 @@ gulp.task('css:build', function ()
 
 gulp.task('js:watch', function ()
 {
-	return gulp.src(path.watch.css)
+	return gulp.src(path.watch.js)
 		.pipe(sourcemaps.init())
 		.pipe(reference())
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(path.dist.css));
+		.pipe(gulp.dest(path.dist.js));
 });
 gulp.task('css:watch', function ()
 {
@@ -107,15 +107,15 @@ gulp.task('default', ['clean'], function ()
 
 gulp.task('watch', function ()
 {
-	watch(path.doc.watch.html, function (event, cb)
+	watch(path.watch.html, function (event, cb)
 	{
 		gulp.start('html:build');
 	});
-	watch(path.doc.watch.js, function (event, cb)
+	watch(path.watch.js, function (event, cb)
 	{
 		gulp.start('js:watch');
 	});
-	watch(path.doc.watch.css, function (event, cb)
+	watch(path.watch.css, function (event, cb)
 	{
 		gulp.start('css:watch');
 	});
