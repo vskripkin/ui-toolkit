@@ -1,0 +1,110 @@
+<section id="rangefield-block">
+	<div class="headline">
+		<div class="wrapper">
+			Rangefield
+		</div>
+	</div>
+	<div class="content">
+		<div class="wrapper">
+			<h2>С легкостью создавайте range!</h2>
+			<br>
+			<p>
+				Наши <strong>range</strong> принимают 6 зарезервированых параметра:
+			</p>
+			<br>
+			<ul>
+				<li><strong>@font-size</strong> - размер шрифта</li>
+				<li><strong>@track-height</strong> - высота ...</li>
+				<li><strong>@thumb-width</strong> - ширина ...</li>
+				<li><strong>@thumb-height</strong> - высота ...</li>
+				<li><strong>@thumb-offset</strong> - высота ...</li>
+				<li><strong>@prefix</strong> - class для преффикса, стандартное значение "__"</li>
+			</ul>
+
+			<article>
+				<pre class="code"><code class="language-less">.my-rangefield { #ui.rangefield ( @font-size, @track-height, @thumb-width, @thumb-height, @thumb-offset, @prefix ); }</code></pre>
+			</article>
+			<br>
+			<h3>Rangefield</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="range" class="rangefield" /&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.rangefield
+{
+	#ui.rangefield(
+		@track-height: 1rem,
+		@thumb-width: 2.5rem,
+		@thumb-height: 2.5rem,
+		@thumb-offset: 1px
+	);
+
+	.track() // описываем состояния для track
+	{
+		.default() // обычное состояние
+		{
+			background-color: @color-primary;
+			border-radius: 5px;
+			transition: background-color 300ms;
+		}
+		.hover() // состояние при наведении курсора
+		{
+			background-color: tint(@color-primary, 25%);
+		}
+		.focus() // состояние при фокусе
+		{
+			background-color: tint(@color-primary, 25%);
+		}
+		.disabled() // состояние disabled
+		{
+
+		}
+	}
+
+	.thumb() // описываем состояния для thumb
+	{
+		.default() // обычное состояние
+		{
+			color: @color-primary;
+			border-radius: 50%;
+			transition: color 300ms;
+		}
+		.hover() // состояние при наведении курсора
+		{
+			color: darken(@color-primary, 5%);
+		}
+		.focus() // состояние при фокусе
+		{
+			color: darken(@color-primary, 5%);
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4>
+
+				<div class="">
+					<input class="rangefield" type="range" value="15" />
+				</div>
+			</article>
+
+			<h3>Disabled range:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="range" class="rangefield" disabled /&gt;</code></pre>
+
+				<h4>result</h4>
+
+				<div class="">
+					<input class="rangefield" type="range" value="15" disabled />
+				</div>
+			</article>
+		</div>
+	</div>
+</section>
+

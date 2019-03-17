@@ -1,0 +1,124 @@
+.textfield
+{
+	&-wrap
+	{
+		position: relative;
+		display: block;
+		margin-top: 1rem;
+	}
+
+	#ui.textfield();
+
+	.size-apply();
+
+	.states()
+	{
+		.placeholder()
+		{
+			color: #777;
+		}
+		.default()
+		{
+			color: #333;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus()
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid()
+		{
+			border-color: @color-success;
+			box-shadow: inset 0 -1px 0 0 @color-success;
+		}
+		.invalid()
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled()
+		{
+			color: #AAA;
+			border-color: rgba(0,0,0,0.45);
+			box-shadow: none;
+		}
+		.readonly()
+		{
+			background-color: red;
+		}
+	}
+
+	.label()
+	{
+		.default()
+		{
+			// .textfield.states.default();
+			color: #333;
+		}
+		.focus()
+		{
+			color: @color-primary;
+		}
+		.valid()
+		{
+			color: @color-success;
+		}
+		.invalid()
+		{
+			color: @color-error;
+		}
+	}
+
+	.addon()
+	{
+		.states();
+
+		.default()
+		{
+			
+		}
+		.focus()
+		{
+			color: @color-primary;
+		}
+		.valid()
+		{
+			color: @color-success;
+		}
+		.invalid()
+		{
+			color: @color-error;
+		}
+		.disabled()
+		{
+			color: #333;
+		}
+	}
+
+	.addon-width(left);
+	.addon-width(right);
+
+	.hint()
+	{
+		.default()
+		{
+			color: #333;
+		}
+		.valid()
+		{
+			color: @color-success;
+		}
+		.invalid()
+		{
+			color: @color-error;
+		}
+		.disabled()
+		{
+			color: #333;
+		}
+	}
+}

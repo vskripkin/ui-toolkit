@@ -1,0 +1,87 @@
+<section id="buttonset-block">
+	<div class="headline">
+		<div class="wrapper">
+			Buttonset
+		</div>
+	</div>
+	<div class="content">
+		<div class="wrapper">
+			<h2>С легкостью создавайте сеты кнопок!</h2>
+			<br>
+			<p>
+				Наши сеты принимают 3 зарезервированых параметра:
+			</p>
+			<br>
+			<ul>
+				<li><strong>@border-width</strong> - ширина рамки у дочерних элементов. на это значение делается отрицательный margin-top или margin-left, в зависимости от направления</li>
+				<li><strong>@dir</strong> - направление. примает значение hor или ver</li>
+				<li><strong>@prefix</strong> - class для преффикса, стандартное значение "__"</li>
+			</ul>
+
+			<article>
+				<pre class="code"><code class="language-less">.my-buttonset { #ui.buttonset ( @border-width, @dir, @prefix ); }</code></pre>
+			</article>
+			<br>
+			<h3>Горизонтальное положение</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;div class="btns-line-1 btnset-line-1 __hor"&gt;
+	&lt;button data-wave="true" class="btn1"&gt;Button 1&lt;/button&gt;
+	&lt;button data-wave="true" class="btn2"&gt;Button 2&lt;/button&gt;
+	&lt;button data-wave="true" class="btn3"&gt;Button 3&lt;/button&gt;
+	&lt;button data-wave="true" class="btn4"&gt;Button 4&lt;/button&gt;
+	&lt;button data-wave="true" class="btn5"&gt;Button 5&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btnset-line-1.__hor { #ui.buttonset(@dir: hor); }</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-1 btnset-line-1 __hor">
+					<button data-wave="true" class="btn1">Button 1</button>
+					<button data-wave="true" class="btn2">Button 2</button>
+					<button data-wave="true" class="btn3">Button 3</button>
+					<button data-wave="true" class="btn4">Button 4</button>
+					<button data-wave="true" class="btn5">Button 5</button>
+				</div>
+
+				<br>
+			</article>
+
+			<h3>Вертикальное положение</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;div class="btns-line-1 btnset-line-1 __ver"&gt;
+	&lt;button data-wave="true" class="btn1"&gt;Button 1&lt;/button&gt;
+	&lt;button data-wave="true" class="btn2"&gt;Button 2&lt;/button&gt;
+	&lt;button data-wave="true" class="btn3"&gt;Button 3&lt;/button&gt;
+	&lt;button data-wave="true" class="btn4"&gt;Button 4&lt;/button&gt;
+	&lt;button data-wave="true" class="btn5"&gt;Button 5&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btnset-line-1.__ver { #ui.buttonset(@dir: ver); }</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-1 btnset-line-1 __ver">
+					<button data-wave="true" class="btn1">Button 1</button>
+					<button data-wave="true" class="btn2">Button 2</button>
+					<button data-wave="true" class="btn3">Button 3</button>
+					<button data-wave="true" class="btn4">Button 4</button>
+					<button data-wave="true" class="btn5">Button 5</button>
+				</div>
+
+				<br>
+			</article>
+		</div>
+	</div>
+</section>
+

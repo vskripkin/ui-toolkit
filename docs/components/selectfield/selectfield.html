@@ -1,0 +1,221 @@
+<section id="selectfield-block">
+	<div class="headline">
+		<div class="wrapper">
+			Selectfield
+		</div>
+	</div>
+	<div class="content">
+		<div class="wrapper">
+			<h2>С легкостью создавайте select!</h2>
+			<br>
+			<p>
+				Наши <strong>select</strong>'ы принимают 7 зарезервированых параметров:
+			</p>
+			<br>
+			<ul>
+				<li><strong>@font-size</strong> - размер шрифта</li>
+				<li><strong>@margin-bottom</strong> - внешний отступ снизу</li>
+				<li><strong>@padding-top</strong> - внутрений отступ сверху</li>
+				<li><strong>@padding-bottom</strong> - внутрений отступ снизу</li>
+				<li><strong>@padding-hor</strong> - внутрения отступ по горизонтали(слева и справа)</li>
+				<li><strong>@prefix</strong> - class для преффикса, стандартное значение "__"</li>
+				<li><strong>@arrow</strong> - стрелка, стандартное значение "default"</li>
+			</ul>
+
+			<article>
+				<pre class="code"><code class="language-less">.my-selectfield { #ui.selectfield ( @font-size, @margin-bottom, @padding-top, @padding-bottom, @padding-hor, @prefix, @arrow ); }</code></pre>
+			</article>
+			<br>
+			<h3>Select</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;select class="selectfield"&gt;
+	&lt;option value="1"&gt;value 1&lt;/option&gt;
+	&lt;option value="2"&gt;value 2&lt;/option&gt;
+	&lt;option value="3"&gt;value 3&lt;/option&gt;
+	&lt;option value="4"&gt;value 4&lt;/option&gt;
+	&lt;option value="5"&gt;value 5&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<p><br>* Так как <strong>select</strong> является одним из элементов формы(form), для однородности мы унаследуем состояния из полей ввода <strong>.textfield.states();</strong></p>
+
+				<pre class="code"><code class="language-less">.selectfield
+{
+	#ui.selectfield();
+
+	.states() // описываем состояния
+	{
+		.textfield.states(); // наследуем состояния
+	}
+}</code></pre>
+
+				<h4>result</h4>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield">
+						<option value="1">value 1</option>
+						<option value="2">value 2</option>
+						<option value="3">value 3</option>
+						<option value="4">value 4</option>
+						<option value="5">value 5</option>
+					</select>
+				</div>
+			</article>
+
+			<h3>Disabled range:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;select class="selectfield disabled"&gt;
+	&lt;option value="1"&gt;value 1&lt;/option&gt;
+	&lt;option value="2"&gt;value 2&lt;/option&gt;
+	&lt;option value="3"&gt;value 3&lt;/option&gt;
+	&lt;option value="4"&gt;value 4&lt;/option&gt;
+	&lt;option value="5"&gt;value 5&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+
+				<h4>result</h4>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield" disabled>
+						<option value="1">value 1</option>
+						<option value="2">value 2</option>
+						<option value="3">value 3</option>
+						<option value="4">value 4</option>
+						<option value="5">value 5</option>
+					</select>
+				</div>
+			</article>
+
+			<h3>Зарезервированные и произвольные размеры SELECT</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;select class="selectfield __nano"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __mini"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __tiny"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __small"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __big"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __large"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __huge"/&gt;...&lt;/select&gt;
+&lt;select class="selectfield __great"/&gt;...&lt;/select&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.selectfield { #ui.selectfield(); .size-nano()}
+.selectfield { #ui.selectfield(); .size-mini()}
+.selectfield { #ui.selectfield(); .size-tiny()}
+.selectfield { #ui.selectfield(); .size-small()}
+.selectfield { #ui.selectfield();}
+.selectfield { #ui.selectfield(); .size-big()}
+.selectfield { #ui.selectfield(); .size-large()}
+.selectfield { #ui.selectfield(); .size-huge()}
+.selectfield { #ui.selectfield(); .size-great()}</code></pre>
+
+				<h4>result</h4>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __nano">
+						<option value="1">(nano) value 1</option>
+						<option value="2">(nano) value 2</option>
+						<option value="3">(nano) value 3</option>
+						<option value="4">(nano) value 4</option>
+						<option value="5">(nano) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __mini">
+						<option value="1">(mini) value 1</option>
+						<option value="2">(mini) value 2</option>
+						<option value="3">(mini) value 3</option>
+						<option value="4">(mini) value 4</option>
+						<option value="5">(mini) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __tiny">
+						<option value="1">(tiny) value 1</option>
+						<option value="2">(tiny) value 2</option>
+						<option value="3">(tiny) value 3</option>
+						<option value="4">(tiny) value 4</option>
+						<option value="5">(tiny) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __small">
+						<option value="1">(small) value 1</option>
+						<option value="2">(small) value 2</option>
+						<option value="3">(small) value 3</option>
+						<option value="4">(small) value 4</option>
+						<option value="5">(small) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield">
+						<option value="1">(normal) value 1</option>
+						<option value="2">(normal) value 2</option>
+						<option value="3">(normal) value 3</option>
+						<option value="4">(normal) value 4</option>
+						<option value="5">(normal) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __big">
+						<option value="1">(big) value 1</option>
+						<option value="2">(big) value 2</option>
+						<option value="3">(big) value 3</option>
+						<option value="4">(big) value 4</option>
+						<option value="5">(big) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __large">
+						<option value="1">(large) value 1</option>
+						<option value="2">(large) value 2</option>
+						<option value="3">(large) value 3</option>
+						<option value="4">(large) value 4</option>
+						<option value="5">(large) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __huge">
+						<option value="1">(huge) value 1</option>
+						<option value="2">(huge) value 2</option>
+						<option value="3">(huge) value 3</option>
+						<option value="4">(huge) value 4</option>
+						<option value="5">(huge) value 5</option>
+					</select>
+				</div>
+
+				<div class="selectfield-wrap">
+					<select class="selectfield __great">
+						<option value="1">(great) value 1</option>
+						<option value="2">(great) value 2</option>
+						<option value="3">(great) value 3</option>
+						<option value="4">(great) value 4</option>
+						<option value="5">(great) value 5</option>
+					</select>
+				</div>
+
+				<p>
+					<br>для кастомного размера никакой миксын не нужен, просто укажите размер шрифта при инициализации или при помощи дополнительного класса(модификатора)
+				</p>
+			</article>
+		</div>
+	</div>
+</section>
+

@@ -1,0 +1,729 @@
+<section id="textfield-block">
+	<div class="headline">
+		<div class="wrapper">
+			Inputs
+		</div>
+	</div>
+	<div class="content">
+		<div class="wrapper">
+			<h2>С легкостью создавайте поля ввода</h2>
+			<br>
+			<p>
+				Наши <strong>input</strong>'ы принимают 6 зарезервированых параметров:
+			</p>
+			<br>
+			<ul>
+				<li><strong>@font-size</strong> - размер шрифта</li>
+				<li><strong>@margin-bottom</strong> - внешний отступ снизу</li>
+				<li><strong>@padding-top</strong> - внутрений отступ сверху</li>
+				<li><strong>@padding-bottom</strong> - внутрений отступ снизу</li>
+				<li><strong>@padding-hor</strong> - внутрения отступ по горизонтали(слева и справа)</li>
+				<li><strong>@prefix</strong> - class для преффикса, стандартное значение "__"</li>
+			</ul>
+
+			<article>
+				<pre class="code"><code class="language-less">.my-input { #ui.textfield ( @font-size, @margin-bottom, @padding-top, @padding-bottom, @padding-hor, @prefix ); }</code></pre>
+			</article>
+			<br>
+			<h3>Input</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="text" class="textfield" placeholder="demo text" /&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.textfield
+{
+	#ui.textfield(@margin-bottom: 1rem);
+
+	.states() // описываем состояния
+	{
+		.placeholder() // стили для placeholder
+		{
+			color: #777;
+		}
+		.default() // обычное состояние
+		{
+			color: #333;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus() // состояние при фокусе
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			border-color: @color-success;
+			box-shadow: inset 0 -1px 0 0 @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #AAA;
+			border-color: rgba(0,0,0,0.45);
+			box-shadow: none;
+		}
+		.readonly() // состояние readonly
+		{
+			
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield" placeholder="demo text" />
+				</label>
+			</article>
+
+			<h3>input valid:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="text" class="textfield __valid" placeholder="input valid" /&gt;</code></pre>
+
+				<h4>result</h4>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __valid" placeholder="input valid" />
+				</label>
+			</article>
+
+			<h3>input invalid:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="text" class="textfield __invalid" placeholder="input invalid" /&gt;</code></pre>
+
+				<h4>result</h4>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __invalid" placeholder="input invalid" />
+				</label>
+			</article>
+
+			<h3>input disabled:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="text" class="textfield" placeholder="input disabled" disabled /&gt;</code></pre>
+
+				<h4>result</h4>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield" placeholder="input disabled" disabled/>
+				</label>
+			</article>
+
+			<h3>Зарезервированные и произвольные размеры полей ввода</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;input type="text" class="textfield __nano"  placeholder="size nano" /&gt;
+&lt;input type="text" class="textfield __mini"  placeholder="size mini" /&gt;
+&lt;input type="text" class="textfield __tiny"  placeholder="size tiny" /&gt;
+&lt;input type="text" class="textfield __small" placeholder="size small" /&gt;
+&lt;input type="text" class="textfield"         placeholder="size normal" /&gt;
+&lt;input type="text" class="textfield __big"   placeholder="size big" /&gt;
+&lt;input type="text" class="textfield __large" placeholder="size large" /&gt;
+&lt;input type="text" class="textfield __huge"  placeholder="size huge" /&gt;
+&lt;input type="text" class="textfield __great" placeholder="size great" /&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.textfield { #ui.textfield(); .size-nano()}
+.textfield { #ui.textfield(); .size-mini()}
+.textfield { #ui.textfield(); .size-tiny()}
+.textfield { #ui.textfield(); .size-small()}
+.textfield { #ui.textfield();}
+.textfield { #ui.textfield(); .size-big()}
+.textfield { #ui.textfield(); .size-large()}
+.textfield { #ui.textfield(); .size-huge()}
+.textfield { #ui.textfield(); .size-great()}</code></pre>
+
+				<h4>result</h4>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __nano" placeholder="size nano" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __mini" placeholder="size mini" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __tiny" placeholder="size tiny" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __small" placeholder="size small" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield" placeholder="size normal" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __big" placeholder="size big" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __large" placeholder="size large" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __huge" placeholder="size huge" />
+				</label>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __great" placeholder="size great" />
+				</label>
+
+				<p>
+					<br>для кастомного размера поля ввода никакой миксын не нужен, просто укажите размер шрифта при инициализации или при помощи дополнительного класса(модификатора)
+				</p>
+			</article>
+
+			<h3>Input with label</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield" required /&gt;
+	&lt;span class="__label"&gt;Фамилия&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __valid" required /&gt;
+	&lt;span class="__label"&gt;Фамилия&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __invalid" required /&gt;
+	&lt;span class="__label"&gt;Фамилия&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.textfield
+{
+	#ui.textfield(@margin-bottom: 1rem);
+
+	.states() // описываем состояния
+	{
+		.placeholder() // стили для placeholder
+		{
+			color: #777;
+		}
+		.default() // обычное состояние
+		{
+			color: #333;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus() // состояние при фокусе
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			border-color: @color-success;
+			box-shadow: inset 0 -1px 0 0 @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #AAA;
+			border-color: rgba(0,0,0,0.45);
+			box-shadow: none;
+		}
+		.readonly() // состояние readonly
+		{
+			
+		}
+	}
+
+	.label() // описываем состояния для label
+	{
+		.default() // обычное состояние
+		{
+			color: #333;
+		}
+		.focus() // состояние при фокусе
+		{
+			color: @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			color: @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			color: @color-error;
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4><br>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield" required />
+					<span class="__label">Фамилия</span>
+				</label>
+				<br>
+				valid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __valid" required />
+					<span class="__label">Фамилия</span>
+				</label>
+				<br>
+				invalid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __invalid" required />
+					<span class="__label">Фамилия</span>
+				</label>
+			</article>
+
+			<h3>Input with hint</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield" required /&gt;
+	&lt;span class="__hint"&gt;введите имя&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __valid" required /&gt;
+	&lt;span class="__hint"&gt;введите имя&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __invalid" required /&gt;
+	&lt;span class="__hint"&gt;введите имя&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.textfield
+{
+	#ui.textfield(@margin-bottom: 1rem);
+
+	.states() // описываем состояния
+	{
+		.placeholder() // стили для placeholder
+		{
+			color: #777;
+		}
+		.default() // обычное состояние
+		{
+			color: #333;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus() // состояние при фокусе
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			border-color: @color-success;
+			box-shadow: inset 0 -1px 0 0 @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #AAA;
+			border-color: rgba(0,0,0,0.45);
+			box-shadow: none;
+		}
+		.readonly() // состояние readonly
+		{
+			
+		}
+	}
+
+	.hint() // описываем состояния для hint
+	{
+		.default() // обычное состояние
+		{
+			color: #333;
+		}
+		.valid() // состояние :valid
+		{
+			color: @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			color: @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #333;
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4><br>
+
+				<label class="textfield-wrap">
+					<input type="text" class="textfield" required />
+					<span class="__hint">введите имя</span>
+				</label>
+				<br>
+				valid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __valid" required />
+					<span class="__hint">введите имя</span>
+				</label>
+				<br>
+				invalid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __invalid" required />
+					<span class="__hint">введите имя</span>
+				</label>
+			</article>
+
+			<h3>Input with addon</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-l4" required /&gt;
+	&lt;span class="__addon __left"&gt;$&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-r4" required /&gt;
+	&lt;span class="__addon __right"&gt;@&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-l4 __valid" required /&gt;
+	&lt;span class="__addon __left"&gt;$&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-l4 __invalid" required /&gt;
+	&lt;span class="__addon __left"&gt;$&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.textfield
+{
+	#ui.textfield(@margin-bottom: 1rem);
+
+	.states() // описываем состояния
+	{
+		.placeholder() // стили для placeholder
+		{
+			color: #777;
+		}
+		.default() // обычное состояние
+		{
+			color: #333;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus() // состояние при фокусе
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			border-color: @color-success;
+			box-shadow: inset 0 -1px 0 0 @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #AAA;
+			border-color: rgba(0,0,0,0.45);
+			box-shadow: none;
+		}
+		.readonly() // состояние readonly
+		{
+			
+		}
+	}
+
+	.addon-width(left);
+	.addon-width(right);
+
+	.addon() // описываем состояния для addon
+	{
+		.states(); // тут ваши states для аддона
+
+		.default() // обычное состояние
+		{
+			
+		}
+		.focus() // состояние при фокусе
+		{
+			color: @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			color: @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			color: @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #333;
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4>
+				<br>
+				addon left:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-l4" required/>
+					<span class="__addon __left">$</span>
+				</label>
+				<br>
+				addon right:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-r4" required/>
+					<span class="__addon __right">@</span>
+				</label>
+				<br>
+				valid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-l4 __valid" required/>
+					<span class="__addon __left">$</span>
+				</label>
+				<br><br>
+				invalid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-l4 __invalid" required/>
+					<span class="__addon __left">$</span>
+				</label>
+			</article>
+
+			<h3>Input with label, hint and addon</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-l4" required /&gt;
+	&lt;span class="__label"&gt;Email&lt;/span&gt;
+	&lt;span class="__hint"&gt;введите данные&lt;/span&gt;
+	&lt;span class="__addon __left"&gt;@&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-l4 __valid" required /&gt;
+	&lt;span class="__label"&gt;Email&lt;/span&gt;
+	&lt;span class="__hint"&gt;введите данные&lt;/span&gt;
+	&lt;span class="__addon __left"&gt;@&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="textfield-wrap"&gt;
+	&lt;input type="text" class="textfield __pad-l4 __invalid" required /&gt;
+	&lt;span class="__label"&gt;Email&lt;/span&gt;
+	&lt;span class="__hint"&gt;введите данные&lt;/span&gt;
+	&lt;span class="__addon __left"&gt;@&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.textfield
+{
+	#ui.textfield(@margin-bottom: 1rem);
+
+	.states() // описываем состояния
+	{
+		.placeholder() // стили для placeholder
+		{
+			color: #777;
+		}
+		.default() // обычное состояние
+		{
+			color: #333;
+			border-width: 0 0 1px;
+			border-style: solid;
+			border-color: rgba(0,0,0,0.15);
+			box-shadow: none;
+		}
+		.focus() // состояние при фокусе
+		{
+			border-color: @color-primary;
+			box-shadow: inset 0 -1px 0 0 @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			border-color: @color-success;
+			box-shadow: inset 0 -1px 0 0 @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			border-color: @color-error;
+			box-shadow: inset 0 -1px 0 0 @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #AAA;
+			border-color: rgba(0,0,0,0.45);
+			box-shadow: none;
+		}
+		.readonly() // состояние readonly
+		{
+			
+		}
+	}
+
+	.label() // описываем состояния для label
+	{
+		.default() // обычное состояние
+		{
+			color: #333;
+		}
+		.focus() // состояние при фокусе
+		{
+			color: @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			color: @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			color: @color-error;
+		}
+	}
+
+	.hint() // описываем состояния для hint
+	{
+		.default() // обычное состояние
+		{
+			color: #333;
+		}
+		.valid() // состояние :valid
+		{
+			color: @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			color: @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #333;
+		}
+	}
+
+	.addon-width(left);
+	.addon-width(right);
+
+	.addon() // описываем состояния для addon
+	{
+		.states(); // тут ваши states для аддона
+
+		.default() // обычное состояние
+		{
+			
+		}
+		.focus() // состояние при фокусе
+		{
+			color: @color-primary;
+		}
+		.valid() // состояние :valid
+		{
+			color: @color-success;
+		}
+		.invalid() // состояние :invalid
+		{
+			color: @color-error;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #333;
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4>
+
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-l4" required />
+					<span class="__label">Email</span>
+					<span class="__hint">введите данные</span>
+					<span class="__addon __left">@</span>
+				</label>
+				<br>
+				valid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-l4 __valid" required/>
+					<span class="__label">Email</span>
+					<span class="__hint">введите данные</span>
+					<span class="__addon __left">@</span>
+				</label>
+				<br>
+				invalid:
+				<br>
+				<label class="textfield-wrap">
+					<input type="text" class="textfield __pad-l4 __invalid" required/>
+					<span class="__label">Email</span>
+					<span class="__hint">введите данные</span>
+					<span class="__addon __left">@</span>
+				</label>
+			</article>
+		</div>
+	</div>
+</section>
+

@@ -1,0 +1,49 @@
+.rangefield
+{
+	#ui.rangefield(
+		@track-height: 1rem,
+		@thumb-width: 2.5rem,
+		@thumb-height: 2.5rem,
+		@thumb-offset: 1px
+	);
+
+	.track()
+	{
+		.default()
+		{
+			background-color: @color-primary;
+			border-radius: 5px;
+			transition: background-color 300ms;
+		}
+		.hover()
+		{
+			background-color: tint(@color-primary, 25%);
+		}
+		.focus()
+		{
+			background-color: tint(@color-primary, 25%);
+		}
+		.disabled()
+		{
+			
+		}
+	}
+
+	.thumb()
+	{
+		.default()
+		{
+			color: @color-primary;
+			border-radius: 50%;
+			transition: color 300ms;
+		}
+		.hover()
+		{
+			color: darken(@color-primary, 5%);
+		}
+		.focus()
+		{
+			color: darken(@color-primary, 5%);
+		}
+	}
+}

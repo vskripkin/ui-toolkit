@@ -1,0 +1,506 @@
+<section id="checkfield-block">
+	<div class="headline">
+		<div class="wrapper">
+			Checkfield
+		</div>
+	</div>
+	<div class="content">
+		<div class="wrapper">
+			<h2>С легкостью создавайте radio и checkbox</h2>
+			<br>
+			<p>
+				Наши <strong>radio/checkbox</strong> принимают 5 зарезервированых параметров:
+			</p>
+			<br>
+			<ul>
+				<li><strong>@type</strong> - тип элемента, принимает значение radio или checkbox</li>
+				<li><strong>@font-size</strong> - размер шрифта</li>
+				<li><strong>@pseudo</strong> - class для псеудо, стандартное значение "pseudo"</li>
+				<li><strong>@label</strong> - class для лейбла, стандартное значение "label"</li>
+				<li><strong>@prefix</strong> - class для преффикса, стандартное значение "__"</li>
+			</ul>
+
+			<article>
+				<pre class="code"><code class="language-less">.my-checkfield { #ui.checkfield ( @type, @font-size, @pseudo, @label, @prefix ); }</code></pre>
+			</article>
+			<br>
+			<h3>checkbox</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox default&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox" checked /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox checked&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox" disabled /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox disabled&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox" disabled checked /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox disabled checked&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.checkbox
+{
+	#ui.checkfield(checkbox);
+
+	.states() // описываем состояния
+	{
+		.default() // обычное состояние
+		{
+			color: @color-primary;
+			border-radius: 0.2rem;
+			box-shadow: inset 0 0 0 0.1em currentColor;
+			transition: color 0.3s cubic-bezier(0.23,1,0.32,1),
+						box-shadow 0.3s cubic-bezier(0.23,1,0.32,1);
+		}
+		.hover() // состояние при наведении курсора
+		{
+
+		}
+		.active() // активное состояние
+		{
+
+		}
+		.checked() // состояние checked
+		{
+			box-shadow: inset 0 0 0 0.6em currentColor;
+		}
+		.disabled() // состояние disabled
+		{
+			color: #666;
+			background-color: currentColor;
+			opacity: 0.4;
+		}
+		.disabled-checked() // состояние disabled checked
+		{
+			opacity: 1;
+		}
+	}
+}</code></pre>
+
+				<h4>result</h4>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox" name="" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox default</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox" checked name="" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox checked</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox" disabled name="" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox disabled</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox" disabled checked name="" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox disabled checked</span>
+				</label>
+			</article>
+
+			<h3>radio</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio" name="radio" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox default&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio" name="radio" checked /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox checked&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio" name="radio" disabled /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox disabled&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio" name="radio" disabled checked /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox disabled checked&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.radio
+{
+	#ui.checkfield(radio);
+
+	.states() // описываем состояния
+	{
+		.default() // обычное состояние
+		{
+			border-radius: 50%;
+			box-shadow: inset 0 0 0 0.1em currentColor;
+			transition: color 0.3s cubic-bezier(0.23,1,0.32,1);
+			will-change: color;
+			color: @color-primary;
+
+			&:after
+			{
+				width: 100%;
+				height: 100%;
+				transition: transform 0.3s cubic-bezier(0.23,1,0.32,1),
+							opacity   0.3s cubic-bezier(0.23,1,0.32,1);
+				will-change: transform, opacity;
+				transform: scale(0);
+				opacity: 1;
+			}
+		}
+		.hover() // состояние при наведении курсора
+		{
+			&:after
+			{
+				opacity: 0.5;
+				transform: scale(0.45);
+			}
+		}
+		.checked() // состояние checked
+		{
+			&:after
+			{
+				opacity: 1 !important;
+				transform: scale(0.5) !important;
+			}
+		}
+		.disabled() // состояние disabled
+		{
+			opacity: 0.4;
+
+			&:after
+			{
+				opacity: 0;
+			}
+		}
+		.disabled-checked() // состояние disabled checked
+		{
+			opacity: 0.4;
+		}
+	}
+}
+</code></pre>
+
+				<h4>result</h4>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio default</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio" checked name="radio2" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio checked</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio" disabled name="radio3" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio disabled</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio" disabled checked name="radio4" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio disabled checked</span>
+				</label>
+			</article>
+
+			<h3>Зарезервированные и произвольные размеры checkbox</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __nano" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox nano&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __mini" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox mini&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __tiny" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox tiny&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __small" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox small&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox normal&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __big" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox big&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __large" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox large&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __huge" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox huge&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="checkbox" class="checkbox __great" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;checkbox great&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.checkbox { #ui.checkfield(checkbox);  .size-nano()}
+.checkbox { #ui.checkfield(checkbox);  .size-mini()}
+.checkbox { #ui.checkfield(checkbox);  .size-tiny()}
+.checkbox { #ui.checkfield(checkbox);  .size-small()}
+.checkbox { #ui.checkfield(checkbox); }
+.checkbox { #ui.checkfield(checkbox);  .size-big()}
+.checkbox { #ui.checkfield(checkbox);  .size-large()}
+.checkbox { #ui.checkfield(checkbox);  .size-huge()}
+.checkbox { #ui.checkfield(checkbox);  .size-great()}</code></pre>
+
+				<h4>result</h4>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __nano" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox nano</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __mini" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox mini</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __tiny" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox tiny</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __small" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox small</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox normal</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __big" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox big</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __large" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox large</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __huge" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox huge</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="checkbox" class="checkbox __great" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox great</span>
+				</label>
+
+				<p>
+					для кастомного размера никакой миксын не нужен, просто укажите размер шрифта при инициализации или при помощи дополнительного класса(модификатора)
+				</p>
+			</article>
+
+			<h3>Зарезервированные и произвольные размеры radio</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __nano" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio nano&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __mini" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio mini&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __tiny" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio tiny&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __small" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio small&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio normal&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __big" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio big&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __large" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio large&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __huge" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio huge&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="checkfield-wrap"&gt;
+	&lt;input type="radio" class="radio __great" name="radio1" /&gt;
+	&lt;span class="__pseudo"&gt;&lt;/span&gt;
+	&lt;span class="__label"&gt;radio great&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.checkbox { #ui.checkfield(checkbox);  .size-nano()}
+.checkbox { #ui.checkfield(checkbox);  .size-mini()}
+.checkbox { #ui.checkfield(checkbox);  .size-tiny()}
+.checkbox { #ui.checkfield(checkbox);  .size-small()}
+.checkbox { #ui.checkfield(checkbox); }
+.checkbox { #ui.checkfield(checkbox);  .size-big()}
+.checkbox { #ui.checkfield(checkbox);  .size-large()}
+.checkbox { #ui.checkfield(checkbox);  .size-huge()}
+.checkbox { #ui.checkfield(checkbox);  .size-great()}</code></pre>
+
+				<h4>result</h4>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __nano" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio nano</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __mini" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio mini</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __tiny" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio tiny</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __small" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio small</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio normal</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __big" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio big</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __large" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio large</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __huge" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">radio huge</span>
+				</label>
+
+				<label class="checkfield-wrap">
+					<input type="radio" class="radio __great" name="radio1" />
+					<span class="__pseudo"></span>
+					<span class="__label">checkbox great</span>
+				</label>
+
+				<p>
+					для кастомного размера никакой миксын не нужен, просто укажите размер шрифта при инициализации или при помощи дополнительного класса(модификатора)
+				</p>
+			</article>
+		</div>
+	</div>
+</section>
+

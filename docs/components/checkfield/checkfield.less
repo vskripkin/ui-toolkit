@@ -1,0 +1,102 @@
+.checkfield-wrap
+{
+	position: relative;
+	display: block;
+	margin: 0.5rem 0;
+}
+
+.checkbox
+{
+	#ui.checkfield(checkbox); .size-apply();
+
+	.states()
+	{
+		.default()
+		{
+			color: @color-primary;
+			border-radius: 0.2rem;
+			box-shadow: inset 0 0 0 0.1em currentColor;
+			transition: color 0.3s cubic-bezier(0.23,1,0.32,1),
+						box-shadow 0.3s cubic-bezier(0.23,1,0.32,1);
+		}
+		.hover()
+		{
+			
+		}
+		.active()
+		{
+			
+		}
+		.checked()
+		{
+			box-shadow: inset 0 0 0 0.6em currentColor;
+		}
+		.disabled()
+		{
+			color: #666;
+			background-color: currentColor;
+			opacity: 0.4;
+		}
+		.disabled-checked()
+		{
+			opacity: 1;
+		}
+	}
+}
+
+.radio
+{
+	#ui.checkfield(radio); .size-apply();
+
+	.states()
+	{
+		.default()
+		{
+			border-radius: 50%;
+			box-shadow: inset 0 0 0 0.1em currentColor;
+			transition: color 0.3s cubic-bezier(0.23,1,0.32,1);
+			will-change: color;
+			color: @color-primary;
+
+			&:after
+			{
+				width: 100%;
+				height: 100%;
+				transition: transform 0.3s cubic-bezier(0.23,1,0.32,1),
+							opacity   0.3s cubic-bezier(0.23,1,0.32,1);
+				will-change: transform, opacity;
+				transform: scale(0);
+				opacity: 1;
+			}
+		}
+		.hover()
+		{
+			&:after
+			{
+				opacity: 0.5;
+				transform: scale(0.45);
+			}
+		}
+		.checked()
+		{
+			&:after
+			{
+				opacity: 1 !important;
+				transform: scale(0.5) !important;
+			}
+		}
+		.disabled()
+		{
+			opacity: 0.4;
+
+			&:after
+			{
+				opacity: 0;
+			}
+		}
+		.disabled-checked()
+		{
+			opacity: 0.4;
+		}
+	}
+}

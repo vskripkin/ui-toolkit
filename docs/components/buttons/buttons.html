@@ -1,0 +1,306 @@
+<section id="buttons-block">
+	<div class="headline">
+		<div class="wrapper">
+			Buttons
+		</div>
+	</div>
+	<div class="content">
+		<div class="wrapper">
+			<h2>С легкостью создавайте кнопки!</h2>
+			<br>
+			<p>
+				Наши кнопки принимают 8 зарезервированых параметров:
+			</p>
+			<br>
+			<ul>
+				<li><strong>@bg-color</strong> - цвет фона</li>
+				<li><strong>@color</strong> - цвет текста</li>
+				<li><strong>@hover</strong> - цвет фона при наведении</li>
+				<li><strong>@font-size</strong> - размер шрифта</li>
+				<li><strong>@padding-ver</strong> - внутренний отступ по вериткали</li>
+				<li><strong>@paddong-hor</strong> - внутренний отступ по горизонтали</li>
+				<li><strong>@border-width</strong> - ширина рамки</li>
+				<li><strong>@pre</strong> - class для преффикса, стандартное значение "__"</li>
+			</ul>
+
+			<article>
+				<pre class="code"><code class="language-less">.my-btn { #ui.button( @bg-color, @color, @hover,  @font-size, @padding-ver, @paddong-hor, @border-width, @pre ); }</code></pre>
+			</article>
+			<br>
+			<h3>Colors and shades:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;button data-wave="true" class="btn1"&gt;Button 1&lt;/button&gt;
+&lt;button data-wave="true" class="btn2"&gt;Button 2&lt;/button&gt;
+&lt;button data-wave="true" class="btn3"&gt;Button 3&lt;/button&gt;
+&lt;button data-wave="true" class="btn4"&gt;Button 4&lt;/button&gt;
+&lt;button data-wave="true" class="btn5"&gt;Button 5&lt;/button&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btn1 { #ui.button(#555, #FFF, #2EC810); }
+.btn2 { #ui.button(#555, #FFF, #10C897) }
+.btn3 { #ui.button(#555, #FFF, #1069C8); }
+.btn4 { #ui.button(#555, #FFF, #3F10C8); }
+.btn5 { #ui.button(#555, #FFF, #C8108E); }</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-1">
+					<button data-wave="true" class="btn1">Button 1</button>
+					<button data-wave="true" class="btn2">Button 2</button>
+					<button data-wave="true" class="btn3">Button 3</button>
+					<button data-wave="true" class="btn4">Button 4</button>
+					<button data-wave="true" class="btn5">Button 5</button>
+				</div>
+
+				<br>
+
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;button data-wave="true" class="btn1"&gt;Button 1&lt;/button&gt;
+&lt;button data-wave="true" class="btn2"&gt;Button 2&lt;/button&gt;
+&lt;button data-wave="true" class="btn3"&gt;Button 3&lt;/button&gt;
+&lt;button data-wave="true" class="btn4"&gt;Button 4&lt;/button&gt;
+&lt;button data-wave="true" class="btn5"&gt;Button 5&lt;/button&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btn1 { #ui.button(#2EC810, #FFF, bright; }
+.btn2 { #ui.button(#10C897, #FFF, dark) }
+.btn3 { #ui.button(#1069C8, #FFF, darken); }
+.btn4 { #ui.button(#3F10C8, #FFF, light); }
+.btn5 { #ui.button(#C8108E, #FFF, lighten); }</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-2">
+					<button data-wave="true" class="btn1">Button 1</button>
+					<button data-wave="true" class="btn2">Button 2</button>
+					<button data-wave="true" class="btn3">Button 3</button>
+					<button data-wave="true" class="btn4">Button 4</button>
+					<button data-wave="true" class="btn5">Button 5</button>
+				</div>
+			</article>
+
+			<h3>Автоматическая генерация фонового цвета при наведении на основании текущего</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;button data-wave="true" class="btn1"&gt;Button 1&lt;/button&gt;
+&lt;button data-wave="true" class="btn2"&gt;Button 2&lt;/button&gt;
+&lt;button data-wave="true" class="btn3"&gt;Button 3&lt;/button&gt;
+&lt;button data-wave="true" class="btn4"&gt;Button 4&lt;/button&gt;
+&lt;button data-wave="true" class="btn5"&gt;Button 5&lt;/button&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btn1 { #ui.button(#2EC810, #FFF; }
+.btn2 { #ui.button(#10C897, #FFF) }
+.btn3 { #ui.button(#1069C8, #FFF); }
+.btn4 { #ui.button(#3F10C8, #FFF); }
+.btn5 { #ui.button(#C8108E, #FFF); }</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-3">
+					<button data-wave="true" class="btn1">Button 1</button>
+					<button data-wave="true" class="btn2">Button 2</button>
+					<button data-wave="true" class="btn3">Button 3</button>
+					<button data-wave="true" class="btn4">Button 4</button>
+					<button data-wave="true" class="btn5">Button 5</button>
+				</div>
+			</article>
+
+			<h3>Зарезервированные и произвольные размеры кнопок</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;button data-wave="true" class="btn1 __nano"&gt;nano&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __mini"&gt;mini&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __tiny"&gt;tiny&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __small"&gt;small&lt;/button&gt;
+&lt;button data-wave="true" class="btn1"&gt;normal&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __big"&gt;big&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __large"&gt;large&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __huge"&gt;huge&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __great"&gt;great&lt;/button&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btn1 { #ui.button(#2EC810, #FFF); .size-nano()}
+.btn1 { #ui.button(#2EC810, #FFF); .size-mini()}
+.btn1 { #ui.button(#2EC810, #FFF); .size-tiny()}
+.btn1 { #ui.button(#2EC810, #FFF); .size-small()}
+.btn1 { #ui.button(#2EC810, #FFF);}
+.btn1 { #ui.button(#2EC810, #FFF); .size-big()}
+.btn1 { #ui.button(#2EC810, #FFF); .size-large()}
+.btn1 { #ui.button(#2EC810, #FFF); .size-huge()}
+.btn1 { #ui.button(#2EC810, #FFF); .size-great()}</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-4">
+					<button data-wave="true" class="btn1 __nano">nano</button>
+					<button data-wave="true" class="btn1 __mini">mini</button>
+					<button data-wave="true" class="btn1 __tiny">tiny</button>
+					<button data-wave="true" class="btn1 __small">small</button>
+					<button data-wave="true" class="btn1">normal</button>
+
+					<button data-wave="true" class="btn1 __big">big</button>
+					<button data-wave="true" class="btn1 __large">large</button>
+					<button data-wave="true" class="btn1 __huge">huge</button>
+					<button data-wave="true" class="btn1 __great">great</button>
+				</div>
+
+				<p>
+					для кастомного размера кнопки никакой миксын не нужен, просто укажите размер шрифта при инициализации или при помощи дополнительного класса(модификатора)
+				</p>
+			</article>
+
+			<h3>Модификации кнопок</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;button data-wave="true" class="btn1 __round"&gt;Button round&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __thin"&gt;Button thin&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __collapse"&gt;Button collapse&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __circle"&gt;B&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __loading"&gt;Button loading&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __invert"&gt;Button invert&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __ghost"&gt;Button ghost&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __ghost-line"&gt;Button ghost line&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __link"&gt;Button link&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __link-line"&gt;Button link line&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __ghost--const"&gt;Button ghost const&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __ghost-line--const"&gt;Button ghost line const&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __ghost--const-line"&gt;Button ghost const line&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __link--const"&gt;Button link const&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __link-line--const"&gt;Button link line const&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __link--const-line"&gt;Button link const line&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __ghost--font"&gt;Button ghost font&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __ghost-line--font"&gt;Button ghost line font&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __ghost--font-line"&gt;Button ghost font line&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __link--font"&gt;Button link font&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __link-line--font"&gt;Button link line font&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __link--font-line"&gt;Button link font line&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __ghost--bg"&gt;Button ghost bg&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __ghost-line--bg"&gt;Button ghost line bg&lt;/button&gt;
+
+&lt;button data-wave="true" class="btn1 __link--bg"&gt;Button link bg&lt;/button&gt;
+&lt;button data-wave="true" class="btn1 __link-line--bg"&gt;Button link line bg&lt;/button&gt;</code></pre>
+
+				<h4>less code</h4>
+
+				<pre class="code"><code class="language-less">.btn1.__round    { #ui.button(#1069c8, #ddd, #3890f1); .round(); }
+.btn1.__thin     { #ui.button(#1069c8, #ddd, #3890f1); .thin(); }
+.btn1.__collapse { #ui.button(#1069c8, #ddd, #3890f1); .collapse(); }
+.btn1.__circle   { #ui.button(#1069c8, #ddd, #3890f1); .circle(); }
+.btn1.__loading  { #ui.button(#1069c8, #ddd, #3890f1); .loading(); }
+.btn1.__invert   { #ui.button(#1069c8, #ddd, #3890f1); .invert(); }
+
+.btn1.__ghost      { #ui.button(#1069c8, #ddd, #3890f1); .ghost(); }
+.btn1.__ghost-line { #ui.button(#1069c8, #ddd, #3890f1); .ghost-line(); }
+
+.btn1.__link      { #ui.button(#1069c8, #ddd, #3890f1); .link(); }
+.btn1.__link-line { #ui.button(#1069c8, #ddd, #3890f1); .link-line(); }
+
+.btn1.__ghost--const      { #ui.button(#1069c8, #ddd, #3890f1); .ghost--const(); }
+.btn1.__ghost-line--const { #ui.button(#1069c8, #ddd, #3890f1); .ghost-line--const(); }
+.btn1.__ghost--const-line { #ui.button(#1069c8, #ddd, #3890f1); .ghost--const-line(); }
+
+.btn1.__link--const      { #ui.button(#1069c8, #ddd, #3890f1); .link--const(); }
+.btn1.__link-line--const { #ui.button(#1069c8, #ddd, #3890f1); .link-line--const(); }
+.btn1.__link--const-line { #ui.button(#1069c8, #ddd, #3890f1); .link--const-line(); }
+
+.btn1.__ghost--font      { #ui.button(#1069c8, #ddd, #3890f1); .ghost--font(); }
+.btn1.__ghost-line--font { #ui.button(#1069c8, #ddd, #3890f1); .ghost-line--font(); }
+.btn1.__ghost--font-line { #ui.button(#1069c8, #ddd, #3890f1); .ghost--font-line(); }
+
+.btn1.__link--font      { #ui.button(#1069c8, #ddd, #3890f1); .link--font(); }
+.btn1.__link-line--font { #ui.button(#1069c8, #ddd, #3890f1); .link-line--font(); }
+.btn1.__link--font-line { #ui.button(#1069c8, #ddd, #3890f1); .link--font-line(); }
+
+.btn1.__ghost--bg      { #ui.button(#1069c8, #ddd, #3890f1); .ghost--bg(); }
+.btn1.__ghost-line--bg { #ui.button(#1069c8, #ddd, #3890f1); .ghost-line--bg(); }
+
+.btn1.__link--bg     { #ui.button(#1069c8, #ddd, #3890f1); .link--bg(); }
+.btn5__link-line--bg { #ui.button(#1069c8, #ddd, #3890f1); .link-line--bg(); }</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-5">
+					<button data-wave="true" class="btn1 __round">Button round</button>
+					<button data-wave="true" class="btn1 __thin">Button thin</button>
+					<button data-wave="true" class="btn1 __collapse">Button collapse</button>
+					<button data-wave="true" class="btn1 __circle">B</button>
+					<button data-wave="true" class="btn1 __loading">Button loading</button>
+					<button data-wave="true" class="btn1 __invert">Button invert</button>
+
+					<button data-wave="true" class="btn1 __ghost">Button ghost</button>
+					<button data-wave="true" class="btn1 __ghost-line">Button ghost line</button>
+
+					<button data-wave="true" class="btn1 __link">Button link</button>
+					<button data-wave="true" class="btn1 __link-line">Button link line</button>
+
+					<button data-wave="true" class="btn1 __ghost--const">Button ghost const</button>
+					<button data-wave="true" class="btn1 __ghost-line--const">Button ghost line const</button>
+					<button data-wave="true" class="btn1 __ghost--const-line">Button ghost const line</button>
+
+					<button data-wave="true" class="btn1 __link--const">Button link const</button>
+					<button data-wave="true" class="btn1 __link-line--const">Button link line const</button>
+					<button data-wave="true" class="btn1 __link--const-line">Button link const line</button>
+
+					<button data-wave="true" class="btn1 __ghost--font">Button ghost font</button>
+					<button data-wave="true" class="btn1 __ghost-line--font">Button ghost line font</button>
+					<button data-wave="true" class="btn1 __ghost--font-line">Button ghost font line</button>
+
+					<button data-wave="true" class="btn1 __link--font">Button link font</button>
+					<button data-wave="true" class="btn1 __link-line--font">Button link line font</button>
+					<button data-wave="true" class="btn1 __link--font-line">Button link font line</button>
+
+					<button data-wave="true" class="btn1 __ghost--bg">Button ghost bg</button>
+					<button data-wave="true" class="btn1 __ghost-line--bg">Button ghost line bg</button>
+
+					<button data-wave="true" class="btn1 __link--bg">Button link bg</button>
+					<button data-wave="true" class="btn1 __link-line--bg">Button link line bg</button>
+				</div>
+			</article>
+
+			<h3>Disabled buttons:</h3>
+
+			<article>
+				<h4>html code</h4>
+
+				<pre class="code"><code class="language-html">&lt;button data-wave="true" class="btn1" disabled&gt;Button 1&lt;/button&gt;
+&lt;button data-wave="true" class="btn2" disabled&gt;Button 2&lt;/button&gt;
+&lt;button data-wave="true" class="btn3" disabled&gt;Button 3&lt;/button&gt;
+&lt;button data-wave="true" class="btn4" disabled&gt;Button 4&lt;/button&gt;
+&lt;button data-wave="true" class="btn5" disabled&gt;Button 5&lt;/button&gt;</code></pre>
+
+				<h4>result</h4>
+
+				<div class="btns-line btns-line-2">
+					<button data-wave="true" class="btn1" disabled>Button 1</button>
+					<button data-wave="true" class="btn2" disabled>Button 2</button>
+					<button data-wave="true" class="btn3" disabled>Button 3</button>
+					<button data-wave="true" class="btn4" disabled>Button 4</button>
+					<button data-wave="true" class="btn5" disabled>Button 5</button>
+				</div>
+			</article>
+		</div>
+	</div>
+</section>
+

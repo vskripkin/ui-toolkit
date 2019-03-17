@@ -1,0 +1,34 @@
+.selectfield
+{
+	&-wrap
+	{
+		position: relative;
+		display: block;
+		margin-top: 1rem;
+	}
+
+	#ui.selectfield();
+
+	.addon-width(left);
+	.addon-width(right);
+
+	.size-apply();
+
+	.states()
+	{
+		.textfield.states();
+	}
+	.label()
+	{
+		.textfield.label();
+	}
+
+	.addon()
+	{
+		.textfield.addon();
+	}
+	.hint()
+	{
+		.textfield.hint();
+	}
+}
