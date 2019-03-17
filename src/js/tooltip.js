@@ -146,7 +146,7 @@
 					}
 					else
 					{
-						_setHandlers.call(this, (options.self ? this.template: this.target), xTrigger);
+						_setHandlers.call(this, (options.self ? this.template : this.target), xTrigger);
 					}
 				}
 			}

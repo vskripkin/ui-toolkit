@@ -109,7 +109,7 @@ gulp.task('watch', function ()
 {
 	watch(path.doc.watch.html, function (event, cb)
 	{
-		gulp.start('html:watch');
+		gulp.start('html:build');
 	});
 	watch(path.doc.watch.js, function (event, cb)
 	{
