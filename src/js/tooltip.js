@@ -1,53 +1,41 @@
 import {isTouchable} from './helpers/useragent.js';
 
-import is_function from './utils/isFunction.js';
-import is_object   from './utils/isObject.js';
-import is_string   from './utils/isString.js';
-import for_each    from './utils/forEach.js';
-import extend      from './utils/extend.js';
+import is_function   from './utils/isFunction.js';
+import is_object     from './utils/isObject.js';
+import is_string     from './utils/isString.js';
+import for_each      from './utils/forEach.js';
+import extend        from './utils/extend.js';
 
 
-var TYPE = 'tooltip',
-
-	Tooltip = function (_nElem, _options)
-	{
-		this.options      =
-		this.isHidden     =
-		this.timeout      =
-		this.closeTimeout =
-		this.hoverState   =
-		this.eventTargets =
-		this.element      =
-		this.target       = null
-
-		return this.init(_nElem, _options);
-	};
-
-export default Tooltip;
+export default function Tooltip (_nElem, _options)
+{
+	return this.init(_nElem, _options);
+};
 
 
-Tooltip.open = function (_nElem, _options)
+const TYPE = 'tooltip';
+
+Tooltip.get = function (_nElem, _options)
 {
 	var plugin = _nElem['_' + TYPE];
 
-	if (!options || is_object(options))
+	if (is_object(options))
 	{
 		if (plugin)
 		{
 			plugin.destroy();
 		}
 
-		_nElem['_' + TYPE] = new Tooltip(_nElem, options);
+		_nElem['_' + TYPE] = plugin = new Tooltip(_nElem, options);
 	}
-	else if (plugin && is_string(options) && options in plugin)
-	{
-		plugin[options]();
-	}
+
+	return plugin;
 };
 
 Tooltip.DEFAULTS = {
 	animation: true,
 	trigger: 'hover focus',
+	triggerer: 'target', // target|self|both
 	message: '',
 	delay: 0,
 	type: 'info',
@@ -58,7 +46,7 @@ Tooltip.DEFAULTS = {
 	selector: false,
 	delegate_target: true,
 	no_arrow: false,
-	self: false,
+	self: false, // true|false|show|hide|both
 
 	location: {
 		position: 'top',
@@ -87,25 +75,33 @@ Tooltip.prototype =
 		this._afterHide = this._afterHide.bind(this);
 		this._onTrsnEndHide = this._onTrsnEndHide.bind(this);
 
+		this.options      =
+		this.isHidden     =
+		this.timeout      =
+		this.closeTimeout =
+		this.hoverState   =
+		this.eventTargets =
+		this.element      =
+		this.target       = null;
+
 
 		this.element = _nElem;
-		this.target  = _nElem;
+		this.target  = _nElem.__resolveTarget && _nElem.__resolveTarget() || _nElem;
 		this.options = _getOptions.call(this, _options);
 
-		var options = this.options,
-			xTrigger = options.trigger;
+		this.placeTo = {
+			target: this.target,
+			location: this.options.location
+		};
 
-		if (_nElem.tagName.toLowerCase() === 'select' && typeof _nElem._selectbox !== 'undefined')
-		{
-			this.target = _nElem._selectbox.node.input;
-		}
+		var options = this.options;
 
 
 		this.wrapper = (function ()
 		{
 			var nDiv = document.createElement('div');
 
-			nDiv.className = this.type + '_' + 'wrp';
+			nDiv.className = TYPE + '_' + 'wrp';
 			nDiv.style.position = options.location.fixed ? 'fixed' : 'absolute';
 			nDiv.style.zIndex = 10000000
 
@@ -113,17 +109,16 @@ Tooltip.prototype =
 		})
 		.call(this);
 
-
 		this.template = (function ()
 		{
 			var nDiv = document.createElement('div');
 
-			nDiv.className = this.type + '_' + options.type + 
+			nDiv.className = TYPE + '_' + options.type + 
+				' ' +  options.location.position + 
 				' ' + (options.no_arrow ? 'no' : options.location.align) + '_arrow' + 
-				' ' + options.location.position + 
-				(options.animation ? ' animation' : '') + 
-				(options.location.fixed ? ' fixed' : '') + 
-				(options.location.side === 'in' ? ' inset': ' outset');
+				' ' + (options.animation ? 'animation' : '') + 
+				' ' + (options.location.fixed ? 'fixed' : '') + 
+				' ' + (options.location.side === 'in' ? 'inset': 'outset');
 
 			nDiv.innerHTML = _getCloseBtn.call(this) + _getMessage.call(this);
 
@@ -137,66 +132,63 @@ Tooltip.prototype =
 		this.isHidden = true;
 		this.eventTargets = [];
 
-		options.close = parseFloat(parseFloat(options.close).toFixed(1)) || 0;
-		options.delete = options.destroy ? 'remove' : 'detach';
 
-		if (xTrigger)
+		var xTrigger = options.trigger,
+			xTriggerer = options.triggerer,
+			sTriggererShow = is_string(xTriggerer) ? xTriggerer : xTriggerer.show,
+			sTriggererHide = is_string(xTriggerer) ? xTriggerer : xTriggerer.hide;
+
+		if (xTrigger && (xTrigger.show || xTrigger.hide))
 		{
-			if (xTrigger.show || xTrigger.hide)
+			var sTriggers = '';
+
+			if (xTrigger.show)
 			{
-				var sTriggers = '',
-					xSelf = options.self,
-					bSelfShow = is_string(xSelf) ? xSelf === 'show' : xSelf,
-					bSelfHide = is_string(xSelf) ? xSelf === 'hide' : xSelf;
+				sTriggers += ' ' + xTrigger.show;
 
-				if (xTrigger.show)
+				if (sTriggererShow === 'both' || sTriggererShow === 'self')
 				{
-					sTriggers = sTriggers + ' ' + xTrigger.show;
-					if (bSelfShow === 'both')
-					{
-						_setHandlers.call(this, this.template, xTrigger.show, 'show');
-						_setHandlers.call(this, this.target, xTrigger.show, 'show');
-					}
-					else
-					{
-						_setHandlers.call(this, (bSelfShow ? this.template: this.target), xTrigger.show, 'show');
-					}
+					_setHandlers.call(this, this.template, xTrigger.show, 'show');
 				}
-				if (xTrigger.hide)
+				if (sTriggererShow === 'both' || sTriggererShow === 'target')
 				{
-					sTriggers = sTriggers + ' ' + xTrigger.hide;
-
-					if (bSelfShow === 'both')
-					{
-						_setHandlers.call(this, this.template, xTrigger.hide, 'hide');
-						_setHandlers.call(this, this.target, xTrigger.hide, 'hide');
-					}
-					else
-					{
-						_setHandlers.call(this, (bSelfHide ? this.template: this.target), xTrigger.hide, 'hide');
-					}
+					_setHandlers.call(this, this.target, xTrigger.show, 'show');
 				}
-
-				options.trigger = sTriggers;
 			}
-			else
+
+			if (xTrigger.hide)
 			{
-				if (options.self === 'both')
+				sTriggers += ' ' + xTrigger.hide;
+
+				if (sTriggererHide === 'both' || sTriggererHide === 'self')
 				{
-					_setHandlers.call(this, this.template, xTrigger);
-					_setHandlers.call(this, this.target, xTrigger);
+					_setHandlers.call(this, this.template, xTrigger.hide, 'hide');
 				}
-				else
+				if (sTriggererHide === 'both' || sTriggererHide === 'target')
 				{
-					_setHandlers.call(this, (options.self ? this.template : this.target), xTrigger);
+					_setHandlers.call(this, this.target, xTrigger.hide, 'hide');
 				}
+			}
+
+			options.trigger = sTriggers;
+		}
+		else if (xTrigger)
+		{
+			if (sTriggererShow === 'both' || sTriggererShow === 'self')
+			{
+				_setHandlers.call(this, this.template, xTrigger);
+			}
+			if (sTriggererShow === 'both' || sTriggererShow === 'target')
+			{
+				_setHandlers.call(this, this.target, xTrigger);
 			}
 		}
+
 
 		if (this.template.querySelector('.js-close') !== null)
 		{
 			this.template.addEventListener('click',
-				_onSelectorMatch('.js-close', this.hide.bind(this), false);
+				_onSelectorMatch('.js-close', this.hide.bind(this)), false);
 		}
 
 		if (options.visible)
@@ -223,7 +215,6 @@ Tooltip.prototype =
 		});
 		delete this.element['_' + TYPE];
 
-		this.options.delete = 'remove';
 		_hide.call(this);
 	},
 
@@ -234,12 +225,12 @@ Tooltip.prototype =
 		{
 			this.target = e.currentTarget;
 			this.template.innerHTML = _getCloseBtn.call(this) + _getMessage.call(this);
-			this.options.placeTo.update = true;
-			this.options.placeTo.target = this.target;
+			this.placeTo.update = true;
+			this.placeTo.target = this.target;
 		}
 		else
 		{
-			this.options.placeTo.update = false;
+			this.placeTo.update = false;
 		}
 
 		if (!this.isHidden) return false;
@@ -254,7 +245,7 @@ Tooltip.prototype =
 
 		var that = this;
 
-		this.timeout = setTimeout(function()
+		this.timeout = setTimeout(function ()
 		{
 			if (that.hoverState === 'in')
 			{
@@ -288,7 +279,7 @@ Tooltip.prototype =
 
 		var that = this;
 
-		this.timeout = setTimeout(function()
+		this.timeout = setTimeout(function ()
 		{
 			if (that.hoverState === 'out')
 			{
@@ -323,14 +314,14 @@ Tooltip.prototype =
 			this.wrapper.parentElement.removeChild(this.wrapper);
 		}
 
-		Placer.placeTo(this.wrapper, this.options.placeTo);
+		Placer.placeTo(this.wrapper, this.placeTo);
 
 		this.template.classList.remove('out');
 		this.template.classList.add('in');
 
 		// TODO
-		//this.element._jQ().trigger( this.type + '-show');
-		//this.template._jQ().trigger(this.type + '-show');
+		//this.element._jQ().trigger( TYPE + '-show');
+		//this.template._jQ().trigger(TYPE + '-show');
 
 		if (this.options.close > 0)
 		{
@@ -374,28 +365,14 @@ Tooltip.prototype =
 
 	_afterHide: function ()
 	{
-		if (this.options.delete === 'remove')
+		if (this.wrapper.parentElement)
 		{
-			if (this.wrapper.parentElement)
-			{
-				this.wrapper.parentElement.removeChild(this.wrapper);
-			}
-			if (this.template.parentElement)
-			{
-				this.template.parentElement.removeChild(this.template);
-			}
-		}
-		else if (this.options.delete === 'detach')
-		{
-			if (this.wrapper.parentElement)
-			{
-				this.wrapper.parentElement.removeChild(this.wrapper);
-			}
+			this.wrapper.parentElement.removeChild(this.wrapper);
 		}
 
 		// TODO
-		//this.element._jQ().trigger(this.type + '-hide');
-		//this.template._jQ().trigger(this.type + '-hide');
+		//this.element._jQ().trigger( TYPE + '-hide');
+		//this.template._jQ().trigger(TYPE + '-hide');
 	},
 	_onTrsnEndHide: function ()
 	{
@@ -415,50 +392,60 @@ var _getOptions = function (_options)
 
 		try
 		{
-			oData = JSON.parse(this.element.getAttribute('data-' + this.type));
+			oData = JSON.parse(this.element.getAttribute('data-' + TYPE));
 		}
-		catch (e) {};
+		catch (e)
+		{
+			oData = {};
+		};
 
-		var options = extend(true, {}, Tooltip.DEFAULTS, _options, oData || {});
+
+		var options = extend(true, {}, Tooltip.DEFAULTS, _options, oData);
 
 		if (is_object(options.delay))
 		{
 			options.delay = {
 				show: parseInt(options.delay.show) || 0,
 				hide: parseInt(options.delay.hide) || 50
-			}
+			};
 		}
 		else
 		{
 			options.delay = {
 				show: parseInt(options.delay) || 0,
 				hide: parseInt(options.delay) || 50
-			}
+			};
 		}
 
-		options.placeTo = {
-			target: this.target,
-			location: options.location
-		};
+		options.close = parseFloat(parseFloat(options.close).toFixed(1)) || 0;
 
 		return options;
 	},
 	_getMessage = function ()
 	{
-		var xMessage = '',
-			el = this.element,
-			_xMessage = this.options.message;
+		var sMessage = '',
+			el = this.element;
 
 		if (el.hasAttribute('title'))
 		{
-			el.setAttribute('data-tooltip-message', el.getAttribute('title'));
+			el.setAttribute('data-' + TYPE + '-message', el.getAttribute('title'));
 			el.removeAttribute('title');
 		}
 
-		xMessage = el.getAttribute('data-tooltip-message')
-			|| (is_function(_xMessage) ? (_xMessage.call(el) || '') : _xMessage);
 
-		return xMessage;
+		sMessage = el.getAttribute('data-' + TYPE + '-message');
+
+		if (!sMessage)
+		{
+			sMessage = this.options.message;
+
+			if (is_function(sMessage))
+			{
+				sMessage = sMessage.call(el) || '';
+			}
+		}
+
+		return sMessage;
 	},
 	_getCloseBtn = function ()
 	{
