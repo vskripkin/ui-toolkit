@@ -1,5 +1,8 @@
 /* https://gist.github.com/CezaryDanielNowak/9074032 */
-;(window.devicePixelRatio = (function ()
+
+import isBro from '../isBrowser.js';
+
+isBro && window.devicePixelRatio = (function ()
 {
 	var isFirefox = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
@@ -24,4 +27,4 @@
 	}
 
 	return 1;
-})());
+})();

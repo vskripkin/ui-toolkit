@@ -164,7 +164,7 @@
 
 					if (this._onWH.waiting)
 					{
-						_.offWindowHidden(this._onWH.f);
+						_.offWindowHidden(this._onWH.callback);
 					}
 
 					this._onWH = _.onWindowHidden(this._onWindowHidden.bind(this));
@@ -205,7 +205,7 @@
 
 			if (this._onWH.waiting)
 			{
-				_.offWindowHidden(this._onWH.f);
+				_.offWindowHidden(this._onWH.callback);
 			}
 
 			return true;
@@ -227,7 +227,7 @@
 
 			if (this._onWV.waiting)
 			{
-				_.offWindowVisible(this._onWV.f);
+				_.offWindowVisible(this._onWV.callback);
 			}
 
 			this._onWV = _.onWindowVisible(this.start.bind(this));
@@ -272,11 +272,11 @@
 
 			if (this._onWH.waiting)
 			{
-				_.offWindowHidden(this._onWH.f);
+				_.offWindowHidden(this._onWH.callback);
 			}
 			if (this._onWV.waiting)
 			{
-				_.offWindowVisible(this._onWV.f);
+				_.offWindowVisible(this._onWV.callback);
 			}
 
 			if (this._hammer)
