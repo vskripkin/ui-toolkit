@@ -1,161 +1,168 @@
-;(function ()
-{
-	var shim = function ()
-		{
-			var oData = {};
+import isBro from './isBrowser.js';
 
-			return {
-				key: function (_index)
+
+var shim = function ()
+	{
+		var oData = {};
+
+		return {
+			key: function (_index)
+			{
+				var i = 0,
+					index = parseInt(_index) || 0,
+					sKey;
+
+				for (sKey in oData)
 				{
-					var i = 0,
-						index = parseInt(_index) || 0,
-						sKey;
-
-					for (sKey in oData)
+					if (index === i)
 					{
-						if (index === i)
-						{
-							return oData[sKey];
-						}
-
-						i++;
+						return oData[sKey];
 					}
 
-					return null;
-				},
-				getItem: function (_sKey)
-				{
-					return String(_sKey) in oData ? oData[_sKey] : null;
-				},
-				setItem: function (_sKey, _xValue)
-				{
-					oData[_sKey] = String(_xValue);
-				},
-				removeItem: function (_sKey)
+					i++;
+				}
+
+				return null;
+			},
+			getItem: function (_sKey)
+			{
+				return String(_sKey) in oData ? oData[_sKey] : null;
+			},
+			setItem: function (_sKey, _xValue)
+			{
+				oData[_sKey] = String(_xValue);
+			},
+			removeItem: function (_sKey)
+			{
+				delete oData[_sKey];
+			},
+			clear: function ()
+			{
+				for (var sKey in oData)
 				{
 					delete oData[_sKey];
-				},
-				clear: function ()
-				{
-					for (var sKey in oData)
-					{
-						delete oData[_sKey];
-					}
 				}
-			};
-		},
-		is_corrupted = function ()
+			}
+		};
+	},
+	is_corrupted = function ()
+	{
+		try
+		{
+			var sTest = '__LS-TEST__';
+
+			window.localstorage.setItem(sTest, sTest);
+
+			if (window.localstorage.getItem(sTest) !== sTest)
+			{
+				window.localstorage.removeItem(sTest);
+				throw new Error();
+			}
+
+			window.localstorage.removeItem(sTest);
+
+			return false;
+		}
+		catch (e)
+		{
+			return true;
+		}
+	},
+
+	aFixes = [
+		function (_oShim)
 		{
 			try
 			{
-				var sTest = '__LS-TEST__';
+				Object.setPrototypeOf(window.localStorage, _oShim);
 
-				window.localstorage.setItem(sTest, sTest);
-
-				if (window.localstorage.getItem(sTest) !== sTest)
-				{
-					window.localstorage.removeItem(sTest);
-					throw new Error();
-				}
-
-				window.localstorage.removeItem(sTest);
-
-				return false;
+				return true;
 			}
 			catch (e)
 			{
-				return true;
+				return false;
 			}
 		},
-
-		aFixes = [
-			function (_oShim)
-			{
-				try
-				{
-					Object.setPrototypeOf(window.localStorage, _oShim);
-
-					return true;
-				}
-				catch (e)
-				{
-					return false;
-				}
-			},
-			function (_oShim)
-			{
-				try
-				{
-					window.localStorage.__proto__ = _oShim;
-
-					return true;
-				}
-				catch (e)
-				{
-					return false;
-				}
-			},
-			function (_oShim)
-			{
-				try
-				{
-					for (var sKey in _oShim)
-					{
-						Storage.prototype[sKey] = _oShim[sKey];
-					}
-
-					return true;
-				}
-				catch (e)
-				{
-					return false;
-				}
-			},
-			function (_oShim)
-			{
-				try
-				{
-					delete window.localStorage;
-					window.localStorage = window.localstorage = _oShim;
-
-					return true;
-				}
-				catch (e)
-				{
-					return false;
-				}
-			},
-			function (_oShim)
-			{
-				window.localstorage = _oShim;
-			}
-		],
-		oShim;
-
-	try
-	{
-		window.localstorage = window.localStorage;
-
-		if (is_corrupted())
+		function (_oShim)
 		{
-			oShim = shim();
-
-			while (aFixes.length)
+			try
 			{
-				if (aFixes.shift()(oShim) && !is_corrupted())
+				window.localStorage.__proto__ = _oShim;
+
+				return true;
+			}
+			catch (e)
+			{
+				return false;
+			}
+		},
+		function (_oShim)
+		{
+			try
+			{
+				for (var sKey in _oShim)
 				{
-					break;
+					Storage.prototype[sKey] = _oShim[sKey];
 				}
+
+				return true;
+			}
+			catch (e)
+			{
+				return false;
+			}
+		},
+		function (_oShim)
+		{
+			try
+			{
+				delete window.localStorage;
+				window.localStorage = window.localstorage = _oShim;
+
+				return true;
+			}
+			catch (e)
+			{
+				return false;
+			}
+		},
+		function (_oShim)
+		{
+			window.localstorage = _oShim;
+		}
+	],
+	oShim;
+
+try
+{
+	window.localstorage = window.localStorage;
+
+	if (is_corrupted())
+	{
+		oShim = shim();
+
+		while (aFixes.length)
+		{
+			if (aFixes.shift()(oShim) && !is_corrupted())
+			{
+				break;
 			}
 		}
 	}
-	catch (e)
+}
+catch (e)
+{
+	if (isBro)
 	{
 		window.localstorage = oShim || shim();
 	}
+	else
+	{
+		global.localstorage = shim();
+	}
+}
 
-	oShim = null;
-})();
+oShim = null;
 
 // https://gist.github.com/engelfrost/fd707819658f72b42f55
 // На случай если понадобится эмулировать событие change

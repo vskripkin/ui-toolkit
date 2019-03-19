@@ -1,6 +1,7 @@
 import isBro from '../isBrowser.js';
+import isUndefined from '../utils/isUndefined.js';
 
-if (isBro && document.documentElement.hidden === undefined)
+if (isBro && isUndefined(document.documentElement.hidden))
 {
 	Object.defineProperty(Element.prototype, 'hidden', {
 		set: function (_bHidden)
@@ -9,7 +10,7 @@ if (isBro && document.documentElement.hidden === undefined)
 		},
 		get: function ()
 		{
-			return this.getAttribute('hidden');
+			return !!this.getAttribute('hidden');
 		}
 	});
 }

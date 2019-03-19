@@ -7,6 +7,7 @@ import _isBoolean   from './isBoolean.js';
 import _isPlainObject from './isPlainObject.js';
 import _isObject      from './isObject.js';
 import _isFunction    from './isFunction.js';
+import _isArray       from './isArray.js';
 import _isArrayLike   from './isArrayLike.js';
 
 import _isFinite  from './isFinite.js';
@@ -28,6 +29,7 @@ export default {
 	isPlainObject: _isPlainObject,
 	isObject:      _isObject,
 	isFunction:    _isFunction,
+	isArray:       _isArray,
 	isArrayLike:   _isArrayLike,
 
 	isFinite:  _isFinite,

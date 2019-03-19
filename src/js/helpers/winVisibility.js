@@ -3,13 +3,13 @@ import isFunction from '../utils/isFunction.js';
 
 
 export default {
-	isWindowHidden:   is_win_hidden,
+	isHidden:   is_win_hidden,
 
-	onWindowVisible:  on_win_visible,
-	offWindowVisible: off_win_visible,
+	onVisible:  on_win_visible,
+	offVisible: off_win_visible,
 
-	onWindowHidden:   on_win_hidden,
-	offWindowHidden:  off_win_hidden
+	onHidden:   on_win_hidden,
+	offHidden:  off_win_hidden
 };
 
 

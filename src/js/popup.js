@@ -1,552 +1,892 @@
-// <reference path="global-scrollbar.js" />
+import globalScrollbar from './helpers/globalScrollbar.js';
 
-;(function ($, _, undefined)
-{
-	'use strict';
+import support from './helpers/support.js';
+import {isIE, isMobile} from './helpers/useragent.js';
 
-	var TYPE = 'popup',
+import is_array    from './utils/isArray.js';
+import is_node     from './utils/isNode.js';
+import is_string   from './utils/isString.js';
+import is_numeric  from './utils/isNumeric.js';
+import is_function from './utils/isFunction.js';
+import extend      from './utils/extend.js';
+import for_each    from './utils/forEach.js';
 
-		Class = {
-			container: 'ui-popup',
-			container_visible: 'ui-popup--visible',
-			wrapper: 'ui-popup__wrapper',
-			wrapper_visible: 'ui-popup__wrapper--visible',
-			content: 'ui-popup__content',
-			inner: 'ui-popup__content-inner',
-			title: 'ui-popup__content-title',
-			text: 'ui-popup__content-text',
-			actions: 'ui-popup__content-actions',
-			close: 'ui-popup__close js-close',
 
-			js_ok: '.js-ok',
-			js_cancel: '.js-cancel',
-			js_close: '.js-close'
+var TYPE = 'popup',
+
+	Class = {
+		container: 'ui-popup',
+		container_visible: 'ui-popup--visible',
+		wrapper: 'ui-popup__wrapper',
+		wrapper_visible: 'ui-popup__wrapper--visible',
+		content: 'ui-popup__content',
+		inner: 'ui-popup__content-inner',
+		title: 'ui-popup__content-title',
+		text: 'ui-popup__content-text',
+		actions: 'ui-popup__content-actions',
+		close: 'ui-popup__close js-close',
+
+		js_ok: '.js-ok',
+		js_cancel: '.js-cancel',
+		js_close: 'js-close'
+	},
+
+	sTransitionEnd = support.transition.end,
+	noop = function () {},
+	request_frame = window.requestAnimationFrame ?
+		function (_func)
+		{
+			/*
+			  вызываем через двойной requestAnimationFrame, потому что если вызывать через один,
+			  то периодически проскакивает баг, когда анимация не проигрывается, сразу виден
+			  конечный результат
+			*/
+			return window.requestAnimationFrame(window.requestAnimationFrame.bind(window, _func));
+		} :
+		function (_func)
+		{
+			return setTimeout(_func, 1000/60);
 		},
 
-		sTransitionEnd = _.support.transition.end,
-		request_frame = window.requestAnimationFrame ?
-			function (_func)
-			{
-				/*
-				  вызываем через двойной requestAnimationFrame, потому что если вызывать через один,
-				  то периодически проскакивает баг, когда анимация не проигрывается, сразу виден
-				  конечный результат
-				*/
-				return window.requestAnimationFrame(window.requestAnimationFrame.bind(window, _func));
-			} :
-			function (_func)
-			{
-				return setTimeout(_func, 1000/60);
-			},
+	__cont = {
+		get: function ()
+		{
+			return this.__div || this.listenEscape() && (this.__div = this.create());
+		},
+		append: function (_nDiv)
+		{
+			this.get().appendChild(_nDiv);
+		},
+		create: function ()
+		{
+			var that = this,
+				nDiv = document.createElement('div');
 
-		__cont = {
-			get: function ()
+			nDiv.id = 'ui-popup-container';
+			nDiv.style.display = 'none';
+			nDiv.className = Class.container;
+
+			nDiv.addEventListener('click', function (e)
 			{
-				return this.__div || this.listenEscape() && (this.__div = this.create());
-			},
-			append: function (_nDiv)
-			{
-				this.get().appendChild(_nDiv);
-			},
-			create: function ()
-			{
-				var nDiv = document.createElement('div');
+				that._onClick(e);
 
-				nDiv.id = 'ui-popup-container';
-				nDiv.style.display = 'none';
-				nDiv.className = Class.container;
 
-				$(nDiv)
-					.on('click', this._onClick)
-					.on('click', Class.js_close, this._onClickClose);
+				var nTarget = e.target;
 
-				document.body.appendChild(nDiv);
-
-				return nDiv;
-			},
-			listenEscape: function ()
-			{
-				var iTimeout = null;
-
-				window.addEventListener('keydown', function (e)
+				if (!nTarget.classList.contains(Class.js_close))
 				{
-					if (iTimeout) return;
+					nTarget = nTarget.closest('.' + Class.js_close);
 
-					// 27 = кнопка Escape
-					if (e.which !== 27) return;
+					if (!nTarget || !nDiv.contains(nTarget)) return;
+				}
+
+				that._onClickClose(e);
+			}, false);
 
 
-					iTimeout = setTimeout(function ()
-					{
-						iTimeout = null;
-					}, 100);
+			document.body.appendChild(nDiv);
 
-					var nActive = document.activeElement,
-						sTagName = nActive && nActive.tagName.toLowerCase();
+			return nDiv;
+		},
+		listenEscape: function ()
+		{
+			var iTimeout = null;
 
-					if (sTagName === 'input' || sTagName === 'select' || sTagName === 'textarea')
-					{
-						nActive.blur();
-						return;
-					}
-
-					__cont._onEscape(e);
-				}, true);
-
-				return true;
-			},
-
-			show: function ()
+			window.addEventListener('keydown', function (e)
 			{
-				__cont.state = 'showing';
+				if (iTimeout) return;
+
+				// 27 = кнопка Escape
+				if (e.which !== 27) return;
 
 
-				var nCont = __cont.get();
-
-				nCont.style.display = 'block';
-				_.globalScrollbar.hide();
-
-				setTimeout(function ()
+				iTimeout = setTimeout(function ()
 				{
-					if (__cont.state !== 'showing') return;
+					iTimeout = null;
+				}, 100);
 
-					__cont.state = 'shown';
+				var nActive = document.activeElement,
+					sTagName = nActive && nActive.tagName.toLowerCase();
+
+				if (sTagName === 'input' || sTagName === 'select' || sTagName === 'textarea')
+				{
+					nActive.blur();
+					return;
+				}
+
+				__cont._onEscape(e);
+			}, true);
+
+			return true;
+		},
+
+		show: function ()
+		{
+			__cont.state = 'showing';
 
 
-					// fix transitionend event for hidden tab
-					nCont.offsetHeight;
-					nCont.offsetWidth;
+			var nCont = __cont.get();
 
-					nCont.classList.add(Class.container_visible);
-				}, 0);
-			},
-			hide: function ()
+			nCont.style.display = 'block';
+			globalScrollbar.hide();
+
+			setTimeout(function ()
 			{
-				__cont.state = 'hiding';
+				if (__cont.state !== 'showing') return;
 
-				var nCont = __cont.get();
+				__cont.state = 'shown';
 
-				nCont.addEventListener(sTransitionEnd, __cont._onTransitionend, {passive: true});
+
+				// fix transitionend event for hidden tab
+				nCont.offsetHeight;
+				nCont.offsetWidth;
+
+				nCont.classList.add(Class.container_visible);
+			}, 0);
+		},
+		hide: function ()
+		{
+			__cont.state = 'hiding';
+
+			var nCont = __cont.get();
+
+			nCont.addEventListener(sTransitionEnd, __cont._onTransitionend, {passive: true});
+
+			setTimeout(function ()
+			{
+				if (__cont.state !== 'hiding') return;
+
+				// fix transitionend event for hidden tab
+				nCont.offsetHeight;
+				nCont.offsetWidth;
+
+				nCont.classList.remove(Class.container_visible);
 
 				setTimeout(function ()
 				{
 					if (__cont.state !== 'hiding') return;
 
-					// fix transitionend event for hidden tab
-					nCont.offsetHeight;
-					nCont.offsetWidth;
-
-					nCont.classList.remove(Class.container_visible);
-
-					setTimeout(function ()
+					if (parseFloat(getComputedStyle(nCont).opacity) < 0.1)
 					{
-						if (__cont.state !== 'hiding') return;
-
-						if (parseFloat(getComputedStyle(nCont).opacity) < 0.1)
-						{
-							__cont._onTransitionend({target: nCont});
-						}
-					}, 0);
+						__cont._onTransitionend({target: nCont});
+					}
 				}, 0);
-			},
-			_onTransitionend: function on_transitionend (e)
-			{
-				if (__cont.state !== 'hiding') return;
-
-
-				var nCont = __cont.get();
-
-				if (e.target === nCont)
-				{
-					__cont.state = 'hidden';
-
-					nCont.style.display = 'none';
-					nCont.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
-					_.globalScrollbar.restore();
-				}
-			},
-
-			_onEscape: function (e)
-			{
-				__cont.onEscape(e);
-			},
-			_onClick: function (e)
-			{
-				if (e.target === this)
-				{
-					__cont.onClick(e);
-				}
-			},
-			_onClickClose: function (e)
-			{
-				__cont.onClickClose(e);
-			},
-
-			onEscape: _.noop,
-			onClick: _.noop,
-			onClickClose: _.noop
+			}, 0);
 		},
-		__queue = (function (Q)
+		_onTransitionend: function on_transitionend (e)
 		{
-			Q = [];
+			if (__cont.state !== 'hiding') return;
 
-			Q.onAdd =
-			Q.onRemove = _.noop;
 
-			Q.add = function (_oPopup)
+			var nCont = __cont.get();
+
+			if (e.target === nCont)
 			{
-				if (Q.length)
-				{
-					Q.last().hide();
-				}
+				__cont.state = 'hidden';
 
-				Q.push(_oPopup);
-				Q.onAdd();
-			};
-			Q.remove = function (_oPopup)
-			{
-				var index = Q.indexOf(_oPopup);
+				nCont.style.display = 'none';
+				nCont.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
+				globalScrollbar.restore();
+			}
+		},
 
-				if (index === -1) return;
-
-
-				Q.splice(index, 1);
-				Q.onRemove();
-
-				if (Q.length)
-				{
-					Q.last().show();
-				}
-			};
-			Q.last = function ()
-			{
-				return Q[Q.length - 1];
-			};
-
-			return Q;
-		})(),
-		__history = (function ()
+		_onEscape: function (e)
 		{
-			var H = {},
-				HH = {},
-				iLength = 0,
-				bFromEvent = false,
-				bFromJS = false;
-
-			HH.on =
-			HH.off =
-			HH.clear =
-			HH.push =
-			HH.pop =
-			HH.onPopstate = _.noop;
-			HH.handlePopstate = _.noop;
-
-			/*
-			  в IE событие popstate не срабатывает, если поменялся только хеш адреса, поэтому
-			  отключаем историю для IE, так как без popstate не сможем нормально обрабатывать
-			  все изменения в истории
-			*/
-			if (!('pushState' in window.history) || _.isIE)
+			__cont.onEscape(e);
+		},
+		_onClick: function (e)
+		{
+			if (e.target === this)
 			{
-				return HH;
+				__cont.onClick(e);
+			}
+		},
+		_onClickClose: function (e)
+		{
+			__cont.onClickClose(e);
+		},
+
+		onEscape: noop,
+		onClick: noop,
+		onClickClose: noop
+	},
+	__queue = (function (Q)
+	{
+		Q = [];
+
+		Q.onAdd =
+		Q.onRemove = noop;
+
+		Q.add = function (_oPopup)
+		{
+			if (Q.length)
+			{
+				Q.last().hide();
 			}
 
+			Q.push(_oPopup);
+			Q.onAdd();
+		};
+		Q.remove = function (_oPopup)
+		{
+			var index = Q.indexOf(_oPopup);
 
-			H.onPopstate = _.noop;
+			if (index === -1) return;
 
-			H.on = HH.on = function ()
+
+			Q.splice(index, 1);
+			Q.onRemove();
+
+			if (Q.length)
 			{
-				__history = H;
-			};
-			H.off = HH.off = function ()
-			{
-				__history = HH;
-			};
+				Q.last().show();
+			}
+		};
+		Q.last = function ()
+		{
+			return Q[Q.length - 1];
+		};
+
+		return Q;
+	})(),
+	__history = (function ()
+	{
+		var H = {},
+			HH = {},
+			iLength = 0,
+			bFromEvent = false,
+			bFromJS = false;
+
+		HH.on =
+		HH.off =
+		HH.clear =
+		HH.push =
+		HH.pop =
+		HH.onPopstate = noop;
+		HH.handlePopstate = noop;
+
+		/*
+		  в IE событие popstate не срабатывает, если поменялся только хеш адреса, поэтому
+		  отключаем историю для IE, так как без popstate не сможем нормально обрабатывать
+		  все изменения в истории
+		*/
+		if (!('pushState' in window.history) || isIE)
+		{
+			return HH;
+		}
 
 
-			H.clear = function ()
+		H.onPopstate = noop;
+
+		H.on = HH.on = function ()
+		{
+			__history = H;
+		};
+		H.off = HH.off = function ()
+		{
+			__history = HH;
+		};
+
+
+		H.clear = function ()
+		{
+			bFromEvent = bFromJS = false;
+			window.history.pushState('', document.title, window.location.href);
+			window.history.back();
+		};
+		H.push = function ()
+		{
+			iLength++;
+			window.history.pushState('', document.title, window.location.href);
+		};
+		H.pop = function ()
+		{
+			iLength--;
+
+			if (!bFromEvent)
 			{
-				bFromEvent = bFromJS = false;
-				window.history.pushState('', document.title, window.location.href);
+				bFromJS = true;
 				window.history.back();
-			};
-			H.push = function ()
+			}
+			else
 			{
-				iLength++;
-				window.history.pushState('', document.title, window.location.href);
-			};
-			H.pop = function ()
-			{
-				iLength--;
+				bFromEvent = false;
 
-				if (!bFromEvent)
+				if (!iLength)
 				{
-					bFromJS = true;
-					window.history.back();
+					H.clear();
 				}
-				else
-				{
-					bFromEvent = false;
-
-					if (!iLength)
-					{
-						H.clear();
-					}
-				}
-			};
-			H.handlePopstate = function ()
-			{
-				if (!bFromJS)
-				{
-					if (!iLength) return;
-
-					bFromEvent = true;
-					__history.onPopstate();
-				}
-				else
-				{
-					bFromJS = false;
-
-					if (!iLength)
-					{
-						H.clear();
-					}
-				}
-			};
-
-			window.addEventListener('popstate', function ()
-			{
-				__history.handlePopstate();
-			});
-
-			return H;
-		})(),
-
-		__ctrl = (function (__cont, __queue, __history)
+			}
+		};
+		H.handlePopstate = function ()
 		{
-			__cont.onEscape = function ()
+			if (!bFromJS)
 			{
-				__queue.length && __queue.last().close('esc');
-			};
-			__cont.onClick = function (e)
-			{
-				__queue.length && __queue.last().close('bg');
-			};
-			__cont.onClickClose = function (e)
-			{
-				__queue.length && __queue.last().close('btn');
-			};
+				if (!iLength) return;
 
-			__history.onPopstate = function ()
+				bFromEvent = true;
+				__history.onPopstate();
+			}
+			else
 			{
-				__queue.length && __queue.last().close('history');
-			};
+				bFromJS = false;
 
-			__queue.onAdd = function ()
-			{
-				if (__queue.length === 1)
+				if (!iLength)
 				{
-					__cont.show();
+					H.clear();
 				}
+			}
+		};
 
-				__history.push();
-			};
-			__queue.onRemove = function ()
-			{
-				if (!__queue.length)
-				{
-					__cont.hide();
-				}
-
-				__history.pop();
-			};
-		})(__cont, __queue, __history),
-
-		Popup;
-
-	window.Popup = Popup = function (_options)
-	{
-		this.options =
-		this.dom     =
-		this.timeout =
-		this.state   = null;
-
-		return this.init(_options);
-	};
-
-	Popup.getTitle = function (_xContent, _options)
-	{
-		switch (true)
+		window.addEventListener('popstate', function ()
 		{
-			case _.isArray(_xContent):         return _xContent.shift();  break;
-			case _.isFunction(_xContent):      return _xContent('title'); break;
-			case _xContent && _xContent.title: return _xContent.title;    break;
+			__history.handlePopstate();
+		});
+
+		return H;
+	})(),
+
+	__ctrl = (function (__cont, __queue, __history)
+	{
+		__cont.onEscape = function ()
+		{
+			__queue.length && __queue.last().close('esc');
+		};
+		__cont.onClick = function (e)
+		{
+			__queue.length && __queue.last().close('bg');
+		};
+		__cont.onClickClose = function (e)
+		{
+			__queue.length && __queue.last().close('btn');
+		};
+
+		__history.onPopstate = function ()
+		{
+			__queue.length && __queue.last().close('history');
+		};
+
+		__queue.onAdd = function ()
+		{
+			if (__queue.length === 1)
+			{
+				__cont.show();
+			}
+
+			__history.push();
+		};
+		__queue.onRemove = function ()
+		{
+			if (!__queue.length)
+			{
+				__cont.hide();
+			}
+
+			__history.pop();
+		};
+	})(__cont, __queue, __history),
+
+	Popup;
+
+window.Popup = Popup = function (_options)
+{
+	this.options =
+	this.dom     =
+	this.timeout =
+	this.state   = null;
+
+	return this.init(_options);
+};
+
+Popup.getTitle = function (_xContent, _options)
+{
+	switch (true)
+	{
+		case is_array(_xContent):          return _xContent.shift();  break;
+		case is_function(_xContent):       return _xContent('title'); break;
+		case _xContent && _xContent.title: return _xContent.title;    break;
+	}
+
+	return _options.title || false;
+};
+Popup.getContent = function (_xContent, _options)
+{
+	switch (true)
+	{
+		case is_node(_xContent):             return _xContent;            break;
+		case is_string(_xContent):           return _xContent;            break;
+		case is_numeric(_xContent):          return _xContent;            break;
+		case is_function(_xContent):         return _xContent('content'); break;
+		case is_array(_xContent):            return _xContent.join(' ');  break;
+		case _xContent && _xContent.content: return _xContent.content;    break;
+	}
+
+	return '&nbsp;';
+};
+Popup.history = function (_bON)
+{
+	_bON ? __history.on() : __history.off();
+};
+Popup.open = function (_xContent, _options)
+{
+	var oPopup = new Popup(_options);
+
+	oPopup.setContent(_xContent);
+	oPopup.open();
+
+	return oPopup;
+};
+
+export default Popup;
+
+
+Popup.DEFAULTS = {
+	className: '',
+	closesign: '&#10005;',
+	closebtn: true,
+	modal: false,
+	escape: true,
+	delay: {
+		open: 0,
+		close: 0
+	},
+
+	beforeOpen: undefined,
+	afterOpen: undefined,
+	beforeClose: undefined,
+	afterClose: undefined,
+	beforeSetContent: undefined,
+	afterSetContent: undefined
+};
+
+Popup.prototype = {
+	constructor: Popup,
+	type: TYPE,
+
+	init: function (_options)
+	{
+		this.options = extend(true, {}, Popup.DEFAULTS, _options);
+
+		this._open  = this._open.bind(this);
+		this._close = this._close.bind(this);
+
+
+		var nWrapper = document.createElement('div'),
+			nContent = document.createElement('div');
+
+		nWrapper.className = Class.wrapper + ' ' + this.options.className;
+		nWrapper.style.display = 'none';
+
+		nContent.className = Class.content;
+
+		this.dom = {
+			wrapper: nWrapper,
+			content: nContent,
+			inner: null,
+			close: null
+		};
+
+
+		if (!this.options.modal)
+		{
+			nWrapper.addEventListener('click', this.onBgClick.bind(this), false);
 		}
 
-		return _options.title || false;
-	};
-	Popup.getContent = function (_xContent, _options)
+		nWrapper.appendChild(nContent);
+		__cont.append(nWrapper);
+
+		return this;
+	},
+	onBgClick: function (e)
 	{
-		switch (true)
+		if (e.target === this.dom.wrapper)
 		{
-			case _.isNode(_xContent):            return _xContent;            break;
-			case _.isString(_xContent):          return _xContent;            break;
-			case _.isNumeric(_xContent):         return _xContent;            break;
-			case _.isFunction(_xContent):        return _xContent('content'); break;
-			case _.isArray(_xContent):           return _xContent.join(' ');  break;
-			case _xContent && _xContent.content: return _xContent.content;    break;
+			this.close();
+		}
+	},
+
+	setContent: function (_xContent)
+	{
+		this.dom.content.innerHTML = '';
+
+		if (this.options.beforeSetContent)
+		{
+			this.options.beforeSetContent.call(this);
 		}
 
-		return '&nbsp;';
-	};
-	Popup.history = function (_bON)
+		this.dom.content.insertAdjacentHTML('afterbegin', '<div class="' + Class.inner + '"></div>');
+		this.dom.inner = this.dom.content.firstElementChild;
+
+		var xTitle = this.getTitle(_xContent),
+			xContent = this.getContent(_xContent),
+			nDiv;
+
+		if (xTitle)
+		{
+			nDiv = document.createElement('div');
+			nDiv.className = Class.title;
+
+			if (is_node(xTitle))
+			{
+				nDiv.appendChild(xTitle);
+			}
+			else
+			{
+				nDiv.insertAdjacentHTML('afterbegin', xTitle);
+			}
+
+			this.dom.inner.appendChild(nDiv);
+		}
+
+		if (xContent)
+		{
+			nDiv = document.createElement('div');
+			nDiv.className = Class.text;
+
+			if (is_node(xContent))
+			{
+				nDiv.appendChild(xContent);
+			}
+			else
+			{
+				nDiv.insertAdjacentHTML('afterbegin', xContent);
+			}
+
+			this.dom.inner.appendChild(nDiv);
+		}
+
+		if (this.options.closebtn)
+		{
+			if (this.dom.close === null)
+			{
+				this.dom.wrapper.insertAdjacentHTML('beforeend',
+					'<button type="button">' + this.options.closesign + '</button>');
+				this.dom.close = this.dom.wrapper.lastElementChild;
+
+				var oClassList = this.dom.close.classList;
+
+				for_each(Class.close.split(' '), function (_sClassName)
+				{
+					oClassList.add(_sClassName);
+				});
+			}
+
+			this.dom.content.appendChild(this.dom.close);
+		}
+
+		if (this.options.afterSetContent)
+		{
+			this.options.afterSetContent.call(this);
+		}
+	},
+	getTitle: function (_xContent)
 	{
-		_bON ? __history.on() : __history.off();
-	};
-	Popup.open = function (_xContent, _options)
+		return Popup.getTitle(_xContent, this.options);
+	},
+	getContent: function (_xContent)
 	{
-		var oPopup = new Popup(_options);
+		return Popup.getContent(_xContent, this.options);
+	},
 
-		oPopup.setContent(_xContent);
-		oPopup.open();
+	show: function ()
+	{
+		if (this.state === 'closing' || this.state === 'closed') return;
 
-		return oPopup;
+
+		var nWrapper = this.dom.wrapper;
+
+		nWrapper.style.display = 'block';
+		nWrapper.style.pointerEvents = 'auto';
+
+		request_frame(function ()
+		{
+			nWrapper.classList.add(Class.wrapper_visible);
+		});
+	},
+	hide: function ()
+	{
+		if (this.state === 'closing' || this.state === 'closed') return;
+
+
+		var nWrapper = this.dom.wrapper;
+
+		nWrapper.addEventListener(sTransitionEnd, function on_transitionend (e)
+		{
+			if (e.target === this)
+			{
+				this.style.display = 'none';
+				this.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
+			}
+		}, {passive: true});
+
+		// fix transtionend event for hidden tab
+		nWrapper.offsetWidth;
+		nWrapper.offsetHeight;
+
+		nWrapper.style.pointerEvents = 'none';
+		nWrapper.classList.remove(Class.wrapper_visible);
+	},
+
+	open: function ()
+	{
+		this.state = 'opening';
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+		}
+
+		this.timeout = setTimeout(this._open, this.options.delay.open);
+	},
+	_open: function ()
+	{
+		if (this.state !== 'opening') return;
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+
+		this.state = 'opened';
+
+		__queue.add(this);
+
+
+		if (this.options.beforeOpen)
+		{
+			this.options.beforeOpen.call(this);
+		}
+
+		var after_open = this.options.afterOpen;
+		after_open && (after_open = after_open.bind(this));
+
+		var nWrapper = this.dom.wrapper;
+		nWrapper.style.display = 'block';
+
+		request_frame(function ()
+		{
+			// fix transtionend event for hidden tab
+			nWrapper.offsetWidth;
+			nWrapper.offsetHeight;
+
+			nWrapper.classList.add(Class.wrapper_visible);
+
+			after_open && after_open();
+		});
+	},
+
+	close: function (_sWho)
+	{
+		if (this.options.modal && _sWho && _sWho !== 'btn') return;
+		if (_sWho === 'esc' && !this.options.escape) return;
+
+
+		this.state = 'closing';
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+		}
+
+		this.timeout = setTimeout(this._close, this.options.delay.close);
+	},
+	_close: function ()
+	{
+		if (this.state !== 'closing') return;
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+
+		this.state = 'closed';
+
+		__queue.remove(this);
+
+
+		if (this.options.beforeClose)
+		{
+			this.options.beforeClose.call(this);
+		}
+
+		var after_close = this.options.afterClose;
+		after_close && (after_close = after_close.bind(this));
+
+		var nWrapper = this.dom.wrapper;
+
+		nWrapper.addEventListener(sTransitionEnd, function on_transitionend (e)
+		{
+			if (e.target === this)
+			{
+				after_close && after_close();
+
+				this.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
+
+				if (this.parentElement)
+				{
+					this.parentElement.removeChild(this);
+				}
+			}
+		}, {passive: true});
+
+		// fix transtionend event for hidden tab
+		nWrapper.offsetWidth;
+		nWrapper.offsetHeight;
+
+		nWrapper.style.pointerEvents = 'none';
+		nWrapper.classList.remove(Class.wrapper_visible);
+	}
+};
+
+
+//Dialog, Alert, Confirm
+(function ()
+{
+	var TYPE = 'dialog',
+		Dialog;
+
+	window.Dialog = Dialog = function (_xContent, _options)
+	{
+		this.buttons =
+		this.options = null;
+
+		return this.init(_xContent, _options);
 	};
 
-	$.popup = _.popup = Popup.open;
+	Dialog.getTitle = function (_xContent, _options)
+	{
+		return Popup.getTitle(_xContent, _options);
+	};
+	Dialog.getContent = function (_xContent, _options)
+	{
+		return Popup.getContent(_xContent, _options);
+	};
+	Dialog.open = function (_xContent, _options)
+	{
+		var oDialog = new Dialog(_options);
 
-	Popup.DEFAULTS = {
-		className: '',
-		closesign: '&#10005;',
-		closebtn: true,
-		modal: false,
-		escape: true,
-		delay: {
-			open: 0,
-			close: 0
+		oDialog.setContent(_xContent);
+		oDialog.open();
+
+		return oDialog;
+	};
+
+	export Dialog;
+
+
+	Dialog.DEFAULTS = {
+		popup: {
+			modal: false,
+			closebtn: true,
+			escape: true
+		},
+		button: {
+			markup: '<button type="button"></button>',
+			className: 'btn',
+			closing: true,
+			callback: false,
+			focus: false
 		},
 
-		beforeOpen: undefined,
-		afterOpen: undefined,
-		beforeClose: undefined,
-		afterClose: undefined,
-		beforeSetContent: undefined,
+		OK: 'OK',
+		Cancel: 'Cancel',
+		titleMarkup: '<p></p>',
+		actionsMarkup: '<div></div>',
+
 		afterSetContent: undefined
 	};
 
-	Popup.prototype = {
-		constructor: Popup,
+	Dialog.prototype = {
+		constructor: Dialog,
 		type: TYPE,
 
 		init: function (_options)
 		{
-			this.options = $.extend(true, {}, Popup.DEFAULTS, _options);
+			this.options = this.getOptions(_options);
+			this.options.popup.className += ' ' + this.type;
 
-			this._open  = this._open.bind(this);
-			this._close = this._close.bind(this);
-
-
-			var nWrapper = document.createElement('div'),
-				nContent = document.createElement('div');
-
-			nWrapper.className = Class.wrapper + ' ' + this.options.className;
-			nWrapper.style.display = 'none';
-
-			nContent.className = Class.content;
-
-			this.dom = {
-				wrapper: nWrapper,
-				content: nContent,
-				inner: null,
-				close: null
-			};
-
-
-			if (!this.options.modal)
-			{
-				nWrapper._jQ().on('click', this.onBgClick.bind(this));
-			}
-
-			nWrapper.appendChild(nContent);
-			__cont.append(nWrapper);
+			this.popup = new Popup(this.options.popup);
 
 			return this;
 		},
-		onBgClick: function (e)
+		getOptions: function (_options)
 		{
-			if (e.target === this.dom.wrapper)
+			var options = extend(true, {}, Dialog.DEFAULTS, _options),
+				xButtons = options.buttons,
+				oButton;
+
+			options.buttons = [];
+
+			if (is_array(xButtons))
 			{
-				this.close();
+				while (oButton = xButtons.shift())
+				{
+					options.buttons.push(extend(true, {}, Dialog.DEFAULTS.button, oButton));
+				}
 			}
+			else if (!!xButtons)
+			{
+				options.buttons.push(extend(true, {}, Dialog.DEFAULTS.button, xButtons));
+			}
+
+			return options;
 		},
 
 		setContent: function (_xContent)
 		{
-			this.dom.content._jQ().html('');
+			var oPopupDom = this.popup.dom;
 
-			if (this.options.beforeSetContent)
+			this.popup.setContent(_xContent);
+
+			if (this.options.buttons.length)
 			{
-				this.options.beforeSetContent.call(this);
-			}
+				this.buttons = [];
 
-			this.dom.content.insertAdjacentHTML('afterbegin', '<div class="' + Class.inner + '"></div>');
-			this.dom.inner = this.dom.content.firstElementChild;
+				var aButtons = this.options.buttons,
+					oButton, nButton, oClassList, i, L;
 
-			var xTitle = this.getTitle(_xContent),
-				xContent = this.getContent(_xContent),
-				nDiv;
+				oPopupDom.content.insertAdjacentHTML('beforeend', this.options.actionsMarkup);
+				oPopupDom.actions = oPopupDom.content.lastElementChild;
+				oPopupDom.actions.classList.add(Class.actions);
 
-			if (xTitle)
-			{
-				nDiv = document.createElement('div');
-				nDiv.className = Class.title;
-
-				if (_.isNode(xTitle))
+				for (i = 0, L = aButtons.length; i < L; i++)
 				{
-					nDiv.appendChild(xTitle);
-				}
-				else
-				{
-					nDiv.insertAdjacentHTML('afterbegin', xTitle);
-				}
+					oButton = aButtons[i];
+					oPopupDom.actions.insertAdjacentHTML('beforeend', oButton.markup);
 
-				this.dom.inner.appendChild(nDiv);
-			}
+					nButton = oPopupDom.actions.lastElementChild;
+					nButton.innerHTML = oButton.text;
 
-			if (xContent)
-			{
-				nDiv = document.createElement('div');
-				nDiv.className = Class.text;
+					oClassList = nButton.classList;
 
-				if (_.isNode(xContent))
-				{
-					nDiv.appendChild(xContent);
-				}
-				else
-				{
-					nDiv.insertAdjacentHTML('afterbegin', xContent);
-				}
-
-				this.dom.inner.appendChild(nDiv);
-			}
-
-			if (this.options.closebtn)
-			{
-				if (this.dom.close === null)
-				{
-					this.dom.wrapper.insertAdjacentHTML('beforeend',
-						'<button type="button">' + this.options.closesign + '</button>');
-					this.dom.close = this.dom.wrapper.lastElementChild;
-
-					var oClassList = this.dom.close.classList;
-
-					_.forEach(Class.close.split(' '), function (_sClassName)
+					if (oButton.className)
 					{
-						oClassList.add(_sClassName);
-					});
-				}
+						for_each(oButton.className.split(' '), function (_sClassName)
+						{
+							oClassList.add(_sClassName);
+						});
+					}
+					if (oButton.class_js)
+					{
+						oClassList.add(oButton.class_js);
+					}
+					if (oButton.closing)
+					{
+						oClassList.add(Class.js_close);
+					}
+					if (oButton.callback)
+					{
+						nButton.addEventListener('click', oButton.callback.bind(this), false);
+					}
+					if (oButton.focus)
+					{
+						nButton.focus();
+					}
 
-				this.dom.content.appendChild(this.dom.close);
+					this.buttons.push(nButton);
+				}
 			}
 
 			if (this.options.afterSetContent)
@@ -554,409 +894,101 @@
 				this.options.afterSetContent.call(this);
 			}
 		},
-		getTitle: function (_xContent)
-		{
-			return Popup.getTitle(_xContent, this.options);
-		},
-		getContent: function (_xContent)
-		{
-			return Popup.getContent(_xContent, this.options);
-		},
-
-		show: function ()
-		{
-			if (this.state === 'closing' || this.state === 'closed') return;
-
-
-			var nWrapper = this.dom.wrapper;
-
-			nWrapper.style.display = 'block';
-			nWrapper.style.pointerEvents = 'auto';
-
-			request_frame(function ()
-			{
-				nWrapper.classList.add(Class.wrapper_visible);
-			});
-		},
-		hide: function ()
-		{
-			if (this.state === 'closing' || this.state === 'closed') return;
-
-
-			var nWrapper = this.dom.wrapper;
-
-			nWrapper.addEventListener(sTransitionEnd, function on_transitionend (e)
-			{
-				if (e.target === this)
-				{
-					this.style.display = 'none';
-					this.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
-				}
-			}, {passive: true});
-
-			// fix transtionend event for hidden tab
-			nWrapper.offsetWidth;
-			nWrapper.offsetHeight;
-
-			nWrapper.style.pointerEvents = 'none';
-			nWrapper.classList.remove(Class.wrapper_visible);
-		},
 
 		open: function ()
 		{
-			this.state = 'opening';
-
-			if (this.timeout)
-			{
-				clearTimeout(this.timeout);
-			}
-
-			this.timeout = setTimeout(this._open, this.options.delay.open);
+			this.popup.open();
 		},
-		_open: function ()
+		close: function ()
 		{
-			if (this.state !== 'opening') return;
-
-			if (this.timeout)
-			{
-				clearTimeout(this.timeout);
-				this.timeout = null;
-			}
-
-			this.state = 'opened';
-
-			__queue.add(this);
-
-
-			if (this.options.beforeOpen)
-			{
-				this.options.beforeOpen.call(this);
-			}
-
-			var after_open = this.options.afterOpen;
-			after_open && (after_open = after_open.bind(this));
-
-			var nWrapper = this.dom.wrapper;
-			nWrapper.style.display = 'block';
-
-			request_frame(function ()
-			{
-				// fix transtionend event for hidden tab
-				nWrapper.offsetWidth;
-				nWrapper.offsetHeight;
-
-				nWrapper.classList.add(Class.wrapper_visible);
-
-				after_open && after_open();
-			});
-		},
-
-		close: function (_sWho)
-		{
-			if (this.options.modal && _sWho && _sWho !== 'btn') return;
-			if (_sWho === 'esc' && !this.options.escape) return;
-
-
-			this.state = 'closing';
-
-			if (this.timeout)
-			{
-				clearTimeout(this.timeout);
-			}
-
-			this.timeout = setTimeout(this._close, this.options.delay.close);
-		},
-		_close: function ()
-		{
-			if (this.state !== 'closing') return;
-
-			if (this.timeout)
-			{
-				clearTimeout(this.timeout);
-				this.timeout = null;
-			}
-
-			this.state = 'closed';
-
-			__queue.remove(this);
-
-
-			if (this.options.beforeClose)
-			{
-				this.options.beforeClose.call(this);
-			}
-
-			var after_close = this.options.afterClose;
-			after_close && (after_close = after_close.bind(this));
-
-			var nWrapper = this.dom.wrapper;
-
-			nWrapper.addEventListener(sTransitionEnd, function on_transitionend (e)
-			{
-				if (e.target === this)
-				{
-					after_close && after_close();
-
-					this.removeEventListener(sTransitionEnd, on_transitionend, {passive: true});
-					this._jQ().remove();
-				}
-			}, {passive: true});
-
-			// fix transtionend event for hidden tab
-			nWrapper.offsetWidth;
-			nWrapper.offsetHeight;
-
-			nWrapper.style.pointerEvents = 'none';
-			nWrapper.classList.remove(Class.wrapper_visible);
+			this.popup.close();
 		}
 	};
 
-	//Dialog, Alert, Confirm
-	(function ()
+
+	export function alert (_xContent, _options)
 	{
-		var TYPE = 'dialog',
-			Dialog;
+		_options || (_options = {});
 
-		window.Dialog = Dialog = function (_xContent, _options)
+		if (isMobile)
 		{
-			this.buttons =
-			this.options = null;
+			var xTitle = Dialog.getTitle(_xContent, _options),
+				xContent = Dialog.getContent(_xContent, _options),
+				sConnect = xTitle.toString() && xContent.toString() ? ': ' : '';
 
-			return this.init(_xContent, _options);
-		};
+			alert((xTitle && xTitle.toString() || '') + sConnect +
+				(xContent && (xContent.innerHTML || xContent.toString()) || ''));
 
-		Dialog.getTitle = function (_xContent, _options)
-		{
-			return Popup.getTitle(_xContent, _options);
-		};
-		Dialog.getContent = function (_xContent, _options)
-		{
-			return Popup.getContent(_xContent, _options);
-		};
-		Dialog.open = function (_xContent, _options)
-		{
-			var oDialog = new Dialog(_options);
+			_options.callback && _options.callback();
 
-			oDialog.setContent(_xContent);
-			oDialog.open();
+			return null;
+		}
 
-			return oDialog;
-		};
-
-		$.dialog = Dialog.open;
-
-		Dialog.DEFAULTS = {
-			popup: {
-				modal: false,
-				closebtn: true,
-				escape: true
-			},
-			button: {
-				markup: '<button type="button"></button>',
-				className: 'btn',
-				closing: true,
-				callback: false,
-				focus: false
-			},
-
-			OK: 'OK',
-			Cancel: 'Cancel',
-			titleMarkup: '<p></p>',
-			actionsMarkup: '<div></div>',
-
-			afterSetContent: undefined
-		};
-
-		Dialog.prototype = {
-			constructor: Dialog,
-			type: TYPE,
-
-			init: function (_options)
-			{
-				this.options = this.getOptions(_options);
-				this.options.popup.className += ' ' + this.type;
-
-				this.popup = new Popup(this.options.popup);
-
-				return this;
-			},
-			getOptions: function (_options)
-			{
-				var options = $.extend(true, {}, Dialog.DEFAULTS, _options),
-					xButtons = options.buttons,
-					oButton;
-
-				options.buttons = [];
-
-				if (_.isArray(xButtons))
-				{
-					while (oButton = xButtons.shift())
-					{
-						options.buttons.push($.extend(true, {}, Dialog.DEFAULTS.button, oButton));
-					}
+		var settings = {
+				buttons: {
+					text: Dialog.DEFAULTS.OK,
+					class_js: Class.js_ok.slice(1),
+					className: 'btn btn-primary',
+					focus: true
+				},
+				popup: {
+					className: TYPE + '--alert',
+					beforeClose: _options.callback
 				}
-				else if (!!xButtons)
-				{
-					options.buttons.push($.extend(true, {}, Dialog.DEFAULTS.button, xButtons));
-				}
+			};
 
-				return options;
-			},
+		Dialog.open(_xContent, extend(true, settings, _options));
+	};
 
-			setContent: function (_xContent)
-			{
-				var oPopupDom = this.popup.dom;
+	export function confirm (_xContent, _options)
+	{
+		_options || (_options = {});
 
-				this.popup.setContent(_xContent);
-
-				if (this.options.buttons.length)
-				{
-					this.buttons = [];
-
-					var aButtons = this.options.buttons,
-						oButton, nButton, oClassList, i, L;
-
-					oPopupDom.content.insertAdjacentHTML('beforeend', this.options.actionsMarkup);
-					oPopupDom.actions = oPopupDom.content.lastElementChild;
-					oPopupDom.actions.classList.add(Class.actions);
-
-					for (i = 0, L = aButtons.length; i < L; i++)
-					{
-						oButton = aButtons[i];
-						oPopupDom.actions.insertAdjacentHTML('beforeend', oButton.markup);
-
-						nButton = oPopupDom.actions.lastElementChild;
-						nButton.innerHTML = oButton.text;
-
-						oClassList = nButton.classList;
-
-						if (oButton.className)
-						{
-							_.forEach(oButton.className.split(' '), function (_sClassName)
-							{
-								oClassList.add(_sClassName);
-							});
-						}
-						if (oButton.class_js)
-						{
-							oClassList.add(oButton.class_js);
-						}
-						if (oButton.closing)
-						{
-							oClassList.add(Class.js_close.slice(1));
-						}
-						if (oButton.callback)
-						{
-							nButton._jQ().on('click', oButton.callback.bind(this));
-						}
-						if (oButton.focus)
-						{
-							nButton.focus();
-						}
-
-						this.buttons.push(nButton);
-					}
-				}
-
-				if (this.options.afterSetContent)
-				{
-					this.options.afterSetContent.call(this);
-				}
-			},
-
-			open: function ()
-			{
-				this.popup.open();
-			},
-			close: function ()
-			{
-				this.popup.close();
-			}
-		};
-
-		window._alert = function (_xContent, _options)
+		if (isMobile)
 		{
-			_options || (_options = {});
+			var xTitle = Dialog.getTitle(_xContent, _options),
+				xContent = Dialog.getContent(_xContent, _options).toString(),
+				sConnect = xTitle.toString() && xContent.toString() ? ': ' : '',
 
-			if (_.isMobile)
-			{
-				var xTitle = Dialog.getTitle(_xContent, _options),
-					xContent = Dialog.getContent(_xContent, _options),
-					sConnect = xTitle.toString() && xContent.toString() ? ': ' : '';
-
-				alert((xTitle && xTitle.toString() || '') + sConnect +
+				bConfirmed = confirm((xTitle ? xTitle.toString() : '') + sConnect +
 					(xContent && (xContent.innerHTML || xContent.toString()) || ''));
 
-				_options.callback && _options.callback();
-
-				return null;
+			if (bConfirmed)
+			{
+				_options.confirmed && _options.confirmed();
+			}
+			else
+			{
+				_options.rejected && _options.rejected();
 			}
 
-			var settings = {
-					buttons: {
+			return null;
+		}
+
+		var settings = {
+				buttons: [
+					{
 						text: Dialog.DEFAULTS.OK,
 						class_js: Class.js_ok.slice(1),
 						className: 'btn btn-primary',
-						focus: true
+						focus: true,
+						callback: _options.confirmed
 					},
-					popup: {
-						className: TYPE + '--alert',
-						beforeClose: _options.callback
+					{
+						text: Dialog.DEFAULTS.Cancel,
+						class_js: Class.js_cancel.slice(1),
+						className: 'btn btn-default',
+						callback: _options.rejected
 					}
-				};
-
-			Dialog.open(_xContent, $.extend(true, settings, _options));
-		};
-		window._confirm = function (_xContent, _options)
-		{
-			_options || (_options = {});
-
-			if (_.isMobile)
-			{
-				var xTitle = Dialog.getTitle(_xContent, _options),
-					xContent = Dialog.getContent(_xContent, _options).toString(),
-					sConnect = xTitle.toString() && xContent.toString() ? ': ' : '',
-
-					bConfirmed = confirm((xTitle ? xTitle.toString() : '') + sConnect +
-						(xContent && (xContent.innerHTML || xContent.toString()) || ''));
-
-				if (bConfirmed)
-				{
-					_options.confirmed && _options.confirmed();
+				],
+				popup: {
+					className: TYPE + '--confirm',
+					modal: true,
+					escape: false,
+					closebtn: false
 				}
-				else
-				{
-					_options.rejected && _options.rejected();
-				}
+			};
 
-				return null;
-			}
-
-			var settings = {
-					buttons: [
-						{
-							text: Dialog.DEFAULTS.OK,
-							class_js: Class.js_ok.slice(1),
-							className: 'btn btn-primary',
-							focus: true,
-							callback: _options.confirmed
-						},
-						{
-							text: Dialog.DEFAULTS.Cancel,
-							class_js: Class.js_cancel.slice(1),
-							className: 'btn btn-default',
-							callback: _options.rejected
-						}
-					],
-					popup: {
-						className: TYPE + '--confirm',
-						modal: true,
-						escape: false,
-						closebtn: false
-					}
-				};
-
-			Dialog.open(_xContent, $.extend(true, settings, _options));
-		};
-	})();
-})(window.jQuery, window._);
+		Dialog.open(_xContent, extend(true, settings, _options));
+	};
+})();
