@@ -76,6 +76,7 @@ Tooltip.prototype =
 {
 	constructor: Tooltip,
 	type: TYPE,
+	noop: function () {},
 
 	init: function (_nElem, _options)
 	{
@@ -84,7 +85,6 @@ Tooltip.prototype =
 
 		this.options      =
 		this.isHidden     =
-		this.visState     =
 		this.timeout      =
 		this.closeTimeout =
 		this.eventTargets =
@@ -207,8 +207,6 @@ Tooltip.prototype =
 	},
 	destroy: function ()
 	{
-		this.visState = 'out';
-
 		this.wrapper.placer && this.wrapper.placer.destroy();
 		this.timeout && clearTimeout(this.timeout);
 		this.closeTimeout && clearTimeout(this.closeTimeout);
@@ -217,7 +215,12 @@ Tooltip.prototype =
 
 		delete this.element['_' + TYPE];
 
-		this.show = this._show = this.toggle = function (){};
+
+		this.destroy =
+		this.show =
+		this._show =
+		this.toggle = this.noop;
+
 		this.hide();
 	},
 
@@ -314,7 +317,7 @@ Tooltip.prototype =
 
 	toggle: function (e)
 	{
-		this.visState === 'show' ? this.hide(e) : this.show(e);
+		this.isHidden ? this.show(e) : this.hide(e);
 	},
 
 	show: function (e, _sActionType)
