@@ -1,4 +1,7 @@
+import './polifyll/CustomEvent.js';
+
 import {isTouchable} from './helpers/useragent.js';
+import support       from './helpers/support.js';
 
 import is_function   from './utils/isFunction.js';
 import is_object     from './utils/isObject.js';
@@ -14,6 +17,7 @@ export default function Tooltip (_nElem, _options)
 
 
 const TYPE = 'tooltip';
+const sTransitionEnd = support.transition.end;
 
 Tooltip.get = function (_nElem, _options)
 {
@@ -33,20 +37,23 @@ Tooltip.get = function (_nElem, _options)
 };
 
 Tooltip.DEFAULTS = {
-	animation: true,
-	trigger: 'hover focus',
-	triggerer: 'target', // target|self|both
-	message: '',
-	delay: 0,
+	message: '', // string|function
 	type: 'info',
+	trigger: 'hover focus', // string|{show:string, hide:string}
+	triggerer: 'target', // target|self|both
+
+	once: false,
 	visible: false,
+	animation: true,
+
+	delay: 0,
 	close: 0,
-	closeBtn: false,
-	destroy: false,
-	selector: false,
-	delegate_target: true,
+
 	no_arrow: false,
-	self: false, // true|false|show|hide|both
+	close_btn: false, // string
+
+	selector: false,
+	show_at_selected: false,
 
 	location: {
 		position: 'top',
@@ -77,9 +84,9 @@ Tooltip.prototype =
 
 		this.options      =
 		this.isHidden     =
+		this.visState     =
 		this.timeout      =
 		this.closeTimeout =
-		this.hoverState   =
 		this.eventTargets =
 		this.element      =
 		this.target       = null;
@@ -87,12 +94,15 @@ Tooltip.prototype =
 
 		this.element = _nElem;
 		this.target  = _nElem.__resolveTarget && _nElem.__resolveTarget() || _nElem;
-		this.options = _getOptions.call(this, _options);
+		this.options = this.getOptions(_nElem, _options);
 
 		this.placeTo = {
 			target: this.target,
 			location: this.options.location
 		};
+
+		this.isHidden = true;
+		this.eventTargets = [];
 
 		var options = this.options;
 
@@ -103,7 +113,7 @@ Tooltip.prototype =
 
 			nDiv.className = TYPE + '_' + 'wrp';
 			nDiv.style.position = options.location.fixed ? 'fixed' : 'absolute';
-			nDiv.style.zIndex = 10000000
+			nDiv.style.zIndex = 10000000;
 
 			return nDiv;
 		})
@@ -120,7 +130,7 @@ Tooltip.prototype =
 				' ' + (options.location.fixed ? 'fixed' : '') + 
 				' ' + (options.location.side === 'in' ? 'inset': 'outset');
 
-			nDiv.innerHTML = _getCloseBtn.call(this) + _getMessage.call(this);
+			nDiv.innerHTML = this.getCloseBtn() + this.getMessage();
 
 			return nDiv;
 		})
@@ -129,44 +139,42 @@ Tooltip.prototype =
 		this.wrapper.appendChild(this.template);
 
 
-		this.isHidden = true;
-		this.eventTargets = [];
-
-
 		var xTrigger = options.trigger,
-			xTriggerer = options.triggerer,
-			sTriggererShow = is_string(xTriggerer) ? xTriggerer : xTriggerer.show,
-			sTriggererHide = is_string(xTriggerer) ? xTriggerer : xTriggerer.hide;
+			sTriggerer = options.triggerer,
+			sTriggererShow = is_string(sTriggerer) ? sTriggerer : sTriggerer.show,
+			sTriggererHide = is_string(sTriggerer) ? sTriggerer : sTriggerer.hide;
 
 		if (xTrigger && (xTrigger.show || xTrigger.hide))
 		{
-			var sTriggers = '';
+			var sTriggers = '',
+				sTriggersShow = xTrigger.show,
+				sTriggersHide = xTrigger.hide;
 
-			if (xTrigger.show)
+			if (sTriggersShow)
 			{
-				sTriggers += ' ' + xTrigger.show;
+				sTriggers += ' ' + sTriggersShow;
 
 				if (sTriggererShow === 'both' || sTriggererShow === 'self')
 				{
-					_setHandlers.call(this, this.template, xTrigger.show, 'show');
+					this._setupTriggers(this.template, sTriggersShow, 'show');
 				}
 				if (sTriggererShow === 'both' || sTriggererShow === 'target')
 				{
-					_setHandlers.call(this, this.target, xTrigger.show, 'show');
+					this._setupTriggers(this.target, sTriggersShow, 'show');
 				}
 			}
 
-			if (xTrigger.hide)
+			if (sTriggersHide)
 			{
-				sTriggers += ' ' + xTrigger.hide;
+				sTriggers += ' ' + sTriggersHide;
 
 				if (sTriggererHide === 'both' || sTriggererHide === 'self')
 				{
-					_setHandlers.call(this, this.template, xTrigger.hide, 'hide');
+					this._setupTriggers(this.template, sTriggersHide, 'hide');
 				}
 				if (sTriggererHide === 'both' || sTriggererHide === 'target')
 				{
-					_setHandlers.call(this, this.target, xTrigger.hide, 'hide');
+					this._setupTriggers(this.target, sTriggersHide, 'hide');
 				}
 			}
 
@@ -174,21 +182,20 @@ Tooltip.prototype =
 		}
 		else if (xTrigger)
 		{
-			if (sTriggererShow === 'both' || sTriggererShow === 'self')
+			if (sTriggerer === 'both' || sTriggerer === 'self')
 			{
-				_setHandlers.call(this, this.template, xTrigger);
+				this._setupTriggers(this.template, xTrigger);
 			}
-			if (sTriggererShow === 'both' || sTriggererShow === 'target')
+			if (sTriggerer === 'both' || sTriggerer === 'target')
 			{
-				_setHandlers.call(this, this.target, xTrigger);
+				this._setupTriggers(this.target, xTrigger);
 			}
 		}
 
 
 		if (this.template.querySelector('.js-close') !== null)
 		{
-			this.template.addEventListener('click',
-				_onSelectorMatch('.js-close', this.hide.bind(this)), false);
+			this._attachEvent(this.template, 'click', '.js-close', this.hide.bind(this));
 		}
 
 		if (options.visible)
@@ -200,199 +207,27 @@ Tooltip.prototype =
 	},
 	destroy: function ()
 	{
-		this.hoverState = 'out';
+		this.visState = 'out';
 
 		this.wrapper.placer && this.wrapper.placer.destroy();
 		this.timeout && clearTimeout(this.timeout);
 		this.closeTimeout && clearTimeout(this.closeTimeout);
 
-		var that = this;
+		this._removeEvents();
 
-		for_each(this.eventTargets, function (_nTarget)
-		{
-			// TODO
-			//_nTarget._jQ().off('.' + that.type);
-		});
 		delete this.element['_' + TYPE];
 
-		_hide.call(this);
+		this.show = this._show = this.toggle = function (){};
+		this.hide();
 	},
 
-	show: function (e)
-	{
-		if (this.options.selector && !this.options.delegate_target &&
-			e && e.currentTarget !== e.delegateTarget)
-		{
-			this.target = e.currentTarget;
-			this.template.innerHTML = _getCloseBtn.call(this) + _getMessage.call(this);
-			this.placeTo.update = true;
-			this.placeTo.target = this.target;
-		}
-		else
-		{
-			this.placeTo.update = false;
-		}
-
-		if (!this.isHidden) return false;
-
-
-		this.hoverState = 'in';
-
-		if (this.timeout)
-		{
-			clearTimeout(this.timeout);
-		}
-
-		var that = this;
-
-		this.timeout = setTimeout(function ()
-		{
-			if (that.hoverState === 'in')
-			{
-				that._show();
-			}
-		}, this.options.delay.show);
-	},
-	hide: function (e)
-	{
-		if (this.isHidden)
-		{
-			return false;
-		}
-
-		/* if element is still in focus and its tooltip should be closed on blur - do nothing */
-		if (e &&
-			e.type.toLowerCase() !== 'blur' &&
-			((is_string(this.options.trigger) && this.options.trigger.indexOf('focus') > -1) ||
-			 (this.options.trigger.hide && this.options.trigger.hide.indexOf('blur') > -1)) &&
-			document.activeElement === this.target)
-		{
-			return false;
-		}
-
-		this.hoverState = 'out';
-
-		if (this.timeout)
-		{
-			clearTimeout(this.timeout);
-		}
-
-		var that = this;
-
-		this.timeout = setTimeout(function ()
-		{
-			if (that.hoverState === 'out')
-			{
-				that.options.destroy ? that.destroy() : that._hide();
-			}
-		}, this.options.delay.hide);
-	},
-	toggle: function (e)
-	{
-		this.template.classList.contains('in') ? this.hide(e) : this.show(e);
-	},
-
-	_show: function ()
-	{
-		if (!this.isHidden) return false;
-
-
-		this.isHidden = false;
-
-		if (this.options.animation)
-		{
-			this.template.removeEventListener('transitionend', this._onTrsnEndHide, false);
-		}
-
-		if (this.options.location.fixed)
-		{
-			this.template.style.maxWidth = 'none';
-		}
-
-		if (this.wrapper.parentElement)
-		{
-			this.wrapper.parentElement.removeChild(this.wrapper);
-		}
-
-		Placer.placeTo(this.wrapper, this.placeTo);
-
-		this.template.classList.remove('out');
-		this.template.classList.add('in');
-
-		// TODO
-		//this.element._jQ().trigger( TYPE + '-show');
-		//this.template._jQ().trigger(TYPE + '-show');
-
-		if (this.options.close > 0)
-		{
-			var that = this;
-
-			this.closeTimeout = setTimeout(function ()
-			{
-				that[that.options.destroy ? 'destroy' : 'hide']();
-			}, this.options.close * 1000);
-		}
-
-		return true;
-	},
-	_hide: function ()
-	{
-		var that = this;
-
-		if (this.isHidden)
-		{
-			this._afterHide();
-		}
-		else
-		{
-			if (this.options.animation)
-			{
-				this.template.addEventListener('transitionend', this._onTrsnEndHide, false);
-			}
-			else
-			{
-				this._afterHide();
-			}
-
-			this.template.classList.remove('in');
-			this.template.classList.add('out');
-		}
-
-		this.isHidden = true;
-
-		return this;
-	},
-
-	_afterHide: function ()
-	{
-		if (this.wrapper.parentElement)
-		{
-			this.wrapper.parentElement.removeChild(this.wrapper);
-		}
-
-		// TODO
-		//this.element._jQ().trigger( TYPE + '-hide');
-		//this.template._jQ().trigger(TYPE + '-hide');
-	},
-	_onTrsnEndHide: function ()
-	{
-		this.template.removeEventListener('transitionend', this._onTrsnEndHide, false);
-
-		if (this.hoverState === 'out')
-		{
-			this._afterHide();
-		}
-	}
-};
-
-
-var _getOptions = function (_options)
+	getOptions: function (_nElem, _options)
 	{
 		var oData;
 
 		try
 		{
-			oData = JSON.parse(this.element.getAttribute('data-' + TYPE));
+			oData = JSON.parse(_nElem.getAttribute('data-' + TYPE));
 		}
 		catch (e)
 		{
@@ -421,7 +256,7 @@ var _getOptions = function (_options)
 
 		return options;
 	},
-	_getMessage = function ()
+	getMessage: function ()
 	{
 		var sMessage = '',
 			el = this.element;
@@ -447,69 +282,277 @@ var _getOptions = function (_options)
 
 		return sMessage;
 	},
-	_getCloseBtn = function ()
+	getCloseBtn: function ()
 	{
-		var xTrigger = this.options.trigger;
+		if (this.options.close_btn)
+		{
+			return this.options.close_btn;
+		}
 
-		return this.options.closeBtn || this.options.self &&
-			(
-				is_string(xTrigger) ?
-					(xTrigger.indexOf('click') > -1) :
-					(xTrigger.hide && xTrigger.hide.indexOf('click') > -1)
-			)
-			&& '<span class="js-close close"></span>'
-			|| '';
+
+		var xTrigger = this.options.trigger,
+			sTriggerHide = xTrigger.hide || xTrigger,
+
+			xTriggerer = this.options.triggerer,
+			sTriggererHide = xTriggerer.hide || xTriggerer,
+
+			bSelf = sTriggererHide === 'self' || sTriggererHide === 'both';
+
+		if (bSelf && sTriggerHide.indexOf('click') > -1)
+		{
+			return '<span class="js-close close"></span>';
+		}
+
+		return '';
 	},
-	_setHandlers = function (_nTarget, _aTriggers, _sAction)
-	{
-		this.eventTargets.push(_nTarget);
 
-		var aTriggers = _aTriggers.split(' '),
-			sAction = _sAction || 'toggle',
-			sEventIn, sEventOut, sTrigger, i, L;
+
+	showtouch: function (e)
+	{
+		this.show(e, 'showtouch');
+	},
+
+	toggle: function (e)
+	{
+		this.visState === 'show' ? this.hide(e) : this.show(e);
+	},
+
+	show: function (e, _sActionType)
+	{
+		var bShowAtSelected = this.options.selector && this.options.show_at_selected;
+
+		if (bShowAtSelected && e && e.currentTarget !== e.delegateTarget)
+		{
+			if (this.target !== e.currentTarget)
+			{
+				this.isHidden = true;
+			}
+
+			this.target = e.currentTarget;
+			this.placeTo.update = true;
+
+			this.template.innerHTML = this.getCloseBtn() + this.getMessage();
+			this.placeTo.target = this.target;
+		}
+		else
+		{
+			this.placeTo.update = false;
+		}
+
+
+		if (!this.isHidden) return false;
+
+		this.isHidden = false;
+
+		if (this.options.animation)
+		{
+			this.template.removeEventListener(sTransitionEnd, this._onTrsnEndHide, false);
+		}
+
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+		}
+
+		var that = this;
+
+		this.timeout = setTimeout(function ()
+		{
+			if (!that.isHidden)
+			{
+				that._show(_sActionType);
+			}
+		}, this.options.delay.show);
+	},
+	_show: function (_sActionType)
+	{
+		if (this.options.location.fixed)
+		{
+			this.template.style.maxWidth = 'none';
+		}
+
+		if (this.wrapper.parentElement)
+		{
+			this.wrapper.parentElement.removeChild(this.wrapper);
+		}
+
+		Placer.placeTo(this.wrapper, this.placeTo);
+
+
+		this.template.classList.remove('out');
+		this.template.classList.add('in');
+
+		this.element.dispatchEvent(new CustomEvent(TYPE + '-show'));
+		this.template.dispatchEvent(new CustomEvent(TYPE + '-show'));
+
+
+		var iClose = this.options.close;
+
+		if (iClose === 0 && _sActionType === 'showtouch')
+		{
+			iClose = 1.5;
+		}
+
+		if (iClose > 0)
+		{
+			this.closeTimeout = setTimeout(this.hide.bind(this), iClose * 1000);
+		}
+
+		return true;
+	},
+
+	hide: function (e)
+	{
+		if (this.isHidden) return false;
+
+
+		var xTrigger = this.options.trigger,
+			bHideOnBlur = is_string(xTrigger) ?
+				xTrigger.indexOf('focus') > -1 :
+				xTrigger.hide.indexOf('blur') > -1;
+
+		/* if element is still in focus and its tooltip should be closed on blur - do nothing */
+		if (e && e.type.toLowerCase() !== 'blur' && bHideOnBlur && document.activeElement === this.target)
+		{
+			return false;
+		}
+
+
+		this.isHidden = true;
+
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+		}
+
+		var that = this;
+
+		this.timeout = setTimeout(function ()
+		{
+			if (that.isHidden)
+			{
+				that._hide();
+			}
+		}, this.options.delay.hide);
+	},
+	_hide: function ()
+	{
+		if (this.options.animation)
+		{
+			this.template.addEventListener(sTransitionEnd, this._onTrsnEndHide, false);
+		}
+		else
+		{
+			this._afterHide();
+		}
+
+		this.template.classList.remove('in');
+		this.template.classList.add('out');
+
+		return this;
+	},
+	_onTrsnEndHide: function ()
+	{
+		this.template.removeEventListener(sTransitionEnd, this._onTrsnEndHide, false);
+
+		if (this.isHidden)
+		{
+			this._afterHide();
+		}
+	},
+	_afterHide: function ()
+	{
+		if (this.wrapper.parentElement)
+		{
+			this.wrapper.parentElement.removeChild(this.wrapper);
+		}
+
+		this.element.dispatchEvent(new CustomEvent(TYPE + '-hide'));
+		this.template.dispatchEvent(new CustomEvent(TYPE + '-hide'));
+
+		if (this.options.once)
+		{
+			this.destroy();
+		}
+	},
+
+
+	_setupTriggers: function (_nTarget, _sTriggers, _sAction)
+	{
+		var aTriggers = _sTriggers.split(' '),
+			sEventIn, sEventOut, sEvent,
+			i, L;
 
 		for (i = 0, L = aTriggers.length; i < L; i++)
 		{
-			sTrigger = aTriggers[i];
+			sEvent = aTriggers[i];
 
-			if (sTrigger === 'hover' || sTrigger === 'focus')
+			if (isTouchable &&
+				(sEvent === 'hover' || sEvent === 'mouseenter') && (!_sAction || _sAction === 'show'))
 			{
-				sEventIn  = sTrigger === 'hover' ? 'mouseenter' : 'focus';
-				sEventOut = sTrigger === 'hover' ? 'mouseleave' : 'blur';
+				this._attachEvent(_nTarget, 'touchstart', this.options.selector, this.showtouch.bind(this));
+			}
+			else if (_sAction)
+			{
+				this._attachEvent(_nTarget, sEvent, this.options.selector, this[_sAction].bind(this));
+			}
+			else if (sEvent === 'hover' || sEvent === 'focus')
+			{
+				sEventIn  = sEvent === 'hover' ? 'mouseenter' : 'focus';
+				sEventOut = sEvent === 'hover' ? 'mouseleave' : 'blur';
 
-				if (isTouchable && sEventIn === 'mouseenter')
-				{
-					this.options.close || (this.options.close = 1);
-
-					_nTarget.addEventListener('touchstart',
-						_onSelectorMatch(this.options.selector, this.show.bind(this)), false);
-				}
-				else
-				{
-					_nTarget.addEventListener(sEventIn,
-						_onSelectorMatch(this.options.selector, this.show.bind(this)), false);
-
-					_nTarget.addEventListener(sEventOut,
-						_onSelectorMatch(this.options.selector, this.hide.bind(this)), false);
-				}
+				this._attachEvent(_nTarget, sEventIn,  this.options.selector, this.show.bind(this));
+				this._attachEvent(_nTarget, sEventOut, this.options.selector, this.hide.bind(this));
 			}
 			else
 			{
-				_nTarget.addEventListener(sTrigger,
-					_onSelectorMatch(this.options.selector, this[sAction].bind(this)), false);
+				this._attachEvent(_nTarget, sEvent, this.options.selector, this.toggle.bind(this));
 			}
 		}
 	},
 
-	_onSelectorMatch = function (_sSelector, _callback)
+	_attachEvent: function (_nTarget, _sEvent, _sSelector, _callback)
+	{
+		if (_sSelector)
+		{
+			var handler = this._onSelectorMatch(_sSelector, _callback);
+
+			_nTarget.addEventListener(_sEvent, handler, false);
+
+			this.eventTargets.push([_nTarget, _sEvent, handler]);
+		}
+		else
+		{
+			_nTarget.addEventListener(_sEvent, _callback, false);
+
+			this.eventTargets.push([_nTarget, _sEvent, _callback]);
+		}
+	},
+	_removeEvents: function ()
+	{
+		for_each(this.eventTargets, function (_oData)
+		{
+			_oData[0].removeEventListener(_oData[1], _oData[2], false);
+		});
+
+		this.eventTargets.length = 0;
+	},
+
+	_onSelectorMatch: function (_sSelector, _callback)
 	{
 		return function (e)
 		{
+			e.delegateTarget = this;
+
 			var nTarget = e.target,
 				aTargets = this.querySelectorAll(_sSelector);
 
 			if (aTargets.indexOf(nTarget) > -1)
 			{
+				e.currentTarget = nTarget;
+
 				_callback(e);
 			}
 			else
@@ -518,10 +561,13 @@ var _getOptions = function (_options)
 				{
 					if (aTargets[i].contains(nTarget))
 					{
+						e.currentTarget = aTargets[i];
+
 						_callback(e);
 						break;
 					}
 				}
 			}
 		};
-	};
+	}
+};
