@@ -530,7 +530,11 @@ Dropdown.prototype =
 	{
 		this.update(_xNewSelected);
 
-		if (this.$.filteredLength === 0 || !this.isActive()) return false;
+		if (this.$.filteredLength === 0 || !this.isActive()) 
+		{
+			this.hide();
+			return false;
+		}
 
 		this.$.open = true;
 
