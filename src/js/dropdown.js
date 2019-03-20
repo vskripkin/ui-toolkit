@@ -331,6 +331,12 @@ Dropdown.prototype =
 		this.scrollTop = 0;
 		this.options = extend(true, {}, Dropdown.DEFAULTS, _options);
 
+		if (is_array(_options.items))
+		{
+			this.options.items = _options.items;
+		}
+
+
 		if (this.options.isActive) this.isActive = this.options.isActive;
 
 		if (this.options.filter) this.method = 'filter';
