@@ -75,7 +75,7 @@ gulp.task('css:build', function ()
 
 gulp.task('js:watch', function ()
 {
-	return gulp.src(path.watch.js)
+	return gulp.src(path.src.js)
 		.pipe(sourcemaps.init())
 		.pipe(reference())
 		.pipe(sourcemaps.write('.'))
@@ -83,7 +83,7 @@ gulp.task('js:watch', function ()
 });
 gulp.task('css:watch', function ()
 {
-	return gulp.src(path.watch.css)
+	return gulp.src(path.src.css)
 		.pipe(reference())
 		.pipe(less())
 		.on('error', logError)
