@@ -808,7 +808,7 @@ Dropdown.prototype =
 	{
 		if (typeof this.$.options[index] === 'undefined') return undefined;
 
-		return (this.$.options[index].textContent || $.options[index].innerText);
+		return (this.$.options[index].textContent || this.$.options[index].innerText);
 	},
 
 	getOptions: function (_bFiltered)

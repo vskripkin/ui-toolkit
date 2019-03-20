@@ -42,7 +42,7 @@ export default function extend (_oTarget)
 
 
 			// Recurse if we're merging plain objects or arrays
-			if (deep && copy && ($.isPlainObject(copy) || (copyIsArray = Array.isArray(copy))))
+			if (deep && copy && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy))))
 			{
 				src = _oTarget[name];
 
@@ -51,7 +51,7 @@ export default function extend (_oTarget)
 				{
 					clone = [];
 				}
-				else if (!copyIsArray && !$.isPlainObject(src))
+				else if (!copyIsArray && !isPlainObject(src))
 				{
 					clone = {};
 				}
