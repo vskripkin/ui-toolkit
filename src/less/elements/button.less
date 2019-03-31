@@ -1,5 +1,161 @@
 #ui()
 {
+	.make-button(
+		@font-size:    @button-font-size,
+		@padding-ver:  @button-padding-ver,
+		@paddong-hor:  @button-padding-hor,
+		@border-width: @button-border-width,
+		@pre:          @button-class-prefix)
+	{
+		#ui-button.template(@font-size, @padding-ver, @paddong-hor, @border-width);
+		#ui-button.sizes(@font-size, @pre);
+
+
+		&.__link
+		{
+			.colors(#000, #AAA, #FFF);
+
+			.font(1,2);
+			.border(2,false);
+			.bg(2,3);
+		}
+
+		.color(@1, @2, @3)
+		{
+			@colors: {
+				@1: @1;
+				@2: @2;
+				@3: @3;
+			};
+		}
+
+		.font(@default, @hover, @active: false)
+		{
+			@font-default-color: if(@default > 0,
+				@colors[@@default],
+				transparent
+			);
+
+			@font-hover-color: if(@hover = false,
+				false,
+				if(@hover > 0,
+					@colors[@@hover],
+					#ui.hover-bg(@hover, @font-default-color)[result]
+				)
+			);
+
+			@font-active-color: if(@active = false,
+				false,
+				if(@active > 0,
+					@colors[@@active],
+					if(@font-hover-color = false,
+						#ui.hover-bg(@active, @font-default-color)[result],
+						#ui.active-bg(@font-hover-color)[result]
+					)
+				)
+			);
+
+
+			&, &::before, &::after { color: @font-default-color; }
+
+			& when (@font-hover-color) and (@font-active-color)
+			{
+				&:hover
+				{
+					&, &::before, &::after { color: @font-hover-color; }
+				}
+			}
+			& when (@font-hover-color) and not (@font-active-color)
+			{
+				&:hover, &:active, &.@{pre}active
+				{
+					&, &::before, &::after { color: @font-hover-color; }
+				}
+			}
+			& when (@font-active-color)
+			{
+				&:active, &.@{pre}active
+				{
+					&, &::before, &::after { color: @font-active-color; }
+				}
+			}
+			& when (@font-hover-color), (@font-active-color)
+			{
+				&:disabled, &[disabled]
+				{
+					&, &::before, &::after { color: @font-default-color; }
+				}
+			}
+		}
+
+		.border(@default, @hover, @active)
+		{
+			@border-default-color: if(@default = false,
+				false,
+				if(@default > 0,
+					fade(@colors[@@default], alpha(@colors[@@default]) / 2 * 100),
+					false
+				)
+			);
+
+			@border-hover-color: if(@hover = false,
+				false,
+				if(@hover > 0,
+					fade(@colors[@@hover], alpha(@colors[@@hover]) / 2 * 100),
+					if(@border-default-color = false,
+						false
+						#ui.hover-bg(@hover, @border-default-color)[result]
+					)
+				)
+			);
+
+			@border-active-color: if(@active = false,
+				false,
+				if(@active > 0,
+					@colors[@@active],
+					if(@font-hover-color,
+						#ui.active-bg(@font-hover-color)[result],
+						#ui.hover-bg(@active, @font-default-color)[result]
+					)
+				)
+			);
+		}
+
+
+
+		.default(@font, @border, @bg)
+		{
+			& when (@font > -1)
+			{
+				&, &::before, &::after { color: if(@font > 0, @colors[@@font], transparent); }
+			}
+			& when (@border > -1)
+			{
+				border-color: if(@border > 0, @colors[@@border], transparent);
+			}
+			& when (@bg > -1)
+			{
+				background-color: if(@bg > 0, @colors[@@bg], transparent);
+			}
+		}
+		.hover(@font, @border, @bg)
+		{
+			& when (@font > -1)
+			{
+				&, &::before, &::after { color: if(@font > 0, @colors[@@font], transparent); }
+			}
+			& when (@border > -1)
+			{
+				border-color: if(@border > 0, @colors[@@border], transparent);
+			}
+			& when (@bg > -1)
+			{
+				background-color: if(@bg > 0, @colors[@@bg], transparent);
+			}
+		}
+	}
+
+
 	.button(
 		@bg-color:     rgba(255,255,255,0),
 		@color:        @button-color,
@@ -33,9 +189,6 @@
 		{
 			&, &::before, &::after { color: @color !important; }
 			background-color: @bg-color !important;
-
-			opacity: @button-disabled-opacity !important;
-			cursor:  @button-disabled-cursor;
 		}
 
 
@@ -101,6 +254,10 @@
 					.keyframes(rotateRight);
 				}
 			}
+		}
+		.glow(@opacity, @color)
+		{
+
 		}
 
 
@@ -208,7 +365,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
@@ -338,7 +495,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 
 				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
@@ -488,7 +645,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
@@ -628,7 +785,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 
 				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
@@ -659,6 +816,16 @@
 
 #ui-button()
 {
+	.states()
+	{
+		.default()  {};
+		.hover()    {};
+		.focus()    {};
+		.active()   {};
+		.disabled() {};
+	}
+
+
 	.template(@font-size, @padding-ver, @padding-hor, @border-width)
 	{
 		@em: 2 * @padding-ver + 1em * @button-line-height;
@@ -713,6 +880,12 @@
 		&:hover
 		{
 			text-decoration: none;
+		}
+		&:disabled, &[disabled]
+		{
+			opacity: @button-disabled-opacity !important;
+			cursor:  @button-disabled-cursor;
+			pointer-events: none;
 		}
 	}
 }
