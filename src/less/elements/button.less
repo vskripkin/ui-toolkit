@@ -11,146 +11,183 @@
 		#ui-button.sizes(@font-size, @pre);
 
 
-		&.__link
-		{
-			.colors(#000, #AAA, #FFF);
+		@font-default-color: transparent;
+		@font-hover-color:   transparent;
+		@font-active-color:  transparent;
 
-			.font(1,2);
-			.border(2,false);
-			.bg(2,3);
+		@bg-default-color: transparent;
+		@bg-hover-color:   transparent;
+		@bg-active-color:  transparent;
+
+		@border-default-color: transparent;
+		@border-hover-color:   transparent;
+		@border-active-color:  transparent;
+
+		.bright(@color)  { result: #ui.hover-bg(bright,  @color)[result]; }
+		.dark(@color)    { result: #ui.hover-bg(dark,    @color)[result]; }
+		.darken(@color)  { result: #ui.hover-bg(darken,  @color)[result]; }
+		.light(@color)   { result: #ui.hover-bg(light,   @color)[result]; }
+		.lighten(@color) { result: #ui.hover-bg(lighten, @color)[result]; }
+
+		.font(@color, @hover: default, @active: hover)
+		{
+			@font-default-color: @color;
+			@font-hover-color: #ui.hover-bg(@hover, @font-default-color)[result];
+
+			@font-active-color: if(@active = default,
+				@font-hover-color,
+				if(iscolor(@active),
+					@active,
+					#ui.active-bg(@font-hover-color)[result]
+				)
+			);
 		}
-
-		.color(@1, @2, @3)
+		.bg(@default: false, @hover: false, @active: false)
 		{
-			@colors: {
-				@1: @1;
-				@2: @2;
-				@3: @3;
-			};
-		}
-
-		.font(@default, @hover, @active: false)
-		{
-			@font-default-color: if(@default > 0,
-				@colors[@@default],
+			@bg-default-color: if(iscolor(@default),
+				@default,
 				transparent
 			);
 
-			@font-hover-color: if(@hover = false,
-				false,
-				if(@hover > 0,
-					@colors[@@hover],
-					#ui.hover-bg(@hover, @font-default-color)[result]
+			@bg-hover-color: if(@hover = false,
+				transparent,
+				if(iscolor(@hover),
+					@hover,
+					#ui.hover-bg(@hover, @bg-default-color)[result]
 				)
 			);
 
-			@font-active-color: if(@active = false,
-				false,
-				if(@active > 0,
-					@colors[@@active],
-					if(@font-hover-color = false,
-						#ui.hover-bg(@active, @font-default-color)[result],
-						#ui.active-bg(@font-hover-color)[result]
+			@bg-active-color: if(@active = false,
+				transparent,
+				if(iscolor(@active),
+					@active,
+					#ui.active-bg(@bg-hover-color)[result]
+				)
+			);
+		}
+		.border(@default: false, @hover: false, @active: false)
+		{
+			@border-default-color: if(@default = false,
+				transparent,
+				if(iscolor(@default),
+					@default,
+					if(@default = bg,
+						@bg-default-color,
+						@font-default-color
 					)
 				)
 			);
 
-
-			&, &::before, &::after { color: @font-default-color; }
-
-			& when (@font-hover-color) and (@font-active-color)
-			{
-				&:hover
-				{
-					&, &::before, &::after { color: @font-hover-color; }
-				}
-			}
-			& when (@font-hover-color) and not (@font-active-color)
-			{
-				&:hover, &:active, &.@{pre}active
-				{
-					&, &::before, &::after { color: @font-hover-color; }
-				}
-			}
-			& when (@font-active-color)
-			{
-				&:active, &.@{pre}active
-				{
-					&, &::before, &::after { color: @font-active-color; }
-				}
-			}
-			& when (@font-hover-color), (@font-active-color)
-			{
-				&:disabled, &[disabled]
-				{
-					&, &::before, &::after { color: @font-default-color; }
-				}
-			}
-		}
-
-		.border(@default, @hover, @active)
-		{
-			@border-default-color: if(@default = false,
-				false,
-				if(@default > 0,
-					fade(@colors[@@default], alpha(@colors[@@default]) / 2 * 100),
-					false
-				)
-			);
-
 			@border-hover-color: if(@hover = false,
-				false,
-				if(@hover > 0,
-					fade(@colors[@@hover], alpha(@colors[@@hover]) / 2 * 100),
-					if(@border-default-color = false,
-						false
-						#ui.hover-bg(@hover, @border-default-color)[result]
+				transparent,
+				if(iscolor(@hover),
+					@hover,
+					if(@hover = bg,
+						@bg-hover-color,
+						@font-hover-color
 					)
 				)
 			);
 
 			@border-active-color: if(@active = false,
-				false,
-				if(@active > 0,
-					@colors[@@active],
-					if(@font-hover-color,
-						#ui.active-bg(@font-hover-color)[result],
-						#ui.hover-bg(@active, @font-default-color)[result]
+				transparent,
+				if(iscolor(@active),
+					@active,
+					if(@active = bg,
+						@bg-active-color,
+						@font-active-color
 					)
 				)
 			);
 		}
-
-
-
-		.default(@font, @border, @bg)
+		.apply()
 		{
-			& when (@font > -1)
+			&, &::before, &::after { color: @font-default-color; }
+			border-color: @border-default-color;
+			background-color: @bg-default-color;
+
+			&:hover
 			{
-				&, &::before, &::after { color: if(@font > 0, @colors[@@font], transparent); }
+				&, &::before, &::after { color: @font-hover-color; }
+				border-color: @border-hover-color;
+				background-color: @bg-hover-color;
 			}
-			& when (@border > -1)
+			&:active, &.@{pre}active
 			{
-				border-color: if(@border > 0, @colors[@@border], transparent);
+				&, &::before, &::after { color: @font-active-color; }
+				border-color: @border-active-color;
+				background-color: @bg-active-color;
 			}
-			& when (@bg > -1)
+			&:disabled, &[disabled]
 			{
-				background-color: if(@bg > 0, @colors[@@bg], transparent);
+				&, &::before, &::after { color: @font-default-color; }
+				border-color: @border-default-color;
+				background-color: @bg-default-color;
 			}
 		}
-		.hover(@font, @border, @bg)
+
+
+		.round()
 		{
-			& when (@font > -1)
+			&.@{pre}round
 			{
-				&, &::before, &::after { color: if(@font > 0, @colors[@@font], transparent); }
+				border-radius: 150px;
 			}
-			& when (@border > -1)
+		}
+		.thin()
+		{
+			&.@{pre}thin
 			{
-				border-color: if(@border > 0, @colors[@@border], transparent);
+				padding-left:  (@padding-ver * @button-line-height);
+				padding-right: (@padding-ver * @button-line-height);
 			}
-			& when (@bg > -1)
+		}
+		.collapse()
+		{
+			&.@{pre}collapse
 			{
-				background-color: if(@bg > 0, @colors[@@bg], transparent);
+				padding: 0;
+				min-height: auto;
+			}
+		}
+		.circle()
+		{
+			&.@{pre}circle
+			{
+				border-radius: 150px;
+				padding-left:  @padding-ver;
+				padding-right: @padding-ver;
+			}
+		}
+		.loading()
+		{
+			&.@{pre}loading
+			{
+				pointer-events: none;
+				color: transparent !important;
+
+				&::after
+				{
+					content: '';
+					display: table; // fix disproportions of width and height due to sub-pixel rounding bug
+					position: absolute;
+					z-index: 100;
+					top:  50%;
+					left: 50%;
+					width:  auto;
+					height: auto;
+					width:  1.24em;
+					height: 1.24em;
+					margin-top:  -0.62em;
+					margin-left: -0.62em;
+					border-radius: 50%;
+					border-width: 0.1837em;
+					border-style: solid;
+					border-color: currentColor transparent transparent currentColor;
+					animation: rotateRight 1s infinite linear;
+
+					.keyframes(rotateRight);
+				}
 			}
 		}
 	}
@@ -254,10 +291,6 @@
 					.keyframes(rotateRight);
 				}
 			}
-		}
-		.glow(@opacity, @color)
-		{
-
 		}
 
 
