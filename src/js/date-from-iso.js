@@ -5,6 +5,12 @@
 {
 	'use strict';
 
+	var rFixFormat = /^(\d{4}\-\d\d\-\d\d) /,
+		fix_format = function (_sDate)
+		{
+			return _sDate.replace(rFixFormat, '$1T');
+		};
+
 	_.dateFromISO = (function ()
 	{
 		var sTestISO = '2011-11-24T09:00:27+0200',
@@ -14,13 +20,15 @@
 		{
 			return function (_sDate)
 			{
-				return new Date(Date.parse(_sDate));
+				return new Date(Date.parse(fix_format(_sDate)));
 			};
 		}
 
 		// JS 1.8 gecko
 		var no_offset = function (_sDate)
 			{
+				_sDate = fix_format(_sDate);
+
 				var aDate = _sDate.slice(0,-5).split(/\D/).map(function (_sValue)
 					{
 						return parseInt(_sValue, 10) || 0;
@@ -50,6 +58,8 @@
 		// kennebec@SO + QTax@SO
 		return function (_sDate)
 		{
+			_sDate = fix_format(_sDate);
+
 			var rxDate = /^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/,
 				aDate = rxDate.exec(_sDate) || [],
 				oDate;
