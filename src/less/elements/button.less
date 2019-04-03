@@ -42,7 +42,7 @@
 				)
 			);
 		}
-		.bg(@default: false, @hover: false, @active: false)
+		.bg(@default: false, @hover: false, @active: hover)
 		{
 			@bg-default-color: if(iscolor(@default),
 				@default,
@@ -65,8 +65,11 @@
 				)
 			);
 		}
-		.border(@default: false, @hover: false, @active: false)
+		.border(@default: false, @hover: -1, @active: -1)
 		{
+			@_hover:  if(@hover = -1, @default, @hover);
+			@_active: if(@active = -1, @default, @active);
+
 			@border-default-color: if(@default = false,
 				transparent,
 				if(iscolor(@default),
@@ -78,22 +81,22 @@
 				)
 			);
 
-			@border-hover-color: if(@hover = false,
+			@border-hover-color: if(@_hover = false,
 				transparent,
-				if(iscolor(@hover),
-					@hover,
-					if(@hover = bg,
+				if(iscolor(@_hover),
+					@_hover,
+					if(@_hover = bg,
 						@bg-hover-color,
 						@font-hover-color
 					)
 				)
 			);
 
-			@border-active-color: if(@active = false,
+			@border-active-color: if(@_active = false,
 				transparent,
-				if(iscolor(@active),
-					@active,
-					if(@active = bg,
+				if(iscolor(@_active),
+					@_active,
+					if(@_active = bg,
 						@bg-active-color,
 						@font-active-color
 					)
