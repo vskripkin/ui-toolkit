@@ -221,7 +221,7 @@
 
 		& when not (@is-white) and not (@is-black) and not (@is-transparent)
 		{
-			& when (@hover-color = bright)
+			& when (@hover-color = bright), (@hover-color = auto)
 			{
 				result: spin(saturate(@bg-color, 20%), 10);
 			}
@@ -244,7 +244,7 @@
 		}
 	}
 
-	.active-bg(@bg-color)
+	.active-bg(@bg-color) when (iscolor(@bg-color))
 	{
 		@rgb: red(@bg-color);
 		@is-gray: if(@rgb = green(@bg-color) and @rgb = blue(@bg-color), true, false);
@@ -261,5 +261,9 @@
 		{
 			result: spin(desaturate(@bg-color, 25%), 10);
 		}
+	}
+	.active-bg(@bg-color) when not (iscolor(@bg-color))
+	{
+		result: @bg-color;
 	}
 }

@@ -1,5 +1,198 @@
 #ui()
 {
+	.make-button(
+		@font-size:    @button-font-size,
+		@padding-ver:  @button-padding-ver,
+		@paddong-hor:  @button-padding-hor,
+		@border-width: @button-border-width,
+		@pre:          @button-class-prefix)
+	{
+		#ui-button.template(@font-size, @padding-ver, @paddong-hor, @border-width);
+		#ui-button.sizes(@font-size, @pre);
+
+
+		@font-default-color: transparent;
+		@font-hover-color:   transparent;
+		@font-active-color:  transparent;
+
+		@bg-default-color: transparent;
+		@bg-hover-color:   transparent;
+		@bg-active-color:  transparent;
+
+		@border-default-color: transparent;
+		@border-hover-color:   transparent;
+		@border-active-color:  transparent;
+
+		.bright(@color)  { result: #ui.hover-bg(bright,  @color)[result]; }
+		.dark(@color)    { result: #ui.hover-bg(dark,    @color)[result]; }
+		.darken(@color)  { result: #ui.hover-bg(darken,  @color)[result]; }
+		.light(@color)   { result: #ui.hover-bg(light,   @color)[result]; }
+		.lighten(@color) { result: #ui.hover-bg(lighten, @color)[result]; }
+
+		.font(@color, @hover: default, @active: hover)
+		{
+			@font-default-color: @color;
+			@font-hover-color: #ui.hover-bg(@hover, @font-default-color)[result];
+
+			@font-active-color: if(@active = default,
+				@font-hover-color,
+				if(iscolor(@active),
+					@active,
+					#ui.active-bg(@font-hover-color)[result]
+				)
+			);
+		}
+		.bg(@default: false, @hover: false, @active: false)
+		{
+			@bg-default-color: if(iscolor(@default),
+				@default,
+				transparent
+			);
+
+			@bg-hover-color: if(@hover = false,
+				transparent,
+				if(iscolor(@hover),
+					@hover,
+					#ui.hover-bg(@hover, @bg-default-color)[result]
+				)
+			);
+
+			@bg-active-color: if(@active = false,
+				transparent,
+				if(iscolor(@active),
+					@active,
+					#ui.active-bg(@bg-hover-color)[result]
+				)
+			);
+		}
+		.border(@default: false, @hover: false, @active: false)
+		{
+			@border-default-color: if(@default = false,
+				transparent,
+				if(iscolor(@default),
+					@default,
+					if(@default = bg,
+						@bg-default-color,
+						@font-default-color
+					)
+				)
+			);
+
+			@border-hover-color: if(@hover = false,
+				transparent,
+				if(iscolor(@hover),
+					@hover,
+					if(@hover = bg,
+						@bg-hover-color,
+						@font-hover-color
+					)
+				)
+			);
+
+			@border-active-color: if(@active = false,
+				transparent,
+				if(iscolor(@active),
+					@active,
+					if(@active = bg,
+						@bg-active-color,
+						@font-active-color
+					)
+				)
+			);
+		}
+		.apply()
+		{
+			&, &::before, &::after { color: @font-default-color; }
+			border-color: @border-default-color;
+			background-color: @bg-default-color;
+
+			&:hover
+			{
+				&, &::before, &::after { color: @font-hover-color; }
+				border-color: @border-hover-color;
+				background-color: @bg-hover-color;
+			}
+			&:active, &.@{pre}active
+			{
+				&, &::before, &::after { color: @font-active-color; }
+				border-color: @border-active-color;
+				background-color: @bg-active-color;
+			}
+			&:disabled, &[disabled]
+			{
+				&, &::before, &::after { color: @font-default-color; }
+				border-color: @border-default-color;
+				background-color: @bg-default-color;
+			}
+		}
+
+
+		.round()
+		{
+			&.@{pre}round
+			{
+				border-radius: 150px;
+			}
+		}
+		.thin()
+		{
+			&.@{pre}thin
+			{
+				padding-left:  (@padding-ver * @button-line-height);
+				padding-right: (@padding-ver * @button-line-height);
+			}
+		}
+		.collapse()
+		{
+			&.@{pre}collapse
+			{
+				padding: 0;
+				min-height: auto;
+			}
+		}
+		.circle()
+		{
+			&.@{pre}circle
+			{
+				border-radius: 150px;
+				padding-left:  @padding-ver;
+				padding-right: @padding-ver;
+			}
+		}
+		.loading()
+		{
+			&.@{pre}loading
+			{
+				pointer-events: none;
+				color: transparent !important;
+
+				&::after
+				{
+					content: '';
+					display: table; // fix disproportions of width and height due to sub-pixel rounding bug
+					position: absolute;
+					z-index: 100;
+					top:  50%;
+					left: 50%;
+					width:  auto;
+					height: auto;
+					width:  1.24em;
+					height: 1.24em;
+					margin-top:  -0.62em;
+					margin-left: -0.62em;
+					border-radius: 50%;
+					border-width: 0.1837em;
+					border-style: solid;
+					border-color: currentColor transparent transparent currentColor;
+					animation: rotateRight 1s infinite linear;
+
+					.keyframes(rotateRight);
+				}
+			}
+		}
+	}
+
+
 	.button(
 		@bg-color:     rgba(255,255,255,0),
 		@color:        @button-color,
@@ -33,9 +226,6 @@
 		{
 			&, &::before, &::after { color: @color !important; }
 			background-color: @bg-color !important;
-
-			opacity: @button-disabled-opacity !important;
-			cursor:  @button-disabled-cursor;
 		}
 
 
@@ -208,7 +398,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
@@ -338,7 +528,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 
 				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
@@ -488,7 +678,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 				@hover-bg-color:  #ui.hover-bg(@hover, @color)[result];
 				@active-bg-color: #ui.active-bg(@hover-bg-color)[result];
 
@@ -628,7 +818,7 @@
 		{
 			&.@{pre}@{class}
 			{
-				@border-color: fade(@bg-color, alpha(@color) / 2 * 100);
+				@border-color: fade(@bg-color, alpha(@bg-color) / 2 * 100);
 
 				&, &::before, &::after { color: @bg-color; }
 				border-color: @border-color;
@@ -659,6 +849,16 @@
 
 #ui-button()
 {
+	.states()
+	{
+		.default()  {};
+		.hover()    {};
+		.focus()    {};
+		.active()   {};
+		.disabled() {};
+	}
+
+
 	.template(@font-size, @padding-ver, @padding-hor, @border-width)
 	{
 		@em: 2 * @padding-ver + 1em * @button-line-height;
@@ -713,6 +913,12 @@
 		&:hover
 		{
 			text-decoration: none;
+		}
+		&:disabled, &[disabled]
+		{
+			opacity: @button-disabled-opacity !important;
+			cursor:  @button-disabled-cursor;
+			pointer-events: none;
 		}
 	}
 }
