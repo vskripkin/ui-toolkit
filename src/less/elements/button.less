@@ -11,18 +11,6 @@
 		#ui-button.sizes(@font-size, @pre);
 
 
-		@font-default-color: transparent;
-		@font-hover-color:   transparent;
-		@font-active-color:  transparent;
-
-		@bg-default-color: transparent;
-		@bg-hover-color:   transparent;
-		@bg-active-color:  transparent;
-
-		@border-default-color: transparent;
-		@border-hover-color:   transparent;
-		@border-active-color:  transparent;
-
 		.bright(@color)  { result: #ui.hover-bg(bright,  @color)[result]; }
 		.dark(@color)    { result: #ui.hover-bg(dark,    @color)[result]; }
 		.darken(@color)  { result: #ui.hover-bg(darken,  @color)[result]; }
@@ -41,6 +29,26 @@
 					#ui.active-bg(@font-hover-color)[result]
 				)
 			);
+
+
+			.font-colors()
+			{
+				default: @font-default-color;
+				hover:   @font-hover-color;
+				active:  @font-active-color;
+			}
+			.bg-colors(@x) when (default())
+			{
+				default: transparent;
+				hover:   transparent;
+				active:  transparent;
+			}
+			.border-colors(@x) when (default())
+			{
+				default: transparent;
+				hover:   transparent;
+				active:  transparent;
+			}
 		}
 		.bg(@default: false, @hover: false, @active: hover)
 		{
@@ -64,19 +72,36 @@
 					#ui.active-bg(@bg-hover-color)[result]
 				)
 			);
+
+
+			.bg-colors(@x) when (@x = 1)
+			{
+				default: @bg-default-color;
+				hover:   @bg-hover-color;
+				active:  @bg-active-color;
+			}
 		}
 		.border(@default: false, @hover: -1, @active: -1)
 		{
 			@_hover:  if(@hover = -1, @default, @hover);
 			@_active: if(@active = -1, @default, @active);
 
+			@f-default-color: .font-colors()[default];
+			@f-hover-color:   .font-colors()[hover];
+			@f-active-color:  .font-colors()[active];
+
+			@b-default-color: .bg-colors(1)[default];
+			@b-hover-color:   .bg-colors(1)[hover];
+			@b-active-color:  .bg-colors(1)[active];
+
+
 			@border-default-color: if(@default = false,
 				transparent,
 				if(iscolor(@default),
 					@default,
 					if(@default = bg,
-						@bg-default-color,
-						@font-default-color
+						@b-default-color,
+						fade(@f-default-color, alpha(@f-default-color) / 2 * 100)
 					)
 				)
 			);
@@ -86,8 +111,8 @@
 				if(iscolor(@_hover),
 					@_hover,
 					if(@_hover = bg,
-						@bg-hover-color,
-						@font-hover-color
+						@b-hover-color,
+						@f-hover-color
 					)
 				)
 			);
@@ -97,35 +122,56 @@
 				if(iscolor(@_active),
 					@_active,
 					if(@_active = bg,
-						@bg-active-color,
-						@font-active-color
+						@b-active-color,
+						@f-active-color
 					)
 				)
 			);
+
+
+			.border-colors(@x) when (@x = 1)
+			{
+				default: @border-default-color;
+				hover:   @border-hover-color;
+				active:  @border-active-color;
+			}
 		}
 		.apply()
 		{
-			&, &::before, &::after { color: @font-default-color; }
-			border-color: @border-default-color;
-			background-color: @bg-default-color;
+			@font-default: .font-colors()[default];
+			@font-hover:   .font-colors()[hover];
+			@font-active:  .font-colors()[active];
+
+			@bg-default: .bg-colors(1)[default];
+			@bg-hover:   .bg-colors(1)[hover];
+			@bg-active:  .bg-colors(1)[active];
+
+			@border-default: .border-colors(1)[default];
+			@border-hover:   .border-colors(1)[hover];
+			@border-active:  .border-colors(1)[active];
+
+
+			&, &::before, &::after { color: @font-default; }
+			border-color: @border-default;
+			background-color: @bg-default;
 
 			&:hover
 			{
-				&, &::before, &::after { color: @font-hover-color; }
-				border-color: @border-hover-color;
-				background-color: @bg-hover-color;
+				&, &::before, &::after { color: @font-hover; }
+				border-color: @border-hover;
+				background-color: @bg-hover;
 			}
 			&:active, &.@{pre}active
 			{
-				&, &::before, &::after { color: @font-active-color; }
-				border-color: @border-active-color;
-				background-color: @bg-active-color;
+				&, &::before, &::after { color: @font-active; }
+				border-color: @border-active;
+				background-color: @bg-active;
 			}
 			&:disabled, &[disabled]
 			{
-				&, &::before, &::after { color: @font-default-color; }
-				border-color: @border-default-color;
-				background-color: @bg-default-color;
+				&, &::before, &::after { color: @font-default; }
+				border-color: @border-default;
+				background-color: @bg-default;
 			}
 		}
 
