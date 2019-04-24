@@ -1,5 +1,5 @@
 import isBro from '../isBrowser.js';
-import {isIE} from './useragent.js';
+import UA    from './useragent.js';
 
 
 var noop = function () {},
@@ -46,7 +46,7 @@ export default class Console
 				return function ()
 				{
 					var aMessages = Array.prototype.slice.call(arguments),
-						aFormattedMsg = isIE ? aMessages : _oMethod.format(aMessages);
+						aFormattedMsg = UA.isIE ? aMessages : _oMethod.format(aMessages);
 
 					if (_oMethod.indent && aFormattedMsg[0])
 					{

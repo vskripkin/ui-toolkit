@@ -1,7 +1,10 @@
 import './polifyll/CustomEvent.js';
 
-import {isTouchable} from './helpers/useragent.js';
-import support       from './helpers/support.js';
+import Placer from './placer.js';
+
+import UA      from './helpers/useragent.js';
+import support from './helpers/support.js';
+import {on_others, off_others} from './helpers/onOthers.js';
 
 import is_function   from './utils/isFunction.js';
 import is_object     from './utils/isObject.js';
@@ -23,24 +26,28 @@ Tooltip.get = function (_nElem, _options)
 {
 	var plugin = _nElem['_' + TYPE];
 
-	if (is_object(options))
+	if (is_object(_options))
 	{
 		if (plugin)
 		{
 			plugin.destroy();
 		}
 
-		_nElem['_' + TYPE] = plugin = new Tooltip(_nElem, options);
+		_nElem['_' + TYPE] = plugin = new Tooltip(_nElem, _options);
 	}
 
 	return plugin;
 };
 
 Tooltip.DEFAULTS = {
+	tag: 'div',
+	className: '',
+
 	message: '', // string|function
 	type: 'info',
 	trigger: 'hover focus', // string|{show:string, hide:string}
-	triggerer: 'target', // target|self|both
+	triggerer: 'target', // target|self|both|others
+	others: false,
 
 	once: false,
 	visible: false,
@@ -54,6 +61,9 @@ Tooltip.DEFAULTS = {
 
 	selector: false,
 	show_at_selected: false,
+
+	onShow: null,
+	onHide: null,
 
 	location: {
 		position: 'top',
@@ -80,6 +90,10 @@ Tooltip.prototype =
 
 	init: function (_nElem, _options)
 	{
+		this.toggle = this.toggle.bind(this);
+		this.hide = this.hide.bind(this);
+		this.hide = this.hide.bind(this);
+
 		this._afterHide = this._afterHide.bind(this);
 		this._onTrsnEndHide = this._onTrsnEndHide.bind(this);
 
@@ -121,16 +135,15 @@ Tooltip.prototype =
 
 		this.template = (function ()
 		{
-			var nDiv = document.createElement('div');
+			var nDiv = document.createElement(options.tag || 'div');
 
 			nDiv.className = TYPE + '_' + options.type + 
 				' ' +  options.location.position + 
+				' ' + (options.className || '')
 				' ' + (options.no_arrow ? 'no' : options.location.align) + '_arrow' + 
 				' ' + (options.animation ? 'animation' : '') + 
 				' ' + (options.location.fixed ? 'fixed' : '') + 
 				' ' + (options.location.side === 'in' ? 'inset': 'outset');
-
-			nDiv.innerHTML = this.getCloseBtn() + this.getMessage();
 
 			return nDiv;
 		})
@@ -146,56 +159,49 @@ Tooltip.prototype =
 
 		if (xTrigger && (xTrigger.show || xTrigger.hide))
 		{
-			var sTriggers = '',
-				sTriggersShow = xTrigger.show,
+			var sTriggersShow = xTrigger.show,
 				sTriggersHide = xTrigger.hide;
 
 			if (sTriggersShow)
 			{
-				sTriggers += ' ' + sTriggersShow;
-
-				if (sTriggererShow === 'both' || sTriggererShow === 'self')
-				{
-					this._setupTriggers(this.template, sTriggersShow, 'show');
-				}
 				if (sTriggererShow === 'both' || sTriggererShow === 'target')
 				{
 					this._setupTriggers(this.target, sTriggersShow, 'show');
+				}
+				if (sTriggererShow === 'both' || sTriggererShow === 'self')
+				{
+					this._setupTriggers(this.template, sTriggersShow, 'show');
 				}
 			}
 
 			if (sTriggersHide)
 			{
-				sTriggers += ' ' + sTriggersHide;
-
-				if (sTriggererHide === 'both' || sTriggererHide === 'self')
-				{
-					this._setupTriggers(this.template, sTriggersHide, 'hide');
-				}
 				if (sTriggererHide === 'both' || sTriggererHide === 'target')
 				{
 					this._setupTriggers(this.target, sTriggersHide, 'hide');
 				}
+				if (sTriggererHide === 'both' || sTriggererHide === 'self')
+				{
+					this._setupTriggers(this.template, sTriggersHide, 'hide');
+				}
 			}
-
-			options.trigger = sTriggers;
 		}
 		else if (xTrigger)
 		{
-			if (sTriggerer === 'both' || sTriggerer === 'self')
-			{
-				this._setupTriggers(this.template, xTrigger);
-			}
-			if (sTriggerer === 'both' || sTriggerer === 'target')
+			if (sTriggererShow === 'both' || sTriggererShow === 'target')
 			{
 				this._setupTriggers(this.target, xTrigger);
+			}
+			if (sTriggererHide === 'both' || sTriggererHide === 'self')
+			{
+				this._setupTriggers(this.template, xTrigger);
 			}
 		}
 
 
 		if (this.template.querySelector('.js-close') !== null)
 		{
-			this._attachEvent(this.template, 'click', '.js-close', this.hide.bind(this));
+			this._attachEvent(this.template, 'click', '.js-close', this.hide);
 		}
 
 		if (options.visible)
@@ -207,6 +213,11 @@ Tooltip.prototype =
 	},
 	destroy: function ()
 	{
+		if (this.wrapper.parentElement)
+		{
+			this.wrapper.parentElement.removeChild(this.wrapper);
+		}
+
 		this.wrapper.placer && this.wrapper.placer.destroy();
 		this.timeout && clearTimeout(this.timeout);
 		this.closeTimeout && clearTimeout(this.closeTimeout);
@@ -238,26 +249,31 @@ Tooltip.prototype =
 		};
 
 
-		var options = extend(true, {}, Tooltip.DEFAULTS, _options, oData);
+		_options = extend(true, {}, Tooltip.DEFAULTS, _options, oData);
 
-		if (is_object(options.delay))
+		if (is_object(_options.delay))
 		{
-			options.delay = {
-				show: parseInt(options.delay.show) || 0,
-				hide: parseInt(options.delay.hide) || 50
+			_options.delay = {
+				show: parseInt(_options.delay.show) || 0,
+				hide: parseInt(_options.delay.hide) || 50
 			};
 		}
 		else
 		{
-			options.delay = {
-				show: parseInt(options.delay) || 0,
-				hide: parseInt(options.delay) || 50
+			_options.delay = {
+				show: parseInt(_options.delay) || 0,
+				hide: parseInt(_options.delay) || 50
 			};
 		}
 
-		options.close = parseFloat(parseFloat(options.close).toFixed(1)) || 0;
+		if (_options.triggerer.hide === 'others')
+		{
+			_options.others = true;
+		}
 
-		return options;
+		_options.close = parseFloat(parseFloat(_options.close).toFixed(1)) || 0;
+
+		return _options;
 	},
 	getMessage: function ()
 	{
@@ -283,7 +299,7 @@ Tooltip.prototype =
 			}
 		}
 
-		return sMessage;
+		return this.getCloseBtn() + sMessage;
 	},
 	getCloseBtn: function ()
 	{
@@ -322,6 +338,39 @@ Tooltip.prototype =
 
 	show: function (e, _sActionType)
 	{
+		if (!this.isHidden) return false;
+
+		this.isHidden = false;
+
+
+		/*
+		  сразу добавляем в body, чтобы при мгновенном клике на другие элементы сработал коллбек,
+		  колбек запускается, если элемент есть в документе
+		*/
+		this.wrapper.hidden = true;
+
+		if (!this.wrapper.parentElement)
+		{
+			document.body.appendChild(this.wrapper);
+		}
+
+
+		if (this.options.others)
+		{
+			on_others('mousedown focusin', this.template, this.hide, this.target);
+		}
+
+		if (this.options.animation)
+		{
+			this.template.removeEventListener(sTransitionEnd, this._onTrsnEndHide, false);
+		}
+
+		if (this.timeout)
+		{
+			clearTimeout(this.timeout);
+		}
+
+
 		var bShowAtSelected = this.options.selector && this.options.show_at_selected;
 
 		if (bShowAtSelected && e && e.currentTarget !== e.delegateTarget)
@@ -333,30 +382,37 @@ Tooltip.prototype =
 
 			this.target = e.currentTarget;
 			this.placeTo.update = true;
-
-			this.template.innerHTML = this.getCloseBtn() + this.getMessage();
 			this.placeTo.target = this.target;
+
+			this.template.innerHTML = '';
+			this.template.insertAdjacentHTML('afterbegin', this.getMessage());
 		}
 		else
 		{
 			this.placeTo.update = false;
+
+			if (!this.template.innerHTML)
+			{
+				var sMessage = this.getMessage();
+
+				this.__curr_message = sMessage;
+
+				this.template.insertAdjacentHTML('afterbegin', sMessage);
+			}
+			else if (is_function(this.options.message))
+			{
+				var sMessage = this.getMessage();
+
+				if (this.__curr_message !== sMessage)
+				{
+					this.__curr_message = sMessage;
+
+					this.template.innerHTML = '';
+					this.template.insertAdjacentHTML('afterbegin', sMessage);
+				}
+			}
 		}
 
-
-		if (!this.isHidden) return false;
-
-		this.isHidden = false;
-
-		if (this.options.animation)
-		{
-			this.template.removeEventListener(sTransitionEnd, this._onTrsnEndHide, false);
-		}
-
-
-		if (this.timeout)
-		{
-			clearTimeout(this.timeout);
-		}
 
 		var that = this;
 
@@ -375,10 +431,7 @@ Tooltip.prototype =
 			this.template.style.maxWidth = 'none';
 		}
 
-		if (this.wrapper.parentElement)
-		{
-			this.wrapper.parentElement.removeChild(this.wrapper);
-		}
+		this.wrapper.hidden = false;
 
 		Placer.placeTo(this.wrapper, this.placeTo);
 
@@ -388,6 +441,11 @@ Tooltip.prototype =
 
 		this.element.dispatchEvent(new CustomEvent(TYPE + '-show'));
 		this.template.dispatchEvent(new CustomEvent(TYPE + '-show'));
+
+		if (this.options.onShow)
+		{
+			this.options.onShow(this);
+		}
 
 
 		var iClose = this.options.close;
@@ -399,7 +457,7 @@ Tooltip.prototype =
 
 		if (iClose > 0)
 		{
-			this.closeTimeout = setTimeout(this.hide.bind(this), iClose * 1000);
+			this.closeTimeout = setTimeout(this.hide, iClose * 1000);
 		}
 
 		return true;
@@ -409,26 +467,31 @@ Tooltip.prototype =
 	{
 		if (this.isHidden) return false;
 
-
 		var xTrigger = this.options.trigger,
 			bHideOnBlur = is_string(xTrigger) ?
 				xTrigger.indexOf('focus') > -1 :
 				xTrigger.hide.indexOf('blur') > -1;
 
 		/* if element is still in focus and its tooltip should be closed on blur - do nothing */
-		if (e && e.type.toLowerCase() !== 'blur' && bHideOnBlur && document.activeElement === this.target)
+		if (e && e.type.toLowerCase() !== 'blur' && bHideOnBlur &&
+			document.activeElement === this.target)
 		{
 			return false;
 		}
 
-
 		this.isHidden = true;
 
+
+		if (this.options.others)
+		{
+			off_others('mousedown focusin', this.template, this.hide);
+		}
 
 		if (this.timeout)
 		{
 			clearTimeout(this.timeout);
 		}
+
 
 		var that = this;
 
@@ -467,13 +530,16 @@ Tooltip.prototype =
 	},
 	_afterHide: function ()
 	{
-		if (this.wrapper.parentElement)
-		{
-			this.wrapper.parentElement.removeChild(this.wrapper);
-		}
+		this.wrapper.hidden = true;
 
 		this.element.dispatchEvent(new CustomEvent(TYPE + '-hide'));
 		this.template.dispatchEvent(new CustomEvent(TYPE + '-hide'));
+
+		if (this.options.onHide)
+		{
+			this.options.onHide(this);
+		}
+
 
 		if (this.options.once)
 		{
@@ -492,26 +558,27 @@ Tooltip.prototype =
 		{
 			sEvent = aTriggers[i];
 
-			if (isTouchable &&
+			if (UA.isTouchable &&
 				(sEvent === 'hover' || sEvent === 'mouseenter') && (!_sAction || _sAction === 'show'))
 			{
-				this._attachEvent(_nTarget, 'touchstart', this.options.selector, this.showtouch.bind(this));
+				this._attachEvent(_nTarget, 'touchstart',
+					this.options.selector, this.showtouch.bind(this));
 			}
 			else if (_sAction)
 			{
-				this._attachEvent(_nTarget, sEvent, this.options.selector, this[_sAction].bind(this));
+				this._attachEvent(_nTarget, sEvent, this.options.selector, this[_sAction]);
 			}
 			else if (sEvent === 'hover' || sEvent === 'focus')
 			{
 				sEventIn  = sEvent === 'hover' ? 'mouseenter' : 'focus';
 				sEventOut = sEvent === 'hover' ? 'mouseleave' : 'blur';
 
-				this._attachEvent(_nTarget, sEventIn,  this.options.selector, this.show.bind(this));
-				this._attachEvent(_nTarget, sEventOut, this.options.selector, this.hide.bind(this));
+				this._attachEvent(_nTarget, sEventIn,  this.options.selector, this.show);
+				this._attachEvent(_nTarget, sEventOut, this.options.selector, this.hide);
 			}
 			else
 			{
-				this._attachEvent(_nTarget, sEvent, this.options.selector, this.toggle.bind(this));
+				this._attachEvent(_nTarget, sEvent, this.options.selector, this.toggle);
 			}
 		}
 	},

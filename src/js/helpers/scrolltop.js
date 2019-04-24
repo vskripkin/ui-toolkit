@@ -10,7 +10,7 @@ export default function scrollTop (_iValue)
 		return 0;
 	}
 
-	if (_iValue)
+	if (_iValue || _iValue === 0)
 	{
 		if (window.scrollTo)
 		{

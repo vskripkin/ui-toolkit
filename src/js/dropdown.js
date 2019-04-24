@@ -918,7 +918,6 @@ var _parseHTMLColl = function ( nColl, _sClass )
 						break;
 
 					default:
-						console.log(nElem);
 						HTML += _parseHTMLColl.call(this, nElem.childNodes);
 						break;
 				}

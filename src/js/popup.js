@@ -1,7 +1,7 @@
 import globalScrollbar from './helpers/globalScrollbar.js';
 
 import support from './helpers/support.js';
-import {isIE, isMobile} from './helpers/useragent.js';
+import UA      from './helpers/useragent.js';
 
 import is_array    from './utils/isArray.js';
 import is_node     from './utils/isNode.js';
@@ -270,7 +270,7 @@ var TYPE = 'popup',
 		  отключаем историю для IE, так как без popstate не сможем нормально обрабатывать
 		  все изменения в истории
 		*/
-		if (!('pushState' in window.history) || isIE)
+		if (!('pushState' in window.history) || UA.isIE)
 		{
 			return HH;
 		}
@@ -910,7 +910,7 @@ Popup.prototype = {
 	{
 		_options || (_options = {});
 
-		if (isMobile)
+		if (UA.isMobile)
 		{
 			var xTitle = Dialog.getTitle(_xContent, _options),
 				xContent = Dialog.getContent(_xContent, _options),
@@ -944,7 +944,7 @@ Popup.prototype = {
 	{
 		_options || (_options = {});
 
-		if (isMobile)
+		if (UA.isMobile)
 		{
 			var xTitle = Dialog.getTitle(_xContent, _options),
 				xContent = Dialog.getContent(_xContent, _options).toString(),

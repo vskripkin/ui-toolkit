@@ -19,9 +19,9 @@ if (isBro)
 }
 
 export default {
-	isAndroid,
-	isIOS,
-	isMobile,
-	isTouchable,
-	isIE
+	isAndroid: isAndroid,
+	isIOS: isIOS,
+	isMobile: isMobile,
+	isTouchable: isTouchable,
+	isIE: isIE
 };

@@ -1,15 +1,12 @@
 /* run callback if event was fired not on descendants */
 
+import isArray     from '../utils/isArray.js';
 import isString    from '../utils/isString.js';
 import random_str  from '../utils/randomStr.js';
 import clean_str   from '../utils/cleanStr.js';
 import unduplicate from '../utils/unduplicate.js';
 
-
-export default {
-	onOthers:  on_others,
-	offOthers: off_others
-};
+import get_obj_cid from '../helpers/getObjCid.js';
 
 
 var oElemEventIDs = {},
@@ -22,22 +19,32 @@ var oElemEventIDs = {},
 
 		var nTarget = e.target,
 			oEvent = oAllEvents[_sEventID],
-			nElem = oEvent && oEvent.elem;
+			nElem = oEvent && oEvent.elem,
+			anAlso = oEvent && oEvent.also,
+			eIgnore = oEvent && oEvent.eignore;
 
-		if (nElem && nElem !== nTarget && !nElem.contains(nTarget))
+		if (eIgnore === e || !nElem || nElem === nTarget || nElem.contains(nTarget)) return;
+
+		if (anAlso)
 		{
-			off_others_event(oEvent);
-
-			if (document.documentElement.contains(nElem))
+			for (var i = 0, L = anAlso.length; i < L; i++)
 			{
-				oEvent.callback(e);
+				if (anAlso[i] === nTarget || anAlso[i].contains(nTarget)) return;
 			}
 		}
+
+
+		off_others_event(oEvent);
+
+		if (document.documentElement.contains(nElem))
+		{
+			oEvent.callback(e);
+		}
 	},
-	off_others_event = function (_oEvent, _sElemID, _aElemEventIDs)
+	off_others_event = function (_oEvent, _sElemCID, _aElemEventIDs)
 	{
-		var sElemID = _sElemID || _oEvent.elem.getAttribute('data-js-id'),
-			aElemEventIDs = _aElemEventIDs || oElemEventIDs[sElemID],
+		var sElemCID = _sElemCID || get_obj_cid(_oEvent.elem),
+			aElemEventIDs = _aElemEventIDs || oElemEventIDs[sElemCID],
 
 			sEventID = _oEvent.id,
 			index = aElemEventIDs.indexOf(sEventID);
@@ -47,7 +54,7 @@ var oElemEventIDs = {},
 
 		if (aElemEventIDs.length === 0)
 		{
-			delete oElemEventIDs[sElemID];
+			delete oElemEventIDs[sElemCID];
 		}
 
 		window.removeEventListener(_oEvent.name, _oEvent.handler, false);
@@ -56,14 +63,20 @@ var oElemEventIDs = {},
 	};
 
 
-function on_others (_sEvents, _nElem, _callback)
+export function on_others (_sEvents, _nElem, _callback, _anAlso, _eIgnore)
 {
+	if (_anAlso && !isArray(_anAlso))
+	{
+		_anAlso = [_anAlso];
+	}
+
+
 	var aEvents = clean_str(unduplicate(_sEvents)).split(' '),
 		i, L;
 
 
-	var sElemID = _nElem.getAttribute('data-js-id'),
-		aElemEventIDs = oElemEventIDs[sElemID];
+	var sElemCID = get_obj_cid(_nElem),
+		aElemEventIDs = oElemEventIDs[sElemCID];
 
 	if (aElemEventIDs)
 	{
@@ -84,15 +97,9 @@ function on_others (_sEvents, _nElem, _callback)
 	if (aEvents.length === 0) return false;
 
 
-	if (!sElemID)
+	if (!(aElemEventIDs = oElemEventIDs[sElemCID]))
 	{
-		sElemID = random_str();
-		_nElem.setAttribute('data-js-id', sElemID);
-	}
-
-	if (!(aElemEventIDs = oElemEventIDs[sElemID]))
-	{
-		aElemEventIDs = oElemEventIDs[sElemID] = [];
+		aElemEventIDs = oElemEventIDs[sElemCID] = [];
 	}
 
 
@@ -111,6 +118,9 @@ function on_others (_sEvents, _nElem, _callback)
 		oAllEvents[sEventID] = {
 			id: sEventID,
 			elem: _nElem,
+			also: _anAlso,
+			// if it was inited on some event, the event should be ignored
+			eignore: _eIgnore,
 			name: sEvent,
 			handler: handler,
 			callback: _callback
@@ -119,24 +129,20 @@ function on_others (_sEvents, _nElem, _callback)
 		oEventsMap[sEvent] = handler;
 	}
 
-	// if it was inited on some event, the event should be fired on window first
-	setTimeout(function ()
+	for (var sEvent in oEventsMap)
 	{
-		for (var sEvent in oEventsMap)
-		{
-			window.addEventListener(sEvent, oEventsMap[sEvent], false);
-		}
-	}, 10);
+		window.addEventListener(sEvent, oEventsMap[sEvent], false);
+	}
 
 	return true;
 };
 
-function off_others (_sEvents, _nElem, _callback)
+export function off_others (_sEvents, _nElem, _callback)
 {
-	var sElemID = _nElem.getAttribute('data-js-id'),
-		aElemEventIDs = oElemEventIDs[sElemID];
+	var sElemCID = get_obj_cid(_nElem),
+		aElemEventIDs = oElemEventIDs[sElemCID];
 
-	if (!sElemID || !aElemEventIDs) return false;
+	if (!aElemEventIDs) return false;
 
 
 	if (_sEvents)
@@ -151,7 +157,7 @@ function off_others (_sEvents, _nElem, _callback)
 
 			if (aEvents.indexOf(oEvent.name) > -1 && (!_callback || oEvent.callback === _callback))
 			{
-				off_others_event(oEvent, sElemID, aElemEventIDs);
+				off_others_event(oEvent, sElemCID, aElemEventIDs);
 			}
 		}
 	}
@@ -159,7 +165,7 @@ function off_others (_sEvents, _nElem, _callback)
 	{
 		while (aElemEventIDs.length)
 		{
-			off_others_event(oAllEvents[aElemEventIDs[0]], sElemID, aElemEventIDs);
+			off_others_event(oAllEvents[aElemEventIDs[0]], sElemCID, aElemEventIDs);
 		}
 	}
 

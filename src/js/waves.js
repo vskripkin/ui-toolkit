@@ -1,7 +1,7 @@
 import Placer from './placer.js';
 
-import {isMobile} from './helpers/useragent.js';
-import {css as sCssPrefix} from './helpers/broPrefix.js';
+import UA      from './helpers/useragent.js';
+import BroPref from './helpers/broPrefix.js';
 
 import is_string  from './utils/isString.js';
 import is_numeric from './utils/isNumeric.js';
@@ -171,7 +171,7 @@ var TYPE = 'wave',
 		{
 			Effect.show(e, nElem);
 
-			if (isMobile)
+			if (UA.isMobile)
 			{
 				nElem.addEventListener('touchend', Effect.hide, false);
 				nElem.addEventListener('touchcancel', Effect.hide, false);
@@ -209,7 +209,7 @@ var TYPE = 'wave',
 		setTimeout(function()
 		{
 			_nWave.style.opacity = 0;
-			_nWave.style[sCssPrefix + 'transition-duration'] = iLeftDuration + 'ms';
+			_nWave.style[BroPref.css + 'transition-duration'] = iLeftDuration + 'ms';
 
 			setTimeout(function()
 			{
@@ -252,10 +252,10 @@ var TYPE = 'wave',
 				'-webkit-tap-highlight-color': 'transparent'
 			};
 
-		oStyle[sCssPrefix + 'transition-property'] = 'opacity';
-		oStyle[sCssPrefix + 'transition-duration'] = DEFAULTS.duration.opacity + 'ms';
-		oStyle[sCssPrefix + 'transition-timing-function'] = DEFAULTS.timing.opacity;
-		oStyle[sCssPrefix + 'user-select'] = 'none';
+		oStyle[BroPref.css + 'transition-property'] = 'opacity';
+		oStyle[BroPref.css + 'transition-duration'] = DEFAULTS.duration.opacity + 'ms';
+		oStyle[BroPref.css + 'transition-timing-function'] = DEFAULTS.timing.opacity;
+		oStyle[BroPref.css + 'user-select'] = 'none';
 
 		_setStyle(nDiv, oStyle);
 		nDiv.className = 'wave-wrp wave-running';
@@ -274,10 +274,10 @@ var TYPE = 'wave',
 				willChange: 'transform'
 			};
 
-		oStyle[sCssPrefix + 'transition-property'] = 'transform';
-		oStyle[sCssPrefix + 'transition-duration'] = DEFAULTS.duration.transform + 'ms';
-		oStyle[sCssPrefix + 'transition-timing-function'] = DEFAULTS.timing.transform;
-		oStyle[sCssPrefix + 'transform'] = 'scale(0.2)';
+		oStyle[BroPref.css + 'transition-property'] = 'transform';
+		oStyle[BroPref.css + 'transition-duration'] = DEFAULTS.duration.transform + 'ms';
+		oStyle[BroPref.css + 'transition-timing-function'] = DEFAULTS.timing.transform;
+		oStyle[BroPref.css + 'transform'] = 'scale(0.2)';
 
 		_setStyle(nDiv, oStyle);
 		nDiv.className = 'wave';
@@ -308,15 +308,15 @@ var TYPE = 'wave',
 			{
 				if (_options.timing.opacity)
 				{
-					nWaveSample.style[sCssPrefix + 'transition-timing-function'] = _options.timing.opacity;
+					nWaveSample.style[BroPref.css + 'transition-timing-function'] = _options.timing.opacity;
 				}
 				if (_options.timing.transform)
 				{
-					nWaveInnerSample.style[sCssPrefix + 'transition-timing-function'] = _options.timing.transform;
+					nWaveInnerSample.style[BroPref.css + 'transition-timing-function'] = _options.timing.transform;
 				}
 			}
 
-			if (isMobile)
+			if (UA.isMobile)
 			{
 				window.addEventListener('touchstart', _startWave, true);
 				window.addEventListener('touchcancel', TouchHandler.registerEvent, true);
@@ -444,8 +444,8 @@ var TYPE = 'wave',
 				iOpDuration = e.type === 'mousemove' ? 2500 : Effect.duration.opacity,
 				iTrDuration = e.type === 'mousemove' ? 2500 : Effect.duration.transform;
 
-			nWaveElem.style[sCssPrefix + 'transition-duration'] = iOpDuration + 'ms';
-			oStyle[sCssPrefix + 'transition-duration'] = iTrDuration + 'ms';
+			nWaveElem.style[BroPref.css + 'transition-duration'] = iOpDuration + 'ms';
+			oStyle[BroPref.css + 'transition-duration'] = iTrDuration + 'ms';
 
 			_setStyle(nWaveInner, oStyle);
 
@@ -458,7 +458,7 @@ var TYPE = 'wave',
 			setTimeout(function ()
 			{
 				nWaveElem.style.opacity = 1;
-				nWaveInner.style[sCssPrefix + 'transform'] = 'scale(1)';
+				nWaveInner.style[BroPref.css + 'transform'] = 'scale(1)';
 			}, 0);
 		},
 
@@ -483,7 +483,7 @@ var TYPE = 'wave',
 				_stopWave(e, aWaves[i]);
 			}
 
-			if (isMobile)
+			if (UA.isMobile)
 			{
 				_nElem.removeEventListener('touchend', Effect.hide);
 				_nElem.removeEventListener('touchcancel', Effect.hide);

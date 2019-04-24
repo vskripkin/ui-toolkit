@@ -1,8 +1,8 @@
 import Hammer from 'hammerjs';
 
-import broPrefix  from './helpers/broPrefix.js';
-import winVis     from './helpers/winVisibility.js';
-import {isMobile} from './helpers/useragent.js';
+import broPrefix from './helpers/broPrefix.js';
+import winVis    from './helpers/winVisibility.js';
+import UA        from './helpers/useragent.js';
 
 import extend      from './utils/extend.js';
 import is_string   from './utils/isString.js';
@@ -124,7 +124,7 @@ Toast.prototype =
 			}, 1000/60);
 		}, 1000/60);
 
-		if (isMobile)
+		if (UA.isMobile)
 		{
 			this._onPan    =    _onPan.bind(this);
 			this._onPanEnd = _onPanEnd.bind(this);
