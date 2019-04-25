@@ -10,172 +10,6 @@
 		#ui-button.template(@font-size, @padding-ver, @paddong-hor, @border-width);
 		#ui-button.sizes(@font-size, @pre);
 
-
-		.bright(@color)  { result: #ui.hover-bg(bright,  @color)[result]; }
-		.dark(@color)    { result: #ui.hover-bg(dark,    @color)[result]; }
-		.darken(@color)  { result: #ui.hover-bg(darken,  @color)[result]; }
-		.light(@color)   { result: #ui.hover-bg(light,   @color)[result]; }
-		.lighten(@color) { result: #ui.hover-bg(lighten, @color)[result]; }
-
-		.font(@color, @hover: default, @active: hover)
-		{
-			@font-default-color: @color;
-			@font-hover-color: #ui.hover-bg(@hover, @font-default-color)[result];
-
-			@font-active-color: if(@active = default,
-				@font-hover-color,
-				if(iscolor(@active),
-					@active,
-					#ui.active-bg(@font-hover-color)[result]
-				)
-			);
-
-
-			.font-colors()
-			{
-				default: @font-default-color;
-				hover:   @font-hover-color;
-				active:  @font-active-color;
-			}
-			.bg-colors(@x) when (default())
-			{
-				default: transparent;
-				hover:   transparent;
-				active:  transparent;
-			}
-			.border-colors(@x) when (default())
-			{
-				default: transparent;
-				hover:   transparent;
-				active:  transparent;
-			}
-		}
-		.bg(@default: false, @hover: false, @active: hover)
-		{
-			@bg-default-color: if(iscolor(@default),
-				@default,
-				transparent
-			);
-
-			@bg-hover-color: if(@hover = false,
-				transparent,
-				if(iscolor(@hover),
-					@hover,
-					#ui.hover-bg(@hover, @bg-default-color)[result]
-				)
-			);
-
-			@bg-active-color: if(@active = false,
-				transparent,
-				if(iscolor(@active),
-					@active,
-					#ui.active-bg(@bg-hover-color)[result]
-				)
-			);
-
-
-			.bg-colors(@x) when (@x = 1)
-			{
-				default: @bg-default-color;
-				hover:   @bg-hover-color;
-				active:  @bg-active-color;
-			}
-		}
-		.border(@default: false, @hover: -1, @active: -1)
-		{
-			@_hover:  if(@hover = -1, @default, @hover);
-			@_active: if(@active = -1, @default, @active);
-
-			@f-default-color: .font-colors()[default];
-			@f-hover-color:   .font-colors()[hover];
-			@f-active-color:  .font-colors()[active];
-
-			@b-default-color: .bg-colors(1)[default];
-			@b-hover-color:   .bg-colors(1)[hover];
-			@b-active-color:  .bg-colors(1)[active];
-
-
-			@border-default-color: if(@default = false,
-				transparent,
-				if(iscolor(@default),
-					@default,
-					if(@default = bg,
-						@b-default-color,
-						fade(@f-default-color, alpha(@f-default-color) / 2 * 100)
-					)
-				)
-			);
-
-			@border-hover-color: if(@_hover = false,
-				transparent,
-				if(iscolor(@_hover),
-					@_hover,
-					if(@_hover = bg,
-						@b-hover-color,
-						@f-hover-color
-					)
-				)
-			);
-
-			@border-active-color: if(@_active = false,
-				transparent,
-				if(iscolor(@_active),
-					@_active,
-					if(@_active = bg,
-						@b-active-color,
-						@f-active-color
-					)
-				)
-			);
-
-
-			.border-colors(@x) when (@x = 1)
-			{
-				default: @border-default-color;
-				hover:   @border-hover-color;
-				active:  @border-active-color;
-			}
-		}
-		.apply()
-		{
-			@font-default: .font-colors()[default];
-			@font-hover:   .font-colors()[hover];
-			@font-active:  .font-colors()[active];
-
-			@bg-default: .bg-colors(1)[default];
-			@bg-hover:   .bg-colors(1)[hover];
-			@bg-active:  .bg-colors(1)[active];
-
-			@border-default: .border-colors(1)[default];
-			@border-hover:   .border-colors(1)[hover];
-			@border-active:  .border-colors(1)[active];
-
-
-			&, &::before, &::after { color: @font-default; }
-			border-color: @border-default;
-			background-color: @bg-default;
-
-			&:hover
-			{
-				&, &::before, &::after { color: @font-hover; }
-				border-color: @border-hover;
-				background-color: @bg-hover;
-			}
-			&:active, &.@{pre}active
-			{
-				&, &::before, &::after { color: @font-active; }
-				border-color: @border-active;
-				background-color: @bg-active;
-			}
-			&:disabled, &[disabled]
-			{
-				&, &::before, &::after { color: @font-default; }
-				border-color: @border-default;
-				background-color: @bg-default;
-			}
-		}
-
-
 		.round()
 		{
 			&.@{pre}round
@@ -242,6 +76,188 @@
 	}
 
 
+	.new-button(@pre: @button-class-prefix)
+	{
+		.bright(@color)  { result: #ui.hover-bg(bright,  @color)[result]; }
+		.dark(@color)    { result: #ui.hover-bg(dark,    @color)[result]; }
+		.darken(@color)  { result: #ui.hover-bg(darken,  @color)[result]; }
+		.light(@color)   { result: #ui.hover-bg(light,   @color)[result]; }
+		.lighten(@color) { result: #ui.hover-bg(lighten, @color)[result]; }
+
+
+		// [color], [color, auto, dark, darken, light, lighten], [color, auto]
+		.font(@default, @hover: default, @active: hover)
+		{
+			@font-default-color: @default;
+			@font-hover-color: if(@hover = default,
+				@font-default-color,
+				if(iscolor(@hover),
+					@hover,
+					#ui.hover-bg(@hover, @font-default-color)[result]
+				)
+			);
+			@font-active-color: if(@active = hover,
+				@font-hover-color,
+				if(iscolor(@active),
+					@active,
+					#ui.active-bg(@font-hover-color)[result]
+				)
+			);
+
+			.font-colors()
+			{
+				default: @font-default-color;
+				hover:   @font-hover-color;
+				active:  @font-active-color;
+			}
+			.bg-colors(@x) when (default())
+			{
+				default: transparent;
+				hover:   transparent;
+				active:  transparent;
+			}
+			.border-colors(@x) when (default())
+			{
+				default: transparent;
+				hover:   transparent;
+				active:  transparent;
+			}
+		}
+
+		// [color], [color, auto, dark, darken, light, lighten], [color, auto]
+		.bg(@default, @hover: default, @active: hover)
+		{
+			@bg-default-color: if(iscolor(@default),
+				@default,
+				transparent
+			);
+			@bg-hover-color: if(@hover = default,
+				@bg-default-color,
+				if(iscolor(@hover),
+					@hover,
+					#ui.hover-bg(@hover, @bg-default-color)[result]
+				)
+			);
+			@bg-active-color: if(@active = hover,
+				@bg-hover-color,
+				if(iscolor(@active),
+					@active,
+					#ui.active-bg(@bg-hover-color)[result]
+				)
+			);
+
+
+			.bg-colors(@x) when (@x = 1)
+			{
+				default: @bg-default-color;
+				hover:   @bg-hover-color;
+				active:  @bg-active-color;
+			}
+		}
+
+		// [color, bg, font], [color, auto, bg, font], [color, auto, bg, font]
+		.border(@default: transparent, @hover: default, @active: hover)
+		{
+			@_hover: if(@hover = default,
+				if(@default = font, font, if(@default = bg, bg, auto)),
+				@hover);
+			@_active: if(@active = hover,
+				if(@_hover = font, font, if(@_hover = bg, bg, auto)),
+				@active);
+
+			@f-default-color: .font-colors()[default];
+			@f-hover-color:   .font-colors()[hover];
+			@f-active-color:  .font-colors()[active];
+
+			@b-default-color: .bg-colors(1)[default];
+			@b-hover-color:   .bg-colors(1)[hover];
+			@b-active-color:  .bg-colors(1)[active];
+
+
+			@border-default-color: if(iscolor(@default),
+				@default,
+				if(@default = bg,
+					@b-default-color,
+					fade(@f-default-color, alpha(@f-default-color) / 2 * 100)
+				)
+			);
+			@border-hover-color: if(@_hover = auto,
+				@border-default-color,
+				if(iscolor(@_hover),
+					@_hover,
+					if(@_hover = bg,
+						@b-hover-color,
+						@f-hover-color
+					)
+				)
+			);
+			@border-active-color: if(@_active = auto,
+				@border-hover-color,
+				if(iscolor(@_active),
+					@_active,
+					if(@_active = bg,
+						@b-active-color,
+						@f-active-color
+					)
+				)
+			);
+
+
+			.border-colors(@x) when (@x = 1)
+			{
+				default: @border-default-color;
+				hover:   @border-hover-color;
+				active:  @border-active-color;
+			}
+		}
+
+
+		.apply()
+		{
+			@font-default: .font-colors()[default];
+			@font-hover:   .font-colors()[hover];
+			@font-active:  .font-colors()[active];
+
+			@bg-default: .bg-colors(1)[default];
+			@bg-hover:   .bg-colors(1)[hover];
+			@bg-active:  .bg-colors(1)[active];
+
+			@border-default: .border-colors(1)[default];
+			@border-hover:   .border-colors(1)[hover];
+			@border-active:  .border-colors(1)[active];
+
+
+			&, &::before, &::after { color: @font-default; }
+			border-color: @border-default;
+			background-color: @bg-default;
+
+			&:hover
+			{
+				&, &::before, &::after { color: @font-hover; }
+				border-color: @border-hover;
+				background-color: @bg-hover;
+			}
+			&:active, &.@{pre}active
+			{
+				&, &::before, &::after { color: @font-active; }
+				border-color: @border-active;
+				background-color: @bg-active;
+			}
+			&:disabled, &[disabled]
+			{
+				&, &::before, &::after { color: @font-default; }
+				border-color: @border-default;
+				background-color: @bg-default;
+			}
+		}
+	}
+}
+
+
+
+
+#ui()
+{
 	.button(
 		@bg-color:     rgba(255,255,255,0),
 		@color:        @button-color,
@@ -895,6 +911,10 @@
 		}
 	}
 }
+
+
+
+
 
 #ui-button()
 {
