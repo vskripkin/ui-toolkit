@@ -137,11 +137,19 @@
 		{
 			.focus();
 		}
-		&.@{pre}valid, &.@{pre}valid::placeholder, &.@{pre}valid:focus
+		&.@{pre}valid, &.@{pre}valid:focus
 		{
 			.valid();
 		}
-		&.@{pre}invalid, &.@{pre}invalid::placeholder, &.@{pre}invalid:focus
+		&.@{pre}valid::placeholder
+		{
+			.valid();
+		}
+		&.@{pre}invalid, &.@{pre}invalid:focus
+		{
+			.invalid();
+		}
+		&.@{pre}invalid::placeholder
 		{
 			.invalid();
 		}
