@@ -45,7 +45,7 @@
 			};
 		})(),
 
-		iActivationDistance = 100,
+		iActivationDistance = 75,
 
 		Toast = function (_sMessage, _options)
 		{
