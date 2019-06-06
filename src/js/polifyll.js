@@ -17,7 +17,7 @@
 
 	if (typeof window.CustomEvent !== 'function')
 	{
-		function CustomEvent (_sEvent, _options)
+		var EventCustom = function (_sEvent, _options)
 		{
 			_options = _options || {
 				bubbles: false,
@@ -35,8 +35,8 @@
 			return oEvent;
 		};
 
-		CustomEvent.prototype = window.Event.prototype;
+		EventCustom.prototype = window.Event.prototype;
 
-		window.CustomEvent = CustomEvent;
+		window.CustomEvent = EventCustom;
 	}
 })();
