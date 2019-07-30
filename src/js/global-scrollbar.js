@@ -131,6 +131,7 @@
 		},
 		width: function ()
 		{
+			// TODO it may be 0, if documentElement doesn't have scrollbar by default
 			return Math.round(window.innerWidth - document.documentElement.clientWidth);
 		}
 	};
