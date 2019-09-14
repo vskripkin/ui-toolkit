@@ -35,9 +35,9 @@
 		@pad-ver-min: if(@pt > @pb, @pb, @pt);
 
 		#ui-textfield.construct(@pre, @fs, @lh, @mb, @pt, @pb, @ph, @bt, @bb, @bh);
-		#ui-textfield-label.construct(@pre, @has-label, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon);
-		#ui-textfield-addon.construct(@pre, @has-addon, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
-		#ui-textfield-hint.construct(@pre, @has-hint, @fs, @lh, @ph, @bh);
+		#ui-textfield-label.construct(@has-label, @pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon);
+		#ui-textfield-addon.construct(@has-addon, @pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
+		#ui-textfield-hint.construct(@has-hint,   @pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
 
 		#ui-textfield-mixins.sizes(@fs, @pre, @has-label, @has-addon, @has-hint);
 		#ui-textfield-mixins.addon-width(@pre, @has-label, @has-addon, @padding-hor, @pad-ver-min);
@@ -58,7 +58,9 @@
 
 			& when (@has-label)
 			{
-				&.@{pre}thin ~ .@{pre}label, & ~ .@{pre}label.@{pre}thin, & ~ .@{pre}addon ~ .@{pre}label.@{pre}thin
+				&.@{pre}thin ~ .@{pre}label,
+				& ~ .@{pre}label.@{pre}thin,
+				& ~ .@{pre}addon ~ .@{pre}label.@{pre}thin
 				{
 					padding-left:  @pad-ver-min;
 					padding-right: @pad-ver-min;
@@ -186,6 +188,13 @@
 	}
 	.template(...)
 	{
+		&-@{textfield-cont-postfix}
+		{
+			display: block;
+			position: relative;
+			z-index: 1;
+		}
+
 		display: block;
 		width: 100%;
 		position: relative;
@@ -223,7 +232,7 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon) when (@enable)
+	.construct(@enable, @pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon) when (@enable)
 	{
 		#ui-textfield-label.template(@pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh, @has-addon);
 
@@ -296,13 +305,23 @@
 		@border-top,  @border-bottom,  @border-hor,
 		@has-addon)
 	{
+		&-@{textfield-cont-postfix} .@{pre}label,
+		& ~ .@{pre}label
+		{
+			display: block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
+			font-size: @font-size;
+			line-height: @line-height;
+		}
+
+
 		& ~ .@{pre}label
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
 			border-width: @border-top @border-hor @border-bottom;
-
-			font-size: @font-size;
-			line-height: @line-height;
 
 			@fs-px: @font-size * @font-size-root;
 			@content-em: unit(round(floor(@fs-px * @line-height) / @fs-px * 100) / 100, em);
@@ -316,10 +335,6 @@
 			top: 0;
 			left: 0;
 			width: 100%;
-			display: block;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 			pointer-events: none;
 
 			background: transparent !important;
@@ -418,7 +433,7 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh) when (@enable)
+	.construct(@enable, @pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh) when (@enable)
 	{
 		#ui-textfield-addon.template(@pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
 
@@ -465,13 +480,6 @@
 		@border-top,  @border-bottom,  @border-hor
 	)
 	{
-		&-@{textfield-cont-postfix}
-		{
-			display: block;
-			position: relative;
-			z-index: 1;
-		}
-
 		& ~ .@{pre}addon
 		{
 			padding: @padding-top @padding-hor @padding-bottom;
@@ -534,9 +542,9 @@
 		.readonly() {};
 	}
 
-	.construct(@pre, @enable, @fs, @lh, @ph, @bh) when (@enable)
+	.construct(@enable, @pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh) when (@enable)
 	{
-		#ui-textfield-hint.template(@pre, @fs, @lh, @ph, @bh);
+		#ui-textfield-hint.template(@pre, @fs, @lh, @pt, @pb, @ph, @bt, @bb, @bh);
 
 
 		#ui-textfield-hint.states();
@@ -576,7 +584,9 @@
 		}
 	}
 
-	.template(@pre, @font-size, @line-height, @padding-hor, @border-hor)
+	.template(@pre, @font-size, @line-height,
+		@padding-top, @padding-bottom, @padding-hor,
+		@border-top,  @border-bottom,  @border-hor)
 	{
 		& ~ .@{pre}hint, & ~ .@{pre}error
 		{
@@ -736,7 +746,8 @@
 					padding-@{prop}: @value;
 				}
 			}
-			&@{curr}.@{pre}thin ~ .@{pre}addon ~ .@{pre}label, &@{curr} ~ .@{pre}addon ~ .@{pre}label.@{pre}thin
+			&@{curr}.@{pre}thin ~ .@{pre}addon ~ .@{pre}label,
+			&@{curr} ~ .@{pre}addon ~ .@{pre}label.@{pre}thin
 			{
 				& when (@prop = left)
 				{
