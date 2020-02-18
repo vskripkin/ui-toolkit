@@ -9,6 +9,14 @@
 		isMobile = /webOS|BlackBerry|IEMobile|Opera Mini/i.test(sUserAgent);
 
 	_.isMobile = isIOS || isAndroid || isMobile;
+
+	// test for iPadOS 13
+	if (!_.isMobile && /Macintosh/i.test(sUserAgent) && /Intel Mac/i.test(sUserAgent) && /Version\/13/i.test(sUserAgent))
+	{
+		isIOS = true;
+		_.isMobile = true;
+	}
+
 	_.isAndroid = isAndroid;
 	_.isIOS = isIOS;
 	_.isTouchable = ('ontouchstart' in window) ||
