@@ -227,25 +227,33 @@
 			@border-active:  .border-colors(1)[active];
 
 
-			&, &::before, &::after, &:visited { color: @font-default; }
+			&::before, &::after, &:visited { color: @font-default; }
+
+			color: @font-default;
 			border-color: @border-default;
 			background-color: @bg-default;
 
 			&:hover
 			{
-				&, &::before, &::after, &:visited { color: @font-hover; }
+				&::before, &::after, &:visited { color: @font-hover; }
+
+				color: @font-hover;
 				border-color: @border-hover;
 				background-color: @bg-hover;
 			}
 			&:active, &.@{pre}active
 			{
-				&, &::before, &::after, &:visited { color: @font-active; }
+				&::before, &::after, &:visited { color: @font-active; }
+
+				color: @font-active;
 				border-color: @border-active;
 				background-color: @bg-active;
 			}
-			&:disabled, &[disabled]
+			&[disabled]
 			{
-				&, &::before, &::after, &:visited { color: @font-default; }
+				&::before, &::after, &:visited { color: @font-default; }
+
+				color: @font-default;
 				border-color: @border-default;
 				background-color: @bg-default;
 			}
@@ -287,7 +295,7 @@
 		{
 			background-color: @active-bg-color;
 		}
-		&:disabled
+		&[disabled]
 		{
 			&, &::before, &::after, &:visited { color: @color !important; }
 			background-color: @bg-color !important;
@@ -378,7 +386,7 @@
 				{
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					background-color: @color !important;
@@ -401,7 +409,7 @@
 				{
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					background-color: transparent !important;
 				}
@@ -426,7 +434,7 @@
 					border-color: transparent;
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					border-color: @border-color !important;
 					background-color: transparent !important;
@@ -452,7 +460,7 @@
 				{
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					background-color: transparent !important;
@@ -481,7 +489,7 @@
 					border-color: transparent;
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					border-color: @border-color !important;
@@ -506,7 +514,7 @@
 					&, &::before, &::after, &:visited { color: #ui.hover-bg(@hover, @color)[result]; }
 					background-color: transparent;
 				}
-				&:disabled
+				&[disabled]
 				{
 					background-color: transparent !important;
 				}
@@ -532,7 +540,7 @@
 					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
-				&:disabled
+				&[disabled]
 				{
 					border-color: @border-color !important;
 					background-color: transparent !important;
@@ -558,7 +566,7 @@
 					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
-				&:disabled
+				&[disabled]
 				{
 					background-color: transparent !important;
 				}
@@ -582,7 +590,7 @@
 					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					background-color: transparent !important;
@@ -609,7 +617,7 @@
 					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					border-color: @border-color !important;
@@ -635,7 +643,7 @@
 					border-color: @hover-bg-color;
 					background-color: transparent;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					background-color: transparent !important;
@@ -658,7 +666,7 @@
 				{
 					&, &::before, &::after, &:visited { color: @active-bg-color; }
 				}
-				&:disabled
+				&[disabled]
 				{
 					background-color: transparent !important;
 				}
@@ -683,7 +691,7 @@
 					&, &::before, &::after, &:visited { color: @active-bg-color; }
 					border-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					border-color: @border-color !important;
 					background-color: transparent !important;
@@ -706,7 +714,7 @@
 					&, &::before, &::after, &:visited { color: @active-bg-color; }
 					border-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					border-color: transparent !important;
 					background-color: transparent !important;
@@ -732,7 +740,7 @@
 				{
 					&, &::before, &::after, &:visited { color: @active-bg-color; }
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					background-color: transparent !important;
@@ -761,7 +769,7 @@
 					&, &::before, &::after, &:visited { color: @active-bg-color; }
 					border-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					border-color: @border-color !important;
@@ -789,7 +797,7 @@
 					&, &::before, &::after, &:visited { color: @active-bg-color; }
 					border-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					border-color: transparent !important;
@@ -818,7 +826,7 @@
 					&, &::before, &::after, &:visited { color: @bg-color; }
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					background-color: transparent !important;
 				}
@@ -847,7 +855,7 @@
 					border-color: transparent;
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					border-color: @border-color !important;
 					background-color: transparent !important;
@@ -872,7 +880,7 @@
 					&, &::before, &::after, &:visited { color: @color; }
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					background-color: transparent !important;
@@ -901,7 +909,7 @@
 					border-color: transparent;
 					background-color: @active-bg-color;
 				}
-				&:disabled
+				&[disabled]
 				{
 					&, &::before, &::after, &:visited { color: @bg-color !important; }
 					border-color: @border-color !important;
@@ -983,7 +991,7 @@
 		{
 			text-decoration: none;
 		}
-		&:disabled, &[disabled]
+		&[disabled]
 		{
 			opacity: @button-disabled-opacity !important;
 			cursor:  @button-disabled-cursor;
