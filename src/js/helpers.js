@@ -7,6 +7,13 @@
 })((function ($, _, undefined)
 {
 	'use strict';
+	
+	if (_.VERSION !== '1.9.1' && _.noConflict)
+	{
+		_.noConflict();
+
+		_ = window._;
+	}
 
 	var nTextarea = null,
 		toString = Object.prototype.toString,
