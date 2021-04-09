@@ -7,8 +7,8 @@
 })((function ($, _, undefined)
 {
 	'use strict';
-	
-	if (_.VERSION !== '1.9.1' && _.noConflict)
+
+	if (_ && _.VERSION !== '1.9.1' && _.noConflict)
 	{
 		_.noConflict();
 
