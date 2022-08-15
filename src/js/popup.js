@@ -40,6 +40,8 @@
 			},
 
 		__cont = {
+			state: 'hidden',
+
 			get: function ()
 			{
 				return this.__div || this.listenEscape() && (this.__div = this.create());
@@ -99,7 +101,7 @@
 			show: function ()
 			{
 				var bWasHidden = __cont.state === 'hidden';
-				
+
 				__cont.state = 'showing';
 
 
