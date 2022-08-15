@@ -98,13 +98,19 @@
 
 			show: function ()
 			{
+				var bWasHidden = __cont.state === 'hidden';
+				
 				__cont.state = 'showing';
 
 
 				var nCont = __cont.get();
 
 				nCont.style.display = 'block';
-				_.globalScrollbar.hide();
+
+				if (bWasHidden)
+				{
+					_.globalScrollbar.hide();
+				}
 
 				setTimeout(function ()
 				{
